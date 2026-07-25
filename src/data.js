@@ -11,7 +11,7 @@ export const CONFIG = {
   promoText: "25% off everything with code MAPLE25",
   // Web3Forms: create a free access key at https://web3forms.com (enter hello@maplesheet.ca)
   // and paste it below to activate the contact + newsletter forms:
-  web3formsKey: "PASTE_WEB3FORMS_ACCESS_KEY_HERE",
+  web3formsKey: "88c72f3b-a279-446a-871b-91d29a308bc5",
 };
 
 export const B = {
