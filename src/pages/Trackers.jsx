@@ -49,10 +49,18 @@ export default function Trackers() {
                     flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
                     background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
                   }}>Buy on Etsy</a>
-                  <span title="Direct checkout coming soon" style={{
-                    flex: 1, textAlign: "center", fontSize: 13, fontWeight: 600, color: B.gray,
-                    border: `1.5px solid ${B.line}`, padding: "10px 8px", borderRadius: 8, cursor: "default",
-                  }}>Direct — soon</span>
+                  {p.directUrl ? (
+                    <a href={p.directUrl} target="_blank" rel="noreferrer" className="ml-btn" style={{
+                      flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: B.white,
+                      background: "transparent", border: `1.5px solid ${B.white}`,
+                      padding: "10px 8px", borderRadius: 8, textDecoration: "none",
+                    }}>Buy Direct</a>
+                  ) : (
+                    <span title="Direct checkout coming soon" style={{
+                      flex: 1, textAlign: "center", fontSize: 13, fontWeight: 600, color: B.gray,
+                      border: `1.5px solid ${B.line}`, padding: "10px 8px", borderRadius: 8, cursor: "default",
+                    }}>Direct — soon</span>
+                  )}
                 </div>
               </div>
             );
