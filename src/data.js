@@ -7,11 +7,12 @@ export const CONFIG = {
   email: "hello@maplesheet.ca",
   xUrl: "https://x.com/MapleSheetCo",
   youtubeUrl: "https://www.youtube.com/@MapleSheetCo", // ← Lino: confirm handle
+  affiliateUrl: "https://payhip.com/auth/register/af6a64b512341ea",
   promoCode: "MAPLE25",
   promoText: "25% off everything with code MAPLE25",
   // Web3Forms: create a free access key at https://web3forms.com (enter hello@maplesheet.ca)
   // and paste it below to activate the contact + newsletter forms:
-  web3formsKey: "88c72f3b-a279-446a-871b-91d29a308bc5",
+  web3formsKey: "PASTE_WEB3FORMS_ACCESS_KEY_HERE",
 };
 
 export const B = {
@@ -28,19 +29,20 @@ export const B = {
 };
 
 export const PRODUCTS = [
-  { name: "TFSA Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4529134188", desc: "Live prices, ACB, dividends, tax-free growth" },
-  { name: "RRSP Tracker", tag: "RRSP", price: 9.99, url: "https://www.etsy.com/listing/4529584584", desc: "Contribution room, live prices, ACB" },
-  { name: "TFSA Multi-Brokerage Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4541253114", desc: "Up to 8 brokerages in one sheet — the only one of its kind", badge: "NEW" },
-  { name: "RESP Tracker", tag: "RESP", price: 14.99, url: "https://www.etsy.com/listing/4530779418", desc: "CESG grants, up to 4 beneficiaries" },
-  { name: "FHSA Tracker", tag: "FHSA", price: 14.99, url: "https://www.etsy.com/listing/4534938230", desc: "First Home Savings, Line 20805 tax dashboard" },
-  { name: "Margin Account Tracker", tag: "Margin", price: 14.99, url: "https://www.etsy.com/listing/4534229751", desc: "ACB, capital gains tax dashboard" },
-  { name: "TFSA + RRSP Tracker", tag: "Combo", price: 19.99, url: "https://www.etsy.com/listing/4522093988", desc: "Our original — both registered accounts, one sheet" },
-  { name: "RRSP + Spousal RRSP Tracker", tag: "Combo", price: 19.99, url: "https://www.etsy.com/listing/4535354991", desc: "Income splitting, attribution rules, Line 208" },
-  { name: "TFSA + Margin Linked Tracker", tag: "Combo", price: 24.99, url: "https://www.etsy.com/listing/4534821592", desc: "Linked accounts with collateral tax dashboard" },
-  { name: "TFSA + RRSP + Margin Tracker", tag: "Combo", price: 27.99, url: "https://www.etsy.com/listing/4523804765", desc: "Registered + taxable in one place" },
-  { name: "TFSA + RRSP + RESP Tracker", tag: "Combo", price: 27.99, url: "https://www.etsy.com/listing/4526534020", desc: "Family bundle with CESG maximizer" },
-  { name: "TFSA + RRSP + RESP + Margin", tag: "Combo", price: 34.99, url: "https://www.etsy.com/listing/4528655460", desc: "Four accounts — ACB, CESG, capital gains" },
-  { name: "Ultimate Tracker — All 5 Accounts", tag: "Flagship", price: 44.99, url: "https://www.etsy.com/listing/4536628550", desc: "TFSA + RRSP + RESP + FHSA + Margin. Everything, one sheet.", badge: "FLAGSHIP" },
+  { name: "TFSA Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4529134188", directUrl: "https://payhip.com/b/rb9SR", desc: "Live prices, ACB, dividends, tax-free growth" },
+  { name: "RRSP Tracker", tag: "RRSP", price: 9.99, url: "https://www.etsy.com/listing/4529584584", directUrl: "https://payhip.com/b/DQS5l", desc: "Contribution room, live prices, ACB" },
+  { name: "TFSA Multi-Brokerage Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4541253114", directUrl: "https://payhip.com/b/8CqQU", desc: "Up to 8 brokerages in one sheet — the only one of its kind", badge: "NEW" },
+  { name: "RESP Tracker", tag: "RESP", price: 14.99, url: "https://www.etsy.com/listing/4530779418", directUrl: "https://payhip.com/b/w8PXD", desc: "CESG grants, up to 4 beneficiaries" },
+  { name: "FHSA Tracker", tag: "FHSA", price: 14.99, url: "https://www.etsy.com/listing/4534938230", directUrl: "https://payhip.com/b/dEXy3", desc: "First Home Savings, Line 20805 tax dashboard" },
+  { name: "Margin Account Tracker", tag: "Margin", price: 14.99, url: "https://www.etsy.com/listing/4534229751", directUrl: "https://payhip.com/b/yKoBQ", desc: "ACB, capital gains tax dashboard" },
+  // ⚠️ Lino: double-check this one — you sent "fSgIz" (capital I), earlier test-purchase record shows "fSglz" (lowercase l). Same-looking chars, please verify against your Payhip dashboard before publishing.
+  { name: "TFSA + RRSP Tracker", tag: "Combo", price: 19.99, url: "https://www.etsy.com/listing/4522093988", directUrl: "https://payhip.com/b/fSgIz", desc: "Our original — both registered accounts, one sheet" },
+  { name: "RRSP + Spousal RRSP Tracker", tag: "Combo", price: 19.99, url: "https://www.etsy.com/listing/4535354991", directUrl: "https://payhip.com/b/mdRzx", desc: "Income splitting, attribution rules, Line 208" },
+  { name: "TFSA + Margin Linked Tracker", tag: "Combo", price: 24.99, url: "https://www.etsy.com/listing/4534821592", directUrl: "https://payhip.com/b/dOqcI", desc: "Linked accounts with collateral tax dashboard" },
+  { name: "TFSA + RRSP + Margin Tracker", tag: "Combo", price: 27.99, url: "https://www.etsy.com/listing/4523804765", directUrl: "https://payhip.com/b/29CVO", desc: "Registered + taxable in one place" },
+  { name: "TFSA + RRSP + RESP Tracker", tag: "Combo", price: 27.99, url: "https://www.etsy.com/listing/4526534020", directUrl: "https://payhip.com/b/DrfbA", desc: "Family bundle with CESG maximizer" },
+  { name: "TFSA + RRSP + RESP + Margin", tag: "Combo", price: 34.99, url: "https://www.etsy.com/listing/4528655460", directUrl: "https://payhip.com/b/xNGr1", desc: "Four accounts — ACB, CESG, capital gains" },
+  { name: "Ultimate Tracker — All 5 Accounts", tag: "Flagship", price: 44.99, url: "https://www.etsy.com/listing/4536628550", directUrl: "https://payhip.com/b/wkqoH", desc: "TFSA + RRSP + RESP + FHSA + Margin. Everything, one sheet.", badge: "FLAGSHIP" },
 ];
 
 // ─── Resources: add a new object to the TOP of this list to publish a post.
