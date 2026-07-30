@@ -49,6 +49,60 @@ export const PRODUCTS = [
 // type: "video" (YouTube embed) or "article" (text post)
 // For videos: youtubeId is the part after v= in the URL (e.g. dQw4w9WgXcQ)
 export const RESOURCES = [
+  // ─── DRAFT QUEUE — write once, publish weekly ───────────────────
+  // To publish: change live:false → live:true and update the date. That's it.
+  {
+    type: "article",
+    title: "FHSA: The Complete 2026 Guide to Canada's First Home Savings Account",
+    date: "2026-08-06",
+    live: false,
+    summary: "The one account that's deductible like an RRSP and tax-free like a TFSA — and the carry-forward rule that catches people off guard.",
+    body: [
+      "The FHSA lets first-time buyers contribute up to $8,000 a year, deduct it from taxable income like an RRSP, and withdraw it completely tax-free for a qualifying home purchase like a TFSA. No other Canadian account combines both benefits.",
+      "## The numbers for 2026",
+      "The annual limit is $8,000, unchanged since the account launched in 2023 — this figure isn't indexed to inflation, so it stays fixed year to year. The lifetime maximum is $40,000, meaning five years of full contributions gets you there.",
+      "## The carry-forward cap most people miss",
+      "Unused room does carry forward — but only up to $8,000 worth. Contribute $3,000 in your first year, and next year's limit becomes $13,000 ($8,000 new plus $5,000 carried forward), not the full $8,000 plus $5,000 plus another $8,000. The carry-forward caps out at one extra year's worth, so skipping multiple years doesn't stack indefinitely.",
+      "## The 15-year and age-71 clock",
+      "An FHSA has to be closed within 15 years of opening it, or by the year you turn 71, whichever comes first. If you haven't used the funds for a qualifying home purchase by then, the balance transfers to an RRSP or RRIF tax-free, or gets withdrawn as taxable income.",
+      "Our FHSA tracker handles both the annual and lifetime room calculations automatically, including the capped carry-forward — so you always know exactly how much you can still contribute this year.",
+    ],
+  },
+  {
+    type: "article",
+    title: "TFSA vs. RRSP: Which Should You Prioritize First?",
+    date: "2026-08-13",
+    live: false,
+    summary: "There's no universal right answer — but there is a right question to ask yourself, and it comes down to one number.",
+    body: [
+      "This is the most common Canadian investing question, and most answers online oversimplify it. The real deciding factor isn't your age or how much you have to invest — it's your current marginal tax rate versus your expected tax rate in retirement.",
+      "## The core tradeoff",
+      "RRSP contributions are deducted from this year's taxable income, so they're most valuable when your tax rate is high right now. TFSA contributions get no upfront deduction, but every dollar of growth and every withdrawal is completely tax-free, forever — which matters most if you expect to be in a similar or higher tax bracket later.",
+      "## A simple rule of thumb",
+      "If you're early in your career and in a lower tax bracket, TFSA contributions often make more sense — you're not sacrificing much of a deduction now, and decades of tax-free growth compounds significantly. If you're in your peak earning years and in a high bracket, the RRSP deduction becomes more valuable, especially if you expect a lower income in retirement.",
+      "## You don't actually have to choose",
+      "Contribution room in one account doesn't reduce room in the other — they're entirely independent. Many Canadians end up using both simultaneously: RRSP for the deduction during high-income years, TFSA for flexible, tax-free growth alongside it.",
+      "If you're running both accounts, our TFSA + RRSP combo tracker keeps contribution room, deduction limits, and growth for both in one dashboard — so you can see the full picture instead of switching between two spreadsheets.",
+    ],
+  },
+  {
+    type: "article",
+    title: "RESP & CESG: How the 20% Government Match Actually Works",
+    date: "2026-08-20",
+    live: false,
+    summary: "Free money from the government, with a lifetime cap most parents don't realize they're tracking against.",
+    body: [
+      "The Canada Education Savings Grant matches 20% of what you contribute to a child's RESP, up to $500 per year — meaning a $2,500 annual contribution gets the full match. Miss a year, and that unused grant room carries forward, up to a point.",
+      "## The lifetime cap that matters more than the annual one",
+      "The $500-per-year figure gets most of the attention, but the number that actually matters long-term is the $7,200 lifetime CESG maximum per child. Once you've received $7,200 in grants total, no further government matching happens — regardless of how much more you contribute.",
+      "## Catch-up contributions",
+      "If you didn't contribute in previous years, you can catch up — but the grant only matches up to $1,000 per year in catch-up room (on top of the current year's $500), so you can't simply dump in years of missed contributions and collect years of missed grants all at once.",
+      "## The RESP contribution limit itself",
+      "Separate from the grant, the RESP account itself has a $50,000 lifetime contribution limit per beneficiary — contributions beyond that aren't illegal, just no longer grant-eligible or tax-sheltered in the same way.",
+      "Our RESP tracker runs the CESG math automatically against both the annual and lifetime caps, so you know exactly how much unclaimed grant room is left before your child ages out of eligibility.",
+    ],
+  },
+  // ─── LIVE ARTICLES ───────────────────────────────────────────────
   {
     type: "article",
     title: "TFSA Contribution Room in 2026: The Complete Guide",
