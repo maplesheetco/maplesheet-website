@@ -59,7 +59,7 @@ function NewsletterBox() {
 
 export default function Resources() {
   const posts = RESOURCES.filter((r) => r.live !== false);
-  const comingSoon = RESOURCES.filter((r) => r.live === false);
+  const comingSoon = RESOURCES.filter((r) => r.type === "video" && r.live === false);
   return (
     <div className="ml-fade">
       <PageHead kicker="LEARN" title={<>Resources for <RedWord>Canadian investors</RedWord></>}
