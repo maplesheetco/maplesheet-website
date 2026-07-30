@@ -81,7 +81,21 @@ export default function Resources() {
                   allow="accelerometer; encrypted-media; picture-in-picture" allowFullScreen />
               </div>
             )}
-            <p style={{ color: B.grayLight, fontSize: 14.5, lineHeight: 1.75, margin: 0 }}>{r.body || r.summary}</p>
+            {(() => {
+              const raw = r.body || r.summary;
+              const blocks = Array.isArray(raw) ? raw : [raw];
+              return blocks.map((block, i) =>
+                block.startsWith("## ") ? (
+                  <h3 key={i} style={{ fontSize: 16.5, fontWeight: 700, color: B.white, margin: i === 0 ? "0 0 10px" : "22px 0 10px" }}>
+                    {block.slice(3)}
+                  </h3>
+                ) : (
+                  <p key={i} style={{ color: B.grayLight, fontSize: 14.5, lineHeight: 1.75, margin: "0 0 14px" }}>
+                    {block}
+                  </p>
+                )
+              );
+            })()}
           </article>
         ))}
         {comingSoon.length > 0 && (
