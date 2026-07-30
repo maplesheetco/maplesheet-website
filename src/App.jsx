@@ -75,8 +75,8 @@ function Home() {
           {featured.map((p) => {
             const flagship = p.badge === "FLAGSHIP";
             return (
-              <a key={p.name} href={p.url} target="_blank" rel="noreferrer" className="ml-card" style={{
-                display: "flex", flexDirection: "column", gap: 10, textDecoration: "none",
+              <div key={p.name} className="ml-card" style={{
+                display: "flex", flexDirection: "column", gap: 10,
                 background: flagship ? `linear-gradient(150deg, #2A0A0A, ${B.black2})` : B.black2,
                 border: `1.5px solid ${flagship ? B.red : B.line}`,
                 borderRadius: 16, padding: "24px 22px", position: "relative",
@@ -89,11 +89,26 @@ function Home() {
                 }}>{p.badge}</span>
                 <span style={{ fontSize: 17, fontWeight: 700, color: B.white, lineHeight: 1.3, paddingRight: 70 }}>{p.name}</span>
                 <span style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.55, flex: 1 }}>{p.desc}</span>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: 20, fontWeight: 800, color: B.white }}>CA${p.price.toFixed(2)}</span>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: "#fff", background: B.red, padding: "8px 15px", borderRadius: 8 }}>Get it →</span>
+                <span style={{ fontSize: 20, fontWeight: 800, color: B.white }}>CA${p.price.toFixed(2)}</span>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <a href={p.url} target="_blank" rel="noreferrer" className="ml-btn" style={{
+                    flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
+                    background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
+                  }}>Buy on Etsy</a>
+                  {p.directUrl ? (
+                    <a href={p.directUrl} target="_blank" rel="noreferrer" className="ml-btn" style={{
+                      flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: B.white,
+                      background: "transparent", border: `1.5px solid ${B.white}`,
+                      padding: "10px 8px", borderRadius: 8, textDecoration: "none",
+                    }}>Buy Direct</a>
+                  ) : (
+                    <span title="Direct checkout coming soon" style={{
+                      flex: 1, textAlign: "center", fontSize: 13, fontWeight: 600, color: B.gray,
+                      border: `1.5px solid ${B.line}`, padding: "10px 8px", borderRadius: 8, cursor: "default",
+                    }}>Direct — soon</span>
+                  )}
                 </div>
-              </a>
+              </div>
             );
           })}
         </div>
