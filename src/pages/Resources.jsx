@@ -1,31 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { B, CONFIG, RESOURCES } from "../data.js";
 import { PageHead, RedWord } from "../ui.jsx";
 
 function NewsletterBox() {
-  const [status, setStatus] = useState("idle");
-  const [email, setEmail] = useState("");
-  const keyMissing = CONFIG.web3formsKey.startsWith("PASTE_");
-  const submit = async () => {
-    if (!email.includes("@")) { setStatus("invalid"); return; }
-    if (keyMissing) { setStatus("nokey"); return; }
-    setStatus("sending");
-    try {
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          access_key: CONFIG.web3formsKey,
-          subject: "🍁 New MapleSheet newsletter signup",
-          from_name: "MapleSheet Website",
-          email,
-          message: `Newsletter signup: ${email}`,
-        }),
-      });
-      const data = await res.json();
-      setStatus(data.success ? "done" : "error");
-    } catch { setStatus("error"); }
-  };
   return (
     <div style={{
       background: `linear-gradient(135deg, #2A0A0A, ${B.black2})`, border: `1.5px solid ${B.red}`,
@@ -37,22 +14,9 @@ function NewsletterBox() {
       <p style={{ color: B.grayLight, fontSize: 14, margin: "0 0 18px", lineHeight: 1.6 }}>
         New trackers, free tools, and Canadian investing guides — straight to your inbox. No spam, unsubscribe anytime.
       </p>
-      {status === "done" ? (
-        <div style={{ color: B.yellow, fontWeight: 700, fontSize: 15 }}>🍁 You're on the list — welcome!</div>
-      ) : (
-        <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap", maxWidth: 460, margin: "0 auto" }}>
-          <input type="email" placeholder="you@email.com" value={email}
-            onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
-            className="ml-input" style={{ flex: "1 1 220px" }} aria-label="Email address" />
-          <button onClick={submit} disabled={status === "sending"} className="ml-btn" style={{
-            background: B.red, color: "#fff", border: "none", fontWeight: 700, fontSize: 14.5,
-            padding: "13px 24px", borderRadius: 10, cursor: "pointer", fontFamily: "inherit",
-          }}>{status === "sending" ? "Joining…" : "Join free"}</button>
-        </div>
-      )}
-      {status === "invalid" && <div style={{ color: B.yellow, fontSize: 13, marginTop: 10 }}>Please enter a valid email address.</div>}
-      {status === "error" && <div style={{ color: B.yellow, fontSize: 13, marginTop: 10 }}>Something went wrong — try again or email us directly.</div>}
-      {status === "nokey" && <div style={{ color: B.yellow, fontSize: 13, marginTop: 10 }}>Signups open very soon — meanwhile, email {CONFIG.email} with "subscribe" 🍁</div>}
+      <div style={{ maxWidth: 460, margin: "0 auto" }}>
+        <div className="ml-embedded" data-form="FeetUf"></div>
+      </div>
     </div>
   );
 }
@@ -74,6 +38,12 @@ export default function Resources() {
               {r.type === "video" ? "🎬 Video" : "📝 Article"} · {r.date}
             </div>
             <h2 style={{ fontSize: 21, fontWeight: 800, color: B.white, margin: "0 0 10px", letterSpacing: "-0.01em" }}>{r.title}</h2>
+            {r.image && (
+              <img src={r.image} alt={r.title} style={{
+                width: "100%", borderRadius: 12, marginBottom: 16, display: "block",
+                border: `1px solid ${B.line}`, aspectRatio: "1200 / 630", objectFit: "cover",
+              }} />
+            )}
             {r.type === "video" && r.youtubeId && (
               <div style={{ position: "relative", paddingBottom: "56.25%", borderRadius: 12, overflow: "hidden", marginBottom: 14, border: `1px solid ${B.line}` }}>
                 <iframe src={`https://www.youtube-nocookie.com/embed/${r.youtubeId}`} title={r.title}
