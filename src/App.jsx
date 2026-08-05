@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { B, CONFIG, PRODUCTS, RESOURCES } from "./data.js";
-import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock } from "./ui.jsx";
+import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, GrowthChart } from "./ui.jsx";
 import Trackers from "./pages/Trackers.jsx";
 import FreeTools from "./pages/FreeTools.jsx";
 import Resources from "./pages/Resources.jsx";
@@ -33,6 +33,36 @@ const DEMO_VIEWS = [
       { label: "FHSA", value: "8,221", change: "+6.0%" },
       { label: "Margin", value: "2,770", change: "+22.3%" },
     ],
+  },
+];
+
+const ICON_PROPS = { width: 26, height: 26, viewBox: "0 0 24 24", fill: "none", stroke: B.red, strokeWidth: 1.8, strokeLinecap: "round", strokeLinejoin: "round" };
+
+const OFFER_SLIDES = [
+  {
+    graphic: <GrowthChart />,
+    title: "See the trend, not just the balance",
+    body: "Every tracker includes a live-updating chart, so you can watch your portfolio's trajectory over time, not just today's snapshot.",
+  },
+  {
+    icon: <svg {...ICON_PROPS}><path d="M12 2 2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>,
+    title: "Every account, one dashboard",
+    body: "TFSA, RRSP, RESP, FHSA, and Margin — tracked side by side, not spread across five different apps or spreadsheets.",
+  },
+  {
+    icon: <svg {...ICON_PROPS}><path d="M3 12a9 9 0 0 1 15-6.7L21 8" /><path d="M21 3v5h-5" /><path d="M21 12a9 9 0 0 1-15 6.7L3 16" /><path d="M3 21v-5h5" /></svg>,
+    title: "Live prices, zero manual entry",
+    body: "GOOGLEFINANCE pulls real market data straight into your sheet — your balances stay current every time you open it.",
+  },
+  {
+    icon: <MapleLeaf size={26} />,
+    title: "Built for the Canadian system",
+    body: "Contribution room, CESG grants, ACB, and capital gains — calculated the way the CRA actually defines them, not a generic US template.",
+  },
+  {
+    icon: <svg {...ICON_PROPS}><path d="M20.6 13.4 12 22l-9-9L11.6 2H20a1 1 0 0 1 1 1v10.4z" /><circle cx="15.5" cy="7.5" r="1.4" fill={B.red} stroke="none" /></svg>,
+    title: "One-time purchase, yours forever",
+    body: "No subscription, no renewal. Buy once, use it every year you invest — download and start tracking in minutes.",
   },
 ];
 
@@ -191,6 +221,14 @@ function Home() {
             );
           })}
         </div>
+      </section>
+
+      {/* What you get */}
+      <section style={{ maxWidth: 700, margin: "0 auto", padding: "56px 24px 8px" }}>
+        <h2 style={{ fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 800, margin: "0 0 26px", letterSpacing: "-0.02em", color: B.white, textAlign: "center" }}>
+          Why Canadian investors <RedWord>switch to MapleSheet</RedWord>
+        </h2>
+        <Slideshow slides={OFFER_SLIDES} />
       </section>
 
       {/* See it in action */}
