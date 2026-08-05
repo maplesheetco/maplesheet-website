@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { B, CONFIG } from "./data.js";
 
@@ -120,6 +120,90 @@ export function Footer() {
         MapleSheet trackers are record-keeping tools, not financial advice. Google Sheets is a trademark of Google LLC; MapleSheet Co. is not affiliated with Google or Etsy.
       </div>
     </footer>
+  );
+}
+
+const GROWTH_POINTS = [[0, 150], [45, 141], [90, 130], [135, 117], [180, 104], [225, 87], [270, 67], [315, 45], [360, 24], [395, 8]];
+
+export function GrowthChart() {
+  const path = GROWTH_POINTS.map((p, idx) => (idx === 0 ? "M" : "L") + p[0] + "," + p[1]).join(" ");
+  const area = path + " L395,160 L0,160 Z";
+  const last = GROWTH_POINTS[GROWTH_POINTS.length - 1];
+  return (
+    <div style={{ width: "100%" }}>
+      <svg viewBox="0 0 400 160" style={{ width: "100%", height: 130, display: "block" }}>
+        <path d={area} fill={B.red} opacity="0.08" />
+        <path d={path} fill="none" stroke={B.red} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        {GROWTH_POINTS.filter((_, idx) => idx % 3 === 0).map((p, idx) => (
+          <circle key={idx} cx={p[0]} cy={p[1]} r="3" fill={B.black2} stroke={B.red} strokeWidth="1.8" />
+        ))}
+        <circle cx={last[0]} cy={last[1]} r="4.5" fill={B.red} />
+      </svg>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: B.grayLight, marginTop: 6 }}>
+        <span>5 years ago</span>
+        <span style={{ color: B.red, fontWeight: 700 }}>+92% sample growth</span>
+      </div>
+    </div>
+  );
+}
+
+export function Slideshow({ slides, intervalMs = 4500 }) {
+  const [i, setI] = useState(0);
+  const timer = useRef(null);
+  const start = () => {
+    clearInterval(timer.current);
+    timer.current = setInterval(() => setI((v) => (v + 1) % slides.length), intervalMs);
+  };
+  useEffect(() => { start(); return () => clearInterval(timer.current); }, [slides.length]);
+  const go = (n) => { setI(((n % slides.length) + slides.length) % slides.length); start(); };
+  const s = slides[i];
+  const arrowBtn = {
+    width: 34, height: 34, borderRadius: "50%", border: `1.5px solid ${B.line}`, background: "transparent",
+    color: B.grayLight, fontSize: 17, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+  };
+  return (
+    <div onMouseEnter={() => clearInterval(timer.current)} onMouseLeave={start}>
+      <div style={{
+        background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16,
+        padding: s.graphic ? "26px 26px 22px" : "34px 30px",
+        display: "flex", flexDirection: s.graphic ? "column" : "row",
+        alignItems: s.graphic ? "stretch" : "center", gap: s.graphic ? 16 : 24,
+        flexWrap: "wrap", minHeight: 120,
+      }}>
+        {s.graphic ? (
+          <>
+            {s.graphic}
+            <div>
+              <div style={{ fontSize: 18, fontWeight: 800, color: B.white, marginBottom: 6 }}>{s.title}</div>
+              <div style={{ fontSize: 14, color: B.grayLight, lineHeight: 1.6 }}>{s.body}</div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div style={{
+              width: 56, height: 56, borderRadius: 14, background: B.black3,
+              display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+            }}>{s.icon}</div>
+            <div style={{ flex: "1 1 260px" }}>
+              <div style={{ fontSize: 18, fontWeight: 800, color: B.white, marginBottom: 6 }}>{s.title}</div>
+              <div style={{ fontSize: 14, color: B.grayLight, lineHeight: 1.6 }}>{s.body}</div>
+            </div>
+          </>
+        )}
+      </div>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 14, marginTop: 18 }}>
+        <button onClick={() => go(i - 1)} aria-label="Previous slide" className="ml-btn" style={arrowBtn}>‹</button>
+        <div style={{ display: "flex", gap: 7 }}>
+          {slides.map((_, idx) => (
+            <button key={idx} onClick={() => go(idx)} aria-label={`Go to slide ${idx + 1}`} style={{
+              width: 7, height: 7, borderRadius: "50%", border: "none", cursor: "pointer", padding: 0,
+              background: idx === i ? B.red : B.line,
+            }} />
+          ))}
+        </div>
+        <button onClick={() => go(i + 1)} aria-label="Next slide" className="ml-btn" style={arrowBtn}>›</button>
+      </div>
+    </div>
   );
 }
 
