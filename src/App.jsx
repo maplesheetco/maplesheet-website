@@ -1,16 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { B, CONFIG, PRODUCTS, RESOURCES } from "./data.js";
-import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf } from "./ui.jsx";
+import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock } from "./ui.jsx";
 import Trackers from "./pages/Trackers.jsx";
 import FreeTools from "./pages/FreeTools.jsx";
 import Resources from "./pages/Resources.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 
+const DEMO_VIEWS = [
+  {
+    tab: "Core", label: "TFSA + RRSP", total: "43,890", ytd: "+11.2%",
+    accounts: [
+      { label: "TFSA", value: "16,568", change: "+12.4%" },
+      { label: "RRSP", value: "27,322", change: "+9.1%" },
+    ],
+  },
+  {
+    tab: "Family", label: "TFSA + RRSP + RESP", total: "48,106", ytd: "+12.8%",
+    accounts: [
+      { label: "TFSA", value: "16,568", change: "+12.4%" },
+      { label: "RRSP", value: "27,322", change: "+9.1%" },
+      { label: "RESP", value: "4,216", change: "+18.7%" },
+    ],
+  },
+  {
+    tab: "Ultimate", label: "All 5 accounts", total: "59,097", ytd: "+15.6%",
+    accounts: [
+      { label: "TFSA", value: "16,568", change: "+12.4%" },
+      { label: "RRSP", value: "27,322", change: "+9.1%" },
+      { label: "RESP", value: "4,216", change: "+18.7%" },
+      { label: "FHSA", value: "8,221", change: "+6.0%" },
+      { label: "Margin", value: "2,770", change: "+22.3%" },
+    ],
+  },
+];
+
 function Home() {
   const featured = PRODUCTS.filter((p) => p.badge);
   const latest = RESOURCES[0];
+  const [demoTab, setDemoTab] = useState(0);
+  const demo = DEMO_VIEWS[demoTab];
   return (
     <div className="ml-fade">
       {/* Hero */}
@@ -38,13 +68,27 @@ function Home() {
             background: B.red, color: "#fff", textDecoration: "none", fontWeight: 700, fontSize: 15,
             padding: "15px 30px", borderRadius: 10, boxShadow: "0 6px 20px rgba(204,0,0,0.35)",
           }}>Browse the trackers</Link>
-          <Link to="/tools" className="ml-btn" style={{
+          <a href={CONFIG.freeToolUrl} target="_blank" rel="noreferrer" className="ml-btn" style={{
             background: "transparent", color: B.white, textDecoration: "none", fontWeight: 600, fontSize: 15,
             padding: "15px 30px", borderRadius: 10, border: `1.5px solid ${B.line}`,
-          }}>Try the free calculator</Link>
+          }}>Try the free calculator</a>
         </div>
         <div style={{ marginTop: 24, fontSize: 13.5, color: B.yellow, fontWeight: 600 }}>
           🏷 Launch offer: {CONFIG.promoText}
+        </div>
+        <div style={{ maxWidth: 460, margin: "44px auto 0" }}>
+          <DashboardMock
+            total="59,097"
+            ytd="+15.6%"
+            accounts={[
+              { label: "TFSA", value: "16,568", change: "+12.4%" },
+              { label: "RRSP", value: "27,322", change: "+9.1%" },
+              { label: "RESP", value: "4,216", change: "+18.7%" },
+              { label: "FHSA", value: "8,221", change: "+6.0%" },
+              { label: "Margin", value: "2,770", change: "+22.3%" },
+            ]}
+          />
+          <div style={{ fontSize: 12, color: B.gray, marginTop: 10 }}>Sample data — your sheet, your numbers</div>
         </div>
       </header>
 
@@ -63,8 +107,43 @@ function Home() {
         </div>
       </div>
 
+      {/* Why 10 years matters */}
+      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px" }}>
+        <h2 style={{ fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 800, margin: "0 0 6px", letterSpacing: "-0.02em", color: B.white, textAlign: "center" }}>
+          Why <RedWord>10 years</RedWord> matters more than you think
+        </h2>
+        <p style={{ color: B.grayLight, fontSize: 14.5, textAlign: "center", margin: "0 0 30px" }}>
+          Same $200/month. Same 7% average return. The only difference is when you started.
+        </p>
+        <div style={{ display: "flex", gap: 16, justifyContent: "center", alignItems: "center", flexWrap: "wrap", marginBottom: 20 }}>
+          <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16, padding: "26px 34px", textAlign: "center", minWidth: 220 }}>
+            <div style={{ fontSize: 11.5, letterSpacing: "0.1em", color: B.grayLight, fontWeight: 700, marginBottom: 8 }}>START AT 25</div>
+            <div style={{ fontSize: 34, fontWeight: 800, color: B.white, letterSpacing: "-0.02em" }}>$524,963</div>
+            <div style={{ fontSize: 12.5, color: B.grayLight, marginTop: 4 }}>by age 65</div>
+          </div>
+          <div style={{ fontSize: 14, color: B.gray, fontWeight: 700 }}>vs</div>
+          <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16, padding: "26px 34px", textAlign: "center", minWidth: 220 }}>
+            <div style={{ fontSize: 11.5, letterSpacing: "0.1em", color: B.grayLight, fontWeight: 700, marginBottom: 8 }}>START AT 35</div>
+            <div style={{ fontSize: 34, fontWeight: 800, color: B.grayLight, letterSpacing: "-0.02em" }}>$243,994</div>
+            <div style={{ fontSize: 12.5, color: B.grayLight, marginTop: 4 }}>by age 65</div>
+          </div>
+        </div>
+        <div style={{ textAlign: "center", fontSize: 14, color: B.yellow, fontWeight: 700, marginBottom: 10 }}>
+          10 years earlier ≈ $280,968 more — same effort, same monthly amount.
+        </div>
+        <p style={{ textAlign: "center", fontSize: 12.5, color: B.gray, maxWidth: 520, margin: "0 auto 26px", lineHeight: 1.6 }}>
+          Illustrative example only — 7% is a long-term average assumption, not a guaranteed return. Real results vary.
+        </p>
+        <div style={{ textAlign: "center" }}>
+          <a href={CONFIG.freeToolUrl} target="_blank" rel="noreferrer" className="ml-btn" style={{
+            display: "inline-block", background: "transparent", color: B.white, textDecoration: "none",
+            fontWeight: 600, fontSize: 15, padding: "13px 25px", borderRadius: 10, border: `1.5px solid ${B.line}`,
+          }}>Run your own numbers — free calculator</a>
+        </div>
+      </section>
+
       {/* Featured products */}
-      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px 8px" }}>
+      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "8px 24px 8px" }}>
         <h2 style={{ fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 800, margin: "0 0 6px", letterSpacing: "-0.02em", color: B.white, textAlign: "center" }}>
           Featured <RedWord>trackers</RedWord>
         </h2>
@@ -114,39 +193,29 @@ function Home() {
         </div>
       </section>
 
-      {/* Calculator hook */}
-      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px" }}>
-        <div style={{
-          background: `linear-gradient(135deg, ${B.black2}, ${B.black3})`,
-          border: `1px solid ${B.line}`, borderRadius: 20, padding: "clamp(28px, 5vw, 44px)",
-          display: "flex", gap: 32, alignItems: "center", flexWrap: "wrap",
-        }}>
-          <div style={{ flex: "1 1 340px" }}>
-            <div style={{ fontSize: 12, letterSpacing: "0.14em", color: B.red, fontWeight: 700, marginBottom: 10 }}>FREE TOOL — NO SIGN-UP</div>
-            <h2 style={{ fontSize: "clamp(23px, 4vw, 32px)", fontWeight: 800, margin: "0 0 12px", letterSpacing: "-0.02em", color: B.white }}>
-              What could <RedWord>$50/month</RedWord> become?
-            </h2>
-            <p style={{ color: B.grayLight, fontSize: 15, lineHeight: 1.65, margin: "0 0 22px" }}>
-              Growth projections, goal planning, scenario comparisons, and TFSA vs RRSP vs Margin
-              after-tax outcomes — free, interactive, no sign-up.
-            </p>
-            <Link to="/tools" className="ml-btn" style={{
-              display: "inline-block", background: B.white, color: B.black, textDecoration: "none",
-              fontWeight: 700, fontSize: 15, padding: "13px 25px", borderRadius: 10,
-            }}>Open the free calculator →</Link>
-          </div>
-          <div style={{ flex: "0 1 300px", margin: "0 auto" }}>
-            <div style={{ background: B.black, border: `1px solid ${B.line}`, borderRadius: 16, padding: "26px 22px", textAlign: "center" }}>
-              <div style={{ fontSize: 13, color: B.grayLight }}>$50/month · 30 years · 10%</div>
-              <div style={{ fontSize: 42, fontWeight: 800, color: B.white, margin: "6px 0", letterSpacing: "-0.02em" }}>$113,024</div>
-              <div style={{ fontSize: 13, color: B.grayLight }}>You put in <strong style={{ color: B.white }}>$18,000</strong></div>
-              <div style={{ fontSize: 13, color: B.red, fontWeight: 700 }}>The market added $95,024</div>
-            </div>
-          </div>
+      {/* See it in action */}
+      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px 8px" }}>
+        <h2 style={{ fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 800, margin: "0 0 6px", letterSpacing: "-0.02em", color: B.white, textAlign: "center" }}>
+          See it <RedWord>in action</RedWord>
+        </h2>
+        <p style={{ color: B.grayLight, fontSize: 14.5, textAlign: "center", margin: "0 0 26px" }}>
+          Same dashboard, scaled to however many accounts you're tracking.
+        </p>
+        <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 22, flexWrap: "wrap" }}>
+          {DEMO_VIEWS.map((v, i) => (
+            <button key={v.tab} onClick={() => setDemoTab(i)} className="ml-btn" style={{
+              background: i === demoTab ? B.red : "transparent", color: i === demoTab ? "#fff" : B.grayLight,
+              border: `1.5px solid ${i === demoTab ? B.red : B.line}`, borderRadius: 999,
+              padding: "9px 18px", fontSize: 13.5, fontWeight: 700, cursor: "pointer",
+            }}>{v.tab}</button>
+          ))}
+        </div>
+        <div style={{ maxWidth: 460, margin: "0 auto" }}>
+          <DashboardMock total={demo.total} ytd={demo.ytd} totalLabel={demo.label} accounts={demo.accounts} />
         </div>
       </section>
 
-      {/* Latest resource + story teaser */}
+
       <section style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px 40px", display: "flex", gap: 18, flexWrap: "wrap" }}>
         <Link to="/resources" className="ml-card" style={{
           flex: "1 1 300px", background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16,
