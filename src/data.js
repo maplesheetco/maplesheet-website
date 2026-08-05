@@ -10,6 +10,7 @@ export const CONFIG = {
   affiliateUrl: "https://payhip.com/auth/register/af6a64b512341ea",
   promoCode: "MAPLE25",
   promoText: "25% off everything with code MAPLE25",
+  freeToolUrl: "https://claude.ai/public/artifacts/1620ddd7-219c-4052-8557-2a8c6d63e7fb",
   // Web3Forms: create a free access key at https://web3forms.com (enter hello@maplesheet.ca)
   // and paste it below to activate the contact + newsletter forms:
   web3formsKey: "88c72f3b-a279-446a-871b-91d29a308bc5",
