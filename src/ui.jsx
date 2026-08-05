@@ -38,8 +38,12 @@ export function Nav() {
   const loc = useLocation();
   React.useEffect(() => { setOpen(false); window.scrollTo(0, 0); }, [loc.pathname]);
   const links = [
-    ["/", "Home"], ["/trackers", "Trackers"], ["/tools", "Free Tools"],
-    ["/resources", "Resources"], ["/about", "About"], ["/contact", "Contact"],
+    { to: "/", label: "Home" },
+    { to: "/trackers", label: "Trackers" },
+    { to: CONFIG.freeToolUrl, label: "Free Tools", external: true },
+    { to: "/resources", label: "Resources" },
+    { to: "/about", label: "About" },
+    { to: "/contact", label: "Contact" },
   ];
   return (
     <nav style={{ borderBottom: `1px solid ${B.line}`, position: "sticky", top: 0, background: `${B.black}F2`, backdropFilter: "blur(8px)", zIndex: 50 }}>
@@ -55,8 +59,10 @@ export function Nav() {
         </Link>
         <div style={{ display: "flex", gap: 22, alignItems: "center" }} className="ml-desktop-nav">
           <div style={{ display: "flex", gap: 20, alignItems: "center" }} className="ml-links">
-            {links.map(([to, lab]) => (
-              <NavLink key={to} to={to} end={to === "/"} className={({ isActive }) => "ml-nav-link" + (isActive ? " active" : "")}>{lab}</NavLink>
+            {links.map((l) => l.external ? (
+              <a key={l.to} href={l.to} target="_blank" rel="noreferrer" className="ml-nav-link">{l.label}</a>
+            ) : (
+              <NavLink key={l.to} to={l.to} end={l.to === "/"} className={({ isActive }) => "ml-nav-link" + (isActive ? " active" : "")}>{l.label}</NavLink>
             ))}
           </div>
           <a href={CONFIG.shopUrl} target="_blank" rel="noreferrer" className="ml-btn" style={{
@@ -71,9 +77,11 @@ export function Nav() {
       </div>
       {open && (
         <div className="ml-fade" style={{ borderTop: `1px solid ${B.line}`, padding: "10px 24px 16px", display: "flex", flexDirection: "column", gap: 4 }}>
-          {links.map(([to, lab]) => (
-            <NavLink key={to} to={to} end={to === "/"} className={({ isActive }) => "ml-nav-link" + (isActive ? " active" : "")}
-              style={{ padding: "10px 2px", fontSize: 15 }}>{lab}</NavLink>
+          {links.map((l) => l.external ? (
+            <a key={l.to} href={l.to} target="_blank" rel="noreferrer" className="ml-nav-link" style={{ padding: "10px 2px", fontSize: 15 }}>{l.label}</a>
+          ) : (
+            <NavLink key={l.to} to={l.to} end={l.to === "/"} className={({ isActive }) => "ml-nav-link" + (isActive ? " active" : "")}
+              style={{ padding: "10px 2px", fontSize: 15 }}>{l.label}</NavLink>
           ))}
         </div>
       )}
@@ -112,6 +120,45 @@ export function Footer() {
         MapleSheet trackers are record-keeping tools, not financial advice. Google Sheets is a trademark of Google LLC; MapleSheet Co. is not affiliated with Google or Etsy.
       </div>
     </footer>
+  );
+}
+
+const ACCOUNT_COLORS = { TFSA: "#5B8DEF", RRSP: "#8B7CF6", RESP: "#34C77B", FHSA: "#F5A623", Margin: B.red };
+
+export function DashboardMock({ accounts, total, totalLabel = "Combined net worth", ytd }) {
+  return (
+    <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16, overflow: "hidden", textAlign: "left" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "12px 16px", borderBottom: `1px solid ${B.line}`, background: B.black3 }}>
+        <span style={{ width: 9, height: 9, borderRadius: "50%", background: B.gray }} />
+        <span style={{ width: 9, height: 9, borderRadius: "50%", background: B.gray }} />
+        <span style={{ width: 9, height: 9, borderRadius: "50%", background: B.gray }} />
+        <span style={{ marginLeft: 8, fontSize: 12, color: B.grayLight }}>MapleSheet Co. — Portfolio Dashboard</span>
+      </div>
+      <div style={{ padding: "20px 22px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 18, flexWrap: "wrap", gap: 10 }}>
+          <div>
+            <div style={{ fontSize: 12, color: B.grayLight, marginBottom: 4 }}>{totalLabel}</div>
+            <div style={{ fontSize: 30, fontWeight: 800, color: B.white, letterSpacing: "-0.02em" }}>${total}</div>
+          </div>
+          {ytd && <div style={{ fontSize: 13, fontWeight: 700, color: "#34C77B" }}>▲ {ytd} YTD</div>}
+        </div>
+        <div style={{ display: "grid", gap: 8 }}>
+          {accounts.map((a) => (
+            <div key={a.label} style={{
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+              padding: "11px 14px", background: B.black3, borderRadius: 10,
+              borderLeft: `3px solid ${ACCOUNT_COLORS[a.label] || B.red}`,
+            }}>
+              <span style={{ fontSize: 13.5, fontWeight: 600, color: B.white }}>{a.label}</span>
+              <span style={{ display: "flex", gap: 10, alignItems: "baseline" }}>
+                <span style={{ fontSize: 14, fontWeight: 700, color: B.white }}>${a.value}</span>
+                <span style={{ fontSize: 11.5, color: "#34C77B" }}>{a.change}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
