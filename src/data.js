@@ -50,14 +50,18 @@ export const PRODUCTS = [
 // type: "video" (YouTube embed) or "article" (text post)
 // For videos: youtubeId is the part after v= in the URL (e.g. dQw4w9WgXcQ)
 export const RESOURCES = [
-  // ─── DRAFT QUEUE — write once, publish weekly ───────────────────
-  // To publish: change live:false → live:true and update the date. That's it.
+  // ─── DRAFT QUEUE — write once, it auto-publishes on its date ────
+  // Articles appear on the site automatically once their `date` arrives — no
+  // need to flip anything. Just write the article and set the date you want
+  // it to go live. Only add `live: false` if the content genuinely isn't
+  // ready yet (e.g. a video with no youtubeId) — that will hide it even
+  // after its date passes, until you remove the flag.
   {
     type: "article",
     title: "FHSA: The Complete 2026 Guide to Canada's First Home Savings Account",
     image: "/resources/fhsa-guide.jpg",
-    date: "2026-08-06",
-    live: false,
+    date: "2026-08-08",
+    live: true,
     summary: "The one account that's deductible like an RRSP and tax-free like a TFSA — and the carry-forward rule that catches people off guard.",
     body: [
       "The FHSA lets first-time buyers contribute up to $8,000 a year, deduct it from taxable income like an RRSP, and withdraw it completely tax-free for a qualifying home purchase like a TFSA. No other Canadian account combines both benefits.",
@@ -75,7 +79,6 @@ export const RESOURCES = [
     title: "TFSA vs. RRSP: Which Should You Prioritize First?",
     image: "/resources/tfsa-vs-rrsp.jpg",
     date: "2026-08-13",
-    live: false,
     summary: "There's no universal right answer — but there is a right question to ask yourself, and it comes down to one number.",
     body: [
       "This is the most common Canadian investing question, and most answers online oversimplify it. The real deciding factor isn't your age or how much you have to invest — it's your current marginal tax rate versus your expected tax rate in retirement.",
@@ -93,7 +96,6 @@ export const RESOURCES = [
     title: "RESP & CESG: How the 20% Government Match Actually Works",
     image: "/resources/resp-cesg.jpg",
     date: "2026-08-20",
-    live: false,
     summary: "Free money from the government, with a lifetime cap most parents don't realize they're tracking against.",
     body: [
       "The Canada Education Savings Grant matches 20% of what you contribute to a child's RESP, up to $500 per year — meaning a $2,500 annual contribution gets the full match. Miss a year, and that unused grant room carries forward, up to a point.",
