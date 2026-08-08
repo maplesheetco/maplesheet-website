@@ -747,7 +747,12 @@ function NewsletterBox() {
 }
 
 export default function Resources() {
-  const posts = RESOURCES.filter((r) => r.live !== false);
+  // An article/video appears automatically once its `date` arrives — no need to
+  // flip `live` by hand. `live: false` is still respected as a hard override for
+  // content that truly isn't ready yet (e.g. a video with no youtubeId set),
+  // even if its scheduled date has already passed.
+  const today = new Date();
+  const posts = RESOURCES.filter((r) => r.live !== false && new Date(r.date) <= today);
   const comingSoon = RESOURCES.filter((r) => r.type === "video" && r.live === false);
   return (
     <div className="ml-fade">
