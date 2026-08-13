@@ -1,8 +1,12 @@
 import React from "react";
 import { B, CONFIG } from "../data.js";
-import { PageHead, RedWord } from "../ui.jsx";
+import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
 
 export default function FreeTools() {
+  usePageMeta({
+    title: "Free Canadian Investment Calculators | MapleSheet Co.",
+    description: "Free tools to play with TFSA, RRSP, RESP, and compound growth numbers before you buy — built for the Canadian investing system.",
+  });
   return (
     <div className="ml-fade">
       <PageHead kicker="FREE TOOLS" title={<>Learn by <RedWord>playing</RedWord> with the numbers.</>}
