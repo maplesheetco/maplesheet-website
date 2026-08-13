@@ -2,6 +2,52 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { B, CONFIG } from "./data.js";
 
+const SITE_URL = "https://www.maplesheet.ca";
+
+// Sets a unique <title>, meta description, canonical link, and matching
+// OpenGraph tags for the current route. Without this, every page shared the
+// homepage's title/description and canonical — which told Google every
+// other page was a duplicate of the homepage instead of its own indexable
+// page. Call once near the top of each page component.
+export function usePageMeta({ title, description }) {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (title) document.title = title;
+
+    const setMetaTag = (attr, attrValue, content) => {
+      let el = document.querySelector(`meta[${attr}="${attrValue}"]`);
+      if (!el) {
+        el = document.createElement("meta");
+        el.setAttribute(attr, attrValue);
+        document.head.appendChild(el);
+      }
+      el.setAttribute("content", content);
+    };
+
+    if (description) {
+      setMetaTag("name", "description", description);
+      setMetaTag("property", "og:description", description);
+    }
+    if (title) {
+      setMetaTag("property", "og:title", title);
+    }
+
+    const path = location.pathname === "/" ? "/" : location.pathname.replace(/\/$/, "");
+    const canonicalUrl = `${SITE_URL}${path}`;
+
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement("link");
+      canonicalLink.setAttribute("rel", "canonical");
+      document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.setAttribute("href", canonicalUrl);
+
+    setMetaTag("property", "og:url", canonicalUrl);
+  }, [title, description, location.pathname]);
+}
+
 export const RedWord = ({ children }) => <span style={{ color: B.red }}>{children}</span>;
 
 export const MapleLeaf = ({ size = 14, color = B.red, style }) => (
