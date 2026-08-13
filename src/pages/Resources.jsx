@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { B, CONFIG, RESOURCES } from "../data.js";
-import { PageHead, RedWord } from "../ui.jsx";
+import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
 
 const ML_FORM_ID = "44245461";
 const ML_FORM_HTML = `<style type="text/css">@import url("https://assets.mlcdn.com/fonts.css?version=1785409");</style>
@@ -747,6 +747,10 @@ function NewsletterBox() {
 }
 
 export default function Resources() {
+  usePageMeta({
+    title: "Canadian Investing Guides — TFSA, RRSP, RESP & FHSA | MapleSheet Co.",
+    description: "Plain-English guides to TFSA vs. RRSP, RESP & CESG grants, and the FHSA — written for Canadian investors who want to stop guessing and start tracking.",
+  });
   // An article/video appears automatically once its `date` arrives — no need to
   // flip `live` by hand. `live: false` is still respected as a hard override for
   // content that truly isn't ready yet (e.g. a video with no youtubeId set),
