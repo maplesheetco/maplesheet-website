@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { B, CONFIG, PRODUCTS } from "../data.js";
-import { PageHead, RedWord } from "../ui.jsx";
+import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
 
 const FILTERS = ["All", "TFSA", "RRSP", "RESP", "FHSA", "Margin", "Combo", "Flagship"];
 
 export default function Trackers() {
+  usePageMeta({
+    title: "Investment Trackers for TFSA, RRSP, RESP, FHSA & Margin | MapleSheet Co.",
+    description: "13 Google Sheets trackers built for the Canadian system — TFSA, RRSP, RESP, FHSA, and Margin accounts, standalone or combined. One-time purchase, live prices, no subscription.",
+  });
   const [filter, setFilter] = useState("All");
   const shown = filter === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.tag === filter);
   return (
