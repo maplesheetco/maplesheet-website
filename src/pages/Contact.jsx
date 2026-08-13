@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { B, CONFIG } from "../data.js";
-import { PageHead, RedWord } from "../ui.jsx";
+import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
 
 export default function Contact() {
+  usePageMeta({
+    title: "Contact MapleSheet Co.",
+    description: "Questions about a tracker, a bug, or a bulk order? Reach MapleSheet Co. directly — real answers from a real person, no support ticket queue.",
+  });
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("idle");
   const keyMissing = CONFIG.web3formsKey.startsWith("PASTE_");
