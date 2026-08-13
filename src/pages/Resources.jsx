@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { B, CONFIG, RESOURCES } from "../data.js";
 import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
 
@@ -704,7 +705,7 @@ const ML_FORM_HTML = `<style type="text/css">@import url("https://assets.mlcdn.c
     </div>
 `;
 
-function NewsletterBox() {
+export function NewsletterBox() {
   useEffect(() => {
     // Success message swap — required by MailerLite's embed markup
     window.ml_webform_success_44245461 = function () {
@@ -771,7 +772,11 @@ export default function Resources() {
             <div style={{ fontSize: 12, color: B.gray, marginBottom: 8 }}>
               {r.type === "video" ? "🎬 Video" : "📝 Article"} · {r.date}
             </div>
-            <h2 style={{ fontSize: 21, fontWeight: 800, color: B.white, margin: "0 0 10px", letterSpacing: "-0.01em" }}>{r.title}</h2>
+            <h2 style={{ fontSize: 21, fontWeight: 800, color: B.white, margin: "0 0 10px", letterSpacing: "-0.01em" }}>
+              {r.type === "article" && r.slug ? (
+                <Link to={`/resources/${r.slug}`} style={{ color: "inherit", textDecoration: "none" }}>{r.title}</Link>
+              ) : r.title}
+            </h2>
             {r.image && (
               <img src={r.image} alt={r.title} style={{
                 width: "100%", borderRadius: 12, marginBottom: 16, display: "block",
@@ -785,21 +790,12 @@ export default function Resources() {
                   allow="accelerometer; encrypted-media; picture-in-picture" allowFullScreen />
               </div>
             )}
-            {(() => {
-              const raw = r.body || r.summary;
-              const blocks = Array.isArray(raw) ? raw : [raw];
-              return blocks.map((block, i) =>
-                block.startsWith("## ") ? (
-                  <h3 key={i} style={{ fontSize: 16.5, fontWeight: 700, color: B.white, margin: i === 0 ? "0 0 10px" : "22px 0 10px" }}>
-                    {block.slice(3)}
-                  </h3>
-                ) : (
-                  <p key={i} style={{ color: B.grayLight, fontSize: 14.5, lineHeight: 1.75, margin: "0 0 14px" }}>
-                    {block}
-                  </p>
-                )
-              );
-            })()}
+            <p style={{ color: B.grayLight, fontSize: 14.5, lineHeight: 1.75, margin: "0 0 14px" }}>{r.summary}</p>
+            {r.type === "article" && r.slug && (
+              <Link to={`/resources/${r.slug}`} style={{ color: B.red, fontWeight: 600, fontSize: 14 }}>
+                Read the full guide →
+              </Link>
+            )}
           </article>
         ))}
         {comingSoon.length > 0 && (
