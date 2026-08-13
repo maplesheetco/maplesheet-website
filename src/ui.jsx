@@ -86,7 +86,7 @@ export function Nav() {
   const links = [
     { to: "/", label: "Home" },
     { to: "/trackers", label: "Trackers" },
-    { to: CONFIG.freeToolUrl, label: "Free Tools", external: true },
+    { to: "/tools", label: "Free Tools" },
     { to: "/resources", label: "Resources" },
     { to: "/about", label: "About" },
     { to: "/contact", label: "Contact" },
