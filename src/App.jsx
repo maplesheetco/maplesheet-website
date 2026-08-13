@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { B, CONFIG, PRODUCTS, RESOURCES } from "./data.js";
-import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, GrowthChart } from "./ui.jsx";
+import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, GrowthChart, usePageMeta } from "./ui.jsx";
 import Trackers from "./pages/Trackers.jsx";
 import FreeTools from "./pages/FreeTools.jsx";
 import Resources from "./pages/Resources.jsx";
@@ -67,6 +67,10 @@ const OFFER_SLIDES = [
 ];
 
 function Home() {
+  usePageMeta({
+    title: "MapleSheet Co. — Canadian Investment Trackers | Stop Guessing. Start Tracking.",
+    description: "Google Sheets investment trackers built for Canadians. TFSA contribution room, RRSP limits, CESG grants, ACB, capital gains & CRA rules — with live prices. One-time purchase, no subscription.",
+  });
   const featured = PRODUCTS.filter((p) => p.badge);
   const latest = RESOURCES[0];
   const [demoTab, setDemoTab] = useState(0);
