@@ -5,6 +5,7 @@ import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow
 import Trackers from "./pages/Trackers.jsx";
 import FreeTools from "./pages/FreeTools.jsx";
 import Resources from "./pages/Resources.jsx";
+import Article from "./pages/Article.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 
@@ -297,6 +298,7 @@ export default function App() {
           <Route path="/trackers" element={<Trackers />} />
           <Route path="/tools" element={<FreeTools />} />
           <Route path="/resources" element={<Resources />} />
+          <Route path="/resources/:slug" element={<Article />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<Home />} />
