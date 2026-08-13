@@ -59,6 +59,7 @@ export const RESOURCES = [
   {
     type: "article",
     title: "FHSA: The Complete 2026 Guide to Canada's First Home Savings Account",
+    slug: "fhsa-guide",
     image: "/resources/fhsa-guide.jpg",
     date: "2026-08-08",
     live: true,
@@ -77,6 +78,7 @@ export const RESOURCES = [
   {
     type: "article",
     title: "TFSA vs. RRSP: Which Should You Prioritize First?",
+    slug: "tfsa-vs-rrsp",
     image: "/resources/tfsa-vs-rrsp.jpg",
     date: "2026-08-13",
     summary: "There's no universal right answer — but there is a right question to ask yourself, and it comes down to one number.",
@@ -94,6 +96,7 @@ export const RESOURCES = [
   {
     type: "article",
     title: "RESP & CESG: How the 20% Government Match Actually Works",
+    slug: "resp-cesg-explained",
     image: "/resources/resp-cesg.jpg",
     date: "2026-08-20",
     summary: "Free money from the government, with a lifetime cap most parents don't realize they're tracking against.",
@@ -112,6 +115,7 @@ export const RESOURCES = [
   {
     type: "article",
     title: "TFSA Contribution Room in 2026: The Complete Guide",
+    slug: "tfsa-contribution-room-2026",
     image: "/resources/tfsa-room.jpg",
     date: "2026-07-30",
     summary: "The 2026 TFSA limit, how cumulative room actually adds up, and the withdrawal rule that trips up even experienced investors.",
@@ -129,6 +133,7 @@ export const RESOURCES = [
   {
     type: "article",
     title: "RRSP Deduction Limit vs. Contribution Room: What's the Difference?",
+    slug: "rrsp-deduction-limit-vs-contribution-room",
     image: "/resources/rrsp-deduction.jpg",
     date: "2026-07-28",
     summary: "They sound like the same number. They're usually not — and mixing them up is one of the most common RRSP mistakes.",
@@ -146,6 +151,7 @@ export const RESOURCES = [
   {
     type: "article",
     title: "How Adjusted Cost Base (ACB) Works for Canadian Investors",
+    slug: "how-acb-works",
     image: "/resources/acb-explained.jpg",
     date: "2026-07-26",
     summary: "The number that determines how much tax you actually owe when you sell — and why most spreadsheets get it wrong.",
@@ -163,6 +169,7 @@ export const RESOURCES = [
   {
     type: "article",
     title: "Welcome to MapleSheet Resources",
+    slug: "welcome",
     image: "/resources/welcome.jpg",
     date: "2026-07-22",
     summary: "Why we built this page, and what's coming: tracker tutorials, Canadian investing guides, and product updates.",
