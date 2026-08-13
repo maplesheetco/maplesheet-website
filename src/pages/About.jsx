@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { B, CONFIG, FAQS } from "../data.js";
-import { PageHead, RedWord } from "../ui.jsx";
+import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
 
 export default function About() {
+  usePageMeta({
+    title: "About MapleSheet Co. — Built by a Canadian, for Canadians",
+    description: "Why MapleSheet Co. exists: investment trackers built for the CRA system from the ground up, not adapted from American spreadsheets. Meet the founder.",
+  });
   const [open, setOpen] = useState(null);
   return (
     <div className="ml-fade">
