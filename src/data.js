@@ -58,6 +58,26 @@ export const RESOURCES = [
   // after its date passes, until you remove the flag.
   {
     type: "article",
+    title: "How to Start Investing in Canada With Just $100",
+    slug: "start-investing-with-100",
+    image: "/resources/start-investing-100.jpg",
+    date: "2026-08-13",
+    live: true,
+    summary: "You don't need thousands saved up to start. Here's exactly what $100 can actually buy you in the Canadian investing system — and why starting now beats waiting for more.",
+    body: [
+      "$100 feels small next to headlines about retiring with a million dollars, so a lot of people wait until they have \"real money\" before they start. That's backwards. The account and the habit matter more at this stage than the amount — and $100 is enough to open both.",
+      "## Pick the account before the investment",
+      "For most first-time investors in Canada, a TFSA is the natural place to start. There's no minimum balance to open one, growth and withdrawals are completely tax-free, and unlike an RRSP there's no requirement to have earned income first. Open the account, transfer your $100, and you already have contribution room sitting there — Canadians who've been eligible since 2009 and never contributed have well over $100,000 in cumulative TFSA room waiting to be used.",
+      "## What $100 can actually buy",
+      "A single share of some companies costs more than $100 on its own, which used to be the real barrier to starting small. That's changed — most major Canadian brokerages now support fractional shares and let you buy partial units of broad, diversified ETFs with no minimum purchase size. That means $100 can buy you a slice of hundreds of companies at once through a single all-in-one asset-allocation ETF, instead of betting everything on one stock you picked because you recognized the name.",
+      "## The real risk at $100 isn't picking wrong",
+      "With a small amount, the biggest risk isn't choosing the \"wrong\" ETF — reasonable diversified options tend to perform similarly to each other over time. The real risk is treating $100 as a one-time experiment instead of the first deposit in a recurring habit. Someone who invests $100 once and stops has a very different outcome, decades later, than someone who invests $100 a month, every month, without exception.",
+      "## Track it from day one",
+      "Opening the account is step one. Knowing your contribution room, what you actually hold, and how it's growing is step two — and that's where most beginners lose track once they're contributing regularly across a few different holdings. Our TFSA Tracker is built to handle exactly that from your very first $100 deposit, so the habit stays easy to keep up with as it grows.",
+    ],
+  },
+  {
+    type: "article",
     title: "FHSA: The Complete 2026 Guide to Canada's First Home Savings Account",
     slug: "fhsa-guide",
     image: "/resources/fhsa-guide.jpg",
