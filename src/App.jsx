@@ -1,7 +1,7 @@
 import React, { useState, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { B, CONFIG, PRODUCTS, RESOURCES } from "./data.js";
-import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, GrowthChart, usePageMeta } from "./ui.jsx";
+import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, ProductGallery, GrowthChart, usePageMeta } from "./ui.jsx";
 import Trackers from "./pages/Trackers.jsx";
 import Resources from "./pages/Resources.jsx";
 import Article from "./pages/Article.jsx";
@@ -11,6 +11,15 @@ import Contact from "./pages/Contact.jsx";
 // it so that weight only downloads for people who actually visit /tools, not on
 // every page of the site.
 const FreeTools = lazy(() => import("./pages/FreeTools.jsx"));
+
+const GALLERY_SLIDES = [
+  { src: "/screenshots/ultimate.jpg", alt: "Ultimate Tracker dashboard screenshot", title: "Ultimate Tracker — All 5 Accounts", tag: "5-column metrics, 4 live charts, YTD summary" },
+  { src: "/screenshots/resp.jpg", alt: "RESP Tracker dashboard screenshot", title: "RESP Tracker", tag: "CESG grants, holdings allocation, live prices" },
+  { src: "/screenshots/tfsa-margin.jpg", alt: "TFSA plus Margin Linked dashboard screenshot", title: "TFSA + Margin Linked", tag: "Combined net worth, collateral power, tax dashboard" },
+  { src: "/screenshots/fhsa.jpg", alt: "FHSA Tracker dashboard screenshot", title: "FHSA Tracker", tag: "Down payment progress, tax-free dividends" },
+  { src: "/screenshots/multi-brokerage.jpg", alt: "TFSA Multi-Brokerage dashboard screenshot", title: "TFSA Multi-Brokerage", tag: "Up to 8 institutions, contribution room, top holdings" },
+  { src: "/screenshots/combined-rrsp.jpg", alt: "RRSP plus Spousal RRSP dashboard screenshot", title: "RRSP + Spousal RRSP", tag: "Combined net worth, attribution status" },
+];
 
 const DEMO_VIEWS = [
   {
@@ -144,6 +153,17 @@ function Home() {
           <span>✓ One-time purchase — yours forever</span>
         </div>
       </div>
+
+      {/* Product gallery — real tracker screenshots */}
+      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px 8px" }}>
+        <div style={{ fontSize: 12, letterSpacing: "0.14em", color: B.red, fontWeight: 700, textAlign: "center", marginBottom: 10 }}>
+          SEE IT IN ACTION
+        </div>
+        <h2 style={{ fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 800, margin: "0 0 26px", letterSpacing: "-0.02em", color: B.white, textAlign: "center" }}>
+          Real trackers. <RedWord>Real numbers.</RedWord>
+        </h2>
+        <ProductGallery slides={GALLERY_SLIDES} />
+      </section>
 
       {/* Why 10 years matters */}
       <section style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px" }}>
