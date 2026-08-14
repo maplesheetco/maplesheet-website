@@ -21,6 +21,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.maplesheet.ca/resources/start-investing-with-100</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
     <loc>https://www.maplesheet.ca/resources/fhsa-guide</loc>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
