@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { B, CONFIG, PRODUCTS, RESOURCES } from "./data.js";
 import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, GrowthChart, usePageMeta } from "./ui.jsx";
 import Trackers from "./pages/Trackers.jsx";
-import FreeTools from "./pages/FreeTools.jsx";
 import Resources from "./pages/Resources.jsx";
 import Article from "./pages/Article.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
+// FreeTools pulls in the recharts-powered calculator (~100KB+ gzipped) — lazy-load
+// it so that weight only downloads for people who actually visit /tools, not on
+// every page of the site.
+const FreeTools = lazy(() => import("./pages/FreeTools.jsx"));
 
 const DEMO_VIEWS = [
   {
@@ -103,10 +106,10 @@ function Home() {
             background: B.red, color: "#fff", textDecoration: "none", fontWeight: 700, fontSize: 15,
             padding: "15px 30px", borderRadius: 10, boxShadow: "0 6px 20px rgba(204,0,0,0.35)",
           }}>Browse the trackers</Link>
-          <a href={CONFIG.freeToolUrl} target="_blank" rel="noreferrer" className="ml-btn" style={{
+          <Link to="/tools" className="ml-btn" style={{
             background: "transparent", color: B.white, textDecoration: "none", fontWeight: 600, fontSize: 15,
             padding: "15px 30px", borderRadius: 10, border: `1.5px solid ${B.line}`,
-          }}>Try the free calculator</a>
+          }}>Try the free calculator</Link>
         </div>
         <div style={{ marginTop: 24, fontSize: 13.5, color: B.yellow, fontWeight: 600 }}>
           🏷 Launch offer: {CONFIG.promoText}
@@ -170,10 +173,10 @@ function Home() {
           Illustrative example only — 7% is a long-term average assumption, not a guaranteed return. Real results vary.
         </p>
         <div style={{ textAlign: "center" }}>
-          <a href={CONFIG.freeToolUrl} target="_blank" rel="noreferrer" className="ml-btn" style={{
+          <Link to="/tools" className="ml-btn" style={{
             display: "inline-block", background: "transparent", color: B.white, textDecoration: "none",
             fontWeight: 600, fontSize: 15, padding: "13px 25px", borderRadius: 10, border: `1.5px solid ${B.line}`,
-          }}>Run your own numbers — free calculator</a>
+          }}>Run your own numbers — free calculator</Link>
         </div>
       </section>
 
@@ -296,7 +299,11 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/trackers" element={<Trackers />} />
-          <Route path="/tools" element={<FreeTools />} />
+          <Route path="/tools" element={
+            <Suspense fallback={<div style={{ padding: "80px 24px", textAlign: "center", color: B.grayLight }}>Loading calculator…</div>}>
+              <FreeTools />
+            </Suspense>
+          } />
           <Route path="/resources" element={<Resources />} />
           <Route path="/resources/:slug" element={<Article />} />
           <Route path="/about" element={<About />} />
