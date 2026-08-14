@@ -253,6 +253,49 @@ export function Slideshow({ slides, intervalMs = 4500 }) {
   );
 }
 
+// Auto-advancing gallery of real tracker screenshots (not mockups) — for the
+// homepage, so visitors see actual product depth instead of just reading text.
+export function ProductGallery({ slides, intervalMs = 4000 }) {
+  const [i, setI] = useState(0);
+  const timer = useRef(null);
+  const start = () => {
+    clearInterval(timer.current);
+    timer.current = setInterval(() => setI((v) => (v + 1) % slides.length), intervalMs);
+  };
+  useEffect(() => { start(); return () => clearInterval(timer.current); }, [slides.length]);
+  const go = (n) => { setI(((n % slides.length) + slides.length) % slides.length); start(); };
+  const s = slides[i];
+  const arrowBtn = {
+    width: 34, height: 34, borderRadius: "50%", border: `1.5px solid ${B.line}`, background: B.black2,
+    color: B.grayLight, fontSize: 17, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+    position: "absolute", top: "50%", transform: "translateY(-50%)", zIndex: 2,
+  };
+  return (
+    <div onMouseEnter={() => clearInterval(timer.current)} onMouseLeave={start} style={{ position: "relative" }}>
+      <button onClick={() => go(i - 1)} aria-label="Previous screenshot" style={{ ...arrowBtn, left: -6 }}>‹</button>
+      <button onClick={() => go(i + 1)} aria-label="Next screenshot" style={{ ...arrowBtn, right: -6 }}>›</button>
+      <div style={{
+        background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16, overflow: "hidden",
+        maxWidth: 560, margin: "0 auto",
+      }}>
+        <img src={s.src} alt={s.alt} loading="lazy" style={{ width: "100%", display: "block", aspectRatio: "1 / 1", objectFit: "cover" }} />
+        <div style={{ padding: "16px 20px" }}>
+          <div style={{ fontSize: 15, fontWeight: 800, color: B.white, marginBottom: 2 }}>{s.title}</div>
+          <div style={{ fontSize: 13, color: B.grayLight }}>{s.tag}</div>
+        </div>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center", gap: 7, marginTop: 16 }}>
+        {slides.map((_, idx) => (
+          <button key={idx} onClick={() => go(idx)} aria-label={`Go to screenshot ${idx + 1}`} style={{
+            width: 7, height: 7, borderRadius: "50%", border: "none", cursor: "pointer", padding: 0,
+            background: idx === i ? B.red : B.line,
+          }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const ACCOUNT_COLORS = { TFSA: "#5B8DEF", RRSP: "#8B7CF6", RESP: "#34C77B", FHSA: "#F5A623", Margin: B.red };
 
 export function DashboardMock({ accounts, total, totalLabel = "Combined net worth", ytd }) {
