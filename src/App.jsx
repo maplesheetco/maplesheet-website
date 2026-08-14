@@ -99,6 +99,9 @@ function Home() {
         }}>
           <MapleLeaf size={13} /> Built in Canada, for Canadian investors · 13 trackers
         </div>
+        <div style={{ maxWidth: 560, margin: "0 auto 30px" }}>
+          <ProductGallery slides={GALLERY_SLIDES} />
+        </div>
         <h1 style={{ fontSize: "clamp(38px, 7vw, 66px)", fontWeight: 800, lineHeight: 1.04, margin: "0 0 6px", letterSpacing: "-0.03em", color: B.white }}>
           Stop Guessing.
         </h1>
@@ -153,17 +156,6 @@ function Home() {
           <span>✓ One-time purchase — yours forever</span>
         </div>
       </div>
-
-      {/* Product gallery — real tracker screenshots */}
-      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px 8px" }}>
-        <div style={{ fontSize: 12, letterSpacing: "0.14em", color: B.red, fontWeight: 700, textAlign: "center", marginBottom: 10 }}>
-          SEE IT IN ACTION
-        </div>
-        <h2 style={{ fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 800, margin: "0 0 26px", letterSpacing: "-0.02em", color: B.white, textAlign: "center" }}>
-          Real trackers. <RedWord>Real numbers.</RedWord>
-        </h2>
-        <ProductGallery slides={GALLERY_SLIDES} />
-      </section>
 
       {/* Why 10 years matters */}
       <section style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px" }}>
