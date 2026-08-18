@@ -60,7 +60,7 @@ export function GlobalStyles() {
   return (
     <style>{`
       * { box-sizing: border-box; }
-      body { background: ${B.black}; }
+      html, body { background: ${B.black}; overflow-x: hidden; }
       .ml-btn { transition: transform .12s, background .15s, box-shadow .15s, border-color .15s; }
       .ml-btn:hover { transform: translateY(-1px); }
       .ml-btn:active { transform: translateY(0) scale(0.98); }
@@ -266,25 +266,37 @@ export function ProductGallery({ slides, intervalMs = 4000 }) {
   const go = (n) => { setI(((n % slides.length) + slides.length) % slides.length); start(); };
   const s = slides[i];
   const arrowBtn = {
-    width: 34, height: 34, borderRadius: "50%", border: `1.5px solid ${B.line}`, background: B.black2,
-    color: B.grayLight, fontSize: 17, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+    width: 40, height: 40, borderRadius: "50%", border: `1.5px solid ${B.line}`, background: B.black2,
+    color: B.grayLight, fontSize: 19, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
     position: "absolute", top: "50%", transform: "translateY(-50%)", zIndex: 2,
   };
   return (
-    <div onMouseEnter={() => clearInterval(timer.current)} onMouseLeave={start} style={{ position: "relative" }}>
-      <button onClick={() => go(i - 1)} aria-label="Previous screenshot" style={{ ...arrowBtn, left: -6 }}>‹</button>
-      <button onClick={() => go(i + 1)} aria-label="Next screenshot" style={{ ...arrowBtn, right: -6 }}>›</button>
+    <div onMouseEnter={() => clearInterval(timer.current)} onMouseLeave={start}>
+      {/* Full-bleed: breaks out of any ancestor's centered max-width to span the
+          entire viewport, regardless of how deeply this is nested. */}
       <div style={{
-        background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16, overflow: "hidden",
-        maxWidth: 560, margin: "0 auto",
+        position: "relative", width: "100vw", left: "50%", right: "50%",
+        marginLeft: "-50vw", marginRight: "-50vw",
       }}>
-        <img src={s.src} alt={s.alt} loading="lazy" style={{ width: "100%", display: "block", aspectRatio: "1 / 1", objectFit: "cover" }} />
-        <div style={{ padding: "16px 20px" }}>
-          <div style={{ fontSize: 15, fontWeight: 800, color: B.white, marginBottom: 2 }}>{s.title}</div>
-          <div style={{ fontSize: 13, color: B.grayLight }}>{s.tag}</div>
+        <button onClick={() => go(i - 1)} aria-label="Previous screenshot" style={{ ...arrowBtn, left: 20 }}>‹</button>
+        <button onClick={() => go(i + 1)} aria-label="Next screenshot" style={{ ...arrowBtn, right: 20 }}>›</button>
+        <div style={{
+          background: B.black2, borderTop: `1px solid ${B.line}`, borderBottom: `1px solid ${B.line}`, overflow: "hidden",
+        }}>
+          <img
+            src={s.src} alt={s.alt} loading="lazy"
+            style={{
+              width: "100%", display: "block", aspectRatio: "21 / 8", objectFit: "contain",
+              background: B.black2, maxHeight: "72vh",
+            }}
+          />
         </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "center", gap: 7, marginTop: 16 }}>
+      <div style={{ maxWidth: 560, margin: "16px auto 0", textAlign: "center" }}>
+        <div style={{ fontSize: 15, fontWeight: 800, color: B.white, marginBottom: 2 }}>{s.title}</div>
+        <div style={{ fontSize: 13, color: B.grayLight }}>{s.tag}</div>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center", gap: 7, marginTop: 14 }}>
         {slides.map((_, idx) => (
           <button key={idx} onClick={() => go(idx)} aria-label={`Go to screenshot ${idx + 1}`} style={{
             width: 7, height: 7, borderRadius: "50%", border: "none", cursor: "pointer", padding: 0,
