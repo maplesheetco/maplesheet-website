@@ -99,7 +99,7 @@ function Home() {
         }}>
           <MapleLeaf size={13} /> Built in Canada, for Canadian investors · 13 trackers
         </div>
-        <div style={{ maxWidth: 560, margin: "0 auto 30px" }}>
+        <div style={{ margin: "0 0 30px" }}>
           <ProductGallery slides={GALLERY_SLIDES} />
         </div>
         <h1 style={{ fontSize: "clamp(38px, 7vw, 66px)", fontWeight: 800, lineHeight: 1.04, margin: "0 0 6px", letterSpacing: "-0.03em", color: B.white }}>
