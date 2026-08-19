@@ -167,7 +167,7 @@ export default function Article() {
           )}
           {blocks.map((block, i) => renderBlock(block, i))}
         </article>
-        <NewsletterBox />
+        <NewsletterBox sourcePage="article" />
       </div>
     </div>
   );
