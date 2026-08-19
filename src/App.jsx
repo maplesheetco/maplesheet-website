@@ -2,6 +2,7 @@ import React, { useState, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { B, CONFIG, PRODUCTS, RESOURCES } from "./data.js";
 import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, ProductGallery, GrowthChart, usePageMeta } from "./ui.jsx";
+import { trackBuyClicked } from "./analytics.js";
 import Trackers from "./pages/Trackers.jsx";
 import Resources from "./pages/Resources.jsx";
 import Article from "./pages/Article.jsx";
@@ -207,12 +208,18 @@ function Home() {
                 <span style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.55, flex: 1 }}>{p.desc}</span>
                 <span style={{ fontSize: 20, fontWeight: 800, color: B.white }}>CA${p.price.toFixed(2)}</span>
                 <div style={{ display: "flex", gap: 8 }}>
-                  <a href={p.url} target="_blank" rel="noreferrer" className="ml-btn" style={{
+                  <a href={p.url} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
+                    productName: p.name, productTag: p.tag, priceCad: p.price,
+                    checkoutDestination: "etsy", sourceSection: "home_featured",
+                  })} style={{
                     flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
                     background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
                   }}>Buy on Etsy</a>
                   {p.directUrl ? (
-                    <a href={p.directUrl} target="_blank" rel="noreferrer" className="ml-btn" style={{
+                    <a href={p.directUrl} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
+                      productName: p.name, productTag: p.tag, priceCad: p.price,
+                      checkoutDestination: "direct", sourceSection: "home_featured",
+                    })} style={{
                       flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: B.white,
                       background: "transparent", border: `1.5px solid ${B.white}`,
                       padding: "10px 8px", borderRadius: 8, textDecoration: "none",
