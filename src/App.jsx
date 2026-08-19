@@ -19,6 +19,7 @@ const GALLERY_SLIDES = [
   { src: "/screenshots/fhsa.jpg", alt: "FHSA Tracker dashboard screenshot", title: "FHSA Tracker", tag: "Down payment progress, tax-free dividends" },
   { src: "/screenshots/multi-brokerage.jpg", alt: "TFSA Multi-Brokerage dashboard screenshot", title: "TFSA Multi-Brokerage", tag: "Up to 8 institutions, contribution room, top holdings" },
   { src: "/screenshots/combined-rrsp.jpg", alt: "RRSP plus Spousal RRSP dashboard screenshot", title: "RRSP + Spousal RRSP", tag: "Combined net worth, attribution status" },
+  { src: "/screenshots/margin.jpg", alt: "Margin Account Tracker dashboard screenshot", title: "Margin Account Tracker", tag: "ACB, break-even yield, interest deduction tracking" },
 ];
 
 const DEMO_VIEWS = [
