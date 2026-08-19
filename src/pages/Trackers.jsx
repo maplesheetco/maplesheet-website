@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { B, CONFIG, PRODUCTS } from "../data.js";
 import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
+import { trackBuyClicked } from "../analytics.js";
 
 const FILTERS = ["All", "TFSA", "RRSP", "RESP", "FHSA", "Margin", "Combo", "Flagship"];
 
@@ -49,12 +50,18 @@ export default function Trackers() {
                 <span style={{ fontSize: 13, color: B.grayLight, lineHeight: 1.55, flex: 1 }}>{p.desc}</span>
                 <div style={{ fontSize: 19, fontWeight: 800, color: B.white, marginTop: 4 }}>CA${p.price.toFixed(2)}</div>
                 <div style={{ display: "flex", gap: 8 }}>
-                  <a href={p.url} target="_blank" rel="noreferrer" className="ml-btn" style={{
+                  <a href={p.url} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
+                    productName: p.name, productTag: p.tag, priceCad: p.price,
+                    checkoutDestination: "etsy", sourceSection: "trackers_catalog",
+                  })} style={{
                     flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
                     background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
                   }}>Buy on Etsy</a>
                   {p.directUrl ? (
-                    <a href={p.directUrl} target="_blank" rel="noreferrer" className="ml-btn" style={{
+                    <a href={p.directUrl} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
+                      productName: p.name, productTag: p.tag, priceCad: p.price,
+                      checkoutDestination: "direct", sourceSection: "trackers_catalog",
+                    })} style={{
                       flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: B.white,
                       background: "transparent", border: `1.5px solid ${B.white}`,
                       padding: "10px 8px", borderRadius: 8, textDecoration: "none",
