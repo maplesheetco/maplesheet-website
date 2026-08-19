@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { B, CONFIG, RESOURCES } from "../data.js";
 import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
+import { trackNewsletterSubscribed } from "../analytics.js";
 
 const ML_FORM_ID = "44245461";
 const ML_FORM_HTML = `<style type="text/css">@import url("https://assets.mlcdn.com/fonts.css?version=1785409");</style>
@@ -705,7 +706,7 @@ const ML_FORM_HTML = `<style type="text/css">@import url("https://assets.mlcdn.c
     </div>
 `;
 
-export function NewsletterBox() {
+export function NewsletterBox({ sourcePage = "resources" }) {
   useEffect(() => {
     // Success message swap — required by MailerLite's embed markup
     window.ml_webform_success_44245461 = function () {
@@ -714,6 +715,7 @@ export function NewsletterBox() {
         $(".ml-subscribe-form-" + ML_FORM_ID + " .row-success").show();
         $(".ml-subscribe-form-" + ML_FORM_ID + " .row-form").hide();
       }
+      trackNewsletterSubscribed({ sourcePage });
     };
 
     // Load MailerLite's form-handling script once, after this component (and its
