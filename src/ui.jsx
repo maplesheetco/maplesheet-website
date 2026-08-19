@@ -214,7 +214,7 @@ export function Slideshow({ slides, intervalMs = 4500 }) {
         padding: s.graphic ? "26px 26px 22px" : "34px 30px",
         display: "flex", flexDirection: s.graphic ? "column" : "row",
         alignItems: s.graphic ? "stretch" : "center", gap: s.graphic ? 16 : 24,
-        flexWrap: "wrap", minHeight: 120,
+        flexWrap: "wrap", minHeight: 300, justifyContent: "center",
       }}>
         {s.graphic ? (
           <>
