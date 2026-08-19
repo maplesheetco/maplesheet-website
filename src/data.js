@@ -14,6 +14,11 @@ export const CONFIG = {
   // Web3Forms: create a free access key at https://web3forms.com (enter hello@maplesheet.ca)
   // and paste it below to activate the contact + newsletter forms:
   web3formsKey: "88c72f3b-a279-446a-871b-91d29a308bc5",
+  // Google Analytics: create a GA4 property, then paste your Measurement ID
+  // (GA4 Admin → Data Streams → Web) here. NOTE: index.html also needs the
+  // same ID pasted into its gtag.js snippet — that page loads before React,
+  // so it can't read this file. Keep both in sync.
+  gaMeasurementId: "G-XXXXXXXXXX",
 };
 
 export const B = {
