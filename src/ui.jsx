@@ -310,7 +310,7 @@ export function ProductGallery({ slides, intervalMs = 4000 }) {
 
 const ACCOUNT_COLORS = { TFSA: "#5B8DEF", RRSP: "#8B7CF6", RESP: "#34C77B", FHSA: "#F5A623", Margin: B.red };
 
-export function DashboardMock({ accounts, total, totalLabel = "Combined net worth", ytd }) {
+export function DashboardMock({ accounts, total, totalLabel = "Combined net worth", ytd, minContentHeight }) {
   return (
     <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16, overflow: "hidden", textAlign: "left" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "12px 16px", borderBottom: `1px solid ${B.line}`, background: B.black3 }}>
@@ -319,7 +319,7 @@ export function DashboardMock({ accounts, total, totalLabel = "Combined net wort
         <span style={{ width: 9, height: 9, borderRadius: "50%", background: B.gray }} />
         <span style={{ marginLeft: 8, fontSize: 12, color: B.grayLight }}>MapleSheet Co. — Portfolio Dashboard</span>
       </div>
-      <div style={{ padding: "20px 22px" }}>
+      <div style={{ padding: "20px 22px", ...(minContentHeight ? { minHeight: minContentHeight, display: "flex", flexDirection: "column", justifyContent: "center" } : {}) }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 18, flexWrap: "wrap", gap: 10 }}>
           <div>
             <div style={{ fontSize: 12, color: B.grayLight, marginBottom: 4 }}>{totalLabel}</div>
