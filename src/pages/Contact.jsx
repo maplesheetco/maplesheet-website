@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { B, CONFIG } from "../data.js";
 import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
+import { trackContactFormSubmitted } from "../analytics.js";
 
 export default function Contact() {
   usePageMeta({
@@ -28,6 +29,7 @@ export default function Contact() {
         }),
       });
       const data = await res.json();
+      if (data.success) trackContactFormSubmitted();
       setStatus(data.success ? "done" : "error");
     } catch { setStatus("error"); }
   };
