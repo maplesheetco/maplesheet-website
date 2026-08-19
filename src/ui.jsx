@@ -286,7 +286,7 @@ export function ProductGallery({ slides, intervalMs = 4000 }) {
           <img
             src={s.src} alt={s.alt} loading="lazy"
             style={{
-              width: "100%", display: "block", aspectRatio: "21 / 8", objectFit: "contain",
+              width: "100%", display: "block", aspectRatio: "2 / 1", objectFit: "contain",
               background: B.black2, maxHeight: "72vh",
             }}
           />
