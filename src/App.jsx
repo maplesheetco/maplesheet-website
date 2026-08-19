@@ -100,9 +100,6 @@ function Home() {
         }}>
           <MapleLeaf size={13} /> Built in Canada, for Canadian investors · 13 trackers
         </div>
-        <div style={{ margin: "0 0 30px" }}>
-          <ProductGallery slides={GALLERY_SLIDES} />
-        </div>
         <h1 style={{ fontSize: "clamp(38px, 7vw, 66px)", fontWeight: 800, lineHeight: 1.04, margin: "0 0 6px", letterSpacing: "-0.03em", color: B.white }}>
           Stop Guessing.
         </h1>
@@ -124,22 +121,11 @@ function Home() {
             padding: "15px 30px", borderRadius: 10, border: `1.5px solid ${B.line}`,
           }}>Try the free calculator</Link>
         </div>
-        <div style={{ marginTop: 24, fontSize: 13.5, color: B.yellow, fontWeight: 600 }}>
+        <div style={{ marginTop: 24, marginBottom: 40, fontSize: 13.5, color: B.yellow, fontWeight: 600 }}>
           🏷 Launch offer: {CONFIG.promoText}
         </div>
-        <div style={{ maxWidth: 460, margin: "44px auto 0" }}>
-          <DashboardMock
-            total="59,097"
-            ytd="+15.6%"
-            accounts={[
-              { label: "TFSA", value: "16,568", change: "+12.4%" },
-              { label: "RRSP", value: "27,322", change: "+9.1%" },
-              { label: "RESP", value: "4,216", change: "+18.7%" },
-              { label: "FHSA", value: "8,221", change: "+6.0%" },
-              { label: "Margin", value: "2,770", change: "+22.3%" },
-            ]}
-          />
-          <div style={{ fontSize: 12, color: B.gray, marginTop: 10 }}>Sample data — your sheet, your numbers</div>
+        <div>
+          <ProductGallery slides={GALLERY_SLIDES} />
         </div>
       </header>
 
@@ -270,7 +256,7 @@ function Home() {
           ))}
         </div>
         <div style={{ maxWidth: 460, margin: "0 auto" }}>
-          <DashboardMock total={demo.total} ytd={demo.ytd} totalLabel={demo.label} accounts={demo.accounts} />
+          <DashboardMock total={demo.total} ytd={demo.ytd} totalLabel={demo.label} accounts={demo.accounts} minContentHeight={350} />
         </div>
       </section>
 
