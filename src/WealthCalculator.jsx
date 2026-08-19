@@ -4,6 +4,7 @@ import {
   XAxis, YAxis, CartesianGrid,
 } from "recharts";
 import { B, CONFIG } from "./data.js";
+import { trackCalculatorToolUsed } from "./analytics.js";
 
 // ─── math helpers ──────────────────────────────────────────────
 // Ordinary annuity: contributions land at the end of each period.
@@ -403,7 +404,7 @@ export default function WealthCalculator() {
       `}</style>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 24 }}>
         {TABS.map((t) => (
-          <button key={t.key} onClick={() => setTab(t.key)} style={{
+          <button key={t.key} onClick={() => { setTab(t.key); trackCalculatorToolUsed({ tool: t.key }); }} style={{
             display: "flex", alignItems: "center", gap: 7, padding: "10px 18px", borderRadius: 10,
             fontSize: 14, fontWeight: 700, cursor: "pointer",
             border: `1.5px solid ${tab === t.key ? B.red : B.line}`,
