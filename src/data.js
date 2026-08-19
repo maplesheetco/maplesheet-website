@@ -18,7 +18,7 @@ export const CONFIG = {
   // (GA4 Admin → Data Streams → Web) here. NOTE: index.html also needs the
   // same ID pasted into its gtag.js snippet — that page loads before React,
   // so it can't read this file. Keep both in sync.
-  gaMeasurementId: "G-XXXXXXXXXX",
+  gaMeasurementId: "G-VE0JSFXE1Q",
 };
 
 export const B = {
