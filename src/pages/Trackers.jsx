@@ -18,6 +18,10 @@ export default function Trackers() {
   // /trackers/:slug page now that one exists, alongside `offers.url` (the
   // actual Etsy/Payhip purchase link) — Product.url is "the page describing
   // this", offers.url is "where you can buy it," and they're not the same.
+  // `image` is required for Google's Merchant listing rich result (it was
+  // flagged as a critical "missing field" error before this) — real product
+  // screenshots are used where we have them, falling back to the site's
+  // general share image (og.png) for the few trackers without one yet.
   useJsonLd({
     "@context": "https://schema.org",
     "@graph": PRODUCTS.map((p) => ({
@@ -25,6 +29,7 @@ export default function Trackers() {
       name: p.name,
       description: p.desc,
       category: p.tag,
+      image: `${SITE_URL}${p.screenshot || "/og.png"}`,
       ...(p.slug ? { url: `${SITE_URL}/trackers/${p.slug}` } : {}),
       brand: { "@type": "Brand", name: "MapleSheet Co." },
       offers: {
