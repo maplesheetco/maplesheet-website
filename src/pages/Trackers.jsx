@@ -1,9 +1,23 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { B, CONFIG, PRODUCTS } from "../data.js";
 import { PageHead, RedWord, usePageMeta, useJsonLd } from "../ui.jsx";
 import { trackBuyClicked } from "../analytics.js";
 
 const FILTERS = ["All", "TFSA", "RRSP", "RESP", "FHSA", "Margin", "Combo", "Flagship"];
+
+// Internal links from each tracker to its matching /resources guide — gives
+// Google (and visitors) a path from a commercial page to the informational
+// content that supports it, and vice versa when someone lands on a guide
+// first. Only mapped where a guide with a direct 1:1 match exists; Combo and
+// Flagship products span multiple accounts, so no single guide fits.
+const GUIDE_LINKS = {
+  TFSA: { slug: "tfsa-contribution-room-2026", label: "TFSA contribution room guide" },
+  RRSP: { slug: "rrsp-deduction-limit-vs-contribution-room", label: "RRSP deduction limit guide" },
+  RESP: { slug: "resp-cesg-explained", label: "RESP & CESG guide" },
+  FHSA: { slug: "fhsa-guide", label: "FHSA complete guide" },
+  Margin: { slug: "how-acb-works", label: "How ACB works" },
+};
 
 export default function Trackers() {
   usePageMeta({
@@ -70,6 +84,13 @@ export default function Trackers() {
                 <span style={{ fontSize: 17, fontWeight: 700, color: B.white, lineHeight: 1.3, paddingRight: p.badge ? 66 : 0 }}>{p.name}</span>
                 <span style={{ fontSize: 13, color: B.grayLight, lineHeight: 1.55, flex: 1 }}>{p.desc}</span>
                 <div style={{ fontSize: 19, fontWeight: 800, color: B.white, marginTop: 4 }}>CA${p.price.toFixed(2)}</div>
+                {GUIDE_LINKS[p.tag] && (
+                  <Link to={`/resources/${GUIDE_LINKS[p.tag].slug}`} style={{
+                    fontSize: 12, color: B.grayLight, textDecoration: "none", display: "inline-block",
+                  }}>
+                    📖 {GUIDE_LINKS[p.tag].label} →
+                  </Link>
+                )}
                 <div style={{ display: "flex", gap: 8 }}>
                   <a href={p.url} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
                     productName: p.name, productTag: p.tag, priceCad: p.price,
