@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { B, CONFIG, PRODUCTS } from "../data.js";
-import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
+import { PageHead, RedWord, usePageMeta, useJsonLd } from "../ui.jsx";
 import { trackBuyClicked } from "../analytics.js";
 
 const FILTERS = ["All", "TFSA", "RRSP", "RESP", "FHSA", "Margin", "Combo", "Flagship"];
@@ -10,6 +10,27 @@ export default function Trackers() {
     title: "TFSA, RRSP, RESP, FHSA & Margin Trackers | MapleSheet Co.",
     description: "13 Google Sheets trackers for TFSA, RRSP, RESP, FHSA & Margin accounts. One-time purchase, live prices, no subscription.",
   });
+  // Product schema for all 13 trackers — this page is where they're actually
+  // listed (no individual product pages exist), so each tracker gets its own
+  // Product entry in one @graph block. Lets Google show price/availability
+  // directly in search results instead of a plain blue link.
+  useJsonLd({
+    "@context": "https://schema.org",
+    "@graph": PRODUCTS.map((p) => ({
+      "@type": "Product",
+      name: p.name,
+      description: p.desc,
+      category: p.tag,
+      brand: { "@type": "Brand", name: "MapleSheet Co." },
+      offers: {
+        "@type": "Offer",
+        price: p.price.toFixed(2),
+        priceCurrency: "CAD",
+        availability: "https://schema.org/InStock",
+        url: p.directUrl || p.url,
+      },
+    })),
+  }, "trackers-product-schema");
   const [filter, setFilter] = useState("All");
   const shown = filter === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.tag === filter);
   return (
