@@ -131,7 +131,7 @@ export const RESOURCES = [
       "Unlike a TFSA, FHSA room doesn't accumulate in the background before you act — it only starts building the year you actually open the account, even if you were eligible years earlier. Someone who waits five years after becoming eligible to open an FHSA has zero carry-forward waiting for them; the clock simply hadn't started. Opening the account with even a small first contribution locks in that year's room and starts the carry-forward accruing, which is worth doing early even if you're not ready to fund it heavily yet.",
       "## Stacking it with the Home Buyers' Plan",
       "The FHSA and the RRSP's Home Buyers' Plan aren't mutually exclusive — a first-time buyer can use both toward the same home purchase. That pairs the FHSA's up-to-$40,000 tax-free withdrawal with the HBP's up-to-$60,000 RRSP withdrawal, putting up to $100,000 of registered-account money toward a down payment without touching a taxable account, provided both sets of rules are met.",
-      "Our FHSA tracker handles both the annual and lifetime room calculations automatically, including the capped carry-forward — so you always know exactly how much you can still contribute this year.",
+      "Our [FHSA tracker](/trackers) handles both the annual and lifetime room calculations automatically, including the capped carry-forward — so you always know exactly how much you can still contribute this year.",
     ],
   },
   {
@@ -478,7 +478,7 @@ export const RESOURCES = [
       "TFSAs are tax-free under Canadian law, but the US doesn't recognize them as a retirement account the way it recognizes RRSPs under the Canada-US tax treaty. That means US-listed stocks and ETFs held inside a TFSA still have a 15% US withholding tax deducted from their dividends before the cash ever reaches you — a quiet cost that catches people who assume \"tax-free account\" means tax-free on everything inside it, regardless of what it holds.",
       "## Why this is hard to track by hand",
       "The CRA's own portal often lags behind your actual contributions, especially early in the year — which means the number it shows you isn't always the number you can safely rely on. Between multiple brokerages, withdrawals from prior years, and this year's fresh room, keeping an accurate running total takes more than memory.",
-      "That's the exact problem our TFSA trackers solve — automatic room calculation that accounts for withdrawals, carry-forward, and multiple institutions, so you're never guessing.",
+      "That's the exact problem our [TFSA trackers](/trackers) solve — automatic room calculation that accounts for withdrawals, carry-forward, and multiple institutions, so you're never guessing.",
     ],
   },
   {
@@ -500,7 +500,7 @@ export const RESOURCES = [
       "The CRA allows a lifetime $2,000 buffer above your deduction limit with no penalty — but it's easy to misread as \"$2,000 of extra room.\" It isn't. Contributions inside that cushion still can't be deducted from your taxable income beyond your actual limit; the buffer just protects you from the 1% monthly over-contribution tax if you accidentally go slightly over. Exceed your limit plus that $2,000 cushion, and the CRA applies a 1% per month penalty on the excess, calculated at the end of each month it remains — and you're required to file a T1-OVP return within 90 days of year-end to report it, or a late-filing penalty stacks on top.",
       "## Two ways to use RRSP room beyond your own retirement",
       "A spousal RRSP lets the higher-income partner contribute using their own deduction limit into an RRSP registered in the lower-income spouse's name — the deduction goes to the contributor, but future withdrawals are taxed to the spouse, which can split retirement income and lower the household's combined tax bill. Separately, the Home Buyers' Plan lets a first-time buyer withdraw up to $60,000 tax-free from their RRSP toward a home purchase, repaid over 15 years starting the second year after the withdrawal — miss a year's minimum repayment and that installment gets added straight to your taxable income instead of quietly rolling forward.",
-      "Our RRSP trackers pull your actual deduction limit as an editable field rather than assuming a flat number, so the tracker matches what your Notice of Assessment actually says — not a generic formula.",
+      "Our [RRSP trackers](/trackers) pull your actual deduction limit as an editable field rather than assuming a flat number, so the tracker matches what your Notice of Assessment actually says — not a generic formula.",
     ],
   },
   {
@@ -522,7 +522,7 @@ export const RESOURCES = [
       "Sell a losing stock to claim the capital loss, then buy it back within 30 days — before or after the sale — and the CRA treats it as a superficial loss under section 54 of the Income Tax Act. The loss gets denied for that year entirely. It isn't gone forever, though: it gets added back onto the ACB of the shares you repurchased, deferring the loss until you eventually sell those shares for good, outside the 61-day window around any future purchase.",
       "## US dollar holdings need converting, not just tracking",
       "If you hold US-listed stocks or ETFs, your ACB has to be recorded in Canadian dollars — using the exchange rate on the actual date of each transaction, not today's rate. Buy the same US stock on three different dates at three different exchange rates, and each purchase converts separately before averaging into your ACB. Skip the conversion and use a single rate for everything, and your reported gain or loss is off, sometimes significantly, purely from currency movement having nothing to do with the stock itself.",
-      "This is exactly why our Margin and multi-brokerage trackers calculate ACB automatically as you log each transaction, instead of asking you to track a running average by hand.",
+      "This is exactly why our [Margin and multi-brokerage trackers](/trackers) calculate ACB automatically as you log each transaction, instead of asking you to track a running average by hand.",
     ],
   },
   {
