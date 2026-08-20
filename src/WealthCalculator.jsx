@@ -276,7 +276,7 @@ function CompareTab() {
       <div className="ml-calc-grid">
         <div>
           <div style={{ borderTop: `3px solid ${B.red}`, paddingTop: 12, marginBottom: 22 }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: B.red, marginBottom: 12 }}>● SCENARIO A</div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: B.redLink, marginBottom: 12 }}>● SCENARIO A</div>
             <Field code="B2" label="CONTRIBUTION" prefix="$" suffix="/mo" value={a.contribution} onChange={(v) => setA({ ...a, contribution: v })} max={1000} step={10} />
             <Field code="B3" label="WAIT BEFORE STARTING" suffix="yrs" value={a.wait} onChange={(v) => setA({ ...a, wait: v })} max={20} step={1} />
             <Field code="B4" label="ANNUAL RETURN" suffix="%" value={a.rate} onChange={(v) => setA({ ...a, rate: v })} max={15} step={0.5} />
@@ -308,7 +308,7 @@ function CompareTab() {
             </ResponsiveContainer>
           </ChartCard>
           <div style={{ display: "flex", gap: 16, fontSize: 12.5, color: B.grayLight, marginTop: 10 }}>
-            <span><span style={{ color: B.red }}>●</span> Scenario A</span>
+            <span><span style={{ color: B.redLink }}>●</span> Scenario A</span>
             <span><span style={{ color: B.yellow }}>●</span> Scenario B</span>
           </div>
         </div>
@@ -368,7 +368,7 @@ function AccountsTab() {
         <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 14, padding: "18px 20px", marginTop: 14 }}>
           <p style={{ fontSize: 14, color: B.grayLight, lineHeight: 1.7, margin: "0 0 8px" }}>
             Same {fmt(contribution)}/month, same {rate}% return — the account you choose changes the outcome by up to{" "}
-            <strong style={{ color: B.red }}>{fmt(spread)}</strong>. Knowing your contribution room, ACB, and tax treatment
+            <strong style={{ color: B.redLink }}>{fmt(spread)}</strong>. Knowing your contribution room, ACB, and tax treatment
             across accounts is exactly what MapleSheet trackers manage for you.
           </p>
           <p style={{ fontSize: 11.5, color: B.gray, lineHeight: 1.6, margin: 0 }}>
