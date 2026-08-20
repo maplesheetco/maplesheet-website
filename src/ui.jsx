@@ -71,7 +71,7 @@ export function useJsonLd(data, id) {
   }, [JSON.stringify(data), id]);
 }
 
-export const RedWord = ({ children }) => <span style={{ color: B.red }}>{children}</span>;
+export const RedWord = ({ children }) => <span style={{ color: B.redLink }}>{children}</span>;
 
 export const MapleLeaf = ({ size = 14, color = B.red, style }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill={color} style={style} aria-hidden="true">
@@ -210,7 +210,7 @@ export function GrowthChart() {
       </svg>
       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: B.grayLight, marginTop: 6 }}>
         <span>5 years ago</span>
-        <span style={{ color: B.red, fontWeight: 700 }}>+92% sample growth</span>
+        <span style={{ color: B.redLink, fontWeight: 700 }}>+92% sample growth</span>
       </div>
     </div>
   );
@@ -373,7 +373,7 @@ export function DashboardMock({ accounts, total, totalLabel = "Combined net wort
 export function PageHead({ kicker, title, sub }) {
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: "52px 24px 8px", textAlign: "center" }}>
-      {kicker && <div style={{ fontSize: 12, letterSpacing: "0.14em", color: B.red, fontWeight: 700, marginBottom: 12 }}>{kicker}</div>}
+      {kicker && <div style={{ fontSize: 12, letterSpacing: "0.14em", color: B.redLink, fontWeight: 700, marginBottom: 12 }}>{kicker}</div>}
       <h1 style={{ fontSize: "clamp(30px, 5.5vw, 46px)", fontWeight: 800, margin: "0 0 12px", letterSpacing: "-0.02em", color: B.white, lineHeight: 1.12 }}>{title}</h1>
       {sub && <p style={{ color: B.grayLight, fontSize: 15.5, maxWidth: 640, margin: "0 auto", lineHeight: 1.65 }}>{sub}</p>}
     </div>
