@@ -9,14 +9,16 @@ const FILTERS = ["All", "TFSA", "RRSP", "RESP", "FHSA", "Margin", "Combo", "Flag
 // Internal links from each tracker to its matching /resources guide — gives
 // Google (and visitors) a path from a commercial page to the informational
 // content that supports it, and vice versa when someone lands on a guide
-// first. Only mapped where a guide with a direct 1:1 match exists; Combo and
-// Flagship products span multiple accounts, so no single guide fits.
+// first. Combo and Flagship products span multiple accounts, so they point
+// to the cross-account comparison guide instead of a single-account one.
 const GUIDE_LINKS = {
   TFSA: { slug: "tfsa-contribution-room-2026", label: "TFSA contribution room guide" },
   RRSP: { slug: "rrsp-deduction-limit-vs-contribution-room", label: "RRSP deduction limit guide" },
   RESP: { slug: "resp-cesg-explained", label: "RESP & CESG guide" },
   FHSA: { slug: "fhsa-guide", label: "FHSA complete guide" },
   Margin: { slug: "how-acb-works", label: "How ACB works" },
+  Combo: { slug: "tfsa-vs-rrsp-vs-fhsa-vs-resp", label: "Which account should come first?" },
+  Flagship: { slug: "tfsa-vs-rrsp-vs-fhsa-vs-resp", label: "Which account should come first?" },
 };
 
 export default function Trackers() {
