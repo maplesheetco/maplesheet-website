@@ -103,6 +103,11 @@ export default function Contact() {
               <input type="hidden" name="_next" value={`${SITE_URL}/contact?sent=1`} />
               <input type="hidden" name="_subject" value={`🍁 Website message from ${form.name || "someone"}`} readOnly />
               <input type="hidden" name="_template" value="table" />
+              {/* Sends the person who submitted the form an instant "we got it"
+                  copy — requires the visitor's own email field to be present
+                  (it is, below) and a real (non-AJAX) submission with captcha
+                  left on, both true here. */}
+              <input type="hidden" name="_autoresponse" value="Thanks for your inquiry! We received your message and will reply as soon as we've reviewed it — usually within a day. — The MapleSheet Co. team" />
               {/* Honeypot: invisible to real visitors, bots tend to fill every field in */}
               <input type="text" name="_honey" tabIndex="-1" autoComplete="off" aria-hidden="true"
                 style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }} />
