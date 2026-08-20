@@ -1,35 +1,23 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { B, CONFIG, PRODUCTS } from "../data.js";
+import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES } from "../data.js";
 import { PageHead, RedWord, usePageMeta, useJsonLd } from "../ui.jsx";
 import { trackBuyClicked } from "../analytics.js";
 
+const SITE_URL = "https://www.maplesheet.ca";
 const FILTERS = ["All", "TFSA", "RRSP", "RESP", "FHSA", "Margin", "Combo", "Flagship"];
-
-// Internal links from each tracker to its matching /resources guide — gives
-// Google (and visitors) a path from a commercial page to the informational
-// content that supports it, and vice versa when someone lands on a guide
-// first. Combo and Flagship products span multiple accounts, so they point
-// to the cross-account comparison guide instead of a single-account one.
-const GUIDE_LINKS = {
-  TFSA: { slug: "tfsa-contribution-room-2026", label: "TFSA contribution room guide" },
-  RRSP: { slug: "rrsp-deduction-limit-vs-contribution-room", label: "RRSP deduction limit guide" },
-  RESP: { slug: "resp-cesg-explained", label: "RESP & CESG guide" },
-  FHSA: { slug: "fhsa-guide", label: "FHSA complete guide" },
-  Margin: { slug: "how-acb-works", label: "How ACB works" },
-  Combo: { slug: "tfsa-vs-rrsp-vs-fhsa-vs-resp", label: "Which account should come first?" },
-  Flagship: { slug: "tfsa-vs-rrsp-vs-fhsa-vs-resp", label: "Which account should come first?" },
-};
 
 export default function Trackers() {
   usePageMeta({
     title: "TFSA, RRSP, RESP, FHSA & Margin Trackers | MapleSheet Co.",
     description: "13 Google Sheets trackers for TFSA, RRSP, RESP, FHSA & Margin accounts. One-time purchase, live prices, no subscription.",
   });
-  // Product schema for all 13 trackers — this page is where they're actually
-  // listed (no individual product pages exist), so each tracker gets its own
-  // Product entry in one @graph block. Lets Google show price/availability
-  // directly in search results instead of a plain blue link.
+  // Product schema for all 13 trackers — this page is where they're all
+  // listed, so each tracker gets its own Product entry in one @graph block.
+  // Combo/Flagship products additionally carry a `url` pointing at their own
+  // /trackers/:slug page now that one exists, alongside `offers.url` (the
+  // actual Etsy/Payhip purchase link) — Product.url is "the page describing
+  // this", offers.url is "where you can buy it," and they're not the same.
   useJsonLd({
     "@context": "https://schema.org",
     "@graph": PRODUCTS.map((p) => ({
@@ -37,6 +25,7 @@ export default function Trackers() {
       name: p.name,
       description: p.desc,
       category: p.tag,
+      ...(p.slug ? { url: `${SITE_URL}/trackers/${p.slug}` } : {}),
       brand: { "@type": "Brand", name: "MapleSheet Co." },
       offers: {
         "@type": "Offer",
@@ -67,6 +56,7 @@ export default function Trackers() {
         <div className="ml-fade" key={filter} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(255px, 1fr))", gap: 16 }}>
           {shown.map((p) => {
             const flagship = p.badge === "FLAGSHIP";
+            const guide = ACCOUNT_GUIDES[p.tag];
             return (
               <div key={p.name} className="ml-card" style={{
                 display: "flex", flexDirection: "column", gap: 10,
@@ -83,14 +73,28 @@ export default function Trackers() {
                   }}>{p.badge}</span>
                 )}
                 <span style={{ fontSize: 11, letterSpacing: "0.1em", color: B.gray, fontWeight: 700, textTransform: "uppercase" }}>{p.tag}</span>
-                <span style={{ fontSize: 17, fontWeight: 700, color: B.white, lineHeight: 1.3, paddingRight: p.badge ? 66 : 0 }}>{p.name}</span>
+                {p.slug ? (
+                  <Link to={`/trackers/${p.slug}`} style={{
+                    fontSize: 17, fontWeight: 700, color: B.white, lineHeight: 1.3,
+                    paddingRight: p.badge ? 66 : 0, textDecoration: "none",
+                  }}>{p.name}</Link>
+                ) : (
+                  <span style={{ fontSize: 17, fontWeight: 700, color: B.white, lineHeight: 1.3, paddingRight: p.badge ? 66 : 0 }}>{p.name}</span>
+                )}
                 <span style={{ fontSize: 13, color: B.grayLight, lineHeight: 1.55, flex: 1 }}>{p.desc}</span>
                 <div style={{ fontSize: 19, fontWeight: 800, color: B.white, marginTop: 4 }}>CA${p.price.toFixed(2)}</div>
-                {GUIDE_LINKS[p.tag] && (
-                  <Link to={`/resources/${GUIDE_LINKS[p.tag].slug}`} style={{
+                {guide && (
+                  <Link to={`/resources/${guide.slug}`} style={{
                     fontSize: 12, color: B.grayLight, textDecoration: "none", display: "inline-block",
                   }}>
-                    📖 {GUIDE_LINKS[p.tag].label} →
+                    📖 {guide.label} →
+                  </Link>
+                )}
+                {p.slug && (
+                  <Link to={`/trackers/${p.slug}`} style={{
+                    fontSize: 12, color: B.grayLight, textDecoration: "none", display: "inline-block",
+                  }}>
+                    View full details →
                   </Link>
                 )}
                 <div style={{ display: "flex", gap: 8 }}>
