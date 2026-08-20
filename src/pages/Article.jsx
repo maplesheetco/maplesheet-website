@@ -17,8 +17,19 @@ function renderInline(text, keyPrefix) {
     if (boldMatch) return <strong key={key} style={{ color: B.white }}>{boldMatch[1]}</strong>;
     const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
     if (linkMatch) {
+      const href = linkMatch[2];
+      // Internal links (starting with "/") use react-router's Link so they
+      // navigate within the SPA instead of forcing a full page reload —
+      // matters for pages like /trackers that guides link back to.
+      if (href.startsWith("/")) {
+        return (
+          <Link key={key} to={href} style={{ color: B.red, fontWeight: 600 }}>
+            {linkMatch[1]}
+          </Link>
+        );
+      }
       return (
-        <a key={key} href={linkMatch[2]} target="_blank" rel="noreferrer" style={{ color: B.red, fontWeight: 600 }}>
+        <a key={key} href={href} target="_blank" rel="noreferrer" style={{ color: B.red, fontWeight: 600 }}>
           {linkMatch[1]}
         </a>
       );
