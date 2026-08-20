@@ -63,7 +63,7 @@ export default function Contact() {
         </div>
         <div style={{ textAlign: "center", marginTop: 22, color: B.grayLight, fontSize: 14.5 }}>
           Prefer email? Write to{" "}
-          <a href={`mailto:${CONFIG.email}`} style={{ color: B.red, fontWeight: 700, textDecoration: "none" }}>{CONFIG.email}</a>
+          <a href={`mailto:${CONFIG.email}`} style={{ color: B.redLink, fontWeight: 700, textDecoration: "none" }}>{CONFIG.email}</a>
           <div style={{ fontSize: 13, color: B.gray, marginTop: 8 }}>MapleSheet Co. · British Columbia, Canada</div>
         </div>
       </div>
