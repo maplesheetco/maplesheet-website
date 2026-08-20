@@ -7,8 +7,8 @@ const FILTERS = ["All", "TFSA", "RRSP", "RESP", "FHSA", "Margin", "Combo", "Flag
 
 export default function Trackers() {
   usePageMeta({
-    title: "Investment Trackers for TFSA, RRSP, RESP, FHSA & Margin | MapleSheet Co.",
-    description: "13 Google Sheets trackers built for the Canadian system — TFSA, RRSP, RESP, FHSA, and Margin accounts, standalone or combined. One-time purchase, live prices, no subscription.",
+    title: "TFSA, RRSP, RESP, FHSA & Margin Trackers | MapleSheet Co.",
+    description: "13 Google Sheets trackers for TFSA, RRSP, RESP, FHSA & Margin accounts. One-time purchase, live prices, no subscription.",
   });
   const [filter, setFilter] = useState("All");
   const shown = filter === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.tag === filter);
