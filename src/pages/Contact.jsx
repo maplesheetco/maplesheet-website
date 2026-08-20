@@ -119,12 +119,12 @@ export default function Contact() {
 
               <div>
                 <label htmlFor="ml-attachment" style={{ display: "block", fontSize: 13, color: B.grayLight, marginBottom: 6 }}>
-                  Attach a file (optional) — screenshot, PDF, or spreadsheet, up to 10MB
+                  Attach a file (optional) — screenshot, PDF, spreadsheet, or short video, up to 10MB
                 </label>
                 <input
                   id="ml-attachment" ref={fileInputRef} className="ml-input" type="file" name="attachment"
                   onChange={handleFileChange}
-                  accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt"
+                  accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.mp4,.mpeg,.mpg,.mov"
                   style={{ padding: "10px 12px" }}
                 />
                 {file && !fileError && (
