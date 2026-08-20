@@ -42,14 +42,145 @@ export const PRODUCTS = [
   { name: "FHSA Tracker", tag: "FHSA", price: 14.99, url: "https://www.etsy.com/listing/4534938230", directUrl: "https://payhip.com/b/dEXy3", desc: "First Home Savings, Line 20805 tax dashboard" },
   { name: "Margin Account Tracker", tag: "Margin", price: 14.99, url: "https://www.etsy.com/listing/4534229751", directUrl: "https://payhip.com/b/yKoBQ", desc: "ACB, capital gains tax dashboard" },
   // ⚠️ Lino: double-check this one — you sent "fSgIz" (capital I), earlier test-purchase record shows "fSglz" (lowercase l). Same-looking chars, please verify against your Payhip dashboard before publishing.
-  { name: "TFSA + RRSP Tracker", tag: "Combo", price: 19.99, url: "https://www.etsy.com/listing/4522093988", directUrl: "https://payhip.com/b/fSgIz", desc: "Our original — both registered accounts, one sheet" },
-  { name: "RRSP + Spousal RRSP Tracker", tag: "Combo", price: 19.99, url: "https://www.etsy.com/listing/4535354991", directUrl: "https://payhip.com/b/mdRzx", desc: "Income splitting, attribution rules, Line 208" },
-  { name: "TFSA + Margin Linked Tracker", tag: "Combo", price: 24.99, url: "https://www.etsy.com/listing/4534821592", directUrl: "https://payhip.com/b/dOqcI", desc: "Linked accounts with collateral tax dashboard" },
-  { name: "TFSA + RRSP + Margin Tracker", tag: "Combo", price: 27.99, url: "https://www.etsy.com/listing/4523804765", directUrl: "https://payhip.com/b/29CVO", desc: "Registered + taxable in one place" },
-  { name: "TFSA + RRSP + RESP Tracker", tag: "Combo", price: 27.99, url: "https://www.etsy.com/listing/4526534020", directUrl: "https://payhip.com/b/DrfbA", desc: "Family bundle with CESG maximizer" },
-  { name: "TFSA + RRSP + RESP + Margin", tag: "Combo", price: 34.99, url: "https://www.etsy.com/listing/4528655460", directUrl: "https://payhip.com/b/xNGr1", desc: "Four accounts — ACB, CESG, capital gains" },
-  { name: "Ultimate Tracker — All 5 Accounts", tag: "Flagship", price: 44.99, url: "https://www.etsy.com/listing/4536628550", directUrl: "https://payhip.com/b/wkqoH", desc: "TFSA + RRSP + RESP + FHSA + Margin. Everything, one sheet.", badge: "FLAGSHIP" },
+  {
+    name: "TFSA + RRSP Tracker", tag: "Combo", price: 19.99,
+    url: "https://www.etsy.com/listing/4522093988", directUrl: "https://payhip.com/b/fSgIz",
+    desc: "Our original — both registered accounts, one sheet",
+    slug: "tfsa-rrsp", accounts: ["TFSA", "RRSP"],
+    longDescription: "The two accounts almost every Canadian investor ends up using, run side by side in one sheet instead of two separate ones you have to cross-reference by hand. This is the bundle most people upgrade to once they're contributing to both a TFSA and an RRSP regularly.",
+    features: [
+      "TFSA and RRSP contribution room tracked separately, side by side",
+      "Live prices via GOOGLEFINANCE for both accounts",
+      "Automatic ACB and capital gains, calculated per account",
+      "One combined net worth view across both accounts",
+    ],
+    demo: { total: "43,890", ytd: "+11.2%", accounts: [
+      { label: "TFSA", value: "16,568", change: "+12.4%" },
+      { label: "RRSP", value: "27,322", change: "+9.1%" },
+    ] },
+  },
+  {
+    name: "RRSP + Spousal RRSP Tracker", tag: "Combo", price: 19.99,
+    url: "https://www.etsy.com/listing/4535354991", directUrl: "https://payhip.com/b/mdRzx",
+    desc: "Income splitting, attribution rules, Line 208",
+    slug: "rrsp-spousal-rrsp", accounts: ["RRSP"], screenshot: "/screenshots/combined-rrsp.jpg",
+    longDescription: "Built for couples using a spousal RRSP to split retirement income and lower their combined household tax bill. Tracks both RRSPs independently while keeping the attribution rules and Line 208 reporting straight, so you're not guessing which contribution belongs to which return at tax time.",
+    features: [
+      "Separate room and deduction-limit tracking for each spouse's RRSP",
+      "Spousal attribution rules built in, not left for you to remember",
+      "Line 208 tax dashboard for both accounts",
+      "Combined household net worth view",
+    ],
+    demo: { total: "47,167", ytd: "+8.8%", accounts: [
+      { label: "RRSP", value: "27,322", change: "+9.1%" },
+      { label: "Spousal RRSP", value: "19,845", change: "+8.4%" },
+    ] },
+  },
+  {
+    name: "TFSA + Margin Linked Tracker", tag: "Combo", price: 24.99,
+    url: "https://www.etsy.com/listing/4534821592", directUrl: "https://payhip.com/b/dOqcI",
+    desc: "Linked accounts with collateral tax dashboard",
+    slug: "tfsa-margin-linked", accounts: ["TFSA", "Margin"], screenshot: "/screenshots/tfsa-margin.jpg",
+    longDescription: "For investors using a margin account alongside a TFSA — often to hold TFSA assets as collateral for margin borrowing. Tracks both accounts as linked, not just side by side, so you can see combined net worth and collateral power in one place instead of reconstructing the connection by hand every time.",
+    features: [
+      "TFSA and Margin accounts tracked as linked, not just listed together",
+      "Automatic ACB and capital gains tax dashboard for the Margin account",
+      "Collateral power visible alongside TFSA contribution room",
+      "Combined net worth across both accounts",
+    ],
+    demo: { total: "19,338", ytd: "+13.1%", accounts: [
+      { label: "TFSA", value: "16,568", change: "+12.4%" },
+      { label: "Margin", value: "2,770", change: "+22.3%" },
+    ] },
+  },
+  {
+    name: "TFSA + RRSP + Margin Tracker", tag: "Combo", price: 27.99,
+    url: "https://www.etsy.com/listing/4523804765", directUrl: "https://payhip.com/b/29CVO",
+    desc: "Registered + taxable in one place",
+    slug: "tfsa-rrsp-margin", accounts: ["TFSA", "RRSP", "Margin"],
+    longDescription: "Covers the most common three-account setup for investors who've maxed out registered room and moved into taxable investing: TFSA and RRSP for the tax-advantaged side, Margin for everything beyond it. One dashboard instead of switching between three.",
+    features: [
+      "TFSA, RRSP, and Margin tracked separately with one combined total",
+      "Automatic ACB and capital gains on the taxable Margin account",
+      "Contribution room and deduction limit tracked for both registered accounts",
+      "Live prices via GOOGLEFINANCE across all three",
+    ],
+    demo: { total: "46,660", ytd: "+11.9%", accounts: [
+      { label: "TFSA", value: "16,568", change: "+12.4%" },
+      { label: "RRSP", value: "27,322", change: "+9.1%" },
+      { label: "Margin", value: "2,770", change: "+22.3%" },
+    ] },
+  },
+  {
+    name: "TFSA + RRSP + RESP Tracker", tag: "Combo", price: 27.99,
+    url: "https://www.etsy.com/listing/4526534020", directUrl: "https://payhip.com/b/DrfbA",
+    desc: "Family bundle with CESG maximizer",
+    slug: "tfsa-rrsp-resp", accounts: ["TFSA", "RRSP", "RESP"],
+    longDescription: "Built for parents balancing their own investing with saving for a child's education — TFSA and RRSP for personal accounts, RESP for the kids, with the CESG grant math handled automatically so government matching never gets left on the table.",
+    features: [
+      "TFSA and RRSP contribution room tracked alongside RESP room",
+      "CESG grant tracking — annual room, carry-forward, and the $7,200 lifetime cap",
+      "Up to 4 RESP beneficiaries supported",
+      "One combined household view across all three accounts",
+    ],
+    demo: { total: "48,106", ytd: "+12.8%", accounts: [
+      { label: "TFSA", value: "16,568", change: "+12.4%" },
+      { label: "RRSP", value: "27,322", change: "+9.1%" },
+      { label: "RESP", value: "4,216", change: "+18.7%" },
+    ] },
+  },
+  {
+    name: "TFSA + RRSP + RESP + Margin", tag: "Combo", price: 34.99,
+    url: "https://www.etsy.com/listing/4528655460", directUrl: "https://payhip.com/b/xNGr1",
+    desc: "Four accounts — ACB, CESG, capital gains",
+    slug: "tfsa-rrsp-resp-margin", accounts: ["TFSA", "RRSP", "RESP", "Margin"],
+    longDescription: "For households running registered accounts, education savings, and taxable investing all at once. Four accounts, four different sets of rules — contribution room, CESG grants, and capital gains — all reconciled in one sheet instead of four disconnected ones.",
+    features: [
+      "TFSA, RRSP, RESP, and Margin tracked individually with one combined total",
+      "CESG grant tracking for the RESP, including the lifetime cap",
+      "Automatic ACB and capital gains tax dashboard for the Margin account",
+      "Live prices via GOOGLEFINANCE across all four accounts",
+    ],
+    demo: { total: "50,876", ytd: "+13.4%", accounts: [
+      { label: "TFSA", value: "16,568", change: "+12.4%" },
+      { label: "RRSP", value: "27,322", change: "+9.1%" },
+      { label: "RESP", value: "4,216", change: "+18.7%" },
+      { label: "Margin", value: "2,770", change: "+22.3%" },
+    ] },
+  },
+  {
+    name: "Ultimate Tracker — All 5 Accounts", tag: "Flagship", price: 44.99,
+    url: "https://www.etsy.com/listing/4536628550", directUrl: "https://payhip.com/b/wkqoH",
+    desc: "TFSA + RRSP + RESP + FHSA + Margin. Everything, one sheet.", badge: "FLAGSHIP",
+    slug: "ultimate-all-5-accounts", accounts: ["TFSA", "RRSP", "RESP", "FHSA", "Margin"], screenshot: "/screenshots/ultimate.jpg",
+    longDescription: "Every account MapleSheet tracks, in a single sheet: TFSA, RRSP, RESP, FHSA, and Margin. Built for anyone who'd rather stop deciding which combo tracker fits and just track everything — contribution room, deduction limits, CESG grants, and capital gains, all reconciled against each other instead of five separate spreadsheets.",
+    features: [
+      "All 5 account types tracked individually with one combined net worth total",
+      "Contribution room and deduction limits for TFSA, RRSP, RESP, and FHSA",
+      "CESG grant tracking and automatic ACB/capital gains for Margin",
+      "5-column metrics dashboard with 4 live charts and a YTD summary",
+    ],
+    demo: { total: "59,097", ytd: "+15.6%", accounts: [
+      { label: "TFSA", value: "16,568", change: "+12.4%" },
+      { label: "RRSP", value: "27,322", change: "+9.1%" },
+      { label: "RESP", value: "4,216", change: "+18.7%" },
+      { label: "FHSA", value: "8,221", change: "+6.0%" },
+      { label: "Margin", value: "2,770", change: "+22.3%" },
+    ] },
+  },
 ];
+
+// Maps a single account type to its matching /resources guide — shared by
+// the Trackers catalog (single-account product cards) and TrackerDetail
+// (combo/flagship product pages, which link out to every account they
+// cover). Kept as one source of truth so the two pages can't drift apart.
+export const ACCOUNT_GUIDES = {
+  TFSA: { slug: "tfsa-contribution-room-2026", label: "TFSA contribution room guide" },
+  RRSP: { slug: "rrsp-deduction-limit-vs-contribution-room", label: "RRSP deduction limit guide" },
+  RESP: { slug: "resp-cesg-explained", label: "RESP & CESG guide" },
+  FHSA: { slug: "fhsa-guide", label: "FHSA complete guide" },
+  Margin: { slug: "how-acb-works", label: "How ACB works" },
+};
 
 // ─── Resources: add a new object to the TOP of this list to publish a post.
 // type: "video" (YouTube embed) or "article" (text post)
