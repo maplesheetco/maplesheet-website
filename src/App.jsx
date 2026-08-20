@@ -4,6 +4,7 @@ import { B, CONFIG, PRODUCTS, RESOURCES } from "./data.js";
 import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, ProductGallery, GrowthChart, usePageMeta } from "./ui.jsx";
 import { trackBuyClicked } from "./analytics.js";
 import Trackers from "./pages/Trackers.jsx";
+import TrackerDetail from "./pages/TrackerDetail.jsx";
 import Resources from "./pages/Resources.jsx";
 import Article from "./pages/Article.jsx";
 import About from "./pages/About.jsx";
@@ -303,6 +304,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/trackers" element={<Trackers />} />
+          <Route path="/trackers/:slug" element={<TrackerDetail />} />
           <Route path="/tools" element={
             <Suspense fallback={<div style={{ padding: "80px 24px", textAlign: "center", color: B.grayLight }}>Loading calculator…</div>}>
               <FreeTools />
