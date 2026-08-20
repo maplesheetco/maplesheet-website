@@ -104,7 +104,7 @@ function Home() {
         </div>
         <h1 style={{ fontSize: "clamp(38px, 7vw, 66px)", fontWeight: 800, lineHeight: 1.04, margin: "0 0 24px", letterSpacing: "-0.03em", color: B.white }}>
           <span style={{ display: "block", marginBottom: 6 }}>Stop Guessing.</span>
-          <span style={{ display: "block", color: B.red }}>Start Tracking.</span>
+          <span style={{ display: "block", color: B.redLink }}>Start Tracking.</span>
         </h1>
         <p style={{ fontSize: "clamp(15px, 2.4vw, 18px)", color: B.grayLight, maxWidth: 620, margin: "0 auto 30px", lineHeight: 1.65 }}>
           Google Sheets investment trackers that actually understand the Canadian system —
@@ -185,7 +185,7 @@ function Home() {
           Featured <RedWord>trackers</RedWord>
         </h2>
         <p style={{ color: B.grayLight, fontSize: 14.5, textAlign: "center", margin: "0 0 26px" }}>
-          The flagship, and the newest addition. <Link to="/trackers" style={{ color: B.red, fontWeight: 600 }}>See all 13 →</Link>
+          The flagship, and the newest addition. <Link to="/trackers" style={{ color: B.redLink, fontWeight: 600 }}>See all 13 →</Link>
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))", gap: 16, maxWidth: 720, margin: "0 auto" }}>
           {featured.map((p) => {
@@ -272,23 +272,23 @@ function Home() {
           flex: "1 1 300px", background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16,
           padding: "24px 22px", textDecoration: "none",
         }}>
-          <div style={{ fontSize: 11.5, letterSpacing: "0.12em", color: B.red, fontWeight: 700, marginBottom: 10 }}>LATEST FROM RESOURCES</div>
+          <div style={{ fontSize: 11.5, letterSpacing: "0.12em", color: B.redLink, fontWeight: 700, marginBottom: 10 }}>LATEST FROM RESOURCES</div>
           <div style={{ fontSize: 17, fontWeight: 700, color: B.white, marginBottom: 8 }}>{latest.title}</div>
           <div style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.6 }}>{latest.summary}</div>
-          <div style={{ fontSize: 13.5, color: B.red, fontWeight: 600, marginTop: 12 }}>Read more →</div>
+          <div style={{ fontSize: 13.5, color: B.redLink, fontWeight: 600, marginTop: 12 }}>Read more →</div>
         </Link>
         <Link to="/about" className="ml-card" style={{
           flex: "1 1 300px", background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16,
           padding: "24px 22px", textDecoration: "none",
         }}>
-          <div style={{ fontSize: 11.5, letterSpacing: "0.12em", color: B.red, fontWeight: 700, marginBottom: 10 }}>THE STORY</div>
+          <div style={{ fontSize: 11.5, letterSpacing: "0.12em", color: B.redLink, fontWeight: 700, marginBottom: 10 }}>THE STORY</div>
           <div style={{ fontSize: 17, fontWeight: 700, color: B.white, marginBottom: 8 }}>
             "Too complicated. Too American. So I built my own."
           </div>
           <div style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.6 }}>
             How one Canadian investor's frustration became 13 trackers — and why every buyer gets personal support.
           </div>
-          <div style={{ fontSize: 13.5, color: B.red, fontWeight: 600, marginTop: 12 }}>Meet MapleSheet →</div>
+          <div style={{ fontSize: 13.5, color: B.redLink, fontWeight: 600, marginTop: 12 }}>Meet MapleSheet →</div>
         </Link>
       </section>
     </div>
@@ -301,21 +301,27 @@ export default function App() {
       <div style={{ minHeight: "100vh", background: B.black, color: B.white, fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
         <GlobalStyles />
         <Nav />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/trackers" element={<Trackers />} />
-          <Route path="/trackers/:slug" element={<TrackerDetail />} />
-          <Route path="/tools" element={
-            <Suspense fallback={<div style={{ padding: "80px 24px", textAlign: "center", color: B.grayLight }}>Loading calculator…</div>}>
-              <FreeTools />
-            </Suspense>
-          } />
-          <Route path="/resources" element={<Resources />} />
-          <Route path="/resources/:slug" element={<Article />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<Home />} />
-        </Routes>
+        {/* A real <main> landmark — without it, screen reader users have no
+            "skip to main content" shortcut, and it's a semantic-HTML signal
+            search engines use to identify the primary content of the page
+            versus chrome like the nav and footer. */}
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/trackers" element={<Trackers />} />
+            <Route path="/trackers/:slug" element={<TrackerDetail />} />
+            <Route path="/tools" element={
+              <Suspense fallback={<div style={{ padding: "80px 24px", textAlign: "center", color: B.grayLight }}>Loading calculator…</div>}>
+                <FreeTools />
+              </Suspense>
+            } />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/resources/:slug" element={<Article />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<Home />} />
+          </Routes>
+        </main>
         <Footer />
       </div>
     </BrowserRouter>
