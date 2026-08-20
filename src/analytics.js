@@ -82,7 +82,7 @@ export function trackNewsletterSubscribed({ sourcePage }) {
 }
 
 /**
- * Fired on a successful Web3Forms contact form submission. No message
+ * Fired on a successful contact form submission (FormSubmit). No message
  * content or contact details are sent as properties — pii_policy is
  * 'none' in the tracking plan.
  *
