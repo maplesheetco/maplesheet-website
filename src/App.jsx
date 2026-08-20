@@ -83,8 +83,8 @@ const OFFER_SLIDES = [
 
 function Home() {
   usePageMeta({
-    title: "MapleSheet Co. — Canadian Investment Trackers | Stop Guessing. Start Tracking.",
-    description: "Google Sheets investment trackers built for Canadians. TFSA contribution room, RRSP limits, CESG grants, ACB, capital gains & CRA rules — with live prices. One-time purchase, no subscription.",
+    title: "MapleSheet Co. — Canadian TFSA, RRSP & RESP Trackers",
+    description: "Google Sheets trackers built for the Canadian system — TFSA, RRSP, RESP, FHSA & Margin. Live prices, one-time purchase, no subscription.",
   });
   const featured = PRODUCTS.filter((p) => p.badge);
   const latest = RESOURCES[0];
@@ -101,11 +101,9 @@ function Home() {
         }}>
           <MapleLeaf size={13} /> Built in Canada, for Canadian investors · 13 trackers
         </div>
-        <h1 style={{ fontSize: "clamp(38px, 7vw, 66px)", fontWeight: 800, lineHeight: 1.04, margin: "0 0 6px", letterSpacing: "-0.03em", color: B.white }}>
-          Stop Guessing.
-        </h1>
-        <h1 style={{ fontSize: "clamp(38px, 7vw, 66px)", fontWeight: 800, lineHeight: 1.04, margin: "0 0 24px", letterSpacing: "-0.03em", color: B.red }}>
-          Start Tracking.
+        <h1 style={{ fontSize: "clamp(38px, 7vw, 66px)", fontWeight: 800, lineHeight: 1.04, margin: "0 0 24px", letterSpacing: "-0.03em", color: B.white }}>
+          <span style={{ display: "block", marginBottom: 6 }}>Stop Guessing.</span>
+          <span style={{ display: "block", color: B.red }}>Start Tracking.</span>
         </h1>
         <p style={{ fontSize: "clamp(15px, 2.4vw, 18px)", color: B.grayLight, maxWidth: 620, margin: "0 auto 30px", lineHeight: 1.65 }}>
           Google Sheets investment trackers that actually understand the Canadian system —
