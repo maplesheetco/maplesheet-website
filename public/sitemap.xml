@@ -19,6 +19,48 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.maplesheet.ca/trackers/tfsa-rrsp</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.maplesheet.ca/trackers/rrsp-spousal-rrsp</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.maplesheet.ca/trackers/tfsa-margin-linked</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.maplesheet.ca/trackers/tfsa-rrsp-margin</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.maplesheet.ca/trackers/tfsa-rrsp-resp</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.maplesheet.ca/trackers/tfsa-rrsp-resp-margin</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.maplesheet.ca/trackers/ultimate-all-5-accounts</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
     <loc>https://www.maplesheet.ca/resources</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
