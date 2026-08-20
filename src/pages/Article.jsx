@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { B, RESOURCES } from "../data.js";
-import { PageHead, usePageMeta } from "../ui.jsx";
+import { PageHead, usePageMeta, useJsonLd } from "../ui.jsx";
 import { NewsletterBox } from "./Resources.jsx";
 
 // Lightweight inline-markdown renderer: supports **bold**, *italic*, and
@@ -128,6 +128,26 @@ export default function Article() {
     title: article ? `${article.title} | MapleSheet Co.` : "Guide not found | MapleSheet Co.",
     description: article ? article.summary : "This guide couldn't be found.",
   });
+  // Article schema — helps Google understand this is a dated, authored guide
+  // (not just a generic page), which is what unlocks article-style rich
+  // results and better relevance signals for the how-to/informational
+  // keywords these guides are meant to rank for.
+  useJsonLd(article ? {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.summary,
+    image: article.image ? `https://www.maplesheet.ca${article.image}` : undefined,
+    datePublished: article.date,
+    dateModified: article.date,
+    author: { "@type": "Organization", name: "MapleSheet Co.", url: "https://www.maplesheet.ca" },
+    publisher: {
+      "@type": "Organization",
+      name: "MapleSheet Co.",
+      logo: { "@type": "ImageObject", url: "https://www.maplesheet.ca/logo.png" },
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `https://www.maplesheet.ca/resources/${article.slug}` },
+  } : null, "article-schema");
 
   if (!article) {
     return (
