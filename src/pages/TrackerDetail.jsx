@@ -29,6 +29,7 @@ export default function TrackerDetail() {
     description: product.longDescription || product.desc,
     category: product.tag,
     image: `${SITE_URL}${product.screenshot || "/og.png"}`,
+    ...(product.sku ? { sku: product.sku } : {}),
     url: `${SITE_URL}/trackers/${product.slug}`,
     brand: { "@type": "Brand", name: "MapleSheet Co." },
     offers: {
@@ -36,6 +37,9 @@ export default function TrackerDetail() {
       price: product.price.toFixed(2),
       priceCurrency: "CAD",
       availability: "https://schema.org/InStock",
+      // Always true for a digital template — there's no "used" or
+      // "refurbished" state for an instant download.
+      itemCondition: "https://schema.org/NewCondition",
       hasMerchantReturnPolicy: RETURN_POLICY,
       url: product.directUrl || product.url,
     },
