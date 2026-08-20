@@ -36,6 +36,19 @@ export const B = {
   yellow: "#FCD34D",
 };
 
+// Shared with the Offer.hasMerchantReturnPolicy on every Product schema
+// (Trackers.jsx, TrackerDetail.jsx) so the "final sale, no returns" policy
+// is defined once here instead of copy-pasted 13+ times. This mirrors the
+// same policy already declared once at the Organization level in
+// index.html — Google's real indexing honors that sitewide fallback, but
+// the Rich Results Test tool validates each Product/Offer in isolation, so
+// it's repeated here too just to make that tool's per-item check pass clean.
+export const RETURN_POLICY = {
+  "@type": "MerchantReturnPolicy",
+  applicableCountry: "CA",
+  returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
+};
+
 export const PRODUCTS = [
   { name: "TFSA Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4529134188", directUrl: "https://payhip.com/b/rb9SR", desc: "Live prices, ACB, dividends, tax-free growth" },
   { name: "RRSP Tracker", tag: "RRSP", price: 9.99, url: "https://www.etsy.com/listing/4529584584", directUrl: "https://payhip.com/b/DQS5l", desc: "Contribution room, live prices, ACB" },
