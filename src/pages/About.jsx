@@ -51,7 +51,7 @@ export default function About() {
                 color: B.white, fontWeight: 600, fontSize: 15, padding: "16px 18px", fontFamily: "inherit",
                 display: "flex", justifyContent: "space-between", gap: 10,
               }}>
-                {q} <span style={{ color: B.red }}>{open === i ? "−" : "+"}</span>
+                {q} <span style={{ color: B.redLink }}>{open === i ? "−" : "+"}</span>
               </button>
               {open === i && (
                 <div className="ml-fade" style={{ padding: "0 18px 16px", color: B.grayLight, fontSize: 14, lineHeight: 1.7 }}>{a}</div>
