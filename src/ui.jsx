@@ -48,6 +48,29 @@ export function usePageMeta({ title, description }) {
   }, [title, description, location.pathname]);
 }
 
+// Injects (and keeps updated) a <script type="application/ld+json"> tag in
+// <head> for structured data (schema.org). `id` must be unique per call site
+// so multiple pages/components can each own their own script tag without
+// clobbering each other. Pass `data: null` to skip (e.g. article not found).
+// Removes its tag on unmount so stale schema never leaks onto another route.
+export function useJsonLd(data, id) {
+  useEffect(() => {
+    if (!data) return;
+    let el = document.querySelector(`script[data-jsonld-id="${id}"]`);
+    if (!el) {
+      el = document.createElement("script");
+      el.type = "application/ld+json";
+      el.setAttribute("data-jsonld-id", id);
+      document.head.appendChild(el);
+    }
+    el.textContent = JSON.stringify(data);
+    return () => {
+      const stale = document.querySelector(`script[data-jsonld-id="${id}"]`);
+      if (stale) stale.remove();
+    };
+  }, [JSON.stringify(data), id]);
+}
+
 export const RedWord = ({ children }) => <span style={{ color: B.red }}>{children}</span>;
 
 export const MapleLeaf = ({ size = 14, color = B.red, style }) => (
