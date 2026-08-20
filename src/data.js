@@ -26,9 +26,10 @@ export const B = {
   black2: "#1B1B1A",
   black3: "#232322",
   white: "#FFFFFF",
-  red: "#CC0000",
+  red: "#CC0000", // solid backgrounds only (buttons, badges, borders) — white text on this already passes contrast comfortably. Not used for text color; see redLink below.
   redHover: "#DC2626",
-  gray: "#5C5C5B",
+  redLink: "#F87171", // lighter, WCAG AA-passing red for red TEXT (links, labels, headings) on dark backgrounds — #CC0000 as text only hit ~2.7-3.2:1, well under the 4.5:1 minimum.
+  gray: "#8F8F8D", // was #5C5C5B (~2.4-2.8:1, failed AA); this passes ~4.9-5.7:1 across all three dark background shades while staying visibly more muted than grayLight.
   grayLight: "#9C9C9A",
   line: "#2E2E2C",
   yellow: "#FCD34D",
