@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES } from "../data.js";
+import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY } from "../data.js";
 import { PageHead, RedWord, usePageMeta, useJsonLd } from "../ui.jsx";
 import { trackBuyClicked } from "../analytics.js";
 
@@ -37,6 +37,7 @@ export default function Trackers() {
         price: p.price.toFixed(2),
         priceCurrency: "CAD",
         availability: "https://schema.org/InStock",
+        hasMerchantReturnPolicy: RETURN_POLICY,
         url: p.directUrl || p.url,
       },
     })),
