@@ -14,6 +14,25 @@
     <meta property="og:url" content="https://www.maplesheet.ca/" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    <!-- Organization structured data — sitewide identity, static here (not
+         JS-injected) so it's visible to every crawler regardless of whether
+         it executes JavaScript. Per-page schema (Product on Trackers,
+         Article on guides) is injected dynamically via useJsonLd in ui.jsx. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "MapleSheet Co.",
+        "url": "https://www.maplesheet.ca",
+        "logo": "https://www.maplesheet.ca/logo.png",
+        "email": "hello@maplesheet.ca",
+        "sameAs": [
+          "https://maplesheetco.etsy.com",
+          "https://www.youtube.com/@MapleSheetCo",
+          "https://x.com/MapleSheetCo"
+        ]
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <!-- Google Analytics (GA4) -->
