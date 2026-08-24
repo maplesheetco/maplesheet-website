@@ -11,10 +11,9 @@ export const CONFIG = {
   promoCode: "MAPLE25",
   promoText: "25% off everything with code MAPLE25",
   freeToolUrl: "https://claude.ai/public/artifacts/1620ddd7-219c-4052-8557-2a8c6d63e7fb",
-  // Contact form (src/pages/Contact.jsx) posts straight to FormSubmit using
-  // this address — no API key needed, it's free at any volume. First-time
-  // setup: FormSubmit emails this address a one-time confirmation link the
-  // first time it receives a submission; click it to activate delivery.
+  // Web3Forms: create a free access key at https://web3forms.com (enter hello@maplesheet.ca)
+  // and paste it below to activate the contact + newsletter forms:
+  web3formsKey: "88c72f3b-a279-446a-871b-91d29a308bc5",
   // Google Analytics: create a GA4 property, then paste your Measurement ID
   // (GA4 Admin → Data Streams → Web) here. NOTE: index.html also needs the
   // same ID pasted into its gtag.js snippet — that page loads before React,
