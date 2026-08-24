@@ -759,7 +759,14 @@ export default function Resources() {
   // content that truly isn't ready yet (e.g. a video with no youtubeId set),
   // even if its scheduled date has already passed.
   const today = new Date();
-  const posts = RESOURCES.filter((r) => r.live !== false && new Date(r.date) <= today);
+  const posts = RESOURCES
+    .filter((r) => r.live !== false && new Date(r.date) <= today)
+    // RESOURCES isn't stored in chronological order (articles get slotted in
+    // wherever they're added), so without this sort the cards render in
+    // whatever order they happen to sit in the array — newest and oldest
+    // interleaved. Sort newest-first by date so the page always reads
+    // top-to-bottom in the order things were actually published.
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
   const comingSoon = RESOURCES.filter((r) => r.type === "video" && r.live === false);
   return (
     <div className="ml-fade">
