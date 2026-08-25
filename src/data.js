@@ -338,6 +338,7 @@ export const RESOURCES = [
     type: "article",
     title: "TFSA vs. RRSP vs. FHSA vs. RESP: Which Account Should You Open First?",
     slug: "tfsa-vs-rrsp-vs-fhsa-vs-resp",
+    image: "/resources/tfsa-vs-rrsp-vs-fhsa-vs-resp.jpg",
     date: "2026-08-20",
     summary: "Four accounts, four different jobs — here is the real decision framework, not just \"TFSA if you're young,\" for figuring out which deserves your next dollar.",
     body: [
