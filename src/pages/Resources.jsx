@@ -706,7 +706,11 @@ const ML_FORM_HTML = `<style type="text/css">@import url("https://assets.mlcdn.c
     </div>
 `;
 
-export function NewsletterBox({ sourcePage = "resources" }) {
+export function NewsletterBox({
+  sourcePage = "resources",
+  heading = <>Join the <RedWord>MapleSheet</RedWord> newsletter</>,
+  subtext = "New trackers, free tools, and Canadian investing guides — straight to your inbox. No spam, unsubscribe anytime.",
+}) {
   useEffect(() => {
     // Success message swap — required by MailerLite's embed markup
     window.ml_webform_success_44245461 = function () {
@@ -739,10 +743,10 @@ export function NewsletterBox({ sourcePage = "resources" }) {
       borderRadius: 18, padding: "clamp(24px, 4vw, 36px)", textAlign: "center", marginTop: 34,
     }}>
       <h3 style={{ fontSize: 22, fontWeight: 800, color: B.white, margin: "0 0 8px" }}>
-        Join the <RedWord>MapleSheet</RedWord> newsletter
+        {heading}
       </h3>
       <p style={{ color: B.grayLight, fontSize: 14, margin: "0 0 18px", lineHeight: 1.6 }}>
-        New trackers, free tools, and Canadian investing guides — straight to your inbox. No spam, unsubscribe anytime.
+        {subtext}
       </p>
       <div style={{ maxWidth: 460, margin: "0 auto" }} dangerouslySetInnerHTML={{ __html: ML_FORM_HTML }} />
     </div>
