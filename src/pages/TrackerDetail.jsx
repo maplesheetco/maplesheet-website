@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY } from "../data.js";
-import { PageHead, usePageMeta, useJsonLd, DashboardMock } from "../ui.jsx";
+import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, FAQS, getBundleSavings } from "../data.js";
+import { PageHead, usePageMeta, useJsonLd, DashboardMock, FaqAccordion } from "../ui.jsx";
 import { trackBuyClicked } from "../analytics.js";
 
 const SITE_URL = "https://www.maplesheet.ca";
@@ -45,6 +45,20 @@ export default function TrackerDetail() {
     },
   } : null, "tracker-detail-schema");
 
+  // Same FAQS content as the About page, restated here as FAQPage schema —
+  // this is the page someone's actually deciding whether to buy on, so it's
+  // also the one Google's most likely to reward with an FAQ rich result for
+  // a purchase-intent search.
+  useJsonLd(product ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQS.map(([q, a]) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  } : null, "tracker-detail-faq-schema");
+
   if (!product) {
     return (
       <div className="ml-fade">
@@ -63,6 +77,8 @@ export default function TrackerDetail() {
     .map((tag) => ACCOUNT_GUIDES[tag])
     .filter(Boolean)
     .filter((g, i, arr) => arr.findIndex((x) => x.slug === g.slug) === i);
+
+  const savings = getBundleSavings(product);
 
   return (
     <div className="ml-fade">
@@ -95,10 +111,25 @@ export default function TrackerDetail() {
             </div>
           ) : null}
 
-          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: 18 }}>
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: savings ? 8 : 18 }}>
             <div style={{ fontSize: 30, fontWeight: 800, color: B.white }}>CA${product.price.toFixed(2)}</div>
             <div style={{ fontSize: 13, color: B.grayLight }}>One-time purchase — no subscription, ever</div>
           </div>
+
+          {savings && (
+            <div style={{
+              display: "inline-block", background: "rgba(52,199,123,0.12)", border: "1px solid rgba(52,199,123,0.4)",
+              color: "#34C77B", fontSize: 13, fontWeight: 700, padding: "6px 12px", borderRadius: 999, marginBottom: 18,
+            }}>
+              Save CA${savings.amount.toFixed(2)} ({savings.percent}%) vs. buying these trackers separately
+            </div>
+          )}
+
+          {product.bestFor && (
+            <div style={{ fontSize: 13.5, color: B.grayLight, marginBottom: 18, lineHeight: 1.6 }}>
+              <span style={{ color: B.white, fontWeight: 700 }}>Best for:</span> {product.bestFor}
+            </div>
+          )}
 
           <div style={{ display: "flex", gap: 10, marginBottom: product.features ? 26 : 0 }}>
             <a
@@ -164,6 +195,13 @@ export default function TrackerDetail() {
             </div>
           </div>
         )}
+
+        <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(20px, 4vw, 28px)", marginBottom: 18 }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: B.white, marginBottom: 12 }}>
+            Common questions
+          </div>
+          <FaqAccordion faqs={FAQS} />
+        </div>
 
         <p style={{ textAlign: "center", color: B.yellow, fontSize: 13.5, fontWeight: 600, marginTop: 6, marginBottom: 30 }}>
           🏷 {CONFIG.promoText}
