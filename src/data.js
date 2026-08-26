@@ -48,22 +48,33 @@ export const RETURN_POLICY = {
   returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
 };
 
+// Single-account tracker prices, used to compute an honest "save $X vs
+// buying separately" figure for the combo/flagship products below — keep
+// these in sync with the actual single-tracker prices in PRODUCTS so the
+// savings math never silently goes stale (see the resp.jpg screenshot fix
+// for what happens when a number like this drifts and nobody notices).
+export const SINGLE_TRACKER_PRICES = { TFSA: 9.99, RRSP: 9.99, RESP: 14.99, FHSA: 14.99, Margin: 14.99 };
+
 export const PRODUCTS = [
-  { name: "TFSA Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4529134188", directUrl: "https://payhip.com/b/rb9SR", desc: "Live prices, ACB, dividends, tax-free growth", sku: "MS-TFSA-01" },
-  { name: "RRSP Tracker", tag: "RRSP", price: 9.99, url: "https://www.etsy.com/listing/4529584584", directUrl: "https://payhip.com/b/DQS5l", desc: "Contribution room, live prices, ACB", sku: "MS-RRSP-01" },
-  { name: "TFSA Multi-Brokerage Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4541253114", directUrl: "https://payhip.com/b/8CqQU", desc: "Up to 8 brokerages in one sheet — the only one of its kind", badge: "NEW", screenshot: "/screenshots/multi-brokerage.jpg", sku: "MS-TFSA-MB" },
-  { name: "RESP Tracker", tag: "RESP", price: 14.99, url: "https://www.etsy.com/listing/4530779418", directUrl: "https://payhip.com/b/w8PXD", desc: "CESG grants, up to 4 beneficiaries", screenshot: "/screenshots/resp.jpg", sku: "MS-RESP-01" },
-  // ⚠️ Lino: resp.jpg has "CA$9.99" baked into the image itself, but this tracker is priced at $14.99 — the
-  // screenshot looks like it was made before a price change and never re-exported. Doesn't break anything
-  // (schema/pricing on the actual page still correctly shows $14.99), but worth a re-export when you have a sec.
-  { name: "FHSA Tracker", tag: "FHSA", price: 14.99, url: "https://www.etsy.com/listing/4534938230", directUrl: "https://payhip.com/b/dEXy3", desc: "First Home Savings, Line 20805 tax dashboard", screenshot: "/screenshots/fhsa.jpg", sku: "MS-FHSA-01" },
-  { name: "Margin Account Tracker", tag: "Margin", price: 14.99, url: "https://www.etsy.com/listing/4534229751", directUrl: "https://payhip.com/b/yKoBQ", desc: "ACB, capital gains tax dashboard", screenshot: "/screenshots/margin.jpg", sku: "MS-MARGIN-01" },
+  { name: "TFSA Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4529134188", directUrl: "https://payhip.com/b/rb9SR", desc: "Live prices, ACB, dividends, tax-free growth", sku: "MS-TFSA-01",
+    bestFor: "Your first TFSA, one brokerage, want it simple." },
+  { name: "RRSP Tracker", tag: "RRSP", price: 9.99, url: "https://www.etsy.com/listing/4529584584", directUrl: "https://payhip.com/b/DQS5l", desc: "Contribution room, live prices, ACB", sku: "MS-RRSP-01",
+    bestFor: "Tracking RRSP contribution room and deduction limit on their own." },
+  { name: "TFSA Multi-Brokerage Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4541253114", directUrl: "https://payhip.com/b/8CqQU", desc: "Up to 8 brokerages in one sheet — the only one of its kind", badge: "NEW", screenshot: "/screenshots/multi-brokerage.jpg", sku: "MS-TFSA-MB",
+    bestFor: "One TFSA spread across multiple brokerages (up to 8)." },
+  { name: "RESP Tracker", tag: "RESP", price: 14.99, url: "https://www.etsy.com/listing/4530779418", directUrl: "https://payhip.com/b/w8PXD", desc: "CESG grants, up to 4 beneficiaries", screenshot: "/screenshots/resp.jpg", sku: "MS-RESP-01",
+    bestFor: "Parents tracking CESG grants for up to 4 kids." },
+  { name: "FHSA Tracker", tag: "FHSA", price: 14.99, url: "https://www.etsy.com/listing/4534938230", directUrl: "https://payhip.com/b/dEXy3", desc: "First Home Savings, Line 20805 tax dashboard", screenshot: "/screenshots/fhsa.jpg", sku: "MS-FHSA-01",
+    bestFor: "Saving toward a first home, FHSA on its own." },
+  { name: "Margin Account Tracker", tag: "Margin", price: 14.99, url: "https://www.etsy.com/listing/4534229751", directUrl: "https://payhip.com/b/yKoBQ", desc: "ACB, capital gains tax dashboard", screenshot: "/screenshots/margin.jpg", sku: "MS-MARGIN-01",
+    bestFor: "A taxable account where you need ACB and capital gains handled." },
   // ⚠️ Lino: double-check this one — you sent "fSgIz" (capital I), earlier test-purchase record shows "fSglz" (lowercase l). Same-looking chars, please verify against your Payhip dashboard before publishing.
   {
     name: "TFSA + RRSP Tracker", tag: "Combo", price: 19.99,
     url: "https://www.etsy.com/listing/4522093988", directUrl: "https://payhip.com/b/fSgIz",
     desc: "Our original — both registered accounts, one sheet",
     slug: "tfsa-rrsp", accounts: ["TFSA", "RRSP"], sku: "MS-COMBO-TFSA-RRSP",
+    bestFor: "Anyone contributing to both a TFSA and RRSP regularly.",
     longDescription: "The two accounts almost every Canadian investor ends up using, run side by side in one sheet instead of two separate ones you have to cross-reference by hand. This is the bundle most people upgrade to once they're contributing to both a TFSA and an RRSP regularly.",
     features: [
       "TFSA and RRSP contribution room tracked separately, side by side",
@@ -81,6 +92,12 @@ export const PRODUCTS = [
     url: "https://www.etsy.com/listing/4535354991", directUrl: "https://payhip.com/b/mdRzx",
     desc: "Income splitting, attribution rules, Line 208",
     slug: "rrsp-spousal-rrsp", accounts: ["RRSP"], screenshot: "/screenshots/combined-rrsp.jpg", sku: "MS-COMBO-RRSP-SPOUSAL",
+    bestFor: "Couples splitting retirement income through a spousal RRSP.",
+    // This is really two RRSPs (yours + spousal), but `accounts` above stays
+    // ["RRSP"] since that's what drives the single "RRSP guide" link — this
+    // separate field tells the savings-vs-buying-separately math to price it
+    // as 2x the single RRSP tracker instead of 1x.
+    compareAccounts: ["RRSP", "RRSP"],
     longDescription: "Built for couples using a spousal RRSP to split retirement income and lower their combined household tax bill. Tracks both RRSPs independently while keeping the attribution rules and Line 208 reporting straight, so you're not guessing which contribution belongs to which return at tax time.",
     features: [
       "Separate room and deduction-limit tracking for each spouse's RRSP",
@@ -98,6 +115,7 @@ export const PRODUCTS = [
     url: "https://www.etsy.com/listing/4534821592", directUrl: "https://payhip.com/b/dOqcI",
     desc: "Linked accounts with collateral tax dashboard",
     slug: "tfsa-margin-linked", accounts: ["TFSA", "Margin"], screenshot: "/screenshots/tfsa-margin.jpg", sku: "MS-COMBO-TFSA-MARGIN",
+    bestFor: "Using TFSA holdings as collateral against a margin account.",
     longDescription: "For investors using a margin account alongside a TFSA — often to hold TFSA assets as collateral for margin borrowing. Tracks both accounts as linked, not just side by side, so you can see combined net worth and collateral power in one place instead of reconstructing the connection by hand every time.",
     features: [
       "TFSA and Margin accounts tracked as linked, not just listed together",
@@ -115,6 +133,7 @@ export const PRODUCTS = [
     url: "https://www.etsy.com/listing/4523804765", directUrl: "https://payhip.com/b/29CVO",
     desc: "Registered + taxable in one place",
     slug: "tfsa-rrsp-margin", accounts: ["TFSA", "RRSP", "Margin"], sku: "MS-COMBO-TFSA-RRSP-MARGIN",
+    bestFor: "Maxed-out registered room, now investing in a taxable account too.",
     longDescription: "Covers the most common three-account setup for investors who've maxed out registered room and moved into taxable investing: TFSA and RRSP for the tax-advantaged side, Margin for everything beyond it. One dashboard instead of switching between three.",
     features: [
       "TFSA, RRSP, and Margin tracked separately with one combined total",
@@ -133,6 +152,7 @@ export const PRODUCTS = [
     url: "https://www.etsy.com/listing/4526534020", directUrl: "https://payhip.com/b/DrfbA",
     desc: "Family bundle with CESG maximizer",
     slug: "tfsa-rrsp-resp", accounts: ["TFSA", "RRSP", "RESP"], sku: "MS-COMBO-TFSA-RRSP-RESP",
+    bestFor: "Parents balancing personal investing with saving for their kids' education.",
     longDescription: "Built for parents balancing their own investing with saving for a child's education — TFSA and RRSP for personal accounts, RESP for the kids, with the CESG grant math handled automatically so government matching never gets left on the table.",
     features: [
       "TFSA and RRSP contribution room tracked alongside RESP room",
@@ -151,6 +171,7 @@ export const PRODUCTS = [
     url: "https://www.etsy.com/listing/4528655460", directUrl: "https://payhip.com/b/xNGr1",
     desc: "Four accounts — ACB, CESG, capital gains",
     slug: "tfsa-rrsp-resp-margin", accounts: ["TFSA", "RRSP", "RESP", "Margin"], sku: "MS-COMBO-TFSA-RRSP-RESP-MARGIN",
+    bestFor: "Households running registered, education, and taxable accounts together.",
     longDescription: "For households running registered accounts, education savings, and taxable investing all at once. Four accounts, four different sets of rules — contribution room, CESG grants, and capital gains — all reconciled in one sheet instead of four disconnected ones.",
     features: [
       "TFSA, RRSP, RESP, and Margin tracked individually with one combined total",
@@ -170,6 +191,7 @@ export const PRODUCTS = [
     url: "https://www.etsy.com/listing/4536628550", directUrl: "https://payhip.com/b/wkqoH",
     desc: "TFSA + RRSP + RESP + FHSA + Margin. Everything, one sheet.", badge: "FLAGSHIP",
     slug: "ultimate-all-5-accounts", accounts: ["TFSA", "RRSP", "RESP", "FHSA", "Margin"], screenshot: "/screenshots/ultimate.jpg", sku: "MS-FLAGSHIP-ULTIMATE",
+    bestFor: "Anyone who'd rather track everything in one sheet instead of picking a combo.",
     longDescription: "Every account MapleSheet tracks, in a single sheet: TFSA, RRSP, RESP, FHSA, and Margin. Built for anyone who'd rather stop deciding which combo tracker fits and just track everything — contribution room, deduction limits, CESG grants, and capital gains, all reconciled against each other instead of five separate spreadsheets.",
     features: [
       "All 5 account types tracked individually with one combined net worth total",
@@ -186,6 +208,23 @@ export const PRODUCTS = [
     ] },
   },
 ];
+
+// Honest "save $X vs buying separately" figure for a combo/flagship product:
+// sums what each account would cost as its own single tracker (using
+// `compareAccounts` if a product needs to override `accounts` for this
+// math — see the spousal RRSP tracker) and compares that to the bundle's
+// actual price. Returns null (render nothing) rather than a $0 or negative
+// number when a bundle happens to be priced at or above buying separately —
+// two of the 2-account combos are, and that's a real pricing fact, not a
+// bug, so no savings claim should be shown for them.
+export function getBundleSavings(product) {
+  const accounts = product.compareAccounts || product.accounts;
+  if (!accounts || accounts.length < 2) return null;
+  const separateTotal = accounts.reduce((sum, tag) => sum + (SINGLE_TRACKER_PRICES[tag] || 0), 0);
+  const amount = separateTotal - product.price;
+  if (amount <= 0) return null;
+  return { amount, percent: Math.round((amount / separateTotal) * 100) };
+}
 
 // Maps a single account type to its matching /resources guide — shared by
 // the Trackers catalog (single-account product cards) and TrackerDetail
@@ -626,82 +665,6 @@ export const RESOURCES = [
       "MapleSheet Co. — Helping Canadian DIY investors make sense of their numbers.",
       "---",
       "*This article is for educational purposes only and isn't personalized investment, tax or financial advice. Investment returns aren't guaranteed, and you can lose money when investing. TFSA rules can change, so verify your personal contribution room and applicable rules with the CRA or a qualified professional.*",
-    ],
-  },
-  {
-    type: "article",
-    title: "TFSA vs. RRSP: 7 Situations Where the Answer Changes",
-    slug: "tfsa-vs-rrsp-7-situations",
-    image: "/resources/tfsa-vs-rrsp-7-situations.jpg",
-    date: "2026-09-21",
-    summary: "There's no single right answer — because the right account depends on your tax bracket, your timeline, and what the money is for. Here are seven situations where the answer changes.",
-    body: [
-      "\"Should I put my money in a TFSA or an RRSP?\" It sounds like it should have one clean answer. It doesn't. Both accounts are powerful, but they're built around different tax strategies, and the right one for you can change depending on your income, your timeline, and what the money is actually for — sometimes even from year to year.",
-      "## The basic difference",
-      "| | TFSA | RRSP |\n|---|---|---|\n| Contributions deductible? | No | Generally yes |\n| Growth inside the account | Generally tax-free | Generally tax-deferred |\n| Withdrawals | Generally tax-free | Generally taxable |\n| Withdrawal counts as income? | No | Generally yes |\n| Withdrawal restores room? | Yes, the following calendar year | No |\n| Primary purpose | Flexible, tax-free saving | Retirement and tax deferral |\n| 2026 annual limit | $7,000 | Based on your personal deduction limit |",
-      "The 2026 TFSA dollar limit is $7,000, though your actual room may be higher — unused room carries forward, and withdrawals get added back the following calendar year. Your RRSP room is personal: generally 18% of last year's earned income, up to the annual maximum, plus whatever you haven't used before. The account itself isn't the better or worse choice — your situation is what decides that. Here are seven where the answer changes.",
-      "## 1. You're in a high tax bracket right now",
-      "This is the classic case for the RRSP. A contribution deducts against this year's income, so the deduction is worth more the higher your current marginal rate is. Think of it as moving taxable income from a high-tax year today into a hopefully lower-tax year later. Two people can put the same $10,000 into an RRSP and get very different value out of the deduction — the higher earner's tax savings are larger, purely because of the rate they're deducting against. That's not a reason to put everything into an RRSP automatically, but it's a reason the deduction deserves real consideration when your income is high.",
-      "## 2. You're in a low tax bracket right now",
-      "This is where the usual \"RRSP first\" advice can flip. If you're early in your career, between jobs, or just having a lower-income year, an RRSP contribution still generates a deduction — but that deduction is worth less when your taxable income is already low. A TFSA can be more useful here, since you keep flexibility and tax-free growth without giving up future RRSP room. And it's worth knowing: your RRSP contribution and your RRSP deduction are two separate decisions. You can contribute now and choose not to claim the deduction until a higher-income year, subject to the applicable rules — so contributing doesn't force you to use the deduction right away.",
-      "## 3. You expect your retirement income to be lower",
-      "This is the scenario the RRSP is built for: you deduct at today's higher rate, the money grows without annual tax while it stays in the plan, and you withdraw later — ideally when your income, and your tax rate, are lower. The bigger the gap between your rate today and your rate at withdrawal, the more this strategy is worth. Your actual outcome depends on your full picture — other income, province, deductions, credits, and benefits — but the direction is usually favourable. And it doesn't have to be RRSP-only: because TFSA withdrawals don't count as income, a TFSA can sit alongside an RRSP in retirement and add flexibility on top of it. The real answer is often TFSA **and** RRSP, not TFSA **or** RRSP.",
-      "## 4. You might need the money before retirement",
-      "This is where the TFSA's flexibility earns its keep. You can withdraw at any time, for any reason, with no tax owing. That makes it a natural fit for an emergency fund, a vehicle, renovations, education, travel, or any goal that isn't 20-plus years away. RRSPs work differently — a regular withdrawal is taxable, and your financial institution withholds tax at source (10% up to $5,000, 20% from $5,000–$15,000, 30% above $15,000, federally, with provincial considerations on top). That withholding won't necessarily match your real tax bill either way. One detail worth remembering: a TFSA withdrawal doesn't restore your room immediately — it's added back on January 1 of the following year. Withdraw $10,000 in 2026, and that room isn't available again until 2027, so don't assume you can put it straight back in the same year.",
-      "## 5. You're saving for a first home",
-      "Here the real answer usually isn't TFSA vs. RRSP at all — it's the FHSA. It combines a deductible contribution (like an RRSP) with a tax-free qualifying withdrawal (like a TFSA), and no other Canadian account does both. On top of that, the Home Buyers' Plan lets an eligible buyer withdraw up to $60,000 from an RRSP toward the same home, and FHSA and HBP withdrawals can potentially both go toward the same purchase — up to $100,000 of registered-account money before touching a taxable account, provided both accounts' rules are met. If your first HBP withdrawal falls between 2026 and 2028, temporary repayment relief pushes the start of the 15-year repayment period to the fifth year after the withdrawal (a 2026 withdrawal has its first repayment year in 2031). See our [FHSA guide](/resources/fhsa-guide) and [RRSP guide](/resources/rrsp-deduction-limit-vs-contribution-room) for the full mechanics of each.",
-      "## 6. You're worried about government benefits in retirement",
-      "This one's easy to miss. TFSA income and withdrawals don't count as taxable income, and the CRA is specific that they don't affect eligibility for income-tested federal benefits — OAS, GIS, EI, the Canada Child Benefit, the GST credit, and the Canada Workers Benefit among them. RRSP and RRIF withdrawals are taxable income and can work against you here, including triggering the OAS clawback at higher income levels (we cover the exact clawback thresholds in our [TFSA vs. RRSP prioritization guide](/resources/tfsa-vs-rrsp)). Two retirees can withdraw the same $40,000, but the one blending in TFSA withdrawals alongside RRIF income has more room to manage their taxable income than the one pulling everything from a registered, taxable source. That's a second kind of diversification worth thinking about — not just stocks, bonds, and cash, but taxable, tax-deferred, and tax-free accounts working together.",
-      "## 7. You're approaching retirement, or turning 71",
-      "An RRSP doesn't stay an RRSP forever. In the year you turn 71, you have to choose: withdraw the funds, convert to a RRIF, or purchase an annuity. Once it's a RRIF, minimum withdrawals are required every year going forward, whether you need the cash or not. A TFSA doesn't have that structure — you decide if and when to withdraw, and none of it adds to your taxable income. For someone approaching this stage, the question worth asking usually isn't \"which account is better,\" but \"how much should I have sitting in each one.\"",
-      "## If you can only fund one right now",
-      "You don't need to solve this perfectly before you start. A reasonable order to work through: capture any employer RRSP match first — that's an immediate, guaranteed return that beats almost anything else on this list. Then weigh high-interest debt against investing. From there, ask two questions: is an RRSP deduction genuinely valuable to me at my current tax rate, and do I expect my taxable income to be higher today or later? Those two answers get you most of the way to a sensible choice for your next dollar.",
-      "## The seven situations at a glance",
-      "| Situation | Often favours |\n|---|---|\n| High income today | RRSP |\n| Low income today | TFSA, or delay the RRSP deduction |\n| Expect lower retirement income | RRSP |\n| Need flexible access to the money | TFSA |\n| Saving for a first home | FHSA first, then TFSA/RRSP |\n| Worried about taxable retirement income and benefits | TFSA |\n| Approaching retirement or age 71 | Often a combination |",
-      "These are general guidelines, not personalized advice — your actual answer depends on your income, province, age, contribution room, pension situation, and goals, and it's worth confirming specifics with the CRA or a qualified professional.",
-      "## Stop picking a winner",
-      "The better question was never \"TFSA or RRSP\" — it's \"which account makes sense for this dollar, right now.\" That answer can shift with a raise, a lower-income year, a first home on the horizon, or retirement getting closer. Which is exactly why tracking the numbers — your room, your deduction limit, your contributions, your withdrawals — matters more than picking a permanent favourite. Our [TFSA + RRSP combo tracker](/trackers) keeps both accounts' room, deduction limits, and growth in one place, so the answer stays clear even as your situation changes.",
-    ],
-  },
-  {
-    type: "article",
-    title: "RRSP vs. TFSA: How Taxes Affect Your Investment Growth",
-    slug: "rrsp-vs-tfsa-tax-impact",
-    image: "/resources/rrsp-vs-tfsa-tax-impact.jpg",
-    date: "2026-09-28",
-    summary: "Same $10,000, same growth, different tax treatment — and the RRSP refund most comparisons forget to count. Here's how the timing of tax actually shapes your long-term results.",
-    body: [
-      "Most investing questions focus on the investment itself — which ETF, which stock, how much to contribute. But there's a quieter question that can matter just as much over decades: where are you holding it? The same $10,000 investment can produce a very different after-tax outcome depending on whether it sits in a TFSA, an RRSP, or a non-registered account — because a TFSA and an RRSP shelter growth in fundamentally different ways.",
-      "## Two different tax containers",
-      "A TFSA works roughly like this: earn income, pay tax on it, contribute what's left, invest, and withdraw the growth tax-free. There's no deduction going in, but qualifying investment income and gains are generally tax-free the entire time the money's inside, and withdrawals are generally tax-free too.",
-      "An RRSP flips the order: contribute, potentially claim a deduction that reduces this year's taxable income, invest, let it grow without annual tax while it stays in the plan — then withdraw later, at which point the withdrawal is generally taxed as income. You're not avoiding tax forever with an RRSP. You're choosing when you pay it.",
-      "## A simple $10,000 example — and why it's incomplete",
-      "Say $10,000 doubles to $20,000. In a TFSA, you withdraw the full $20,000 tax-free. In an RRSP, that $20,000 withdrawal is taxable — at a simplified 25% rate, you'd keep roughly $15,000. Looked at only this way, the TFSA seems to win.",
-      "But that comparison skips the part that made the RRSP contribution possible in the first place: the deduction. If that original $10,000 RRSP contribution generated, say, $3,000 in tax savings, the real comparison isn't $10,000 vs. $10,000 — it's $10,000 plus what you did with that $3,000. Spend the refund, and the RRSP looks weaker. Invest the refund alongside the RRSP, and the picture changes substantially.",
-      "## The \"tax refund\" trap",
-      "Hearing \"I got a $3,000 RRSP refund\" makes it sound like free money. It's really a deferral — tax you would've paid this year, released back to you, meant to keep working for you. If it goes toward a vacation or everyday spending, that's a real cost to the strategy, but it doesn't make the RRSP a bad choice on its own — it just means the deduction is only half the equation. The other half is what you do with it.",
-      "## What if your tax rate stays about the same?",
-      "If your marginal rate when contributing is close to your rate when withdrawing — and you invest the RRSP tax savings rather than spending them — the TFSA and RRSP can produce surprisingly similar after-tax outcomes under simplified assumptions. The RRSP isn't simply \"taxed\" while the TFSA is \"tax-free.\" The real question is always: what rate am I avoiding today, and what rate will apply when I eventually take the money out?",
-      "## Higher tax rate today vs. higher tax rate later",
-      "If you're earning well today and expect a lower income in retirement, the RRSP tends to look better — you deduct at a high rate now and withdraw at a lower one later. Reverse it: if you're in a lower bracket today but expect your income to climb, an RRSP deduction claimed now is worth less than the same deduction claimed in a future higher-income year. In that case, a TFSA can hold the money in the meantime while your RRSP room simply waits — room doesn't expire, so there's no rush to use it in a low-value year. This is exactly why there's no universal \"RRSP first\" or \"TFSA first\" rule.",
-      "## Time matters as much as tax treatment",
-      "A hypothetical $10,000 growing at 7% a year becomes roughly $76,000 after 30 years, before tax and fees — and the longer the horizon, the more the tax shelter is worth, because more of each year's growth stays invested instead of being trimmed by tax along the way. That effect barely shows up after one year. Over 20 or 30 years, it compounds into something significant.",
-      "## Dividends, foreign withholding, and capital gains",
-      "Inside a TFSA, qualifying dividends and capital gains are generally tax-free. Inside an RRSP, neither is taxed annually while the money stays in the plan — the eventual withdrawal is taxed as income instead. One wrinkle worth knowing: foreign withholding tax on things like U.S. dividends can be treated differently depending on whether the shares sit in a TFSA, RRSP, or non-registered account. That's not a reason to automatically stuff every U.S. stock into an RRSP — it's a reason to know that what you hold, not just which account you use, can affect how tax-efficient that account really is.",
-      "## Taxes aren't the only variable",
-      "Your investment horizon, current and expected future income, contribution room, need for liquidity, employer pension, expected government benefits, and what you're actually invested in all factor in too. The \"best\" account is the one that fits your broader plan — not just the one with the smallest tax bill on paper.",
-      "## TFSA flexibility, and the room-timing detail",
-      "TFSA withdrawals are generally tax-free, and useful for money you might need before retirement — but the room from a withdrawal doesn't come back immediately. Withdraw $5,000 in 2026, and that room is generally added back for 2027, not right away. RRSP withdrawals work differently: they're generally taxable, and your institution withholds tax at source (10% up to $5,000, 20% from $5,000–$15,000, 30% above $15,000 federally, with Quebec taxed separately) — though what's withheld isn't necessarily your final tax bill either way.",
-      "## The basic comparison",
-      "| | TFSA | RRSP |\n|---|---|---|\n| Contribution deductible? | No | Generally yes |\n| Growth inside the account | Generally tax-free | Tax-deferred |\n| Withdrawals | Generally tax-free | Generally taxable |\n| Room restored after withdrawal | Yes, the following calendar year | No |\n| Typical primary goal | Flexible long-term wealth building | Retirement |\n| 2026 limit | $7,000 | $33,810, based on your personal deduction limit |",
-      "For 2026, the TFSA annual dollar limit is $7,000, though carry-forward can put your actual room higher. The RRSP dollar limit is $33,810, but that's a ceiling, not a personal number — your own room is generally 18% of last year's earned income, up to that maximum, plus whatever's carried forward. Always check your actual room before contributing to either.",
-      "## Three investors, three different answers",
-      "A high earner who expects a lower income in retirement tends to get the most out of an RRSP's deduction. A younger investor in a lower bracket today, expecting income to rise, often does better prioritizing a TFSA and letting RRSP room sit untouched until it's worth more. And an investor with both high income and a long runway often does best using both — TFSA for tax-free flexibility, RRSP for the deduction and deferral, together giving the portfolio some genuine tax diversification instead of putting every dollar through the same tax treatment.",
-      "## Questions worth working through before you contribute",
-      "- What's my income this year, and how does that compare with what I expect in retirement?\n- Could I need this money before retirement?\n- Am I already capturing any employer RRSP match?\n- If I get an RRSP refund, will I actually invest it — or spend it?\n- What am I holding, and does the account it's in match the investment's tax characteristics?\n- How much room do I actually have, in each account, right now?",
-      "## Track the account, not just the balance",
-      "A single portfolio number hides where the money sits, what tax treatment it's growing under, and how much room is left in each account. Knowing your contributions, your available room, your dividends, and your gains — separately for your TFSA and your RRSP, not blended into one figure — is what turns \"how much do I have\" into \"where should my next dollar go.\" That's the gap our [TFSA + RRSP combo tracker](/trackers) is built to close.",
-      "The biggest TFSA-vs-RRSP question was never \"which account has less tax.\" It's \"when do I want to pay it, and how much flexibility do I want later.\" The TFSA trades no deduction now for tax-free withdrawals later. The RRSP trades a deduction now for taxable withdrawals later. Understanding that trade — and tracking it — is what tells you where each dollar actually belongs.",
     ],
   },
   // ─── LIVE ARTICLES ───────────────────────────────────────────────
