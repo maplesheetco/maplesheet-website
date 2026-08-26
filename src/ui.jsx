@@ -370,6 +370,31 @@ export function DashboardMock({ accounts, total, totalLabel = "Combined net wort
   );
 }
 
+// Shared accordion for a [question, answer] pair list (FAQS in data.js).
+// Used on About (general site FAQ) and TrackerDetail (same questions,
+// surfaced right where someone's actually deciding whether to buy).
+export function FaqAccordion({ faqs }) {
+  const [open, setOpen] = useState(null);
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      {faqs.map(([q, a], i) => (
+        <div key={q} style={{ background: B.black2, border: `1px solid ${open === i ? B.red : B.line}`, borderRadius: 12, overflow: "hidden" }}>
+          <button onClick={() => setOpen(open === i ? null : i)} style={{
+            width: "100%", textAlign: "left", background: "none", border: "none", cursor: "pointer",
+            color: B.white, fontWeight: 600, fontSize: 15, padding: "16px 18px", fontFamily: "inherit",
+            display: "flex", justifyContent: "space-between", gap: 10,
+          }}>
+            {q} <span style={{ color: B.redLink }}>{open === i ? "−" : "+"}</span>
+          </button>
+          {open === i && (
+            <div className="ml-fade" style={{ padding: "0 18px 16px", color: B.grayLight, fontSize: 14, lineHeight: 1.7 }}>{a}</div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function PageHead({ kicker, title, sub }) {
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: "52px 24px 8px", textAlign: "center" }}>
