@@ -192,6 +192,11 @@ export default function TrackerDetail() {
               <Link to="/resources/tfsa-vs-rrsp-vs-fhsa-vs-resp" style={{ color: B.redLink, fontWeight: 600, fontSize: 14, textDecoration: "none" }}>
                 📖 Which account should come first? →
               </Link>
+              {product.extraGuide && (
+                <Link to={`/resources/${product.extraGuide.slug}`} style={{ color: B.redLink, fontWeight: 600, fontSize: 14, textDecoration: "none" }}>
+                  📖 {product.extraGuide.label} →
+                </Link>
+              )}
             </div>
           </div>
         )}
