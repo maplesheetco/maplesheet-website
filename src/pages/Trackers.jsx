@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY } from "../data.js";
+import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, getBundleSavings } from "../data.js";
 import { PageHead, RedWord, usePageMeta, useJsonLd } from "../ui.jsx";
 import { trackBuyClicked } from "../analytics.js";
 
@@ -67,6 +67,7 @@ export default function Trackers() {
           {shown.map((p) => {
             const flagship = p.badge === "FLAGSHIP";
             const guide = ACCOUNT_GUIDES[p.tag];
+            const savings = getBundleSavings(p);
             return (
               <div key={p.name} className="ml-card" style={{
                 display: "flex", flexDirection: "column", gap: 10,
@@ -92,7 +93,17 @@ export default function Trackers() {
                   <span style={{ fontSize: 17, fontWeight: 700, color: B.white, lineHeight: 1.3, paddingRight: p.badge ? 66 : 0 }}>{p.name}</span>
                 )}
                 <span style={{ fontSize: 13, color: B.grayLight, lineHeight: 1.55, flex: 1 }}>{p.desc}</span>
+                {p.bestFor && (
+                  <span style={{ fontSize: 11.5, color: B.gray, lineHeight: 1.5 }}>
+                    <span style={{ color: B.grayLight, fontWeight: 700 }}>Best for:</span> {p.bestFor}
+                  </span>
+                )}
                 <div style={{ fontSize: 19, fontWeight: 800, color: B.white, marginTop: 4 }}>CA${p.price.toFixed(2)}</div>
+                {savings && (
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "#34C77B" }}>
+                    Save CA${savings.amount.toFixed(2)} ({savings.percent}%) vs. separately
+                  </span>
+                )}
                 {guide && (
                   <Link to={`/resources/${guide.slug}`} style={{
                     fontSize: 12, color: B.grayLight, textDecoration: "none", display: "inline-block",
