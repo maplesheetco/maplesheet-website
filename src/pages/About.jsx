@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { B, CONFIG, FAQS } from "../data.js";
-import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
+import { PageHead, RedWord, usePageMeta, FaqAccordion } from "../ui.jsx";
 
 export default function About() {
   usePageMeta({
     title: "About MapleSheet Co. — Built by a Canadian, for Canadians",
     description: "Why MapleSheet Co. exists: investment trackers built for the CRA system from the ground up, not adapted from American spreadsheets. Meet the founder.",
   });
-  const [open, setOpen] = useState(null);
   return (
     <div className="ml-fade">
       <PageHead kicker="THE STORY" title={<>"Too complicated. Too American.<br /><RedWord>So I built my own."</RedWord></>} />
@@ -43,21 +42,8 @@ export default function About() {
         <h2 style={{ fontSize: 26, fontWeight: 800, color: B.white, margin: "10px 0 18px", letterSpacing: "-0.01em" }}>
           Common <RedWord>questions</RedWord>
         </h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
-          {FAQS.map(([q, a], i) => (
-            <div key={q} style={{ background: B.black2, border: `1px solid ${open === i ? B.red : B.line}`, borderRadius: 12, overflow: "hidden" }}>
-              <button onClick={() => setOpen(open === i ? null : i)} style={{
-                width: "100%", textAlign: "left", background: "none", border: "none", cursor: "pointer",
-                color: B.white, fontWeight: 600, fontSize: 15, padding: "16px 18px", fontFamily: "inherit",
-                display: "flex", justifyContent: "space-between", gap: 10,
-              }}>
-                {q} <span style={{ color: B.redLink }}>{open === i ? "−" : "+"}</span>
-              </button>
-              {open === i && (
-                <div className="ml-fade" style={{ padding: "0 18px 16px", color: B.grayLight, fontSize: 14, lineHeight: 1.7 }}>{a}</div>
-              )}
-            </div>
-          ))}
+        <div style={{ marginBottom: 20 }}>
+          <FaqAccordion faqs={FAQS} />
         </div>
         <div style={{ textAlign: "center", padding: "10px 0 10px" }}>
           <a href={CONFIG.shopUrl} target="_blank" rel="noreferrer" className="ml-btn" style={{
