@@ -18,6 +18,7 @@ export const EVENTS = {
   CALCULATOR_TOOL_USED: "calculator_tool_used",
   NEWSLETTER_SUBSCRIBED: "newsletter_subscribed",
   CONTACT_FORM_SUBMITTED: "contact_form_submitted",
+  LIVE_CHAT_STARTED: "live_chat_started",
 };
 
 /**
@@ -90,4 +91,19 @@ export function trackNewsletterSubscribed({ sourcePage }) {
  */
 export function trackContactFormSubmitted() {
   send(EVENTS.CONTACT_FORM_SUBMITTED, {});
+}
+
+/**
+ * Fired when a visitor actually sends their first message in the Tawk.to
+ * live chat widget (not just opening the bubble). Before this, live chat
+ * engagement was completely invisible in analytics — every other
+ * lead-generating channel on the site (calculator, newsletter, buy clicks)
+ * had a signal except this one.
+ *
+ * @category core_value
+ * @param {Object} props
+ * @param {string} props.pagePath - the route the visitor was on when they started chatting
+ */
+export function trackLiveChatStarted({ pagePath }) {
+  send(EVENTS.LIVE_CHAT_STARTED, { page_path: pagePath });
 }
