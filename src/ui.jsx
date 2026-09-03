@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { B, CONFIG } from "./data.js";
+import { trackLiveChatStarted } from "./analytics.js";
 
 const SITE_URL = "https://www.maplesheet.ca";
 
@@ -45,7 +46,51 @@ export function usePageMeta({ title, description }) {
     canonicalLink.setAttribute("href", canonicalUrl);
 
     setMetaTag("property", "og:url", canonicalUrl);
+
+    // Tell Tawk.to which page a visitor is on. Without this, a chat comes in
+    // completely blind — Lino has no idea if someone's asking about the
+    // FHSA tracker or stuck on checkout for the Ultimate bundle, and has to
+    // ask before he can even start helping. Tawk_API already exists as a
+    // global by the time this runs (index.html creates it synchronously
+    // before the widget script loads), but the actual embed script loads
+    // async — setAttributes silently no-ops if Tawk isn't ready yet or an
+    // ad blocker stripped it, which is fine, this is a nice-to-have, never
+    // something a page should depend on.
+    if (window.Tawk_API?.setAttributes) {
+      window.Tawk_API.setAttributes({ "page": title || path }, () => {});
+    }
   }, [title, description, location.pathname]);
+}
+
+// Wires up analytics for Tawk.to live chat — mount this once, near the top
+// of the app (not per-page), so the handler is set exactly once. Tawk fires
+// onChatStarted the moment a visitor sends their first message, which is a
+// much better "engaged" signal than the bubble merely being open.
+export function useLiveChatTracking() {
+  const location = useLocation();
+  const pathRef = useRef(location.pathname);
+  useEffect(() => { pathRef.current = location.pathname; }, [location.pathname]);
+
+  useEffect(() => {
+    window.Tawk_API = window.Tawk_API || {};
+    // Chain onto any handler Tawk's own snippet may already have set,
+    // rather than clobbering it, in case that ever changes.
+    const prev = window.Tawk_API.onChatStarted;
+    window.Tawk_API.onChatStarted = function () {
+      trackLiveChatStarted({ pagePath: pathRef.current });
+      if (typeof prev === "function") prev();
+    };
+  }, []);
+}
+
+// Tiny mounting component for useLiveChatTracking(). useLiveChatTracking()
+// calls useLocation() internally, which only works inside a <BrowserRouter>
+// — so it can't be called directly in App() before the Router is rendered.
+// Render <LiveChatTracker /> as JSX *inside* the <BrowserRouter> tree instead
+// (e.g. alongside <GlobalStyles /> and <Nav />). Renders nothing itself.
+export function LiveChatTracker() {
+  useLiveChatTracking();
+  return null;
 }
 
 // Injects (and keeps updated) a <script type="application/ld+json"> tag in
