@@ -1,7 +1,7 @@
 import React, { useState, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { B, CONFIG, PRODUCTS, RESOURCES } from "./data.js";
-import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, ProductGallery, GrowthChart, usePageMeta } from "./ui.jsx";
+import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, ProductGallery, GrowthChart, usePageMeta, LiveChatTracker } from "./ui.jsx";
 import { trackBuyClicked } from "./analytics.js";
 import Trackers from "./pages/Trackers.jsx";
 import TrackerDetail from "./pages/TrackerDetail.jsx";
@@ -300,6 +300,12 @@ export default function App() {
     <BrowserRouter>
       <div style={{ minHeight: "100vh", background: B.black, color: B.white, fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
         <GlobalStyles />
+        {/* Mounted once at the app root (not per-page) so the Tawk.to
+            chat-started handler is only ever wired up a single time. Must be
+            rendered here, inside <BrowserRouter>, not called directly in
+            App() — it uses useLocation() internally, which needs Router
+            context. Renders nothing. */}
+        <LiveChatTracker />
         <Nav />
         {/* A real <main> landmark — without it, screen reader users have no
             "skip to main content" shortcut, and it's a semantic-HTML signal
