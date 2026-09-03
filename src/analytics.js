@@ -59,13 +59,16 @@ export function trackBuyClicked({ productName, productTag, priceCad, checkoutDes
 }
 
 /**
- * Fired when a visitor switches to one of the four WealthCalculator tools
- * (Grow / Goal / Compare / Accounts) on the /tools page. A pre-purchase
- * intent signal — this is the site's main lead magnet.
+ * Fired when a visitor uses one of the free calculators on the /tools page:
+ * one of the four WealthCalculator tools (Grow / Goal / Compare / Accounts),
+ * or one of the two standalone tools below it (TFSA Contribution Room,
+ * Simple ACB) — each fires once per visit, on first real interaction, not
+ * on page load. A pre-purchase intent signal — this is the site's main
+ * lead magnet.
  *
  * @category core_value
  * @param {Object} props
- * @param {"grow"|"goal"|"compare"|"accounts"} props.tool
+ * @param {"grow"|"goal"|"compare"|"accounts"|"tfsa_room"|"acb"} props.tool
  */
 export function trackCalculatorToolUsed({ tool }) {
   send(EVENTS.CALCULATOR_TOOL_USED, { tool });
