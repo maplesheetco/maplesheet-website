@@ -19,6 +19,7 @@ export const EVENTS = {
   NEWSLETTER_SUBSCRIBED: "newsletter_subscribed",
   CONTACT_FORM_SUBMITTED: "contact_form_submitted",
   LIVE_CHAT_STARTED: "live_chat_started",
+  GOAL_TRACKER_REQUESTED: "goal_tracker_requested",
 };
 
 /**
@@ -109,4 +110,18 @@ export function trackContactFormSubmitted() {
  */
 export function trackLiveChatStarted({ pagePath }) {
   send(EVENTS.LIVE_CHAT_STARTED, { page_path: pagePath });
+}
+
+/**
+ * Fired when a visitor submits their email to get the free Goal Tracker
+ * spreadsheet — a distinct, separate lead-magnet form from the general
+ * newsletter box (own MailerLite group: "Goal Tracker Leads"), so this
+ * event should never be conflated with newsletter_subscribed.
+ *
+ * @category core_value
+ * @param {Object} props
+ * @param {"free_tools"} props.sourcePage
+ */
+export function trackGoalTrackerRequested({ sourcePage }) {
+  send(EVENTS.GOAL_TRACKER_REQUESTED, { source_page: sourcePage });
 }
