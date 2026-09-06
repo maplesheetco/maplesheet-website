@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
 import { B } from "../data.js";
 import WealthCalculator from "../WealthCalculator.jsx";
@@ -28,8 +28,19 @@ function ToolSection({ eyebrow, title, sub, children }) {
 // subscribers). Success state is optimistic: a target="_blank" form POST
 // gives the page no readable response either way, so we show the
 // confirmation the moment the browser accepts the submit.
+//
+// The "takel" fetch below matters more than it looks: MailerLite records a
+// form "view" the moment it's tracked, and appears to quietly ignore a
+// subscribe POST that has no matching view — so without this, submissions
+// looked successful on-page but never actually landed in MailerLite.
+// NewsletterBox (Resources.jsx) already does this for its own form ID; this
+// fires the same beacon for the Goal Tracker's separate form ID.
 function GoalTrackerGate() {
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    fetch("https://assets.mailerlite.com/jsonp/2540563/forms/197636741838931967/takel").catch(() => {});
+  }, []);
 
   return (
     <div style={{
