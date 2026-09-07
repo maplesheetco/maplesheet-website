@@ -80,6 +80,7 @@ function GoalTrackerGate() {
             }}
           />
           <input type="hidden" name="ml-submit" value="1" />
+          <input type="hidden" name="anticsrf" value="true" />
           <button
             type="submit"
             style={{
