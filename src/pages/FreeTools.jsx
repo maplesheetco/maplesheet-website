@@ -35,11 +35,28 @@ function ToolSection({ eyebrow, title, sub, children }) {
 // looked successful on-page but never actually landed in MailerLite.
 // NewsletterBox (Resources.jsx) already does this for its own form ID; this
 // fires the same beacon for the Goal Tracker's separate form ID.
+//
+// IMPORTANT — do not flip `submitted` synchronously inside onSubmit. Doing
+// so unmounts this <form> (we conditionally render it away) in the same
+// instant the browser is trying to carry out the real submission — opening
+// the target="_blank" tab and sending the POST — which can cancel that
+// submission outright. Pulling a form out of the DOM mid-submit is exactly
+// the kind of thing browsers treat as "never mind, don't send it." That's
+// consistent with everything we saw: the page always showed success, but
+// nothing ever reached MailerLite. Two safeguards instead: (1) defer the
+// optimistic UI swap by a tick via setTimeout so the browser's default
+// action fires first, and (2) also wire up MailerLite's own success
+// callback (window.ml_webform_success_<id>) — the actual mechanism their
+// generated embed code uses — as a second, more accurate path to the same
+// state update.
 function GoalTrackerGate() {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     fetch("https://assets.mailerlite.com/jsonp/2540563/forms/197636741838931967/takel").catch(() => {});
+    window.ml_webform_success_45628178 = function () {
+      setSubmitted(true);
+    };
   }, []);
 
   return (
@@ -64,8 +81,9 @@ function GoalTrackerGate() {
           method="post"
           target="_blank"
           onSubmit={() => {
-            setSubmitted(true);
             trackGoalTrackerRequested({ sourcePage: "free_tools" });
+            // Deferred on purpose — see the comment above the component.
+            setTimeout(() => setSubmitted(true), 0);
           }}
           style={{ display: "flex", gap: 10, maxWidth: 420, margin: "0 auto", flexWrap: "wrap", justifyContent: "center" }}
         >
