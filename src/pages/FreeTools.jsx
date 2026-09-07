@@ -25,9 +25,17 @@ function ToolSection({ eyebrow, title, sub, children }) {
 // your own copy of (via MailerLite's classic form-POST endpoint — same
 // mechanism NewsletterBox in Resources.jsx already uses in production,
 // just a separate form/group so these leads don't mix with newsletter
-// subscribers). Success state is optimistic: a target="_blank" form POST
-// gives the page no readable response either way, so we show the
-// confirmation the moment the browser accepts the submit.
+// subscribers). Success state is optimistic: this posts into a hidden
+// iframe (see below) rather than a visible tab, so we get no readable
+// response either way — we show the confirmation the moment the browser
+// accepts the submit.
+//
+// The form targets a same-page hidden iframe instead of target="_blank".
+// Confirmed working (real subscriber + real delivery) using a visible new
+// tab first — the only thing this changes is that MailerLite's raw
+// {"success":true} response now lands in an invisible iframe instead of
+// flashing an ugly blank tab open in front of every visitor.
+const GOAL_TRACKER_IFRAME_NAME = "goal-tracker-subscribe-target";
 //
 // The "takel" fetch below matters more than it looks: MailerLite records a
 // form "view" the moment it's tracked, and appears to quietly ignore a
@@ -38,13 +46,13 @@ function ToolSection({ eyebrow, title, sub, children }) {
 //
 // IMPORTANT — do not flip `submitted` synchronously inside onSubmit. Doing
 // so unmounts this <form> (we conditionally render it away) in the same
-// instant the browser is trying to carry out the real submission — opening
-// the target="_blank" tab and sending the POST — which can cancel that
-// submission outright. Pulling a form out of the DOM mid-submit is exactly
-// the kind of thing browsers treat as "never mind, don't send it." That's
-// consistent with everything we saw: the page always showed success, but
-// nothing ever reached MailerLite. Two safeguards instead: (1) defer the
-// optimistic UI swap by a tick via setTimeout so the browser's default
+// instant the browser is trying to carry out the real submission — sending
+// the POST to its target — which can cancel that submission outright.
+// Pulling a form out of the DOM mid-submit is exactly the kind of thing
+// browsers treat as "never mind, don't send it." That's consistent with
+// everything we saw before this was fixed: the page always showed success,
+// but nothing ever reached MailerLite. Two safeguards instead: (1) defer
+// the optimistic UI swap by a tick via setTimeout so the browser's default
 // action fires first, and (2) also wire up MailerLite's own success
 // callback (window.ml_webform_success_<id>) — the actual mechanism their
 // generated embed code uses — as a second, more accurate path to the same
@@ -71,6 +79,10 @@ function GoalTrackerGate() {
         A two-tab Google Sheet — set a goal, log deposits, and watch a live dashboard and progress chart update on their own. Enter your email and we'll send your copy.
       </p>
 
+      {/* Hidden submit target — keeps MailerLite's raw JSON response from
+          ever flashing open in a visible tab for the visitor. */}
+      <iframe name={GOAL_TRACKER_IFRAME_NAME} title="Form submission target" aria-hidden="true" style={{ display: "none" }} />
+
       {submitted ? (
         <p style={{ color: B.white, fontSize: 14, fontWeight: 700, margin: 0 }}>
           Check your inbox — your Goal Tracker link is on its way. 🍁
@@ -79,7 +91,7 @@ function GoalTrackerGate() {
         <form
           action="https://assets.mailerlite.com/jsonp/2540563/forms/197636741838931967/subscribe"
           method="post"
-          target="_blank"
+          target={GOAL_TRACKER_IFRAME_NAME}
           onSubmit={() => {
             trackGoalTrackerRequested({ sourcePage: "free_tools" });
             // Deferred on purpose — see the comment above the component.
