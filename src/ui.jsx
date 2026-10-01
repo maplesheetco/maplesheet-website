@@ -3,6 +3,14 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { B, CONFIG } from "./data.js";
 import { trackLiveChatStarted } from "./analytics.js";
 
+// Reads the user's reduced-motion preference once, synchronously, so the
+// very first render already knows whether to skip animation — avoids a
+// flash of animated content for people who asked their OS not to show it.
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" && window.matchMedia
+    ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    : false;
+
 const SITE_URL = "https://www.maplesheet.ca";
 
 // Sets a unique <title>, meta description, canonical link, and matching
@@ -60,6 +68,51 @@ export function usePageMeta({ title, description }) {
       window.Tawk_API.setAttributes({ "page": title || path }, () => {});
     }
   }, [title, description, location.pathname]);
+}
+
+// Fades + slides a block in the moment it scrolls into view — the site-wide
+// "Apple-style" scroll polish. Cheap on purpose: no animation library, just
+// one IntersectionObserver per instance, so it's safe to wrap sections on
+// every page (including text-heavy Resources/Article pages) without adding
+// any bundle weight. Plays once per mount and respects prefers-reduced-motion
+// (and the existing .ml-fade pattern's media query) by rendering already-in
+// on the very first paint for those users.
+export function Reveal({ children, as: Tag = "div", delay = 0, y = 24, style, className, ...rest }) {
+  const ref = useRef(null);
+  const [shown, setShown] = useState(prefersReducedMotion());
+
+  useEffect(() => {
+    if (shown || !ref.current) return;
+    const el = ref.current;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShown(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [shown]);
+
+  return (
+    <Tag
+      ref={ref}
+      className={["ml-reveal-js", className].filter(Boolean).join(" ")}
+      style={{
+        opacity: shown ? 1 : 0,
+        transform: shown ? "none" : `translateY(${y}px)`,
+        transition: `opacity .7s cubic-bezier(.16,.8,.24,1) ${delay}ms, transform .7s cubic-bezier(.16,.8,.24,1) ${delay}ms`,
+        willChange: shown ? "auto" : "opacity, transform",
+        ...style,
+      }}
+      {...rest}
+    >
+      {children}
+    </Tag>
+  );
 }
 
 // Wires up analytics for Tawk.to live chat — mount this once, near the top
@@ -128,7 +181,17 @@ export function GlobalStyles() {
   return (
     <style>{`
       * { box-sizing: border-box; }
-      html, body { background: ${B.black}; overflow-x: hidden; }
+      html, body { background: ${B.black}; }
+      /* overflow-x: clip (not "hidden") on purpose — "hidden" with no
+         overflow-y set makes the browser compute overflow-y as "auto" on
+         both html and body, turning them into scroll containers. That
+         silently breaks position: sticky for <Nav> (it starts tracking the
+         nearest scroll container instead of the viewport) — a pre-existing
+         bug on the live site, confirmed independently of the scroll-effects
+         work below. "clip" suppresses horizontal overflow the same way
+         without ever creating a scroll container, so sticky works again. */
+      html, body { overflow-x: clip; }
+      html { scroll-behavior: smooth; }
       .ml-btn { transition: transform .12s, background .15s, box-shadow .15s, border-color .15s; }
       .ml-btn:hover { transform: translateY(-1px); }
       .ml-btn:active { transform: translateY(0) scale(0.98); }
@@ -142,7 +205,11 @@ export function GlobalStyles() {
       .ml-input { width: 100%; background: ${B.black}; border: 1.5px solid ${B.line}; border-radius: 10px;
         color: ${B.white}; font-family: inherit; font-size: 14.5px; padding: 13px 15px; outline: none; }
       .ml-input:focus { border-color: ${B.red}; }
-      @media (prefers-reduced-motion: reduce) { .ml-btn, .ml-card, .ml-fade { transition: none !important; animation: none !important; } }
+      @media (prefers-reduced-motion: reduce) {
+        .ml-btn, .ml-card, .ml-fade { transition: none !important; animation: none !important; }
+        html { scroll-behavior: auto; }
+        .ml-reveal-js { opacity: 1 !important; transform: none !important; transition: none !important; }
+      }
     `}</style>
   );
 }
