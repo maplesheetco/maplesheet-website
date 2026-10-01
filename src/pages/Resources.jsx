@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { B, CONFIG, RESOURCES } from "../data.js";
-import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
+import { PageHead, RedWord, usePageMeta, Reveal } from "../ui.jsx";
 import { trackNewsletterSubscribed } from "../analytics.js";
 
 const ML_FORM_ID = "44245461";
@@ -777,8 +777,8 @@ export default function Resources() {
       <PageHead kicker="LEARN" title={<>Resources for <RedWord>Canadian investors</RedWord></>}
         sub="Guides, video walkthroughs, and product news. Because understanding your money comes before tracking it." />
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "30px 24px 0" }}>
-        {posts.map((r) => (
-          <article key={r.title} style={{
+        {posts.map((r, i) => (
+          <Reveal as="article" key={r.title} delay={Math.min(i * 60, 240)} style={{
             background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18,
             padding: "clamp(22px, 4vw, 32px)", marginBottom: 18,
           }}>
@@ -809,19 +809,21 @@ export default function Resources() {
                 Read the full guide →
               </Link>
             )}
-          </article>
+          </Reveal>
         ))}
         {comingSoon.length > 0 && (
-          <div style={{
+          <Reveal style={{
             border: `1px dashed ${B.line}`, borderRadius: 16, padding: "20px 24px",
             color: B.gray, fontSize: 14, textAlign: "center",
           }}>
             🎬 {comingSoon[0].summary} Subscribe on{" "}
             <a href={CONFIG.youtubeUrl} target="_blank" rel="noreferrer" style={{ color: B.red, fontWeight: 600 }}>YouTube</a>{" "}
             to catch it first.
-          </div>
+          </Reveal>
         )}
-        <NewsletterBox />
+        <Reveal>
+          <NewsletterBox />
+        </Reveal>
       </div>
     </div>
   );
