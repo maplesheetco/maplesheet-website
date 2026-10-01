@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { B, CONFIG } from "../data.js";
-import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
+import { PageHead, RedWord, usePageMeta, Reveal } from "../ui.jsx";
 import { trackContactFormSubmitted } from "../analytics.js";
 
 const SITE_URL = "https://www.maplesheet.ca";
@@ -84,7 +84,7 @@ export default function Contact() {
       <PageHead kicker="CONTACT" title={<>Talk to a <RedWord>human</RedWord>. That's me.</>}
         sub="Questions before buying, help with a tracker, or an idea for a new product — I answer everything personally." />
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "30px 24px 0" }}>
-        <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(22px, 4vw, 32px)" }}>
+        <Reveal style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(22px, 4vw, 32px)" }}>
           {status === "done" ? (
             <div className="ml-fade" style={{ textAlign: "center", padding: "20px 0" }}>
               <div style={{ fontSize: 40, marginBottom: 10 }}>🍁</div>
@@ -146,7 +146,7 @@ export default function Contact() {
               {status === "invalid" && <div style={{ color: B.yellow, fontSize: 13 }}>Please fill in all three fields with a valid email.</div>}
             </form>
           )}
-        </div>
+        </Reveal>
         <div style={{ textAlign: "center", marginTop: 22, color: B.grayLight, fontSize: 14.5 }}>
           Prefer email? Write to{" "}
           <a href={`mailto:${CONFIG.email}`} style={{ color: B.redLink, fontWeight: 700, textDecoration: "none" }}>{CONFIG.email}</a>
