@@ -1,7 +1,7 @@
-import React, { useState, Suspense, lazy } from "react";
+import React, { useState, useEffect, useRef, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { B, CONFIG, PRODUCTS, RESOURCES } from "./data.js";
-import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, ProductGallery, GrowthChart, usePageMeta, LiveChatTracker } from "./ui.jsx";
+import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, ProductGallery, GrowthChart, usePageMeta, LiveChatTracker, Reveal } from "./ui.jsx";
 import { trackBuyClicked } from "./analytics.js";
 import Trackers from "./pages/Trackers.jsx";
 import TrackerDetail from "./pages/TrackerDetail.jsx";
@@ -82,6 +82,90 @@ const OFFER_SLIDES = [
   },
 ];
 
+// Counts a number up from 0 the moment its element scrolls into view — used
+// on the "$524,963 vs $243,994" comparison cards. No animation library: a
+// single requestAnimationFrame loop per card. Renders the final value as
+// real text from the first paint (so there's never a blank/zero flash, and
+// prefers-reduced-motion users simply see the static number — the loop
+// below just never starts for them).
+function useCountUp(end, { duration = 1400, prefix = "$" } = {}) {
+  const ref = useRef(null);
+  const fmt = (n) => prefix + Math.round(n).toLocaleString("en-CA");
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof window === "undefined" || !window.IntersectionObserver) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    let raf;
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      io.disconnect();
+      const start = performance.now();
+      const tick = (now) => {
+        const p = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = fmt(end * eased);
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }, { threshold: 0.4 });
+    io.observe(el);
+    return () => { io.disconnect(); if (raf) cancelAnimationFrame(raf); };
+  }, [end, duration, prefix]);
+  return { ref, initial: fmt(end) };
+}
+
+// Pins the hero for one extra viewport-height of scroll and scrubs the
+// headline/CTA out while the screenshot gallery rises into place — the
+// "hero hands off to the product" move every Apple product page opens with.
+// Loaded lazily (dynamic import) so GSAP's ~30KB only ever downloads for
+// visitors who land on "/", exactly like FreeTools' recharts import below —
+// and only wired up at all on wide-enough screens: scroll-pinning a hero on
+// a small phone just makes someone scroll further to reach the rest of the
+// page for no visual payoff, so under 900px this is skipped entirely and the
+// hero behaves like a normal static section.
+function useHeroPin({ sectionRef, textRef, galleryRef }) {
+  useEffect(() => {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    let ctx;
+    let cancelled = false;
+    (async () => {
+      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
+      ]);
+      if (cancelled) return;
+      gsap.registerPlugin(ScrollTrigger);
+      ctx = gsap.context(() => {
+        const mm = gsap.matchMedia();
+        mm.add("(min-width: 900px)", () => {
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top top",
+              end: "+=90%",
+              scrub: 0.6,
+              pin: true,
+              pinSpacing: true,
+            },
+          });
+          tl.to(textRef.current, { opacity: 0, y: -46, ease: "none" }, 0)
+            .fromTo(
+              galleryRef.current,
+              { y: 70, scale: 0.92, opacity: 0.6 },
+              { y: 0, scale: 1, opacity: 1, ease: "none" },
+              0.1
+            );
+          // Cleanup for this media-query match only — matchMedia re-runs its
+          // callback (and expects this return) whenever the viewport crosses
+          // the 900px line, e.g. a tablet rotated or a window resized.
+          return () => tl.scrollTrigger?.kill();
+        });
+      }, sectionRef);
+    })();
+    return () => { cancelled = true; ctx?.revert(); };
+  }, [sectionRef, textRef, galleryRef]);
+}
+
 function Home() {
   usePageMeta({
     title: "MapleSheet Co. — Canadian TFSA, RRSP & RESP Trackers",
@@ -91,46 +175,59 @@ function Home() {
   const latest = RESOURCES[0];
   const [demoTab, setDemoTab] = useState(0);
   const demo = DEMO_VIEWS[demoTab];
+
+  const heroRef = useRef(null);
+  const heroTextRef = useRef(null);
+  const heroGalleryRef = useRef(null);
+  useHeroPin({ sectionRef: heroRef, textRef: heroTextRef, galleryRef: heroGalleryRef });
+
+  const count25 = useCountUp(524963);
+  const count35 = useCountUp(243994);
+
   return (
     <div className="ml-fade">
-      {/* Hero */}
-      <header style={{ maxWidth: 1100, margin: "0 auto", padding: "60px 24px 56px", textAlign: "center" }}>
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 22,
-          border: `1px solid ${B.line}`, borderRadius: 999, padding: "7px 16px",
-          fontSize: 13, color: B.grayLight, background: B.black2,
-        }}>
-          <MapleLeaf size={13} /> Built in Canada, for Canadian investors · 13 trackers
+      {/* Hero — pinned on desktop via useHeroPin() above; the inline
+          "overflow: clip" keeps the scaled-down gallery from ever peeking
+          past the hero's own edges mid-scrub. */}
+      <header ref={heroRef} style={{ maxWidth: 1100, margin: "0 auto", padding: "60px 24px 56px", textAlign: "center", overflow: "clip" }}>
+        <div ref={heroTextRef}>
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 22,
+            border: `1px solid ${B.line}`, borderRadius: 999, padding: "7px 16px",
+            fontSize: 13, color: B.grayLight, background: B.black2,
+          }}>
+            <MapleLeaf size={13} /> Built in Canada, for Canadian investors · 13 trackers
+          </div>
+          <h1 style={{ fontSize: "clamp(38px, 7vw, 66px)", fontWeight: 800, lineHeight: 1.04, margin: "0 0 24px", letterSpacing: "-0.03em", color: B.white }}>
+            <span style={{ display: "block", marginBottom: 6 }}>Stop Guessing.</span>
+            <span style={{ display: "block", color: B.redLink }}>Start Tracking.</span>
+          </h1>
+          <p style={{ fontSize: "clamp(15px, 2.4vw, 18px)", color: B.grayLight, maxWidth: 620, margin: "0 auto 30px", lineHeight: 1.65 }}>
+            Google Sheets investment trackers that actually understand the Canadian system —
+            TFSA contribution room, RRSP limits, CESG grants, ACB, capital gains, and CRA rules.
+            Live prices included. No subscription, ever.
+          </p>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <Link to="/trackers" className="ml-btn" style={{
+              background: B.red, color: "#fff", textDecoration: "none", fontWeight: 700, fontSize: 15,
+              padding: "15px 30px", borderRadius: 10, boxShadow: "0 6px 20px rgba(204,0,0,0.35)",
+            }}>Browse the trackers</Link>
+            <Link to="/tools" className="ml-btn" style={{
+              background: "transparent", color: B.white, textDecoration: "none", fontWeight: 600, fontSize: 15,
+              padding: "15px 30px", borderRadius: 10, border: `1.5px solid ${B.line}`,
+            }}>Try the free calculator</Link>
+          </div>
+          <div style={{ marginTop: 24, marginBottom: 40, fontSize: 13.5, color: B.yellow, fontWeight: 600 }}>
+            🏷 Launch offer: {CONFIG.promoText}
+          </div>
         </div>
-        <h1 style={{ fontSize: "clamp(38px, 7vw, 66px)", fontWeight: 800, lineHeight: 1.04, margin: "0 0 24px", letterSpacing: "-0.03em", color: B.white }}>
-          <span style={{ display: "block", marginBottom: 6 }}>Stop Guessing.</span>
-          <span style={{ display: "block", color: B.redLink }}>Start Tracking.</span>
-        </h1>
-        <p style={{ fontSize: "clamp(15px, 2.4vw, 18px)", color: B.grayLight, maxWidth: 620, margin: "0 auto 30px", lineHeight: 1.65 }}>
-          Google Sheets investment trackers that actually understand the Canadian system —
-          TFSA contribution room, RRSP limits, CESG grants, ACB, capital gains, and CRA rules.
-          Live prices included. No subscription, ever.
-        </p>
-        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-          <Link to="/trackers" className="ml-btn" style={{
-            background: B.red, color: "#fff", textDecoration: "none", fontWeight: 700, fontSize: 15,
-            padding: "15px 30px", borderRadius: 10, boxShadow: "0 6px 20px rgba(204,0,0,0.35)",
-          }}>Browse the trackers</Link>
-          <Link to="/tools" className="ml-btn" style={{
-            background: "transparent", color: B.white, textDecoration: "none", fontWeight: 600, fontSize: 15,
-            padding: "15px 30px", borderRadius: 10, border: `1.5px solid ${B.line}`,
-          }}>Try the free calculator</Link>
-        </div>
-        <div style={{ marginTop: 24, marginBottom: 40, fontSize: 13.5, color: B.yellow, fontWeight: 600 }}>
-          🏷 Launch offer: {CONFIG.promoText}
-        </div>
-        <div>
+        <div ref={heroGalleryRef}>
           <ProductGallery slides={GALLERY_SLIDES} />
         </div>
       </header>
 
       {/* Trust strip */}
-      <div style={{ borderTop: `1px solid ${B.line}`, borderBottom: `1px solid ${B.line}`, background: B.black2 }}>
+      <Reveal as="div" style={{ borderTop: `1px solid ${B.line}`, borderBottom: `1px solid ${B.line}`, background: B.black2 }}>
         <div style={{
           maxWidth: 1100, margin: "0 auto", padding: "18px 24px",
           display: "flex", gap: "12px 36px", justifyContent: "center", flexWrap: "wrap",
@@ -142,10 +239,10 @@ function Home() {
           <span>✓ CAD + USD in one sheet</span>
           <span>✓ One-time purchase — yours forever</span>
         </div>
-      </div>
+      </Reveal>
 
       {/* Why 10 years matters */}
-      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px" }}>
+      <Reveal as="section" style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px" }}>
         <h2 style={{ fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 800, margin: "0 0 6px", letterSpacing: "-0.02em", color: B.white, textAlign: "center" }}>
           Why <RedWord>10 years</RedWord> matters more than you think
         </h2>
@@ -155,13 +252,13 @@ function Home() {
         <div style={{ display: "flex", gap: 16, justifyContent: "center", alignItems: "center", flexWrap: "wrap", marginBottom: 20 }}>
           <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16, padding: "26px 34px", textAlign: "center", minWidth: 220 }}>
             <div style={{ fontSize: 11.5, letterSpacing: "0.1em", color: B.grayLight, fontWeight: 700, marginBottom: 8 }}>START AT 25</div>
-            <div style={{ fontSize: 34, fontWeight: 800, color: B.white, letterSpacing: "-0.02em" }}>$524,963</div>
+            <div ref={count25.ref} style={{ fontSize: 34, fontWeight: 800, color: B.white, letterSpacing: "-0.02em" }}>{count25.initial}</div>
             <div style={{ fontSize: 12.5, color: B.grayLight, marginTop: 4 }}>by age 65</div>
           </div>
           <div style={{ fontSize: 14, color: B.gray, fontWeight: 700 }}>vs</div>
           <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16, padding: "26px 34px", textAlign: "center", minWidth: 220 }}>
             <div style={{ fontSize: 11.5, letterSpacing: "0.1em", color: B.grayLight, fontWeight: 700, marginBottom: 8 }}>START AT 35</div>
-            <div style={{ fontSize: 34, fontWeight: 800, color: B.grayLight, letterSpacing: "-0.02em" }}>$243,994</div>
+            <div ref={count35.ref} style={{ fontSize: 34, fontWeight: 800, color: B.grayLight, letterSpacing: "-0.02em" }}>{count35.initial}</div>
             <div style={{ fontSize: 12.5, color: B.grayLight, marginTop: 4 }}>by age 65</div>
           </div>
         </div>
@@ -177,10 +274,10 @@ function Home() {
             fontWeight: 600, fontSize: 15, padding: "13px 25px", borderRadius: 10, border: `1.5px solid ${B.line}`,
           }}>Run your own numbers — free calculator</Link>
         </div>
-      </section>
+      </Reveal>
 
       {/* Featured products */}
-      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "8px 24px 8px" }}>
+      <Reveal as="section" style={{ maxWidth: 1100, margin: "0 auto", padding: "8px 24px 8px" }}>
         <h2 style={{ fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 800, margin: "0 0 6px", letterSpacing: "-0.02em", color: B.white, textAlign: "center" }}>
           Featured <RedWord>trackers</RedWord>
         </h2>
@@ -234,18 +331,18 @@ function Home() {
             );
           })}
         </div>
-      </section>
+      </Reveal>
 
       {/* What you get */}
-      <section style={{ maxWidth: 700, margin: "0 auto", padding: "56px 24px 8px" }}>
+      <Reveal as="section" style={{ maxWidth: 700, margin: "0 auto", padding: "56px 24px 8px" }}>
         <h2 style={{ fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 800, margin: "0 0 26px", letterSpacing: "-0.02em", color: B.white, textAlign: "center" }}>
           Why Canadian investors <RedWord>switch to MapleSheet</RedWord>
         </h2>
         <Slideshow slides={OFFER_SLIDES} />
-      </section>
+      </Reveal>
 
       {/* See it in action */}
-      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px 8px" }}>
+      <Reveal as="section" style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px 8px" }}>
         <h2 style={{ fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 800, margin: "0 0 6px", letterSpacing: "-0.02em", color: B.white, textAlign: "center" }}>
           See it <RedWord>in action</RedWord>
         </h2>
@@ -264,10 +361,9 @@ function Home() {
         <div style={{ maxWidth: 460, margin: "0 auto" }}>
           <DashboardMock total={demo.total} ytd={demo.ytd} totalLabel={demo.label} accounts={demo.accounts} minContentHeight={350} />
         </div>
-      </section>
+      </Reveal>
 
-
-      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px 40px", display: "flex", gap: 18, flexWrap: "wrap" }}>
+      <Reveal as="section" style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px 40px", display: "flex", gap: 18, flexWrap: "wrap" }}>
         <Link to="/resources" className="ml-card" style={{
           flex: "1 1 300px", background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16,
           padding: "24px 22px", textDecoration: "none",
@@ -290,7 +386,7 @@ function Home() {
           </div>
           <div style={{ fontSize: 13.5, color: B.redLink, fontWeight: 600, marginTop: 12 }}>Meet MapleSheet →</div>
         </Link>
-      </section>
+      </Reveal>
     </div>
   );
 }
