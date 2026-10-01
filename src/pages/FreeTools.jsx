@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { PageHead, RedWord, usePageMeta } from "../ui.jsx";
+import { PageHead, RedWord, usePageMeta, Reveal } from "../ui.jsx";
 import { B } from "../data.js";
 import WealthCalculator from "../WealthCalculator.jsx";
 import { TfsaRoomCalculator, AcbCalculator } from "../FreeCalculators.jsx";
@@ -8,14 +8,14 @@ import { trackGoalTrackerRequested } from "../analytics.js";
 
 function ToolSection({ eyebrow, title, sub, children }) {
   return (
-    <section style={{ marginTop: 56 }}>
+    <Reveal as="section" style={{ marginTop: 56 }}>
       <div style={{ marginBottom: 20 }}>
         <div style={{ fontSize: 11.5, letterSpacing: "0.12em", color: B.redLink, fontWeight: 700, marginBottom: 6 }}>{eyebrow}</div>
         <h2 style={{ fontSize: "clamp(20px, 3.4vw, 26px)", fontWeight: 800, color: B.white, margin: "0 0 6px", letterSpacing: "-0.01em" }}>{title}</h2>
         <p style={{ fontSize: 14, color: B.grayLight, margin: 0, maxWidth: 640, lineHeight: 1.6 }}>{sub}</p>
       </div>
       {children}
-    </section>
+    </Reveal>
   );
 }
 
@@ -140,7 +140,9 @@ export default function FreeTools() {
       <PageHead kicker="FREE TOOLS" title={<>What could your money <RedWord>become?</RedWord></>}
         sub="Six free, interactive calculators below — no sign-up. Plus a free Goal Tracker spreadsheet we'll email you a copy of." />
       <div style={{ maxWidth: 1000, margin: "0 auto", padding: "20px 24px 60px" }}>
-        <WealthCalculator />
+        <Reveal>
+          <WealthCalculator />
+        </Reveal>
 
         <ToolSection
           eyebrow="ALSO FREE"
@@ -171,11 +173,13 @@ export default function FreeTools() {
             opt-in placed after someone's already gotten value from the tool,
             not a gate in front of it. sourcePage="free_tools" lets this page's
             subscribe rate show up distinctly from the Resources/Article boxes. */}
-        <NewsletterBox
-          sourcePage="free_tools"
-          heading={<>Want more free tools like this?</>}
-          subtext="New calculators, trackers, and Canadian investing guides — straight to your inbox. No spam, unsubscribe anytime."
-        />
+        <Reveal delay={100}>
+          <NewsletterBox
+            sourcePage="free_tools"
+            heading={<>Want more free tools like this?</>}
+            subtext="New calculators, trackers, and Canadian investing guides — straight to your inbox. No spam, unsubscribe anytime."
+          />
+        </Reveal>
       </div>
     </div>
   );
