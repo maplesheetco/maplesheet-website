@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, FAQS, getBundleSavings } from "../data.js";
-import { PageHead, usePageMeta, useJsonLd, DashboardMock, FaqAccordion } from "../ui.jsx";
+import { PageHead, usePageMeta, useJsonLd, DashboardMock, FaqAccordion, Reveal } from "../ui.jsx";
 import { trackBuyClicked } from "../analytics.js";
 
 const SITE_URL = "https://www.maplesheet.ca";
@@ -93,7 +93,7 @@ export default function TrackerDetail() {
         sub={product.longDescription || product.desc}
       />
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "10px 24px 0" }}>
-        <div style={{
+        <Reveal style={{
           background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18,
           padding: "clamp(22px, 4vw, 32px)", marginBottom: 18,
         }}>
@@ -176,10 +176,10 @@ export default function TrackerDetail() {
               </ul>
             </>
           )}
-        </div>
+        </Reveal>
 
         {guides.length > 0 && (
-          <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(20px, 4vw, 28px)", marginBottom: 18 }}>
+          <Reveal delay={80} style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(20px, 4vw, 28px)", marginBottom: 18 }}>
             <div style={{ fontSize: 15, fontWeight: 700, color: B.white, marginBottom: 12 }}>
               Learn the rules for each account
             </div>
@@ -198,15 +198,15 @@ export default function TrackerDetail() {
                 </Link>
               )}
             </div>
-          </div>
+          </Reveal>
         )}
 
-        <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(20px, 4vw, 28px)", marginBottom: 18 }}>
+        <Reveal delay={160} style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(20px, 4vw, 28px)", marginBottom: 18 }}>
           <div style={{ fontSize: 15, fontWeight: 700, color: B.white, marginBottom: 12 }}>
             Common questions
           </div>
           <FaqAccordion faqs={FAQS} />
-        </div>
+        </Reveal>
 
         <p style={{ textAlign: "center", color: B.yellow, fontSize: 13.5, fontWeight: 600, marginTop: 6, marginBottom: 30 }}>
           🏷 {CONFIG.promoText}
