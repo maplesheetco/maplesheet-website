@@ -12,16 +12,44 @@ export default function About() {
       <PageHead kicker="THE STORY" title={<>"Too complicated. Too American.<br /><RedWord>So I built my own."</RedWord></>} />
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "26px 24px 0" }}>
         <Reveal style={{ color: B.grayLight, fontSize: 15.5, lineHeight: 1.8 }}>
-          <p>Hi, I'm Lino — a Canadian investor based in British Columbia who got tired of tools that didn't speak our language.
-          Every tracker I tried had no TFSA contribution room, no RRSP limits, no CESG grants, no CRA rules.
-          Just generic American spreadsheets with a maple leaf slapped on, if that.</p>
-          <p>So I built a tracker for my own TFSA and RRSP. Then friends wanted copies. Then family wanted copies.
-          Then friends of family. That's how MapleSheet Co. was born — every tracker built from scratch,
-          tested on real Canadian portfolio data, no shortcuts.</p>
-          <p>Today there are 13 trackers covering every Canadian account type — TFSA, RRSP, RESP, FHSA, Margin,
-          and every practical combination — each with live prices, automatic ACB, and the actual CRA rules built in.</p>
-          <p style={{ color: B.white, fontWeight: 600 }}>
-            And one promise that will never change: every buyer gets personal support. No bots. No auto-replies. Just me. — Lino 🍁
+          <p>Hi, I'm Lino — the founder of MapleSheet Co., a Canadian investor based in British Columbia.</p>
+          <p>I started MapleSheet because I couldn't find investment tracking tools that truly understood the Canadian investor.</p>
+          <p>Most of the trackers I came across were built around U.S. accounts, tax rules, and investing
+          terminology. They could track a portfolio, but they didn't account for the things that actually
+          matter to Canadians — TFSA contribution room, RRSP limits, RESP and CESG grants, FHSA rules,
+          adjusted cost base, and the tax considerations that come with investing in Canada.</p>
+          <p>So I built my own.</p>
+          <p>What started as a personal tracker for my TFSA and RRSP gradually became something much bigger.
+          Friends asked for copies. Then family members wanted their own. Before long, MapleSheet Co. was born.</p>
+          <p>Today, MapleSheet offers <strong style={{ color: B.white }}>13 purpose-built investment trackers</strong> designed
+          specifically for Canadian investors — covering TFSA, RRSP, RESP, FHSA, Margin, and practical multi-account portfolios.</p>
+          <p>Each tracker is built with the goal of making your investments easier to understand and manage,
+          with features such as live market pricing, automatic ACB calculations, portfolio performance
+          tracking, contribution tracking, and Canadian-specific rules and considerations.</p>
+          <p>But MapleSheet is about more than spreadsheets.</p>
+          <p>It's about helping Canadian investors answer the questions that matter:</p>
+          <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px" }}>
+            {[
+              "What do I own?",
+              "How much have I contributed?",
+              "How much have I earned?",
+              "What are my investments actually doing?",
+              "And where do I stand financially?",
+            ].map((q) => (
+              <li key={q} style={{ color: B.white, fontWeight: 600, marginBottom: 6 }}>{q}</li>
+            ))}
+          </ul>
+          <p>And there's one principle I intend to keep as MapleSheet grows:</p>
+          <p style={{ color: B.red, fontWeight: 800, fontSize: 19, margin: "22px 0 10px" }}>
+            Every MapleSheet customer gets personal support.
+          </p>
+          <p>When you buy a MapleSheet tracker, you're not dealing with a faceless company, a chatbot, or an automated support system.</p>
+          <p style={{ color: B.white, fontWeight: 600 }}>You can reach me directly.</p>
+          <p>No bots. No auto-replies. Just me — helping you get the most out of the tracker you purchased.</p>
+          <p>Because MapleSheet was built by an investor who needed better tools himself, and that same standard continues to guide everything we build.</p>
+          <p style={{ color: B.white, fontWeight: 700, marginTop: 20, marginBottom: 0 }}>
+            MapleSheet Co.<br />
+            Stop Guessing. Start Tracking. 🍁
           </p>
         </Reveal>
 
