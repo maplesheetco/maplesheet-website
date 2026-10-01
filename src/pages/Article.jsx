@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { B, RESOURCES } from "../data.js";
-import { PageHead, usePageMeta, useJsonLd } from "../ui.jsx";
+import { PageHead, usePageMeta, useJsonLd, Reveal } from "../ui.jsx";
 import { NewsletterBox } from "./Resources.jsx";
 
 // Lightweight inline-markdown renderer: supports **bold**, *italic*, and
@@ -183,7 +183,10 @@ export default function Article() {
       </div>
       <PageHead kicker="GUIDE" title={article.title} />
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "10px 24px 0" }}>
-        <article style={{
+        {/* One reveal for the whole article, not per-paragraph — a guide is
+            meant to be read, so fading each block in one at a time as
+            someone scrolls would fight the reading, not help it. */}
+        <Reveal as="article" style={{
           background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18,
           padding: "clamp(22px, 4vw, 32px)", marginBottom: 18,
         }}>
@@ -197,8 +200,10 @@ export default function Article() {
             }} />
           )}
           {blocks.map((block, i) => renderBlock(block, i))}
-        </article>
-        <NewsletterBox sourcePage="article" />
+        </Reveal>
+        <Reveal delay={100}>
+          <NewsletterBox sourcePage="article" />
+        </Reveal>
       </div>
     </div>
   );
