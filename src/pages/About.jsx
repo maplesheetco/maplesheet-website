@@ -1,6 +1,6 @@
 import React from "react";
 import { B, CONFIG, FAQS } from "../data.js";
-import { PageHead, RedWord, usePageMeta, FaqAccordion } from "../ui.jsx";
+import { PageHead, RedWord, usePageMeta, FaqAccordion, Reveal } from "../ui.jsx";
 
 export default function About() {
   usePageMeta({
@@ -11,7 +11,7 @@ export default function About() {
     <div className="ml-fade">
       <PageHead kicker="THE STORY" title={<>"Too complicated. Too American.<br /><RedWord>So I built my own."</RedWord></>} />
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "26px 24px 0" }}>
-        <div style={{ color: B.grayLight, fontSize: 15.5, lineHeight: 1.8 }}>
+        <Reveal style={{ color: B.grayLight, fontSize: 15.5, lineHeight: 1.8 }}>
           <p>Hi, I'm Lino — a Canadian investor based in British Columbia who got tired of tools that didn't speak our language.
           Every tracker I tried had no TFSA contribution room, no RRSP limits, no CESG grants, no CRA rules.
           Just generic American spreadsheets with a maple leaf slapped on, if that.</p>
@@ -23,7 +23,7 @@ export default function About() {
           <p style={{ color: B.white, fontWeight: 600 }}>
             And one promise that will never change: every buyer gets personal support. No bots. No auto-replies. Just me. — Lino 🍁
           </p>
-        </div>
+        </Reveal>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12, margin: "34px 0" }}>
           {[
@@ -31,20 +31,20 @@ export default function About() {
             ["🧮 Automatic ACB", "Adjusted cost base and capital gains calculated the CRA way"],
             ["🇨🇦 CRA rules built in", "Contribution room, CESG grants, Line 208, Line 20805 — the real rules"],
             ["💰 One-time purchase", "No subscription. Instant download. Yours forever, with personal support"],
-          ].map(([t, d]) => (
-            <div key={t} style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 14, padding: "18px 20px" }}>
+          ].map(([t, d], i) => (
+            <Reveal key={t} delay={i * 80} style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 14, padding: "18px 20px" }}>
               <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 5, color: B.white }}>{t}</div>
               <div style={{ color: B.grayLight, fontSize: 13.5, lineHeight: 1.55 }}>{d}</div>
-            </div>
+            </Reveal>
           ))}
         </div>
 
         <h2 style={{ fontSize: 26, fontWeight: 800, color: B.white, margin: "10px 0 18px", letterSpacing: "-0.01em" }}>
           Common <RedWord>questions</RedWord>
         </h2>
-        <div style={{ marginBottom: 20 }}>
+        <Reveal style={{ marginBottom: 20 }}>
           <FaqAccordion faqs={FAQS} />
-        </div>
+        </Reveal>
         <div style={{ textAlign: "center", padding: "10px 0 10px" }}>
           <a href={CONFIG.shopUrl} target="_blank" rel="noreferrer" className="ml-btn" style={{
             display: "inline-block", background: B.red, color: "#fff", textDecoration: "none",
