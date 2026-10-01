@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, getBundleSavings } from "../data.js";
-import { PageHead, RedWord, usePageMeta, useJsonLd } from "../ui.jsx";
+import { PageHead, RedWord, usePageMeta, useJsonLd, Reveal } from "../ui.jsx";
 import { trackBuyClicked } from "../analytics.js";
 
 const SITE_URL = "https://www.maplesheet.ca";
@@ -64,12 +64,12 @@ export default function Trackers() {
           ))}
         </div>
         <div className="ml-fade" key={filter} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(255px, 1fr))", gap: 16 }}>
-          {shown.map((p) => {
+          {shown.map((p, i) => {
             const flagship = p.badge === "FLAGSHIP";
             const guide = ACCOUNT_GUIDES[p.tag];
             const savings = getBundleSavings(p);
             return (
-              <div key={p.name} className="ml-card" style={{
+              <Reveal key={p.name} delay={Math.min(i * 50, 350)} className="ml-card" style={{
                 display: "flex", flexDirection: "column", gap: 10,
                 background: flagship ? `linear-gradient(150deg, #2A0A0A, ${B.black2})` : B.black2,
                 border: `1.5px solid ${flagship ? B.red : B.line}`,
@@ -142,7 +142,7 @@ export default function Trackers() {
                     }}>Direct — soon</span>
                   )}
                 </div>
-              </div>
+              </Reveal>
             );
           })}
         </div>
