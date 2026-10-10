@@ -351,8 +351,8 @@ export function Footer() {
           <p style={{ margin: "0 0 16px", fontSize: 11.5, color: B.gray, lineHeight: 1.6, maxWidth: 760 }}>
             MapleSheet trackers are record-keeping tools, not financial advice. Google Sheets is a trademark of Google LLC; MapleSheet Co. is not affiliated with Google or Etsy.
           </p>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap", paddingTop: 16, borderTop: `1px solid ${B.line}` }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", fontSize: 11.5, color: B.gray }}>
+          <div className="ml-foot-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap", paddingTop: 16, borderTop: `1px solid ${B.line}` }}>
+            <div className="ml-foot-bottom-left" style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", fontSize: 11.5, color: B.gray }}>
               <span>© 2026 MapleSheet Co. All rights reserved.</span>
               <span style={{ color: B.line }}>·</span>
               <a href="https://linocondigital.com" target="_blank" rel="noreferrer"
@@ -362,7 +362,7 @@ export function Footer() {
                 LinoCon Digital
               </a>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap", fontSize: 11.5 }}>
+            <div className="ml-foot-bottom-right" style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap", fontSize: 11.5 }}>
               <a href={`mailto:${CONFIG.email}`} style={{ color: B.gray, textDecoration: "none" }}>{CONFIG.email}</a>
               <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                 style={{ display: "inline-flex", alignItems: "center", gap: 4, fontWeight: 600, color: B.grayLight, background: "none", border: "none", padding: 0, font: "inherit", cursor: "pointer" }}>
@@ -380,8 +380,9 @@ export function Footer() {
           .ml-foot-grid { grid-template-columns: 1fr 1fr; row-gap: 36px; }
           .ml-foot-grid > div:first-child { grid-column: 1 / -1; }
         }
-        @media (max-width: 460px) {
-          .ml-foot-grid { grid-template-columns: 1fr; }
+        @media (max-width: 600px) {
+          .ml-foot-bottom { flex-direction: column; text-align: center; }
+          .ml-foot-bottom-left, .ml-foot-bottom-right { justify-content: center; }
         }
       `}</style>
     </footer>
