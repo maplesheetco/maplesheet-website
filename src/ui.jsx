@@ -276,30 +276,114 @@ export function Nav() {
   );
 }
 
+const FOOT_LINK_STYLE = {
+  color: B.grayLight, textDecoration: "none", fontSize: 13.5,
+  display: "inline-flex", alignItems: "center", gap: 5, width: "fit-content",
+};
+
+function FootCol({ heading, children }) {
+  return (
+    <div>
+      <h3 style={{ margin: "0 0 16px", fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: B.gray }}>
+        {heading}
+      </h3>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>{children}</div>
+    </div>
+  );
+}
+
 export function Footer() {
   return (
     <footer style={{ borderTop: `1px solid ${B.line}`, marginTop: 60 }}>
-      <div style={{
-        maxWidth: 1100, margin: "0 auto", padding: "30px 24px",
-        display: "flex", justifyContent: "space-between", alignItems: "center", gap: 14, flexWrap: "wrap",
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <img src="/logo.png" alt="" style={{ width: 30, height: 30, borderRadius: 7 }} />
-          <span style={{ fontSize: 13, color: B.gray }}>
-            © 2026 MapleSheet Co. · British Columbia, Canada · Stop Guessing. Start Tracking.
-          </span>
+      <div className="ml-foot-grid" style={{ maxWidth: 1100, margin: "0 auto", padding: "60px 24px 44px" }}>
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <img src="/logo.png" alt="" style={{ width: 28, height: 28, borderRadius: 7 }} />
+            <span style={{ fontWeight: 800, fontSize: 17, letterSpacing: "-0.01em" }}>MapleSheet Co.</span>
+          </div>
+          <p style={{ margin: "16px 0 0", fontSize: 18, fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.3, maxWidth: 280 }}>
+            Stop guessing. Start <span style={{ color: B.redLink }}>tracking.</span>
+          </p>
+          <p style={{ margin: "10px 0 0", fontSize: 13.5, color: B.gray, lineHeight: 1.6, maxWidth: 260 }}>
+            Google Sheets trackers for Canadian investors — TFSA, RRSP, RESP, FHSA and multi-brokerage.
+          </p>
+          <div style={{ display: "flex", gap: 10, marginTop: 20, flexWrap: "wrap" }}>
+            <a href={CONFIG.shopUrl} target="_blank" rel="noreferrer"
+              style={{ fontSize: 13.5, fontWeight: 600, textDecoration: "none", padding: "10px 18px", borderRadius: 8, background: B.red, color: B.white, border: `1px solid ${B.red}` }}>
+              Shop Trackers
+            </a>
+            <a href={`mailto:${CONFIG.email}`}
+              style={{ fontSize: 13.5, fontWeight: 600, textDecoration: "none", padding: "10px 18px", borderRadius: 8, background: "transparent", color: B.white, border: `1px solid ${B.line}` }}>
+              Email us
+            </a>
+          </div>
         </div>
-        <div style={{ display: "flex", gap: 18, fontSize: 13.5, flexWrap: "wrap" }}>
-          <a href={CONFIG.shopUrl} target="_blank" rel="noreferrer" style={{ color: B.grayLight, textDecoration: "none" }}>Etsy</a>
-          <a href={CONFIG.youtubeUrl} target="_blank" rel="noreferrer" style={{ color: B.grayLight, textDecoration: "none" }}>YouTube</a>
-          <a href={CONFIG.xUrl} target="_blank" rel="noreferrer" style={{ color: B.grayLight, textDecoration: "none" }}>X</a>
-          <a href={CONFIG.affiliateUrl} target="_blank" rel="noreferrer" style={{ color: B.grayLight, textDecoration: "none" }}>Become an Affiliate</a>
-          <a href={`mailto:${CONFIG.email}`} style={{ color: B.grayLight, textDecoration: "none" }}>{CONFIG.email}</a>
+
+        <FootCol heading="Products">
+          <NavLink to="/trackers" style={FOOT_LINK_STYLE}>Trackers</NavLink>
+          <NavLink to="/tools" style={FOOT_LINK_STYLE}>Free Tools</NavLink>
+          <NavLink to="/resources" style={FOOT_LINK_STYLE}>Resources</NavLink>
+        </FootCol>
+
+        <FootCol heading="Company">
+          <NavLink to="/about" style={FOOT_LINK_STYLE}>About</NavLink>
+          <NavLink to="/contact" style={FOOT_LINK_STYLE}>Contact</NavLink>
+          <a href={CONFIG.shopUrl} target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>Etsy Shop ↗</a>
+        </FootCol>
+
+        <FootCol heading="Recommended">
+          <a href="https://wealthsimple.com/invite/R7ENSA" target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>Wealthsimple ↗</a>
+          <div>
+            <a href="https://www.questrade.com" target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>Questrade ↗</a>
+            <div style={{ fontSize: 11.5, color: B.gray, marginTop: 2 }}>code: 786314335499127</div>
+          </div>
+          <a href={CONFIG.youtubeUrl} target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>YouTube ↗</a>
+          <a href={CONFIG.xUrl} target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>X ↗</a>
+          <a href={CONFIG.affiliateUrl} target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>Become an Affiliate</a>
+          <p style={{ margin: "8px 0 0", fontSize: 11, color: B.gray, lineHeight: 1.5, maxWidth: 190 }}>
+            Wealthsimple and Questrade are referral links/codes — MapleSheet may receive a benefit at no cost to you.
+          </p>
+        </FootCol>
+      </div>
+
+      <div style={{ borderTop: `1px solid ${B.line}` }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "18px 24px" }}>
+          <p style={{ margin: "0 0 16px", fontSize: 11.5, color: B.gray, lineHeight: 1.6, maxWidth: 760 }}>
+            MapleSheet trackers are record-keeping tools, not financial advice. Google Sheets is a trademark of Google LLC; MapleSheet Co. is not affiliated with Google or Etsy.
+          </p>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap", paddingTop: 16, borderTop: `1px solid ${B.line}` }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", fontSize: 11.5, color: B.gray }}>
+              <span>© 2026 MapleSheet Co. All rights reserved.</span>
+              <span style={{ color: B.line }}>·</span>
+              <a href="https://linocondigital.com" target="_blank" rel="noreferrer"
+                style={{ display: "flex", alignItems: "center", gap: 6, color: B.gray, textDecoration: "none" }}>
+                Built by
+                <img src="/linocon-digital-logo.png" alt="LinoCon Digital" style={{ width: 15, height: 15, borderRadius: 4 }} />
+                LinoCon Digital
+              </a>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap", fontSize: 11.5 }}>
+              <a href={`mailto:${CONFIG.email}`} style={{ color: B.gray, textDecoration: "none" }}>{CONFIG.email}</a>
+              <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                style={{ display: "inline-flex", alignItems: "center", gap: 4, fontWeight: 600, color: B.grayLight, background: "none", border: "none", padding: 0, font: "inherit", cursor: "pointer" }}>
+                Back to top ↑
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px 26px", fontSize: 11.5, color: B.gray, lineHeight: 1.6 }}>
-        MapleSheet trackers are record-keeping tools, not financial advice. Google Sheets is a trademark of Google LLC; MapleSheet Co. is not affiliated with Google or Etsy.
-      </div>
+
+      <style>{`
+        .ml-foot-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
+        .ml-foot-grid a:hover { color: ${B.white} !important; }
+        @media (max-width: 760px) {
+          .ml-foot-grid { grid-template-columns: 1fr 1fr; row-gap: 36px; }
+          .ml-foot-grid > div:first-child { grid-column: 1 / -1; }
+        }
+        @media (max-width: 460px) {
+          .ml-foot-grid { grid-template-columns: 1fr; }
+        }
+      `}</style>
     </footer>
   );
 }
