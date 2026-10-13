@@ -209,8 +209,11 @@ export default function Article() {
           )}
           {blocks.map((block, i) => renderBlock(block, i))}
         </Reveal>
+        <Reveal delay={100}>
+          <NewsletterBox sourcePage="article" />
+        </Reveal>
         {moreGuides.length > 0 && (
-          <Reveal style={{
+          <Reveal delay={150} style={{
             background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18,
             padding: "clamp(20px, 4vw, 28px)", marginBottom: 18,
           }}>
@@ -233,9 +236,6 @@ export default function Article() {
             </Link>
           </Reveal>
         )}
-        <Reveal delay={100}>
-          <NewsletterBox sourcePage="article" />
-        </Reveal>
       </div>
     </div>
   );
