@@ -132,17 +132,19 @@ export default function TrackerDetail() {
           )}
 
           <div style={{ display: "flex", gap: 10, marginBottom: product.features ? 26 : 0 }}>
-            <a
-              href={product.url} target="_blank" rel="noreferrer" className="ml-btn"
-              onClick={() => trackBuyClicked({
-                productName: product.name, productTag: product.tag, priceCad: product.price,
-                checkoutDestination: "etsy", sourceSection: "tracker_detail",
-              })}
-              style={{
-                flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: "#fff",
-                background: B.red, padding: "14px 10px", borderRadius: 10, textDecoration: "none",
-              }}
-            >Buy on Etsy</a>
+            {product.url && (
+              <a
+                href={product.url} target="_blank" rel="noreferrer" className="ml-btn"
+                onClick={() => trackBuyClicked({
+                  productName: product.name, productTag: product.tag, priceCad: product.price,
+                  checkoutDestination: "etsy", sourceSection: "tracker_detail",
+                })}
+                style={{
+                  flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: "#fff",
+                  background: B.red, padding: "14px 10px", borderRadius: 10, textDecoration: "none",
+                }}
+              >Buy on Etsy</a>
+            )}
             {product.directUrl ? (
               <a
                 href={product.directUrl} target="_blank" rel="noreferrer" className="ml-btn"
@@ -150,18 +152,21 @@ export default function TrackerDetail() {
                   productName: product.name, productTag: product.tag, priceCad: product.price,
                   checkoutDestination: "direct", sourceSection: "tracker_detail",
                 })}
-                style={{
+                style={product.url ? {
                   flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: B.white,
                   background: "transparent", border: `1.5px solid ${B.white}`,
                   padding: "14px 10px", borderRadius: 10, textDecoration: "none",
+                } : {
+                  flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: "#fff",
+                  background: B.red, padding: "14px 10px", borderRadius: 10, textDecoration: "none",
                 }}
-              >Buy Direct</a>
-            ) : (
+              >{product.url ? "Buy Direct" : "Buy on Payhip"}</a>
+            ) : product.url ? (
               <span title="Direct checkout coming soon" style={{
                 flex: 1, textAlign: "center", fontSize: 14, fontWeight: 600, color: B.gray,
                 border: `1.5px solid ${B.line}`, padding: "14px 10px", borderRadius: 10, cursor: "default",
               }}>Direct — soon</span>
-            )}
+            ) : null}
           </div>
 
           {product.features && (
