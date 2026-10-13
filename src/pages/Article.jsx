@@ -184,16 +184,18 @@ export default function Article() {
 
   return (
     <div className="ml-fade">
-      <div style={{ maxWidth: 780, margin: "0 auto", padding: "52px 24px 0" }}>
+      <div style={{ maxWidth: 1040, margin: "0 auto", padding: "52px 24px 0" }}>
         <Link to="/resources" style={{ color: B.gray, fontSize: 13.5, fontWeight: 600, textDecoration: "none" }}>
           ← All guides
         </Link>
       </div>
       <PageHead kicker="GUIDE" title={article.title} />
-      <div style={{ maxWidth: 780, margin: "0 auto", padding: "10px 24px 0" }}>
-        {/* One reveal for the whole article, not per-paragraph — a guide is
-            meant to be read, so fading each block in one at a time as
-            someone scrolls would fight the reading, not help it. */}
+      {/* Two columns on wider screens — article on the left, newsletter +
+          More Guides stacked in a sidebar on the right (sidebar sticks while
+          scrolling a long guide). Collapses to one column under 860px via
+          the .ml-article-grid rule in GlobalStyles, sidebar falling below
+          the article in source order. */}
+      <div className="ml-article-grid" style={{ maxWidth: 1040, margin: "0 auto", padding: "10px 24px 0" }}>
         <Reveal as="article" style={{
           background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18,
           padding: "clamp(22px, 4vw, 32px)", marginBottom: 18,
@@ -209,33 +211,36 @@ export default function Article() {
           )}
           {blocks.map((block, i) => renderBlock(block, i))}
         </Reveal>
-        <Reveal delay={100}>
-          <NewsletterBox sourcePage="article" />
-        </Reveal>
-        {moreGuides.length > 0 && (
-          <Reveal delay={150} style={{
-            background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18,
-            padding: "clamp(20px, 4vw, 28px)", marginBottom: 18,
-          }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: B.white, marginBottom: 14 }}>
-              More Guides
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
-              {moreGuides.map((g) => (
-                <Link
-                  key={g.slug}
-                  to={`/resources/${g.slug}`}
-                  style={{ color: B.grayLight, fontSize: 14.5, fontWeight: 600, textDecoration: "none", lineHeight: 1.5 }}
-                >
-                  {g.title}
-                </Link>
-              ))}
-            </div>
-            <Link to="/resources" style={{ color: B.red, fontSize: 13.5, fontWeight: 600, textDecoration: "none" }}>
-              ← Back to all guides
-            </Link>
+
+        <div className="ml-article-sidebar">
+          <Reveal delay={100} style={{ marginBottom: 18 }}>
+            <NewsletterBox sourcePage="article" />
           </Reveal>
-        )}
+          {moreGuides.length > 0 && (
+            <Reveal delay={150} style={{
+              background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18,
+              padding: "clamp(20px, 4vw, 28px)",
+            }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: B.white, marginBottom: 14 }}>
+                More Guides
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
+                {moreGuides.map((g) => (
+                  <Link
+                    key={g.slug}
+                    to={`/resources/${g.slug}`}
+                    style={{ color: B.grayLight, fontSize: 14.5, fontWeight: 600, textDecoration: "none", lineHeight: 1.5 }}
+                  >
+                    {g.title}
+                  </Link>
+                ))}
+              </div>
+              <Link to="/resources" style={{ color: B.red, fontSize: 13.5, fontWeight: 600, textDecoration: "none" }}>
+                ← Back to all guides
+              </Link>
+            </Reveal>
+          )}
+        </div>
       </div>
     </div>
   );
