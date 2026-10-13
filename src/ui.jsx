@@ -84,6 +84,14 @@ export function Reveal({ children, as: Tag = "div", delay = 0, y = 24, style, cl
   useEffect(() => {
     if (shown || !ref.current) return;
     const el = ref.current;
+    // threshold is intentionally tiny (not e.g. 0.15): it's a ratio of the
+    // WHOLE element's height, and for very long content (a full in-depth
+    // article can easily run 8,000-15,000px tall) no scroll position can
+    // ever put 15% of the total element inside a normal browser viewport at
+    // once — isIntersecting would simply never fire, leaving the content
+    // stuck at opacity:0 forever. Firing as soon as any sliver is visible
+    // keeps the same fade-in feel for short content and actually works for
+    // tall content too.
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -91,7 +99,7 @@ export function Reveal({ children, as: Tag = "div", delay = 0, y = 24, style, cl
           io.disconnect();
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0, rootMargin: "0px 0px -8% 0px" }
     );
     io.observe(el);
     return () => io.disconnect();
