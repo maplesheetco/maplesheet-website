@@ -62,6 +62,14 @@ export const PRODUCTS = [
     bestFor: "Tracking RRSP contribution room and deduction limit on their own." },
   { name: "TFSA Multi-Brokerage Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4541253114", directUrl: "https://payhip.com/b/8CqQU", desc: "Up to 8 brokerages in one sheet — the only one of its kind", badge: "NEW", screenshot: "/screenshots/multi-brokerage.jpg", sku: "MS-TFSA-MB",
     bestFor: "One TFSA spread across multiple brokerages (up to 8)." },
+  // Payhip-only by design: no `url` (Etsy) field here on purpose — this
+  // product is sold through Payhip exclusively. The buy-button rendering in
+  // App.jsx / Trackers.jsx / TrackerDetail.jsx checks `p.url` before showing
+  // an Etsy button, so a product with only `directUrl` shows a single
+  // full-width "Buy on Payhip" button instead.
+  // ⚠️ Lino: price assumed at $9.99 to match the TFSA Multi-Brokerage Tracker — confirm/adjust.
+  { name: "RRSP Multi-Brokerage Tracker", tag: "RRSP", price: 9.99, directUrl: "https://payhip.com/b/sZ3r0", desc: "Up to 8 brokerages in one sheet — the RRSP companion to our #1 TFSA tracker", badge: "NEW", sku: "MS-RRSP-MB",
+    bestFor: "One RRSP spread across multiple brokerages (up to 8)." },
   { name: "RESP Tracker", tag: "RESP", price: 14.99, url: "https://www.etsy.com/listing/4530779418", directUrl: "https://payhip.com/b/w8PXD", desc: "CESG grants, up to 4 beneficiaries", screenshot: "/screenshots/resp.jpg", sku: "MS-RESP-01",
     bestFor: "Parents tracking CESG grants for up to 4 kids." },
   { name: "FHSA Tracker", tag: "FHSA", price: 14.99, url: "https://www.etsy.com/listing/4534938230", directUrl: "https://payhip.com/b/dEXy3", desc: "First Home Savings, Line 20805 tax dashboard", screenshot: "/screenshots/fhsa.jpg", sku: "MS-FHSA-01",
