@@ -1,5 +1,5 @@
 import React from "react";
-import { B, CONFIG, FAQS } from "../data.js";
+import { B, CONFIG, FAQS, PRODUCTS } from "../data.js";
 import { PageHead, RedWord, usePageMeta, FaqAccordion, Reveal } from "../ui.jsx";
 
 export default function About() {
@@ -21,7 +21,7 @@ export default function About() {
           <p>So I built my own.</p>
           <p>What started as a personal tracker for my TFSA and RRSP gradually became something much bigger.
           Friends asked for copies. Then family members wanted their own. Before long, MapleSheet Co. was born.</p>
-          <p>Today, MapleSheet offers <strong style={{ color: B.white }}>13 purpose-built investment trackers</strong> designed
+          <p>Today, MapleSheet offers <strong style={{ color: B.white }}>{PRODUCTS.length} purpose-built investment trackers</strong> designed
           specifically for Canadian investors — covering TFSA, RRSP, RESP, FHSA, Margin, and practical multi-account portfolios.</p>
           <p>Each tracker is built with the goal of making your investments easier to understand and manage,
           with features such as live market pricing, automatic ACB calculations, portfolio performance
