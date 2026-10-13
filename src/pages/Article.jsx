@@ -174,6 +174,14 @@ export default function Article() {
   const raw = article.body || article.summary;
   const blocks = Array.isArray(raw) ? raw : [raw];
 
+  // A few other live guides to keep readers on the site once they finish
+  // this one — same live/date gate as the main list, newest first, current
+  // article excluded.
+  const moreGuides = RESOURCES
+    .filter((r) => r.type === "article" && r.slug !== article.slug && r.live !== false && new Date(r.date) <= today)
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 3);
+
   return (
     <div className="ml-fade">
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "52px 24px 0" }}>
@@ -201,6 +209,30 @@ export default function Article() {
           )}
           {blocks.map((block, i) => renderBlock(block, i))}
         </Reveal>
+        {moreGuides.length > 0 && (
+          <Reveal style={{
+            background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18,
+            padding: "clamp(20px, 4vw, 28px)", marginBottom: 18,
+          }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: B.white, marginBottom: 14 }}>
+              More Guides
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
+              {moreGuides.map((g) => (
+                <Link
+                  key={g.slug}
+                  to={`/resources/${g.slug}`}
+                  style={{ color: B.grayLight, fontSize: 14.5, fontWeight: 600, textDecoration: "none", lineHeight: 1.5 }}
+                >
+                  {g.title}
+                </Link>
+              ))}
+            </div>
+            <Link to="/resources" style={{ color: B.red, fontSize: 13.5, fontWeight: 600, textDecoration: "none" }}>
+              ← Back to all guides
+            </Link>
+          </Reveal>
+        )}
         <Reveal delay={100}>
           <NewsletterBox sourcePage="article" />
         </Reveal>
