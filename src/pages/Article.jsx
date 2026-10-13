@@ -179,8 +179,7 @@ export default function Article() {
   // article excluded.
   const moreGuides = RESOURCES
     .filter((r) => r.type === "article" && r.slug !== article.slug && r.live !== false && new Date(r.date) <= today)
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 3);
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
     <div className="ml-fade">
@@ -224,7 +223,17 @@ export default function Article() {
               <div style={{ fontSize: 13, fontWeight: 700, color: B.white, marginBottom: 14 }}>
                 More Guides
               </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
+              <div
+                className="ml-more-guides-list"
+                style={{
+                  display: "flex", flexDirection: "column", gap: 10, marginBottom: 16,
+                  // Cap the height to roughly 5 links' worth of space, then let
+                  // the rest scroll — so the sidebar card doesn't grow without
+                  // bound as more guides get published, while every guide
+                  // (not just the newest 3) stays reachable.
+                  maxHeight: 230, overflowY: "auto", paddingRight: 6,
+                }}
+              >
                 {moreGuides.map((g) => (
                   <Link
                     key={g.slug}
