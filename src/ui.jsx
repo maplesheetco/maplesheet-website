@@ -221,6 +221,13 @@ export function GlobalStyles() {
          the column actually shrink to fit and wrap text normally. */
       .ml-article-grid > * { min-width: 0; }
       .ml-article-sidebar { position: sticky; top: 86px; display: flex; flex-direction: column; }
+      /* Thin, dark-themed scrollbar for the "More Guides" list so it doesn't
+         show a jarring default white scrollbar on top of the dark card. */
+      .ml-more-guides-list { scrollbar-width: thin; scrollbar-color: ${B.line} transparent; }
+      .ml-more-guides-list::-webkit-scrollbar { width: 6px; }
+      .ml-more-guides-list::-webkit-scrollbar-track { background: transparent; }
+      .ml-more-guides-list::-webkit-scrollbar-thumb { background: ${B.line}; border-radius: 10px; }
+      .ml-more-guides-list::-webkit-scrollbar-thumb:hover { background: ${B.gray}; }
       @media (max-width: 860px) {
         .ml-article-grid { grid-template-columns: 1fr; }
         .ml-article-sidebar { position: static; }
