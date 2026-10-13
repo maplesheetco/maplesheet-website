@@ -196,7 +196,7 @@ function Home() {
             border: `1px solid ${B.line}`, borderRadius: 999, padding: "7px 16px",
             fontSize: 13, color: B.grayLight, background: B.black2,
           }}>
-            <MapleLeaf size={13} /> Built in Canada, for Canadian investors · 13 trackers
+            <MapleLeaf size={13} /> Built in Canada, for Canadian investors · {PRODUCTS.length} trackers
           </div>
           <h1 style={{ fontSize: "clamp(38px, 7vw, 66px)", fontWeight: 800, lineHeight: 1.04, margin: "0 0 24px", letterSpacing: "-0.03em", color: B.white }}>
             <span style={{ display: "block", marginBottom: 6 }}>Stop Guessing.</span>
@@ -282,7 +282,7 @@ function Home() {
           Featured <RedWord>trackers</RedWord>
         </h2>
         <p style={{ color: B.grayLight, fontSize: 14.5, textAlign: "center", margin: "0 0 26px" }}>
-          The flagship, and the newest addition. <Link to="/trackers" style={{ color: B.redLink, fontWeight: 600 }}>See all 13 →</Link>
+          The flagship, and the newest addition. <Link to="/trackers" style={{ color: B.redLink, fontWeight: 600 }}>See all {PRODUCTS.length} →</Link>
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))", gap: 16, maxWidth: 720, margin: "0 auto" }}>
           {featured.map((p) => {
@@ -304,28 +304,33 @@ function Home() {
                 <span style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.55, flex: 1 }}>{p.desc}</span>
                 <span style={{ fontSize: 20, fontWeight: 800, color: B.white }}>CA${p.price.toFixed(2)}</span>
                 <div style={{ display: "flex", gap: 8 }}>
-                  <a href={p.url} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
-                    productName: p.name, productTag: p.tag, priceCad: p.price,
-                    checkoutDestination: "etsy", sourceSection: "home_featured",
-                  })} style={{
-                    flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
-                    background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
-                  }}>Buy on Etsy</a>
+                  {p.url && (
+                    <a href={p.url} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
+                      productName: p.name, productTag: p.tag, priceCad: p.price,
+                      checkoutDestination: "etsy", sourceSection: "home_featured",
+                    })} style={{
+                      flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
+                      background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
+                    }}>Buy on Etsy</a>
+                  )}
                   {p.directUrl ? (
                     <a href={p.directUrl} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
                       productName: p.name, productTag: p.tag, priceCad: p.price,
                       checkoutDestination: "direct", sourceSection: "home_featured",
-                    })} style={{
+                    })} style={p.url ? {
                       flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: B.white,
                       background: "transparent", border: `1.5px solid ${B.white}`,
                       padding: "10px 8px", borderRadius: 8, textDecoration: "none",
-                    }}>Buy Direct</a>
-                  ) : (
+                    } : {
+                      flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
+                      background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
+                    }}>{p.url ? "Buy Direct" : "Buy on Payhip"}</a>
+                  ) : p.url ? (
                     <span title="Direct checkout coming soon" style={{
                       flex: 1, textAlign: "center", fontSize: 13, fontWeight: 600, color: B.gray,
                       border: `1.5px solid ${B.line}`, padding: "10px 8px", borderRadius: 8, cursor: "default",
                     }}>Direct — soon</span>
-                  )}
+                  ) : null}
                 </div>
               </div>
             );
@@ -382,7 +387,7 @@ function Home() {
             "Too complicated. Too American. So I built my own."
           </div>
           <div style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.6 }}>
-            How one Canadian investor's frustration became 13 trackers — and why every buyer gets personal support.
+            How one Canadian investor's frustration became {PRODUCTS.length} trackers — and why every buyer gets personal support.
           </div>
           <div style={{ fontSize: 13.5, color: B.redLink, fontWeight: 600, marginTop: 12 }}>Meet MapleSheet →</div>
         </Link>
