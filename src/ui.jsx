@@ -213,6 +213,18 @@ export function GlobalStyles() {
       .ml-input { width: 100%; background: ${B.black}; border: 1.5px solid ${B.line}; border-radius: 10px;
         color: ${B.white}; font-family: inherit; font-size: 14.5px; padding: 13px 15px; outline: none; }
       .ml-input:focus { border-color: ${B.red}; }
+      .ml-article-grid { display: grid; grid-template-columns: 1fr 320px; gap: 28px; align-items: start; }
+      /* Grid items default to min-width: auto, which lets their content's
+         natural (unwrapped) width force the track wider than the container
+         — on a narrow screen that silently overflows the page horizontally
+         even though the column itself is nominally 1fr. min-width: 0 lets
+         the column actually shrink to fit and wrap text normally. */
+      .ml-article-grid > * { min-width: 0; }
+      .ml-article-sidebar { position: sticky; top: 86px; display: flex; flex-direction: column; }
+      @media (max-width: 860px) {
+        .ml-article-grid { grid-template-columns: 1fr; }
+        .ml-article-sidebar { position: static; }
+      }
       @media (prefers-reduced-motion: reduce) {
         .ml-btn, .ml-card, .ml-fade { transition: none !important; animation: none !important; }
         html { scroll-behavior: auto; }
