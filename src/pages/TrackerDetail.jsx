@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, FAQS, getBundleSavings } from "../data.js";
 import { PageHead, usePageMeta, useJsonLd, DashboardMock, FaqAccordion, Reveal } from "../ui.jsx";
@@ -58,6 +58,82 @@ function ProductGallery({ images, name }) {
       </div>
       <div style={{ textAlign: "center", color: B.grayLight, fontSize: 12.5, marginTop: 6 }}>
         {current.label}
+      </div>
+    </div>
+  );
+}
+
+// Persistent "don't miss it" CTA — fixed to the bottom of the viewport and
+// hidden until 3 seconds after the visitor lands on the page (the "hook"),
+// then slides up and stays visible while they read/scroll, so the buy
+// button is never more than a glance away. Dismissible (×) per page view;
+// re-appears on a fresh visit since state resets on mount. Renders nothing
+// when the product has no purchase path at all.
+function StickyBuyBar({ product }) {
+  const [visible, setVisible] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), 3000);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (!product.stripeBuyButton && !product.directUrl && !product.url) return null;
+
+  return (
+    <div
+      style={{
+        position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 40,
+        background: B.black2, borderTop: `1px solid ${B.line}`,
+        boxShadow: "0 -10px 28px rgba(0,0,0,0.4)",
+        transform: visible && !dismissed ? "translateY(0)" : "translateY(110%)",
+        opacity: visible && !dismissed ? 1 : 0,
+        transition: "transform 0.5s cubic-bezier(.16,.8,.24,1), opacity 0.5s ease",
+        pointerEvents: visible && !dismissed ? "auto" : "none",
+      }}
+    >
+      <div style={{
+        maxWidth: 780, margin: "0 auto", padding: "10px 16px",
+        display: "flex", alignItems: "center", gap: 12,
+      }}>
+        <button
+          onClick={() => setDismissed(true)} aria-label="Dismiss"
+          style={{
+            background: "none", border: "none", color: B.gray, fontSize: 20,
+            cursor: "pointer", padding: "0 4px", lineHeight: 1, flexShrink: 0,
+          }}
+        >×</button>
+        <div style={{ flex: "1 1 auto", minWidth: 0 }}>
+          <div style={{ color: B.white, fontWeight: 700, fontSize: 13.5, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {product.name}
+          </div>
+          <div style={{ color: B.grayLight, fontSize: 12.5 }}>CA${product.price.toFixed(2)} — one-time, no subscription</div>
+        </div>
+        <div style={{ flexShrink: 0, display: "flex", justifyContent: "flex-end" }}>
+          {product.stripeBuyButton ? (
+            <div onClickCapture={() => trackBuyClicked({
+              productName: product.name, productTag: product.tag, priceCad: product.price,
+              checkoutDestination: "stripe", sourceSection: "tracker_detail_sticky_bar",
+            })}>
+              <stripe-buy-button
+                buy-button-id={product.stripeBuyButton.buyButtonId}
+                publishable-key={product.stripeBuyButton.publishableKey}
+              ></stripe-buy-button>
+            </div>
+          ) : (
+            <a
+              href={product.directUrl || product.url} target="_blank" rel="noreferrer"
+              onClick={() => trackBuyClicked({
+                productName: product.name, productTag: product.tag, priceCad: product.price,
+                checkoutDestination: product.directUrl ? "direct" : "etsy", sourceSection: "tracker_detail_sticky_bar",
+              })}
+              style={{
+                fontSize: 13, fontWeight: 700, color: "#fff", background: B.red,
+                padding: "9px 18px", borderRadius: 8, textDecoration: "none", whiteSpace: "nowrap",
+              }}
+            >Buy now</a>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -139,8 +215,10 @@ export default function TrackerDetail() {
 
   const savings = getBundleSavings(product);
 
+  const hasBuyPath = !!(product.stripeBuyButton || product.directUrl || product.url);
+
   return (
-    <div className="ml-fade">
+    <div className="ml-fade" style={{ paddingBottom: hasBuyPath ? 70 : 0 }}>
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "24px 24px 0" }}>
         <Link to="/trackers" style={{ color: B.gray, fontSize: 13.5, fontWeight: 600, textDecoration: "none" }}>
           ← All trackers
@@ -208,7 +286,7 @@ export default function TrackerDetail() {
             )}
             {product.stripeBuyButton ? (
               <div
-                style={{ flex: 1 }}
+                style={{ flex: 1, display: "flex", justifyContent: "center" }}
                 onClickCapture={() => trackBuyClicked({
                   productName: product.name, productTag: product.tag, priceCad: product.price,
                   checkoutDestination: "stripe", sourceSection: "tracker_detail",
@@ -326,6 +404,8 @@ export default function TrackerDetail() {
           🏷 {CONFIG.promoText}
         </p>
       </div>
+
+      <StickyBuyBar product={product} />
     </div>
   );
 }
