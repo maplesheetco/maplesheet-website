@@ -145,18 +145,19 @@ export default function TrackerDetail() {
                 }}
               >Buy on Etsy</a>
             )}
-            {product.stripeCheckout ? (
-              <Link
-                to={`/checkout/${product.sku}`} className="ml-btn"
-                onClick={() => trackBuyClicked({
+            {product.stripeBuyButton ? (
+              <div
+                style={{ flex: 1 }}
+                onClickCapture={() => trackBuyClicked({
                   productName: product.name, productTag: product.tag, priceCad: product.price,
                   checkoutDestination: "stripe", sourceSection: "tracker_detail",
                 })}
-                style={{
-                  flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: "#fff",
-                  background: B.red, padding: "14px 10px", borderRadius: 10, textDecoration: "none",
-                }}
-              >Buy Now</Link>
+              >
+                <stripe-buy-button
+                  buy-button-id={product.stripeBuyButton.buyButtonId}
+                  publishable-key={product.stripeBuyButton.publishableKey}
+                ></stripe-buy-button>
+              </div>
             ) : product.directUrl ? (
               <a
                 href={product.directUrl} target="_blank" rel="noreferrer" className="ml-btn"
