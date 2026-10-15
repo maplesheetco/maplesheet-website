@@ -88,7 +88,7 @@ export const PRODUCTS = [
     // links below, same as the custom flow would have done.
     stripeBuyButton: {
       buyButtonId: "buy_btn_1UQhDJJYx6fAMdIUWrqjD6yk",
-      publishableKey: "pk_live_51TxSONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
     },
     // ⚠️ Lino: REQUIRED before this goes live — paste the real delivery
     // links below. Right now they're placeholders; a buyer who pays will
