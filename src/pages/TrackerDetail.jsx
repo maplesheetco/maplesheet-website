@@ -1,8 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, FAQS, getBundleSavings } from "../data.js";
 import { PageHead, usePageMeta, useJsonLd, DashboardMock, FaqAccordion, Reveal } from "../ui.jsx";
 import { trackBuyClicked } from "../analytics.js";
+
+// Real, uncropped tabs from the sheet itself, as a slideshow — used instead
+// of a single stretched composite image when a product defines `gallery`
+// (an array of {src, label}) in data.js. Falls back to nothing special;
+// TrackerDetail just checks product.gallery before product.screenshot.
+function ProductGallery({ images, name }) {
+  const [i, setI] = useState(0);
+  const go = (delta) => setI((cur) => (cur + delta + images.length) % images.length);
+  const current = images[i];
+  return (
+    <div style={{ marginBottom: 22 }}>
+      <div style={{ position: "relative" }}>
+        <img
+          src={current.src} alt={`${name} — ${current.label}`}
+          style={{
+            width: "100%", borderRadius: 12, display: "block",
+            border: `1px solid ${B.line}`, aspectRatio: "2 / 1", objectFit: "contain", background: B.black3,
+          }}
+        />
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={() => go(-1)} aria-label="Previous screenshot"
+              style={{
+                position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)",
+                width: 34, height: 34, borderRadius: "50%", border: "none", cursor: "pointer",
+                background: "rgba(0,0,0,0.55)", color: "#fff", fontSize: 16, fontWeight: 700,
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}
+            >‹</button>
+            <button
+              onClick={() => go(1)} aria-label="Next screenshot"
+              style={{
+                position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)",
+                width: 34, height: 34, borderRadius: "50%", border: "none", cursor: "pointer",
+                background: "rgba(0,0,0,0.55)", color: "#fff", fontSize: 16, fontWeight: 700,
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}
+            >›</button>
+          </>
+        )}
+      </div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 10 }}>
+        {images.map((img, idx) => (
+          <button
+            key={idx} onClick={() => setI(idx)} aria-label={`Show screenshot ${idx + 1}`}
+            style={{
+              width: idx === i ? 18 : 7, height: 7, borderRadius: 999, border: "none", cursor: "pointer",
+              background: idx === i ? B.red : B.line, transition: "width 0.15s, background 0.15s", padding: 0,
+            }}
+          />
+        ))}
+      </div>
+      <div style={{ textAlign: "center", color: B.grayLight, fontSize: 12.5, marginTop: 6 }}>
+        {current.label}
+      </div>
+    </div>
+  );
+}
 
 const SITE_URL = "https://www.maplesheet.ca";
 
@@ -97,7 +156,9 @@ export default function TrackerDetail() {
           background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18,
           padding: "clamp(22px, 4vw, 32px)", marginBottom: 18,
         }}>
-          {product.screenshot ? (
+          {product.gallery ? (
+            <ProductGallery images={product.gallery} name={product.name} />
+          ) : product.screenshot ? (
             <img
               src={product.screenshot} alt={`${product.name} dashboard screenshot`}
               style={{
