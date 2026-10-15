@@ -13,6 +13,10 @@ import Contact from "./pages/Contact.jsx";
 // it so that weight only downloads for people who actually visit /tools, not on
 // every page of the site.
 const FreeTools = lazy(() => import("./pages/FreeTools.jsx"));
+// Checkout pulls in @stripe/stripe-js + @stripe/react-stripe-js — lazy-load
+// for the same reason, only visitors actually buying something load it.
+const Checkout = lazy(() => import("./pages/Checkout.jsx"));
+const CheckoutReturn = lazy(() => import("./pages/CheckoutReturn.jsx"));
 
 const GALLERY_SLIDES = [
   { src: "/screenshots/ultimate.jpg", alt: "Ultimate Tracker dashboard screenshot", title: "Ultimate Tracker — All 5 Accounts", tag: "5-column metrics, 4 live charts, YTD summary" },
@@ -313,7 +317,15 @@ function Home() {
                       background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
                     }}>Buy on Etsy</a>
                   )}
-                  {p.directUrl ? (
+                  {p.stripeCheckout ? (
+                    <Link to={`/checkout/${p.sku}`} className="ml-btn" onClick={() => trackBuyClicked({
+                      productName: p.name, productTag: p.tag, priceCad: p.price,
+                      checkoutDestination: "stripe", sourceSection: "home_featured",
+                    })} style={{
+                      flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
+                      background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
+                    }}>Buy Now</Link>
+                  ) : p.directUrl ? (
                     <a href={p.directUrl} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
                       productName: p.name, productTag: p.tag, priceCad: p.price,
                       checkoutDestination: "direct", sourceSection: "home_featured",
@@ -420,6 +432,16 @@ export default function App() {
             <Route path="/tools" element={
               <Suspense fallback={<div style={{ padding: "80px 24px", textAlign: "center", color: B.grayLight }}>Loading calculator…</div>}>
                 <FreeTools />
+              </Suspense>
+            } />
+            <Route path="/checkout/return" element={
+              <Suspense fallback={<div style={{ padding: "80px 24px", textAlign: "center", color: B.grayLight }}>Loading…</div>}>
+                <CheckoutReturn />
+              </Suspense>
+            } />
+            <Route path="/checkout/:sku" element={
+              <Suspense fallback={<div style={{ padding: "80px 24px", textAlign: "center", color: B.grayLight }}>Loading checkout…</div>}>
+                <Checkout />
               </Suspense>
             } />
             <Route path="/resources" element={<Resources />} />
