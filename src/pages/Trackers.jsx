@@ -128,8 +128,18 @@ export default function Trackers() {
                       background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
                     }}>Buy on Etsy</a>
                   )}
-                  {p.directUrl ? (
-                    <a href={p.directUrl} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
+                  {p.stripeCheckout ? (
+                    <Link to={`/checkout/${p.sku}`} className="ml-btn"
+                      onClick={() => trackBuyClicked({
+                      productName: p.name, productTag: p.tag, priceCad: p.price,
+                      checkoutDestination: "stripe", sourceSection: "trackers_catalog",
+                    })} style={{
+                      flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
+                      background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
+                    }}>Buy Now</Link>
+                  ) : p.directUrl ? (
+                    <a href={p.directUrl} target="_blank" rel="noreferrer" className="ml-btn"
+                      onClick={() => trackBuyClicked({
                       productName: p.name, productTag: p.tag, priceCad: p.price,
                       checkoutDestination: "direct", sourceSection: "trackers_catalog",
                     })} style={p.url ? {
