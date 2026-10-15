@@ -69,6 +69,17 @@ export const PRODUCTS = [
   // full-width "Buy on Payhip" button instead.
   // ⚠️ Lino: price assumed at $9.99 to match the TFSA Multi-Brokerage Tracker — confirm/adjust.
   { name: "RRSP Multi-Brokerage Tracker", tag: "RRSP", price: 9.99, directUrl: "https://payhip.com/b/sZ3r0", desc: "Up to 8 brokerages in one sheet — the RRSP companion to our #1 TFSA tracker", badge: "NEW", screenshot: "/screenshots/rrsp-multi-brokerage.jpg", sku: "MS-RRSP-MB",
+    // Real, uncropped tabs from the actual sheet (not the stretched
+    // composite collage) — the detail page renders these as a slideshow
+    // when `gallery` is present, falling back to the single `screenshot`
+    // above everywhere else (catalog card, Etsy/schema image, etc.).
+    gallery: [
+      { src: "/screenshots/rrsp-mb-gallery-1-start-here.jpg", label: "Start Here — quick-start steps & menu overview" },
+      { src: "/screenshots/rrsp-mb-gallery-2-main-dashboard.jpg", label: "Main Dashboard — combined room across every brokerage" },
+      { src: "/screenshots/rrsp-mb-gallery-3-transaction-log.jpg", label: "Transaction Log — your single source of truth" },
+      { src: "/screenshots/rrsp-mb-gallery-4-dividend-tracker.jpg", label: "Dividend Tracker — monthly income vs. goal" },
+      { src: "/screenshots/rrsp-mb-gallery-5-settings.jpg", label: "Settings & Goals — the only tab you edit" },
+    ],
     // Checkout powered directly by MapleSheet's own Stripe account, using
     // Stripe's own "Buy Button" embed — opens the payment form as an
     // overlay right on maplesheet.ca (the address bar never changes), with
