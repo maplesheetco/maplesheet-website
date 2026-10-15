@@ -61,6 +61,10 @@
         ml('account', '2540563');
     </script>
     <!-- End MailerLite Universal -->
+    <!-- Stripe Buy Button — only renders where a <stripe-buy-button> element
+         is actually used (see data.js's `stripeBuyButton` field), so this is
+         harmless to every other page. -->
+    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
   </head>
   <body style="margin:0">
     <div id="root"></div>
