@@ -68,8 +68,39 @@ export const PRODUCTS = [
   // an Etsy button, so a product with only `directUrl` shows a single
   // full-width "Buy on Payhip" button instead.
   // ⚠️ Lino: price assumed at $9.99 to match the TFSA Multi-Brokerage Tracker — confirm/adjust.
-  { name: "RRSP Multi-Brokerage Tracker", tag: "RRSP", price: 9.99, directUrl: "https://payhip.com/b/sZ3r0", desc: "Up to 8 brokerages in one sheet — the RRSP companion to our #1 TFSA tracker", badge: "NEW", sku: "MS-RRSP-MB",
-    bestFor: "One RRSP spread across multiple brokerages (up to 8)." },
+  { name: "RRSP Multi-Brokerage Tracker", tag: "RRSP", price: 9.99, directUrl: "https://payhip.com/b/sZ3r0", desc: "Up to 8 brokerages in one sheet — the RRSP companion to our #1 TFSA tracker", badge: "NEW", screenshot: "/screenshots/rrsp-multi-brokerage.jpg", sku: "MS-RRSP-MB",
+    // Pilot product for checkout powered directly by MapleSheet's own
+    // Stripe account — payment happens in an embedded form on
+    // maplesheet.ca itself (api/create-checkout-session.js + src/pages/
+    // Checkout.jsx), not Payhip and not a redirect to checkout.stripe.com.
+    // Scoped to this one product on purpose; see the `stripeCheckout` check
+    // in App.jsx / Trackers.jsx / TrackerDetail.jsx. Superseded the earlier
+    // Payhip-overlay trial — that flag has been removed from this product.
+    stripeCheckout: true,
+    // ⚠️ Lino: REQUIRED before this goes live — paste the real delivery
+    // links below. Right now they're placeholders; a buyer who pays will
+    // land on a page with dead links until these are filled in. The sheet
+    // link should be the same "make a copy" Google Sheets link Payhip
+    // currently delivers for this product.
+    delivery: {
+      sheetUrl: "https://REPLACE-ME-with-your-google-sheet-make-a-copy-link",
+      pdfs: [
+        { label: "Setup guide", url: "https://REPLACE-ME.pdf" },
+        { label: "Quick-start guide", url: "https://REPLACE-ME.pdf" },
+        { label: "FAQ", url: "https://REPLACE-ME.pdf" },
+      ],
+    },
+    slug: "rrsp-multi-brokerage", accounts: ["RRSP"],
+    bestFor: "One RRSP spread across multiple brokerages (up to 8).",
+    longDescription: "For one RRSP spread across up to 8 brokerages — because every institution only shows you its own slice, and the CRA only cares about the combined total. Tracks contribution room and your deduction limit across every account at once, with live prices and ACB, so you know your real position instead of finding out about an over-contribution the hard way.",
+    features: [
+      "Combined RRSP deduction limit tracked across up to 8 brokerages at once",
+      "4-state over-contribution buffer warning — see trouble coming before it's a CRA problem",
+      "Live prices via GOOGLEFINANCE, with correct USD→CAD conversion",
+      "Automatic ACB and capital gains, calculated per brokerage",
+      "One combined net worth view across every account holding the RRSP",
+    ],
+  },
   { name: "RESP Tracker", tag: "RESP", price: 14.99, url: "https://www.etsy.com/listing/4530779418", directUrl: "https://payhip.com/b/w8PXD", desc: "CESG grants, up to 4 beneficiaries", screenshot: "/screenshots/resp.jpg", sku: "MS-RESP-01",
     bestFor: "Parents tracking CESG grants for up to 4 kids." },
   { name: "FHSA Tracker", tag: "FHSA", price: 14.99, url: "https://www.etsy.com/listing/4534938230", directUrl: "https://payhip.com/b/dEXy3", desc: "First Home Savings, Line 20805 tax dashboard", screenshot: "/screenshots/fhsa.jpg", sku: "MS-FHSA-01",
