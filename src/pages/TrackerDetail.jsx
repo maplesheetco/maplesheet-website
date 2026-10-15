@@ -131,7 +131,7 @@ export default function TrackerDetail() {
             </div>
           )}
 
-          <div style={{ display: "flex", gap: 10, marginBottom: product.features ? 26 : 0 }}>
+          <div style={{ display: "flex", gap: 10, marginBottom: (product.overview || product.features || product.included) ? 26 : 0 }}>
             {product.url && (
               <a
                 href={product.url} target="_blank" rel="noreferrer" className="ml-btn"
@@ -182,17 +182,52 @@ export default function TrackerDetail() {
             ) : null}
           </div>
 
+          {product.overview && (
+            <div style={{ marginBottom: 26 }}>
+              {product.overview.map((para, i) => (
+                <p key={i} style={{
+                  color: B.grayLight, fontSize: 14.5, lineHeight: 1.75,
+                  marginTop: i === 0 ? 0 : 14, marginBottom: 0,
+                }}>{para}</p>
+              ))}
+              {product.whoFor && (
+                <p style={{ color: B.grayLight, fontSize: 14.5, lineHeight: 1.75, marginTop: 14, marginBottom: 0 }}>
+                  <span style={{ color: B.white, fontWeight: 700 }}>Who it's for: </span>{product.whoFor}
+                </p>
+              )}
+            </div>
+          )}
+
           {product.features && (
-            <>
+            <div style={{ marginBottom: product.included ? 26 : 0 }}>
               <div style={{ fontSize: 12, letterSpacing: "0.1em", color: B.redLink, fontWeight: 700, marginBottom: 10, textTransform: "uppercase" }}>
-                What's included
+                What's included in the tracker
               </div>
               <ul style={{ margin: 0, paddingLeft: 20 }}>
                 {product.features.map((f, i) => (
                   <li key={i} style={{ color: B.grayLight, fontSize: 14.5, lineHeight: 1.75, marginBottom: 6 }}>{f}</li>
                 ))}
               </ul>
-            </>
+            </div>
+          )}
+
+          {product.included && (
+            <div>
+              <div style={{ fontSize: 12, letterSpacing: "0.1em", color: B.redLink, fontWeight: 700, marginBottom: 10, textTransform: "uppercase" }}>
+                What you get after you purchase
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {product.included.map((item, i) => (
+                  <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                    <span style={{ fontSize: 17, lineHeight: 1.5 }}>{item.icon}</span>
+                    <div>
+                      <div style={{ color: B.white, fontWeight: 700, fontSize: 14 }}>{item.label}</div>
+                      <div style={{ color: B.grayLight, fontSize: 13.5, lineHeight: 1.6 }}>{item.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </Reveal>
 
