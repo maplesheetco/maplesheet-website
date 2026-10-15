@@ -106,6 +106,16 @@ export const PRODUCTS = [
     slug: "rrsp-multi-brokerage", accounts: ["RRSP"],
     bestFor: "One RRSP spread across multiple brokerages (up to 8) — whether that's a few commission-free platforms, or a legacy bank account alongside a newer discount brokerage.",
     longDescription: "One RRSP held at Wealthsimple, Questrade, RBC, TD — and you're tracking it in your head? Every institution shows you its own slice, but none shows you the whole picture. This tracker pulls every RRSP account you hold, across up to 8 brokerages, into one Google Sheet that calculates your real combined contribution room, ACB, and portfolio value automatically — so you know your actual position instead of finding out about an over-contribution the hard way.",
+    // Full-length body copy for the detail page — pulled from the Payhip
+    // listing description, broken into paragraphs. Kept separate from
+    // longDescription (which stays short, since that one also feeds the
+    // page's meta description and PageHead sub-headline).
+    overview: [
+      "If you hold your RRSP at more than one brokerage, you already know the problem: every institution shows you its slice of the picture, but none of them shows you the whole thing. How much total room do you actually have left this year? What's your real combined contribution room across every account? Are you about to over-contribute without realizing it?",
+      "The RRSP Multi-Brokerage Tracker pulls every RRSP account you hold — across up to 8 different brokerages — into one Google Sheet that calculates your real numbers automatically. Enter your RRSP Deduction Limit and Unused Room Carried Forward straight from your CRA Notice of Assessment, and the tracker sums them into your true Total Available Room, then measures every contribution across every brokerage against that one number.",
+      "It's built around how RRSPs actually work, not copied from a TFSA template. RRSP room doesn't reset or restore the way TFSA room does, contributions are deductible, and withdrawals are taxed as income — so this tracker reflects the real rules: one combined deduction limit, withdrawals that never restore room, CRA's $2,000 lifetime over-contribution buffer, plus reference info for the Home Buyers' Plan, Lifelong Learning Plan, and the mandatory RRIF conversion at age 71.",
+    ],
+    whoFor: "Canadian DIY investors who hold — or are about to hold — an RRSP at more than one brokerage: spreading investments across a few commission-free platforms, keeping a legacy account open at a bank while using a discount brokerage for everything new, or simply wanting one real number for how much RRSP room is actually left.",
     features: [
       "Combined contribution room across up to 8 brokerages, calculated against your real CRA Notice of Assessment numbers",
       "4-state over-contribution buffer warning — matches CRA's actual $2,000 lifetime buffer, not just a flat over/under flag",
@@ -114,9 +124,17 @@ export const PRODUCTS = [
       "Institution Dashboard — side-by-side comparison across all 8 brokerages, so you see which account is really carrying your returns",
       "Dividend tracker that estimates the US withholding tax you're saving by holding dividend stocks inside your RRSP",
       "One combined net worth view across every account holding the RRSP",
-      "The ready-to-use Google Sheets template — just make a copy and plug in your numbers",
-      "Step-by-step user guide walking through every tab, column by column",
-      "RRSP government rules reference — contribution limits, HBP, LLP, spousal attribution, RRIF conversion — in plain English",
+    ],
+    // What actually lands in the buyer's hands after checkout — kept
+    // separate from `features` (what the sheet does) so the page can
+    // answer "what am I getting" and "what will it do for me" as two
+    // distinct questions. Rendered as its own "What you get" section.
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "🍁", label: "One-click MapleSheet menu", desc: "Builds, rebuilds, and loads sample data for you right inside the sheet — no spreadsheet experience required." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "User Guide PDF", desc: "A full tab-by-tab, column-by-column walkthrough of every part of the sheet." },
+      { icon: "📄", label: "RRSP Government Rules PDF", desc: "A 20+ section plain-English reference to CRA's actual RRSP rules — contribution limits, HBP, LLP, spousal attribution, RRIF conversion, and more — so you're not hunting through canada.ca mid-tax-season." },
     ],
   },
   { name: "RESP Tracker", tag: "RESP", price: 14.99, url: "https://www.etsy.com/listing/4530779418", directUrl: "https://payhip.com/b/w8PXD", desc: "CESG grants, up to 4 beneficiaries", screenshot: "/screenshots/resp.jpg", sku: "MS-RESP-01",
