@@ -317,14 +317,19 @@ function Home() {
                       background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
                     }}>Buy on Etsy</a>
                   )}
-                  {p.stripeCheckout ? (
-                    <Link to={`/checkout/${p.sku}`} className="ml-btn" onClick={() => trackBuyClicked({
-                      productName: p.name, productTag: p.tag, priceCad: p.price,
-                      checkoutDestination: "stripe", sourceSection: "home_featured",
-                    })} style={{
-                      flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
-                      background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
-                    }}>Buy Now</Link>
+                  {p.stripeBuyButton ? (
+                    <div
+                      style={{ flex: 1 }}
+                      onClickCapture={() => trackBuyClicked({
+                        productName: p.name, productTag: p.tag, priceCad: p.price,
+                        checkoutDestination: "stripe", sourceSection: "home_featured",
+                      })}
+                    >
+                      <stripe-buy-button
+                        buy-button-id={p.stripeBuyButton.buyButtonId}
+                        publishable-key={p.stripeBuyButton.publishableKey}
+                      ></stripe-buy-button>
+                    </div>
                   ) : p.directUrl ? (
                     <a href={p.directUrl} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
                       productName: p.name, productTag: p.tag, priceCad: p.price,
