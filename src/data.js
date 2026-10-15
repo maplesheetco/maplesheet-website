@@ -69,14 +69,27 @@ export const PRODUCTS = [
   // full-width "Buy on Payhip" button instead.
   // ⚠️ Lino: price assumed at $9.99 to match the TFSA Multi-Brokerage Tracker — confirm/adjust.
   { name: "RRSP Multi-Brokerage Tracker", tag: "RRSP", price: 9.99, directUrl: "https://payhip.com/b/sZ3r0", desc: "Up to 8 brokerages in one sheet — the RRSP companion to our #1 TFSA tracker", badge: "NEW", screenshot: "/screenshots/rrsp-multi-brokerage.jpg", sku: "MS-RRSP-MB",
-    // Pilot product for checkout powered directly by MapleSheet's own
-    // Stripe account — payment happens in an embedded form on
-    // maplesheet.ca itself (api/create-checkout-session.js + src/pages/
-    // Checkout.jsx), not Payhip and not a redirect to checkout.stripe.com.
-    // Scoped to this one product on purpose; see the `stripeCheckout` check
-    // in App.jsx / Trackers.jsx / TrackerDetail.jsx. Superseded the earlier
-    // Payhip-overlay trial — that flag has been removed from this product.
-    stripeCheckout: true,
+    // Checkout powered directly by MapleSheet's own Stripe account, using
+    // Stripe's own "Buy Button" embed — opens the payment form as an
+    // overlay right on maplesheet.ca (the address bar never changes), with
+    // no custom backend needed for the purchase itself. Configured once in
+    // the Stripe Dashboard under this product's Payment Link; the IDs below
+    // are just what that embed needs to render.
+    //
+    // api/create-checkout-session.js and src/pages/Checkout.jsx (the
+    // earlier hand-built embedded-checkout route) are unused now that this
+    // exists — left in place but unreferenced, harmless to leave as-is.
+    //
+    // ⚠️ Lino: in the Stripe Dashboard, on this product's Payment Link,
+    // set "After the payment" → redirect to your own URL →
+    // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}
+    // — that reuses api/session-status.js + CheckoutReturn.jsx exactly as
+    // built, so the buyer still lands on a page revealing the delivery
+    // links below, same as the custom flow would have done.
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1UQhDJJYx6fAMdIUWrqjD6yk",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
     // ⚠️ Lino: REQUIRED before this goes live — paste the real delivery
     // links below. Right now they're placeholders; a buyer who pays will
     // land on a page with dead links until these are filled in. The sheet
