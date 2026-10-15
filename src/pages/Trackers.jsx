@@ -111,7 +111,7 @@ export default function Trackers() {
                     📖 {guide.label} →
                   </Link>
                 )}
-                {p.slug && (
+                {p.slug && !p.stripeBuyButton && (
                   <Link to={`/trackers/${p.slug}`} style={{
                     fontSize: 12, color: B.grayLight, textDecoration: "none", display: "inline-block",
                   }}>
@@ -128,7 +128,24 @@ export default function Trackers() {
                       background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
                     }}>Buy on Etsy</a>
                   )}
-                  {p.stripeBuyButton ? (
+                  {p.stripeBuyButton && p.slug ? (
+                    // Catalog cards link to the product's own detail page rather
+                    // than embedding the Stripe Buy Button directly — the widget
+                    // is cramped at this card size, and the detail page already
+                    // has its own (same checkout, same product). This button is
+                    // the card's full-width CTA, not a secondary text link.
+                    <Link
+                      to={`/trackers/${p.slug}`}
+                      onClick={() => trackBuyClicked({
+                        productName: p.name, productTag: p.tag, priceCad: p.price,
+                        checkoutDestination: "detail_page", sourceSection: "trackers_catalog",
+                      })}
+                      style={{
+                        flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
+                        background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
+                      }}
+                    >View full details →</Link>
+                  ) : p.stripeBuyButton ? (
                     <div
                       style={{ flex: 1 }}
                       onClickCapture={() => trackBuyClicked({
