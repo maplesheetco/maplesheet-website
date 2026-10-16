@@ -61,7 +61,75 @@ export const PRODUCTS = [
   { name: "RRSP Tracker", tag: "RRSP", price: 9.99, url: "https://www.etsy.com/listing/4529584584", directUrl: "https://payhip.com/b/DQS5l", desc: "Contribution room, live prices, ACB", sku: "MS-RRSP-01",
     bestFor: "Tracking RRSP contribution room and deduction limit on their own." },
   { name: "TFSA Multi-Brokerage Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4541253114", directUrl: "https://payhip.com/b/8CqQU", desc: "Up to 8 brokerages in one sheet — the only one of its kind", badge: "NEW", screenshot: "/screenshots/multi-brokerage.jpg", sku: "MS-TFSA-MB",
-    bestFor: "One TFSA spread across multiple brokerages (up to 8)." },
+    // Real, uncropped tabs from the actual sheet — same pattern as the RRSP
+    // Multi-Brokerage Tracker's gallery below. Renders as a slideshow on
+    // the detail page when `gallery` is present.
+    gallery: [
+      { src: "/screenshots/tfsa-mb-gallery-1-start-here.jpg", label: "Start Here — How to Clear Sample Data & menu overview" },
+      { src: "/screenshots/tfsa-mb-gallery-2-main-dashboard.jpg", label: "Main Dashboard — combined room & top holdings across every brokerage" },
+      { src: "/screenshots/tfsa-mb-gallery-3-institution-dashboard.jpg", label: "Institution Dashboard — side-by-side across all 8 brokerages" },
+      { src: "/screenshots/tfsa-mb-gallery-4-tfsa-portfolio.jpg", label: "TFSA Portfolio — combined holdings, live prices, gain/loss" },
+      { src: "/screenshots/tfsa-mb-gallery-5-transaction-log.jpg", label: "Transaction Log — your single source of truth" },
+      { src: "/screenshots/tfsa-mb-gallery-6-dividend-tracker.jpg", label: "Dividend Tracker — monthly income vs. goal" },
+      { src: "/screenshots/tfsa-mb-gallery-7-settings.jpg", label: "Settings & Goals — the only tab you edit" },
+      { src: "/screenshots/tfsa-mb-gallery-8-cra-rules.jpg", label: "TFSA CRA Rules — built-in plain-English reference" },
+    ],
+    // Checkout powered directly by MapleSheet's own Stripe account, same
+    // Buy Button pattern as the RRSP Multi-Brokerage Tracker. Now that this
+    // is set, TrackerDetail.jsx / Trackers.jsx switch from the Etsy/Payhip
+    // buttons to this Stripe one automatically.
+    //
+    // ⚠️ Lino — double-check (if you haven't already) that on this same
+    // Payment Link: (1) metadata key "sku" = "MS-TFSA-MB" is set under
+    // Edit → Advanced → Metadata, and (2) "After the payment" redirects to
+    // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}
+    // — without #1 the webhook can't match a sale to this product (shows
+    // the safe "email us" fallback instead of download links, since the
+    // old guess-RRSP fallback was removed); without #2 the on-site reveal
+    // page never loads after payment.
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1UR0IJJYx6fAMdIUhv9jkY9T",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // ⚠️ Lino — PLACEHOLDER sheetUrl below. Swap for the real TFSA
+    // Multi-Brokerage master sheet's "/copy" link (and re-check its Share
+    // settings are "Anyone with the link" → Viewer), then rebuild
+    // pdfbuild/build_tfsa_mb_templatelink.py with the real link so the PDF
+    // matches. Same two-step process you already did for RRSP.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/PLACEHOLDER-REPLACE-WITH-REAL-TFSA-MB-SHEET-ID/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/tfsa-mb-template-link.pdf" },
+        { label: "User Guide", url: "/downloads/tfsa-mb-user-guide.pdf" },
+        { label: "TFSA Government Rules", url: "/downloads/tfsa-mb-government-rules.pdf" },
+      ],
+    },
+    slug: "tfsa-multi-brokerage", accounts: ["TFSA"],
+    bestFor: "One TFSA spread across multiple brokerages (up to 8) — whether that's a few commission-free platforms, or a legacy bank account alongside a newer discount brokerage.",
+    longDescription: "One TFSA held at Wealthsimple, Questrade, RBC, TD — and you're tracking it in your head? Every institution shows you its own slice, but none shows you the whole picture. This tracker pulls every TFSA account you hold, across up to 8 brokerages, into one Google Sheet that calculates your real combined contribution room, holdings, and dividend income automatically — so you know your actual position instead of finding out about an over-contribution the hard way.",
+    overview: [
+      "If you hold your TFSA at more than one brokerage, you already know the problem: every institution shows you its slice of the picture, but none of them shows you the whole thing. How much total room do you actually have left this year? What's your real combined contribution room across every account? Are you about to over-contribute without realizing it?",
+      "The Canadian TFSA Multi-Brokerage Tracker pulls every TFSA account you hold — across up to 8 different brokerages — into one Google Sheet that calculates your real numbers automatically. Enter your TFSA Annual Limit and Accumulated Room straight from your CRA My Account, and the tracker measures every contribution across every brokerage against that one real number — with a side-by-side Institution Dashboard so you can see exactly which brokerage is carrying your returns.",
+      "It's built around how TFSAs actually work, not copied from an RRSP template. TFSA room is a flat dollar amount CRA sets each year — not tied to income — and a withdrawal does restore room, just not until January 1 of the following year, never the same year. There's no CRA limit on how many TFSAs you can hold, no RRSP-style first-60-days grace period (it's a strict December 31 cutoff), and US dividend payers face a real, unrecoverable 15% IRS withholding tax that an RRSP is exempt from — this tracker reflects all of it, not a copy-pasted RRSP ruleset.",
+    ],
+    whoFor: "Canadian DIY investors who hold — or are about to hold — a TFSA at more than one brokerage: spreading investments across a few commission-free platforms, keeping a legacy account open at a bank while using a discount brokerage for everything new, or simply wanting one real number for how much TFSA room is actually left.",
+    features: [
+      "Combined contribution room across up to 8 brokerages, calculated against your real CRA My Account numbers",
+      "Institution Dashboard — side-by-side comparison across all 8 brokerages, so you see which account is really carrying your returns",
+      "Live prices via GOOGLEFINANCE, with correct USD→CAD conversion — no exchange prefixes needed for US tickers",
+      "Automatic average cost and gain/loss, calculated per brokerage and combined",
+      "Dividend tracker that shows your actual income after the 15% US withholding tax TFSAs don't get exempted from",
+      "Built-in TFSA CRA Rules tab — a plain-English reference you never have to leave the sheet to check",
+      "One combined portfolio view across every account holding the TFSA",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "🍁", label: "One-click MapleSheet menu", desc: "Builds, rebuilds, and loads sample data for you right inside the sheet — no spreadsheet experience required." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "User Guide PDF", desc: "A full tab-by-tab, column-by-column walkthrough of every part of the sheet." },
+      { icon: "📄", label: "TFSA Government Rules PDF", desc: "An 18-section plain-English reference to CRA's actual TFSA rules — contribution limits, the January 1 withdrawal-room rule, over-contribution penalties, US withholding tax, and more — so you're not hunting through canada.ca mid-tax-season." },
+    ],
+  },
   // Payhip-only by design: no `url` (Etsy) field here on purpose — this
   // product is sold through Payhip exclusively. The buy-button rendering in
   // App.jsx / Trackers.jsx / TrackerDetail.jsx checks `p.url` before showing
