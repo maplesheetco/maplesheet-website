@@ -29,10 +29,16 @@
 //    (4242 4242 4242 4242) through the real Buy Button, and confirm the
 //    email actually lands in your own inbox.
 //
-// Once a sending domain is verified in Resend (Resend → Domains — takes a
-// few DNS records), change FROM_EMAIL below to an address on your own
-// domain. Until then it sends from Resend's shared test address, which
-// works but looks less trustworthy to buyers.
+// ⚠️ IMPORTANT — this file will NOT deliver to real buyers until your
+// domain is verified in Resend. Until then, Resend blocks every send
+// except to the exact email you signed up with (an anti-spam rule, not
+// optional). Steps: Resend → Domains → Add Domain → maplesheet.ca → add
+// the DNS records it shows you in Spaceship (your registrar) → wait for
+// "Verified". FROM_EMAIL below is already set to hello@maplesheet.ca in
+// anticipation of that — do NOT upload this file until the domain shows
+// verified in Resend, or every send will fail with a 403 "domain not
+// verified" error, same shape as the "only your own email" error you saw
+// before domain verification.
 // ─────────────────────────────────────────────────────────────────────────
 
 // Needed raw, unparsed request bytes to verify Stripe's signature — if
@@ -45,7 +51,7 @@ import { PRODUCTS } from "../src/data.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const SITE_URL = "https://www.maplesheet.ca";
-const FROM_EMAIL = "MapleSheet Co. <onboarding@resend.dev>"; // ⚠️ swap once your domain is verified in Resend
+const FROM_EMAIL = "MapleSheet Co. <hello@maplesheet.ca>"; // requires maplesheet.ca verified in Resend — see note above
 
 // Same pilot-phase fallback as api/session-status.js — only one product
 // sells through a Payment Link right now. Keep both files' fallback in
