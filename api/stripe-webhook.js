@@ -80,23 +80,36 @@ function extractName(session) {
   return field?.text?.value || null;
 }
 
+// MapleSheet's actual brand (from src/data.js's B tokens), not the PDFs'
+// green house style — this email is the thing a buyer sees right after
+// checking out on maplesheet.ca, so it should look like it came from the
+// same red/black site, not an unrelated color. Email clients default to
+// a white background regardless of the site's own dark theme, so red is
+// used as text here too (it reads fine on white — data.js's note that
+// #CC0000 is "solid backgrounds only" is specifically about it failing
+// contrast on the site's *dark* background, which doesn't apply here).
+const BRAND_RED = "#CC0000";
+const BRAND_RED_TINT = "#FBEAEA";
+const BRAND_TEXT = "#1A1A1A";
+const BRAND_GRAY = "#666666";
+
 function buildEmailHtml({ firstName, product }) {
   const pdfRows = (product.delivery?.pdfs || [])
     .map(
       (p) =>
-        `<li style="margin-bottom:6px;"><a href="${SITE_URL}${p.url}" style="color:#15614A;">${p.label}</a></li>`
+        `<li style="margin-bottom:6px;"><a href="${SITE_URL}${p.url}" style="color:${BRAND_RED};">${p.label}</a></li>`
     )
     .join("");
 
   return `
-    <div style="font-family: Arial, Helvetica, sans-serif; max-width: 560px; margin: 0 auto; color:#1A1A1A; line-height:1.5;">
-      <h2 style="color:#15614A; margin-bottom: 4px;">Thanks, ${firstName}!</h2>
+    <div style="font-family: Arial, Helvetica, sans-serif; max-width: 560px; margin: 0 auto; color:${BRAND_TEXT}; line-height:1.5;">
+      <h2 style="color:${BRAND_RED}; margin-bottom: 4px;">Thanks, ${firstName}!</h2>
       <p style="margin-top:0;">Your <b>${product.name}</b> is ready. Here's everything you need:</p>
 
       <table cellpadding="0" cellspacing="0" style="width:100%; margin: 18px 0;">
         <tr>
-          <td style="background:#E9F3EF; border:1px solid #15614A; border-radius:6px; padding:16px; text-align:center;">
-            <a href="${product.delivery?.sheetUrl}" style="color:#15614A; font-weight:bold; font-size:15px; text-decoration:none;">
+          <td style="background:${BRAND_RED_TINT}; border:1px solid ${BRAND_RED}; border-radius:8px; padding:4px; text-align:center;">
+            <a href="${product.delivery?.sheetUrl}" style="display:block; background:${BRAND_RED}; color:#FFFFFF; font-weight:bold; font-size:15px; text-decoration:none; padding:14px 16px; border-radius:5px;">
               → Get your Google Sheet (opens &ldquo;Make a copy&rdquo;)
             </a>
           </td>
@@ -107,7 +120,7 @@ function buildEmailHtml({ firstName, product }) {
       <ul style="padding-left:20px; margin-top:0;">${pdfRows}</ul>
 
       <p style="margin-top:22px;">Questions about setup or anything else — just reply to this email, we're happy to help.</p>
-      <p style="color:#8F8F8D; font-size:12px; margin-top:24px;">MapleSheet Co. &middot; ${SITE_URL}</p>
+      <p style="color:${BRAND_GRAY}; font-size:12px; margin-top:24px;">MapleSheet Co. &middot; ${SITE_URL}</p>
     </div>
   `;
 }
