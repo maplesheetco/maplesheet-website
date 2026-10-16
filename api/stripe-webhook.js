@@ -53,10 +53,18 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const SITE_URL = "https://www.maplesheet.ca";
 const FROM_EMAIL = "MapleSheet Co. <hello@maplesheet.ca>"; // requires maplesheet.ca verified in Resend — see note above
 
-// Same pilot-phase fallback as api/session-status.js — only one product
-// sells through a Payment Link right now. Keep both files' fallback in
-// sync if that changes.
-const FALLBACK_SKU = "MS-RRSP-MB";
+// Was a flat FALLBACK_SKU guess here (pilot phase, one product only) —
+// removed now that a second product (TFSA Multi-Brokerage, MS-TFSA-MB)
+// shares this webhook with the RRSP one. Guessing a SKU when metadata is
+// missing stopped being a safety net the moment there was more than one
+// product to guess wrong: a TFSA buyer with missing metadata would have
+// silently received the RRSP tracker's download links by email. See the
+// matching note in api/session-status.js. If `sku` doesn't resolve to a
+// product below, this now just logs it and skips the email — the on-site
+// /checkout/return page (which also no longer guesses) is still the
+// buyer's primary path, and a real missing-metadata case should be fixed
+// at the source (set metadata.sku on the Payment Link) rather than papered
+// over here.
 
 async function readRawBody(req) {
   const chunks = [];
@@ -179,7 +187,7 @@ export default async function handler(req, res) {
     const session = event.data.object;
     const email = session.customer_details?.email;
     const name = extractName(session);
-    const sku = session.metadata?.sku || FALLBACK_SKU;
+    const sku = session.metadata?.sku || null;
     const product = PRODUCTS.find((p) => p.sku === sku);
 
     if (email && product?.delivery) {
