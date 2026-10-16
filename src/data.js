@@ -68,7 +68,7 @@ export const PRODUCTS = [
   // an Etsy button, so a product with only `directUrl` shows a single
   // full-width "Buy on Payhip" button instead.
   // ⚠️ Lino: price assumed at $9.99 to match the TFSA Multi-Brokerage Tracker — confirm/adjust.
-  { name: "RRSP Multi-Brokerage Tracker", tag: "RRSP", price: 9.99, directUrl: "https://payhip.com/b/sZ3r0", desc: "Up to 8 brokerages in one sheet — the RRSP companion to our #1 TFSA tracker", badge: "NEW", screenshot: "/screenshots/rrsp-multi-brokerage.jpg", sku: "MS-RRSP-MB",
+  { name: "Canadian RRSP Multi-Brokerage Tracker", tag: "RRSP", price: 9.99, directUrl: "https://payhip.com/b/sZ3r0", desc: "Up to 8 brokerages in one sheet — the RRSP companion to our #1 TFSA tracker", badge: "NEW", screenshot: "/screenshots/rrsp-multi-brokerage.jpg", sku: "MS-RRSP-MB",
     // Real, uncropped tabs from the actual sheet (not the stretched
     // composite collage) — the detail page renders these as a slideshow
     // when `gallery` is present, falling back to the single `screenshot`
@@ -101,22 +101,14 @@ export const PRODUCTS = [
       buyButtonId: "buy_btn_1UQhDJJYx6fAMdIUWrqjD6yk",
       publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
     },
-    // ⚠️ Lino: REQUIRED before this goes live — paste the real delivery
-    // links below. Right now they're placeholders; a buyer who pays will
-    // land on a page with dead links until these are filled in. The sheet
-    // link should be the same "make a copy" Google Sheets link Payhip
-    // currently delivers for this product.
-    // ⚠️ Lino: sheetUrl is still a placeholder — only you have the real
-    // Google Sheets "make a copy" link for the RRSP master. Paste it here
-    // in the same format Payhip delivers: ".../spreadsheets/d/<ID>/copy".
-    // The 3 PDFs below are real, drafted files (not placeholders) — built
-    // to match the TFSA tracker's existing PDFs in style and structure,
-    // using the actual RRSP tracker screenshots and current CRA figures as
-    // of October 2026. Read through them once before this goes live:
-    // the Template Link PDF also has one placeholder inside it (the same
-    // sheet URL), everything else in all 3 is ready to ship as drafted.
+    // Real delivery links. sheetUrl uses the "/copy" format (not /edit) so a
+    // buyer is prompted to make their own copy rather than landing on an
+    // edit view of the master. ⚠️ Lino: double-check this sheet's Share
+    // settings are "Anyone with the link" → Viewer — if it's still
+    // restricted to specific people, this link will fail for every buyer
+    // regardless of the URL format being correct.
     delivery: {
-      sheetUrl: "https://REPLACE-ME-with-your-google-sheet-make-a-copy-link",
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1dU_Hsd1ZIPlbrdnvfY7rdvLIXWRm6RN-ce4sGiYc5pM/copy",
       pdfs: [
         { label: "Template Link", url: "/downloads/rrsp-mb-template-link.pdf" },
         { label: "User Guide", url: "/downloads/rrsp-mb-user-guide.pdf" },
@@ -132,7 +124,7 @@ export const PRODUCTS = [
     // page's meta description and PageHead sub-headline).
     overview: [
       "If you hold your RRSP at more than one brokerage, you already know the problem: every institution shows you its slice of the picture, but none of them shows you the whole thing. How much total room do you actually have left this year? What's your real combined contribution room across every account? Are you about to over-contribute without realizing it?",
-      "The RRSP Multi-Brokerage Tracker pulls every RRSP account you hold — across up to 8 different brokerages — into one Google Sheet that calculates your real numbers automatically. Enter your RRSP Deduction Limit and Unused Room Carried Forward straight from your CRA Notice of Assessment, and the tracker sums them into your true Total Available Room, then measures every contribution across every brokerage against that one number.",
+      "The Canadian RRSP Multi-Brokerage Tracker pulls every RRSP account you hold — across up to 8 different brokerages — into one Google Sheet that calculates your real numbers automatically. Enter your RRSP Deduction Limit and Unused Room Carried Forward straight from your CRA Notice of Assessment, and the tracker sums them into your true Total Available Room, then measures every contribution across every brokerage against that one number.",
       "It's built around how RRSPs actually work, not copied from a TFSA template. RRSP room doesn't reset or restore the way TFSA room does, contributions are deductible, and withdrawals are taxed as income — so this tracker reflects the real rules: one combined deduction limit, withdrawals that never restore room, CRA's $2,000 lifetime over-contribution buffer, plus reference info for the Home Buyers' Plan, Lifelong Learning Plan, and the mandatory RRIF conversion at age 71.",
     ],
     whoFor: "Canadian DIY investors who hold — or are about to hold — an RRSP at more than one brokerage: spreading investments across a few commission-free platforms, keeping a legacy account open at a bank while using a discount brokerage for everything new, or simply wanting one real number for how much RRSP room is actually left.",
