@@ -7,24 +7,25 @@ import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// Pilot note: right now exactly one product sells through a Stripe Buy
-// Button / Payment Link (RRSP Multi-Brokerage Tracker, sku MS-RRSP-MB).
-// A session created from a Payment Link does NOT automatically carry
-// metadata.sku the way api/create-checkout-session.js's hand-built
+// A session created from a Stripe Payment Link does NOT automatically
+// carry metadata.sku the way api/create-checkout-session.js's hand-built
 // sessions do — that only gets set if you add it manually in the Stripe
 // Dashboard (Payment Link → ⋯ → Edit → Advanced → Metadata: key "sku",
-// value "MS-RRSP-MB"). If that metadata is missing, CheckoutReturn.jsx
-// can't match the session back to a product in data.js and the buyer
-// sees the generic "email us" fallback instead of their real download
-// links — so this falls back to the one pilot SKU below rather than
-// leaving a paying customer with nothing.
+// value e.g. "MS-RRSP-MB"). Set it on every product's Payment Link before
+// going live, or the buyer sees the generic "email us" fallback instead
+// of their real download links.
 //
-// Before a second product goes live on a Payment Link / Buy Button,
-// either (a) set metadata.sku on every new Payment Link in the Stripe
-// Dashboard so this never needs to guess, or (b) replace this flat
-// fallback with a real price-ID → sku lookup (expand `line_items` on the
-// retrieve call below and map `line_items.data[0].price.id`).
-const FALLBACK_SKU = "MS-RRSP-MB";
+// Earlier (pilot, one product only) this guessed a flat FALLBACK_SKU when
+// metadata was missing, on the logic that a guess beats nothing. Now that
+// a second product (TFSA Multi-Brokerage, MS-TFSA-MB) shares this same
+// endpoint, that guess became actively dangerous: a TFSA buyer with
+// missing metadata would have been handed the RRSP tracker's download
+// links instead of their own — wrong product delivered confidently beats
+// no product delivered. Removed. A missing/unmatched sku now passes
+// through as-is; CheckoutReturn.jsx already handles `product` being
+// undefined by showing the safe "email us" fallback (see its
+// `PRODUCTS.find((p) => p.sku === state.sku)` — finds nothing, falls
+// through to the generic message) rather than guessing.
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -41,7 +42,7 @@ export default async function handler(req, res) {
     const session = await stripe.checkout.sessions.retrieve(session_id);
     return res.status(200).json({
       status: session.status, // "open" | "complete" | "expired"
-      sku: session.metadata?.sku || FALLBACK_SKU,
+      sku: session.metadata?.sku || null,
       customerEmail: session.customer_details?.email || null,
     });
   } catch (err) {
