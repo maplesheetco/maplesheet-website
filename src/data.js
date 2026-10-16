@@ -106,12 +106,21 @@ export const PRODUCTS = [
     // land on a page with dead links until these are filled in. The sheet
     // link should be the same "make a copy" Google Sheets link Payhip
     // currently delivers for this product.
+    // ⚠️ Lino: sheetUrl is still a placeholder — only you have the real
+    // Google Sheets "make a copy" link for the RRSP master. Paste it here
+    // in the same format Payhip delivers: ".../spreadsheets/d/<ID>/copy".
+    // The 3 PDFs below are real, drafted files (not placeholders) — built
+    // to match the TFSA tracker's existing PDFs in style and structure,
+    // using the actual RRSP tracker screenshots and current CRA figures as
+    // of October 2026. Read through them once before this goes live:
+    // the Template Link PDF also has one placeholder inside it (the same
+    // sheet URL), everything else in all 3 is ready to ship as drafted.
     delivery: {
       sheetUrl: "https://REPLACE-ME-with-your-google-sheet-make-a-copy-link",
       pdfs: [
-        { label: "Setup guide", url: "https://REPLACE-ME.pdf" },
-        { label: "Quick-start guide", url: "https://REPLACE-ME.pdf" },
-        { label: "FAQ", url: "https://REPLACE-ME.pdf" },
+        { label: "Template Link", url: "/downloads/rrsp-mb-template-link.pdf" },
+        { label: "User Guide", url: "/downloads/rrsp-mb-user-guide.pdf" },
+        { label: "RRSP Government Rules", url: "/downloads/rrsp-mb-government-rules.pdf" },
       ],
     },
     slug: "rrsp-multi-brokerage", accounts: ["RRSP"],
