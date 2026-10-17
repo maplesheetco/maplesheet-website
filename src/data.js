@@ -91,13 +91,12 @@ export const PRODUCTS = [
       buyButtonId: "buy_btn_1UR0IJJYx6fAMdIUhv9jkY9T",
       publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
     },
-    // ⚠️ Lino — PLACEHOLDER sheetUrl below. Swap for the real TFSA
-    // Multi-Brokerage master sheet's "/copy" link (and re-check its Share
-    // settings are "Anyone with the link" → Viewer), then rebuild
-    // pdfbuild/build_tfsa_mb_templatelink.py with the real link so the PDF
-    // matches. Same two-step process you already did for RRSP.
+    // Real sheet link — swapped in from your own P13 Template Link PDF.
+    // ⚠️ Lino — double-check this sheet's Share settings are "Anyone with
+    // the link" → Viewer (same as RRSP-MB and Ultimate), same as every
+    // other tracker's delivery link.
     delivery: {
-      sheetUrl: "https://docs.google.com/spreadsheets/d/PLACEHOLDER-REPLACE-WITH-REAL-TFSA-MB-SHEET-ID/copy",
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1VmfxXQtrrfSZT47YqwSPiPD3MW9IwElcxtyVMxEaerQ/copy",
       pdfs: [
         { label: "Template Link", url: "/downloads/tfsa-mb-template-link.pdf" },
         { label: "User Guide", url: "/downloads/tfsa-mb-user-guide.pdf" },
