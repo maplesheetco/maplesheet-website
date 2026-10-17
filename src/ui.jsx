@@ -355,6 +355,7 @@ export function Footer() {
         <FootCol heading="Company">
           <NavLink to="/about" style={FOOT_LINK_STYLE}>About</NavLink>
           <NavLink to="/contact" style={FOOT_LINK_STYLE}>Contact</NavLink>
+          <NavLink to="/disclaimer" style={FOOT_LINK_STYLE}>Disclaimer</NavLink>
           <a href={CONFIG.shopUrl} target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>Etsy Shop ↗</a>
         </FootCol>
 
@@ -376,7 +377,8 @@ export function Footer() {
       <div style={{ borderTop: `1px solid ${B.line}` }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", padding: "18px 24px" }}>
           <p style={{ margin: "0 0 16px", fontSize: 11.5, color: B.gray, lineHeight: 1.6, maxWidth: 760 }}>
-            MapleSheet trackers are record-keeping tools, not financial advice. Google Sheets is a trademark of Google LLC; MapleSheet Co. is not affiliated with Google or Etsy.
+            MapleSheet trackers are record-keeping tools, not financial advice. Google Sheets is a trademark of Google LLC; MapleSheet Co. is not affiliated with Google or Etsy.{" "}
+            <NavLink to="/disclaimer" style={{ color: B.grayLight, textDecoration: "underline" }}>Read the full disclaimer →</NavLink>
           </p>
           <div className="ml-foot-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap", paddingTop: 16, borderTop: `1px solid ${B.line}` }}>
             <div className="ml-foot-bottom-left" style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", fontSize: 11.5, color: B.gray }}>
