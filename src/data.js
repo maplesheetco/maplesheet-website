@@ -347,17 +347,105 @@ export const PRODUCTS = [
     ] },
   },
   {
-    name: "Ultimate Tracker — All 5 Accounts", tag: "Flagship", price: 44.99,
+    name: "Canadian Ultimate Tracker — All 5 Accounts", tag: "Flagship", price: 44.99,
     url: "https://www.etsy.com/listing/4536628550", directUrl: "https://payhip.com/b/wkqoH",
-    desc: "TFSA + RRSP + RESP + FHSA + Margin. Everything, one sheet.", badge: "FLAGSHIP",
+    desc: "TFSA + RRSP + Spousal RRSP + RESP + FHSA + Margin. Everything, one sheet.", badge: "FLAGSHIP",
+    // Real, uncropped tabs from the actual sheet — same pattern as the two
+    // Multi-Brokerage Trackers' galleries above. Renders as a slideshow on
+    // the detail page when `gallery` is present.
+    gallery: [
+      { src: "/screenshots/ultimate-gallery-1-start-here.jpg", label: "Start Here — CRA rules, FAQs & setup steps for all 5 accounts, built right in" },
+      { src: "/screenshots/ultimate-gallery-2-main-dashboard.jpg", label: "Main Dashboard — 5-column metrics, 4 live charts, YTD summary" },
+      { src: "/screenshots/ultimate-gallery-3-settings.jpg", label: "Settings & Goals — 8 sections, fill the amber cells once" },
+      { src: "/screenshots/ultimate-gallery-4-transaction-log.jpg", label: "Transaction Log — enter once, all 15 tabs update automatically" },
+      { src: "/screenshots/ultimate-gallery-5-portfolio-performance.jpg", label: "Portfolio Performance — live prices, ACB, and return % across all 6 accounts" },
+      { src: "/screenshots/ultimate-gallery-6-attribution-tracker.jpg", label: "Attribution Tracker — the 3-year spousal RRSP rule, tracked automatically" },
+      { src: "/screenshots/ultimate-gallery-7-resp-tracker.jpg", label: "RESP Tracker — CESG grant monitor for up to 4 beneficiaries" },
+      { src: "/screenshots/ultimate-gallery-8-fhsa.jpg", label: "FHSA — the triple tax advantage, tracked start to finish" },
+      { src: "/screenshots/ultimate-gallery-9-dividend-tracker.jpg", label: "Dividend Tracker — all 6 accounts, monthly breakdown & run-rate" },
+      { src: "/screenshots/ultimate-gallery-10-tax-dashboard.jpg", label: "Tax Dashboard — Line 208, 20805 & 22100, all 13 provinces" },
+      { src: "/screenshots/ultimate-gallery-11-income-splitting.jpg", label: "Income Splitting — the actual household tax savings from a spousal RRSP" },
+      { src: "/screenshots/ultimate-gallery-12-analysis-reco.jpg", label: "Analysis & Reco — contribution priority order and projected growth" },
+      { src: "/screenshots/ultimate-gallery-13-vs-competitors.jpg", label: "P12 vs. Competitors — what no other Canadian tracker on Etsy covers" },
+    ],
     slug: "ultimate-all-5-accounts", accounts: ["TFSA", "RRSP", "RESP", "FHSA", "Margin"], screenshot: "/screenshots/ultimate.jpg", sku: "MS-FLAGSHIP-ULTIMATE",
-    bestFor: "Anyone who'd rather track everything in one sheet instead of picking a combo.",
-    longDescription: "Every account MapleSheet tracks, in a single sheet: TFSA, RRSP, RESP, FHSA, and Margin. Built for anyone who'd rather stop deciding which combo tracker fits and just track everything — contribution room, deduction limits, CESG grants, and capital gains, all reconciled against each other instead of five separate spreadsheets.",
+    // Checkout powered directly by MapleSheet's own Stripe account, same
+    // Buy Button pattern as the other two. This switches TrackerDetail.jsx
+    // / Trackers.jsx over from the Etsy/Payhip buttons to this Stripe one
+    // automatically, now that it's set.
+    //
+    // ⚠️ Lino — double-check on this Payment Link: (1) metadata key "sku"
+    // = "MS-FLAGSHIP-ULTIMATE" is set under Edit → Advanced → Metadata,
+    // and (2) "After the payment" redirects to
+    // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}
+    // — without #1 the webhook can't match a sale to this product (shows
+    // the safe "email us" fallback instead of download links); without #2
+    // the on-site reveal page never loads after payment.
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URMm9JYx6fAMdIUGIPkPHZI",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery links, from your own P12 Ultimate Tracker v1.0 source
+    // material. sheetUrl uses the "/copy" format (not /edit) so a buyer is
+    // prompted to make their own copy rather than landing on an edit view
+    // of the master. ⚠️ Lino — double-check this sheet's Share settings are
+    // "Anyone with the link" → Viewer, same as the other trackers.
+    //
+    // The 3 PDFs below are your own real P12_*.pdf files, copied in as-is
+    // (already correctly branded "MapleSheet Co.", already carrying real,
+    // correct data) rather than rebuilt from scratch — just renamed to match
+    // the site's /downloads naming convention. One honesty note: they're
+    // labeled "Template Link" / "Clear Sample Data Guide" / "CRA Rules &
+    // Complete Guide" rather than "Template Link / User Guide / Government
+    // Rules" like the Multi-Brokerage Trackers, because what you supplied is
+    // a sample-data-clearing guide, not a full tab-by-tab user guide — the
+    // label matches what the PDF actually is. Also: every page footer in
+    // these 3 PDFs reads "maplesheeet.etsy.com" (three e's) — looks like a
+    // leftover typo from the Etsy listing artwork. Harmless, but worth a
+    // fix next time you touch these files.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1gHyu1fUXfSPMw5sIPR_6-VTtSfhAtflRKsPFHvxKvE8/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/ultimate-template-link.pdf" },
+        { label: "Clear Sample Data Guide", url: "/downloads/ultimate-clear-sample-data-guide.pdf" },
+        { label: "CRA Rules & Complete Guide", url: "/downloads/ultimate-cra-rules-complete-guide.pdf" },
+      ],
+    },
+    bestFor: "Anyone who'd rather track everything in one sheet instead of picking a combo — including couples using a spousal RRSP to split retirement income.",
+    // `accounts` above stays the 5 named in the product ("All 5 Accounts")
+    // since that's what drives ACCOUNT_GUIDES and the demo/bundle display —
+    // Spousal RRSP is the same account *type* as RRSP, tracked as a second,
+    // separate RRSP inside the sheet (same pattern as the dedicated "RRSP +
+    // Spousal RRSP Tracker" combo above, which also keeps accounts: ["RRSP"]
+    // and uses compareAccounts + extraGuide instead of a 6th account tag).
+    // compareAccounts prices it honestly as 6 single-trackers' worth
+    // (RRSP counted twice) for the "save $X vs buying separately" math.
+    compareAccounts: ["TFSA", "RRSP", "RRSP", "RESP", "FHSA", "Margin"],
+    extraGuide: { slug: "spousal-rrsp-income-splitting", label: "Spousal RRSP income splitting guide" },
+    longDescription: "Every account MapleSheet tracks, in a single sheet: TFSA, RRSP, Spousal RRSP, RESP, FHSA, and Margin — 6 accounts, 15 automated tabs. Built for anyone who'd rather stop deciding which combo tracker fits and just track everything — contribution room, deduction limits, CESG grants, spousal attribution, and capital gains, all reconciled against each other instead of five or six separate spreadsheets.",
+    overview: [
+      "Running a TFSA, an RRSP, a spousal RRSP for income splitting, an RESP for the kids, an FHSA for a first home, and a Margin account for everything else — in five or six different spreadsheets, or worse, five or six different apps? Every one of them shows you its own slice. None of them shows you the whole household picture, and the accounts that actually interact with each other — your RRSP room and your spousal RRSP contributions, your FHSA and your RRSP's Home Buyers' Plan — end up tracked as if they were unrelated.",
+      "The Canadian Ultimate Tracker — All 5 Accounts pulls every one of those accounts into one Google Sheet, 15 tabs, built around a single Transaction Log — enter a contribution, a buy, a CESG grant, or a dividend once, and all 15 tabs update automatically. A Main Dashboard rolls everything into one 5-column net worth view with 4 live charts; a Tax Dashboard turns your actual entries into Line 208, Line 20805, and Line 22100 figures, auto-switching across all 13 provinces' combined federal + provincial rates.",
+      "It's built around how each account actually works, not one ruleset copy-pasted six times. The Attribution Tracker watches the 3-year spousal RRSP rule in calendar years, not months, and flags exactly when each contribution becomes safe to withdraw. The RESP Tracker tracks the CESG grant per child, up to 4 beneficiaries, against the real $7,200 lifetime cap. The FHSA tab reflects its real, stricter rule — no 60-day grace period, miss December 31 and that year's room is gone. The Margin tab carries full ACB tracking for Schedule 3. And the Income Splitting calculator shows the actual household tax saving a spousal RRSP produces — not a rule of thumb, your real numbers.",
+    ],
+    whoFor: "Canadian DIY investors running more than a couple of account types — especially couples using a spousal RRSP to split retirement income, parents saving in an RESP alongside their own TFSA and RRSP, first-time home buyers using an FHSA, and anyone investing in a taxable Margin account on top of their registered accounts — who'd rather buy one tracker than five.",
     features: [
-      "All 5 account types tracked individually with one combined net worth total",
-      "Contribution room and deduction limits for TFSA, RRSP, RESP, and FHSA",
-      "CESG grant tracking and automatic ACB/capital gains for Margin",
-      "5-column metrics dashboard with 4 live charts and a YTD summary",
+      "All 6 accounts in one sheet — TFSA, RRSP, Spousal RRSP (tracked separately from your own RRSP), RESP, FHSA, and Margin — with one combined net worth total",
+      "15 fully automated tabs, single data entry — log a transaction once in the Transaction Log and every tab updates automatically",
+      "Attribution Tracker — the 3-year spousal RRSP rule tracked in calendar years, with a SAFE / AT RISK status and the exact date each contribution becomes safe to withdraw",
+      "RESP Tracker — CESG grant tracking for up to 4 beneficiaries, with cumulative contributions, CESG received, and CESG room remaining shown per child",
+      "Tax Dashboard — Line 208, Line 20805, and Line 22100 auto-calculated from your real entries, with all 13 provinces + federal brackets for a real deduction-value estimate",
+      "Income Splitting calculator — the actual household tax saving from a spousal RRSP strategy, shown year by year",
+      "10 transaction types (Buy, Sell, Contribution, Withdrawal, Dividend, DRIP, Transfer In, Transfer Out, CESG, Margin Interest), live prices via GOOGLEFINANCE, and automatic ACB/capital gains for the Margin account",
+      "Dividend Tracker across all 6 accounts, with a monthly breakdown and projected annual run-rate",
+      "Analysis & Reco tab — a recommended contribution priority order (RESP first for the CESG match, then FHSA, RRSP, TFSA, Margin) and projected portfolio growth to 2040",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "🍁", label: "One-click MapleSheet menu", desc: "Builds, rebuilds, and loads sample data for you right inside the sheet — no spreadsheet experience required." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "Clear Sample Data Guide PDF", desc: "The safe, step-by-step way to clear the 16 sample transactions without breaking a formula — never right-click delete a row, use Delete instead." },
+      { icon: "📄", label: "CRA Rules & Complete Guide PDF", desc: "All 5 account types' real CRA rules in one reference — TFSA, RRSP + Spousal RRSP, RESP + CESG, FHSA, and Margin — plus the 2026 federal brackets and all 13 provinces' combined tax rates." },
     ],
     demo: { total: "59,097", ytd: "+15.6%", accounts: [
       { label: "TFSA", value: "16,568", change: "+12.4%" },
