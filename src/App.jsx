@@ -310,7 +310,7 @@ function Home() {
                 <span style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.55, flex: 1 }}>{p.desc}</span>
                 <span style={{ fontSize: 20, fontWeight: 800, color: B.white }}>CA${p.price.toFixed(2)}</span>
                 <div style={{ display: "flex", gap: 8 }}>
-                  {p.url && (
+                  {p.url && !p.stripeBuyButton && (
                     <a href={p.url} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
                       productName: p.name, productTag: p.tag, priceCad: p.price,
                       checkoutDestination: "etsy", sourceSection: "home_featured",
