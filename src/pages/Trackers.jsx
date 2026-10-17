@@ -119,7 +119,7 @@ export default function Trackers() {
                   </Link>
                 )}
                 <div style={{ display: "flex", gap: 8 }}>
-                  {p.url && (
+                  {p.url && !p.stripeBuyButton && (
                     <a href={p.url} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
                       productName: p.name, productTag: p.tag, priceCad: p.price,
                       checkoutDestination: "etsy", sourceSection: "trackers_catalog",
