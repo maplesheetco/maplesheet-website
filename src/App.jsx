@@ -9,6 +9,7 @@ import Resources from "./pages/Resources.jsx";
 import Article from "./pages/Article.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
+import Disclaimer from "./pages/Disclaimer.jsx";
 // FreeTools pulls in the recharts-powered calculator (~100KB+ gzipped) — lazy-load
 // it so that weight only downloads for people who actually visit /tools, not on
 // every page of the site.
@@ -19,7 +20,7 @@ const Checkout = lazy(() => import("./pages/Checkout.jsx"));
 const CheckoutReturn = lazy(() => import("./pages/CheckoutReturn.jsx"));
 
 const GALLERY_SLIDES = [
-  { src: "/screenshots/ultimate.jpg", alt: "Ultimate Tracker dashboard screenshot", title: "Ultimate Tracker — All 5 Accounts", tag: "5-column metrics, 4 live charts, YTD summary" },
+  { src: "/screenshots/ultimate.jpg", alt: "Canadian Ultimate Tracker dashboard screenshot", title: "Canadian Ultimate Tracker — All 5 Accounts", tag: "5-column metrics, 4 live charts, YTD summary" },
   { src: "/screenshots/resp.jpg", alt: "RESP Tracker dashboard screenshot", title: "RESP Tracker", tag: "CESG grants, holdings allocation, live prices" },
   { src: "/screenshots/tfsa-margin.jpg", alt: "TFSA plus Margin Linked dashboard screenshot", title: "TFSA + Margin Linked", tag: "Combined net worth, collateral power, tax dashboard" },
   { src: "/screenshots/fhsa.jpg", alt: "FHSA Tracker dashboard screenshot", title: "FHSA Tracker", tag: "Down payment progress, tax-free dividends" },
@@ -453,6 +454,7 @@ export default function App() {
             <Route path="/resources/:slug" element={<Article />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/disclaimer" element={<Disclaimer />} />
             <Route path="*" element={<Home />} />
           </Routes>
         </main>
