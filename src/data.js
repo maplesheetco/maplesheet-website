@@ -310,20 +310,75 @@ export const PRODUCTS = [
     name: "TFSA + RRSP + RESP Tracker", tag: "Combo", price: 27.99,
     url: "https://www.etsy.com/listing/4526534020", directUrl: "https://payhip.com/b/DrfbA",
     desc: "Family bundle with CESG maximizer",
+    // Real, uncropped tabs from your actual P3 sheet. One screenshot you sent
+    // (the dark-navy "TFSA · RRSP · RESP Tracker v1.0 · 11 Tabs" one-pager)
+    // was left out of the gallery — its version/tab-count label conflicts
+    // with the real v1.5 / 10-tab Template Link already confirmed for this
+    // product, so it reads as outdated marketing art rather than a real tab.
+    // Say the word if you want it added back in anyway.
+    gallery: [
+      { src: "/screenshots/combo3-gallery-2-main-dashboard.jpg", label: "Main Dashboard — TFSA, RRSP & RESP portfolios plus a Combined column for net worth, shown fresh after copying (all $0.00 until you add your own data)" },
+      { src: "/screenshots/combo3-gallery-3-transaction-log.jpg", label: "Transaction Log — the one tab you type into; dropdowns handle Account, Type & Currency, FX rate pulls live from GOOGLEFINANCE" },
+      { src: "/screenshots/combo3-gallery-4-resp-portfolio.jpg", label: "RESP Portfolio — live holdings, auto-calculated ACB, Holdings Allocation & Mkt Value vs Cost Basis charts" },
+      { src: "/screenshots/combo3-gallery-5-tfsa-rrsp-portfolios.jpg", label: "TFSA & RRSP Portfolios — side by side, each with its own holdings table, gain/loss and donut chart" },
+      { src: "/screenshots/combo3-gallery-1-cesg-calculator.jpg", label: "CESG Calculator — the 20% grant formula, $500/year max, $7,200 lifetime cap and catch-up rule, built right in" },
+      { src: "/screenshots/combo3-gallery-6-dividend-tracker.jpg", label: "Dividend Tracker — monthly distribution chart, per-ticker summary, DRIP tracked, annual run-rate vs your own goal" },
+    ],
+    screenshot: "/screenshots/combo3-gallery-6-dividend-tracker.jpg",
     slug: "tfsa-rrsp-resp", accounts: ["TFSA", "RRSP", "RESP"], sku: "MS-COMBO-TFSA-RRSP-RESP",
+    // ⚠️ Lino — double-check this Payment Link, same as the other 4:
+    // (1) metadata key "sku" = "MS-COMBO-TFSA-RRSP-RESP" under Edit →
+    // Advanced → Metadata, and (2) "After the payment" redirects to
+    // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URZGeJYx6fAMdIUPcAn2zIi",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery link. sheetUrl is your own P3 Template Link's "/copy"
+    // URL. ⚠️ Double-check this sheet's Share settings are "Anyone with the
+    // link" → Viewer, same as the other trackers.
+    //
+    // The Template Link PDF was rebuilt in your real brand this session. The
+    // 3 account guides (TFSA/RRSP/RESP) are newly built too — you didn't
+    // have guide PDFs on file for this product, so these reuse the same
+    // real, verified CRA facts and figures already on file in Combo4's
+    // guides (account rules aren't product-specific), rewritten for this
+    // product's real context: "Account X of 3" (no Margin), v1.5, correct
+    // maplesheetco.etsy.com.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1ZYpMBtEeDp-hOmPJvJd9sg6PGN0LX1cl2Eo7gkmZM1Y/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/combo3-template-link.pdf" },
+        { label: "TFSA Guide", url: "/downloads/combo3-tfsa-guide.pdf" },
+        { label: "RRSP Guide", url: "/downloads/combo3-rrsp-guide.pdf" },
+        { label: "RESP Guide", url: "/downloads/combo3-resp-guide.pdf" },
+      ],
+    },
     bestFor: "Parents balancing personal investing with saving for their kids' education.",
     longDescription: "Built for parents balancing their own investing with saving for a child's education — TFSA and RRSP for personal accounts, RESP for the kids, with the CESG grant math handled automatically so government matching never gets left on the table.",
-    features: [
-      "TFSA and RRSP contribution room tracked alongside RESP room",
-      "CESG grant tracking — annual room, carry-forward, and the $7,200 lifetime cap",
-      "Up to 4 RESP beneficiaries supported",
-      "One combined household view across all three accounts",
+    overview: [
+      "A TFSA for flexible savings, an RRSP for retirement, and an RESP for the kids — tracked in three separate spreadsheets, or reconstructed by hand whenever you want to know where you actually stand? The Main Dashboard rolls all three into one Combined column: net worth, total cost, total gain, average return, and all dividends in one place, alongside the individual TFSA, RRSP and RESP figures.",
+      "The RESP side gets its own CESG Calculator — the 20% grant formula spelled out ($2,500 contributed → $500 CESG), the $500/year and $7,200 lifetime caps, and the catch-up rule for a missed year, all built in so government matching never gets left on the table. The RESP Tracker shows years of CESG eligibility remaining, this year's and last year's contribution status, how much lifetime CESG room is left, and an auto-calculated School Start year.",
+      "One Transaction Log drives every tab — enter a contribution, a buy, a CESG grant, or a dividend once, with dropdowns for Account, Type and Currency so there's no way to mistype them, and USD transactions convert to CAD automatically with a live FX rate from GOOGLEFINANCE. Each portfolio tab carries its own auto-calculated ACB, live GOOGLEFINANCE prices, and Holdings Allocation + Mkt Value vs Cost Basis charts, and a Dividend Tracker rolls monthly income across all three accounts into one chart with DRIP tracking and an annual run-rate projection.",
     ],
-    demo: { total: "48,106", ytd: "+12.8%", accounts: [
-      { label: "TFSA", value: "16,568", change: "+12.4%" },
-      { label: "RRSP", value: "27,322", change: "+9.1%" },
-      { label: "RESP", value: "4,216", change: "+18.7%" },
-    ] },
+    whoFor: "Canadian DIY investors running a TFSA and an RRSP for themselves alongside an RESP for their kids, who want one combined household view instead of three disconnected spreadsheets — and who want the CESG grant math done automatically so they never miss the government match.",
+    features: [
+      "TFSA, RRSP, and RESP portfolios tracked separately, with a Combined column rolling all three into one net worth total",
+      "CESG Calculator built in — the 20% grant formula, $500/year max, $7,200 lifetime cap, and the catch-up rule (contribute up to $5,000 in one year to earn $1,000 CESG) calculated automatically",
+      "RESP Tracker shows CESG years remaining, this year's and last year's contribution status, lifetime CESG room left, and an auto-calculated School Start year",
+      "One Transaction Log drives every tab — dropdowns handle Account, Type, and Currency, with USD transactions converted to CAD via a live FX rate from GOOGLEFINANCE",
+      "Live prices via GOOGLEFINANCE across all three accounts, with ACB auto-calculated from your Transaction Log history",
+      "Dividend Tracker across all three accounts — monthly distribution chart, per-ticker summary, DRIP tracking, and an annual run-rate projection against your own goal",
+      "Each portfolio tab includes a Holdings Allocation donut chart and a Market Value vs. Cost Basis column chart",
+      "3 dedicated account guides — real CRA contribution limits, rules, tax implications, and best-investments tables for TFSA, RRSP, and RESP",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "TFSA Guide PDF", desc: "Contribution limits, the rules you need to know, tax implications, and which investments belong in a TFSA." },
+      { icon: "📄", label: "RRSP Guide PDF", desc: "Contribution rules, the Home Buyers' Plan, spousal RRSPs, and why US dividend stocks belong here instead of your TFSA." },
+      { icon: "📄", label: "RESP Guide PDF", desc: "How the CESG grant works, the glide-path investment strategy by age, and family vs. individual RESPs." },
+    ],
   },
   {
     name: "TFSA + RRSP + RESP + Margin", tag: "Combo", price: 34.99,
