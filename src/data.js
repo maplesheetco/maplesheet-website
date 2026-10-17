@@ -329,20 +329,85 @@ export const PRODUCTS = [
     name: "TFSA + RRSP + RESP + Margin", tag: "Combo", price: 34.99,
     url: "https://www.etsy.com/listing/4528655460", directUrl: "https://payhip.com/b/xNGr1",
     desc: "Four accounts — ACB, CESG, capital gains",
-    slug: "tfsa-rrsp-resp-margin", accounts: ["TFSA", "RRSP", "RESP", "Margin"], sku: "MS-COMBO-TFSA-RRSP-RESP-MARGIN",
-    bestFor: "Households running registered, education, and taxable accounts together.",
-    longDescription: "For households running registered accounts, education savings, and taxable investing all at once. Four accounts, four different sets of rules — contribution room, CESG grants, and capital gains — all reconciled in one sheet instead of four disconnected ones.",
-    features: [
-      "TFSA, RRSP, RESP, and Margin tracked individually with one combined total",
-      "CESG grant tracking for the RESP, including the lifetime cap",
-      "Automatic ACB and capital gains tax dashboard for the Margin account",
-      "Live prices via GOOGLEFINANCE across all four accounts",
+    // Real, uncropped tabs from your actual P4 sheet — same gallery pattern
+    // as the other trackers below. One duplicate "Main Dashboard" capture
+    // you sent (a second, narrower crop of the same tab/numbers) was left
+    // out rather than shown twice — say the word if you wanted that second
+    // version used instead.
+    gallery: [
+      { src: "/screenshots/combo4-gallery-2-main-dashboard.jpg", label: "Main Dashboard — combined net worth across all 4 accounts, YTD income summary & last 5 transactions" },
+      { src: "/screenshots/combo4-gallery-3-transaction-log.jpg", label: "Transaction Log — the one tab you type into, everything else calculates automatically" },
+      { src: "/screenshots/combo4-gallery-1-tfsa-portfolio.jpg", label: "TFSA Portfolio — auto-populated holdings, live prices, ACB & gain/loss" },
+      { src: "/screenshots/combo4-gallery-4-resp-tracker.jpg", label: "RESP Tracker — CESG grant monitor for up to 4 beneficiaries, eligibility countdown" },
+      { src: "/screenshots/combo4-gallery-5-margin-portfolio.jpg", label: "Margin Portfolio — ACB tracking, live prices, capital gains flow to Tax Dashboard" },
+      { src: "/screenshots/combo4-gallery-6-tax-dashboard.jpg", label: "Tax Dashboard — Lines 12000, 12100 & 22100 and Schedule 3, calculated from your real entries" },
+      { src: "/screenshots/combo4-gallery-7-dividend-tracker.jpg", label: "Dividend Tracker — monthly income across all 4 accounts, DRIP tracked, annual run-rate" },
+      { src: "/screenshots/combo4-gallery-8-margin-interest-tracker.jpg", label: "Margin Interest Tracker — break-even yield, monthly log, CRA Line 22100 deduction" },
+      { src: "/screenshots/combo4-gallery-9-account-placement-guide.jpg", label: "Account Placement Guide — which investments belong in which account, and why" },
     ],
-    demo: { total: "50,876", ytd: "+13.4%", accounts: [
-      { label: "TFSA", value: "16,568", change: "+12.4%" },
-      { label: "RRSP", value: "27,322", change: "+9.1%" },
-      { label: "RESP", value: "4,216", change: "+18.7%" },
-      { label: "Margin", value: "2,770", change: "+22.3%" },
+    slug: "tfsa-rrsp-resp-margin", accounts: ["TFSA", "RRSP", "RESP", "Margin"], screenshot: "/screenshots/combo4-gallery-2-main-dashboard.jpg", sku: "MS-COMBO-TFSA-RRSP-RESP-MARGIN",
+    // ⚠️ Lino — double-check on this Payment Link, same as the other 3:
+    // (1) metadata key "sku" = "MS-COMBO-TFSA-RRSP-RESP-MARGIN" under Edit →
+    // Advanced → Metadata, and (2) "After the payment" redirects to
+    // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URQ1LJYx6fAMdIUqVGnBEDI",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery links. sheetUrl is your own P4 Template Link's "/copy"
+    // URL. ⚠️ Lino — double-check this sheet's Share settings are "Anyone
+    // with the link" → Viewer, same as the other 3 trackers.
+    //
+    // The Template Link PDF was rebuilt (real logo/brand colors, same real
+    // sheet link) earlier this session. The other 5 PDFs below are your own
+    // real P4_*.pdf guides, copied in as-is — each one's footer also reads
+    // "maplesheeet.etsy.com" (three e's), same leftover typo flagged on the
+    // Ultimate Tracker's PDFs, worth a batch fix across all of them sometime.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1Co8Bmaz51DLHRFCkkpb2AHM0hoBvYE3EEq9Ejuy-ouU/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/combo4-template-link.pdf" },
+        { label: "Clear Sample Data Guide", url: "/downloads/combo4-clear-sample-data-guide.pdf" },
+        { label: "TFSA Guide", url: "/downloads/combo4-tfsa-guide.pdf" },
+        { label: "RRSP Guide", url: "/downloads/combo4-rrsp-guide.pdf" },
+        { label: "RESP Guide", url: "/downloads/combo4-resp-guide.pdf" },
+        { label: "Margin Account Guide", url: "/downloads/combo4-margin-guide.pdf" },
+      ],
+    },
+    bestFor: "Households running registered, education, and taxable accounts together.",
+    longDescription: "For households running registered accounts, education savings, and taxable investing all at once. Four accounts, four different sets of rules — contribution room, CESG grants, and capital gains — all reconciled in one Google Sheet, 13 tabs, instead of four disconnected ones.",
+    overview: [
+      "A TFSA for flexible savings, an RRSP for retirement, an RESP for the kids, and a Margin account for everything that doesn't fit a registered account — tracked in four separate spreadsheets, or worse, four separate brokerage apps? Each one shows its own slice. None of them shows the household's actual net worth, and the two accounts that matter most for tax season — the RESP's CESG grant and the Margin account's capital gains — end up tracked nowhere at all, or reconstructed by hand every April.",
+      "The TFSA + RRSP + RESP + Margin Tracker pulls all four into one Google Sheet, 13 tabs, built around a single Transaction Log — enter a contribution, a buy, a CESG grant, or a dividend once, and every tab updates automatically. The Main Dashboard rolls all four accounts into one combined net worth total; the Margin Portfolio's capital gains flow straight into a dedicated Tax Dashboard that calculates Line 12000, Line 12100, and the Line 22100 interest deduction for you.",
+      "Each account is tracked the way it actually works, not one generic ruleset reused four times. The RESP Tracker follows the CESG grant per child, up to 4 beneficiaries, against the real $7,200 lifetime cap. The RRSP Portfolio handles CAD and USD holdings together — the Canada-US tax treaty means 0% IRS withholding on US dividends held there, which is why the included Account Placement Guide tells you to hold US dividend stocks in the RRSP, not the TFSA, RESP, or Margin, where that same 15% is permanently gone. The Margin tab carries full ACB tracking plus a Margin Interest Tracker with CRA Line 22100 carrying-charge tracking and a break-even yield calculation. A Dividend Tracker and an Analysis & Reco tab round out the picture across all four accounts.",
+    ],
+    whoFor: "Canadian DIY investors running a TFSA, an RRSP, an RESP for their kids, and a taxable Margin account at the same time — especially parents balancing registered and education savings with a non-registered account on the side, who'd rather buy one tracker than juggle four spreadsheets.",
+    features: [
+      "TFSA, RRSP, RESP, and Margin tracked individually with one combined Main Dashboard total",
+      "CESG grant tracking for up to 4 RESP beneficiaries — $500/year per child against the real $7,200 lifetime cap",
+      "Automatic ACB tracking and a dedicated Tax Dashboard for Margin account capital gains (Schedule 3, 50% inclusion)",
+      "RRSP Portfolio handles CAD + USD holdings together — Canada-US tax treaty means 0% IRS withholding on US dividends held there",
+      "Margin Interest Tracker — monthly interest log, break-even yield, and the CRA Line 22100 deduction calculated automatically",
+      "Dividend Tracker across all four accounts, with DRIP handling, per-ticker summary, and annual run-rate",
+      "Analysis & Reco tab reads all 4 portfolio tabs to flag concentration and diversification gaps",
+      "4 dedicated account guides show exactly which investments belong where — e.g. US dividend stocks in the RRSP, not the TFSA, RESP, or Margin, to avoid the unrecoverable 15% IRS withholding",
+      "Live prices via GOOGLEFINANCE across all four accounts",
+      "One Transaction Log drives all 13 tabs — enter a transaction once and everything updates automatically",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "Clear Sample Data Guide PDF", desc: "The safe, step-by-step way to clear the sample data — only the Transaction Log needs clearing, every other tab resets itself automatically." },
+      { icon: "📄", label: "TFSA Guide PDF", desc: "Contribution limits, the rules you need to know, tax implications, and which investments belong in a TFSA." },
+      { icon: "📄", label: "RRSP Guide PDF", desc: "Contribution rules, the Home Buyers' Plan, spousal RRSPs, and why US dividend stocks belong here instead of your TFSA." },
+      { icon: "📄", label: "RESP Guide PDF", desc: "How the CESG grant works, the glide-path investment strategy by age, and family vs. individual RESPs." },
+      { icon: "📄", label: "Margin Account Guide PDF", desc: "ACB tracking, the Line 22100 interest deduction, and how Canadian vs. US dividends are taxed differently in a non-registered account." },
+    ],
+    demo: { total: "229,210", ytd: "+10.4%", accounts: [
+      { label: "TFSA", value: "94,210", change: "+9.7%" },
+      { label: "RRSP", value: "68,450", change: "+8.1%" },
+      { label: "RESP", value: "24,670", change: "+18.7%" },
+      { label: "Margin", value: "41,880", change: "+11.2%" },
     ] },
   },
   {
