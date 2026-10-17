@@ -271,7 +271,7 @@ export default function TrackerDetail() {
           )}
 
           <div style={{ display: "flex", gap: 10, marginBottom: (product.overview || product.features || product.included) ? 26 : 0 }}>
-            {product.url && (
+            {product.url && !product.stripeBuyButton && (
               <a
                 href={product.url} target="_blank" rel="noreferrer" className="ml-btn"
                 onClick={() => trackBuyClicked({
