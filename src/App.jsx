@@ -10,6 +10,7 @@ import Article from "./pages/Article.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import Disclaimer from "./pages/Disclaimer.jsx";
+import Privacy from "./pages/Privacy.jsx";
 // FreeTools pulls in the recharts-powered calculator (~100KB+ gzipped) — lazy-load
 // it so that weight only downloads for people who actually visit /tools, not on
 // every page of the site.
@@ -455,6 +456,7 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/disclaimer" element={<Disclaimer />} />
+            <Route path="/privacy" element={<Privacy />} />
             <Route path="*" element={<Home />} />
           </Routes>
         </main>
