@@ -405,8 +405,68 @@ export const PRODUCTS = [
       { icon: "📄", label: "RESP Guide PDF", desc: "CESG rules including catch-up and the age 16–17 rule, the $50,000 limit, EAPs and withdrawals, and what to hold as school gets closer." },
     ],
   },
-  { name: "FHSA Tracker", tag: "FHSA", price: 14.99, url: "https://www.etsy.com/listing/4534938230", directUrl: "https://payhip.com/b/dEXy3", desc: "First Home Savings, Line 20805 tax dashboard", screenshot: "/screenshots/fhsa.jpg", sku: "MS-FHSA-01",
-    bestFor: "Saving toward a first home, FHSA on its own." },
+  {
+    name: "FHSA Tracker", tag: "FHSA", price: 14.99,
+    url: "https://www.etsy.com/listing/4534938230", directUrl: "https://payhip.com/b/dEXy3",
+    desc: "First Home Savings, Line 20805 tax dashboard",
+    // Real tabs from your actual P9 sheet, cropped above the footer.
+    // Main Dashboard, FHSA Portfolio, Analysis and the Triple Tax tab are
+    // left out for now: the holdings add up to $7,421 but the sheet shows
+    // $8,421 and a +$2,243 / +36.3% gain (it's about +$1,243 / +20%), and
+    // the Triple Tax table still says RRSP "Line 208" (now Line 20800).
+    // See fhsa/sheet-fixes.md.
+    gallery: [
+      { src: "/screenshots/fhsa-gallery-1-cra-rules.jpg", label: "FHSA rules built in — annual and lifetime limits, carry-forward, Line 20805, qualifying withdrawals and the 15-year expiry" },
+      { src: "/screenshots/fhsa-gallery-2-transaction-log.jpg", label: "Transaction Log — the one tab you type into: contributions, ETF buys and tax-free dividends, every other tab updates automatically" },
+    ],
+    screenshot: "/screenshots/fhsa.jpg",
+    slug: "fhsa-tracker", accounts: ["FHSA"], sku: "MS-FHSA-01",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URxi5JYx6fAMdIU8cW3slZH",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery links. sheetUrl is the "/copy" URL from your uploaded
+    // P9_Template_Link.pdf. ⚠️ Lino — double-check this sheet's Share
+    // settings are "Anyone with the link" → Viewer, and confirm the Payment
+    // Link's metadata (key "sku" = "MS-FHSA-01") and its "After
+    // the payment" redirect to https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1lcn2HX0uPP5tD8ETCS-qjamZjHaCckpzWmimPm6EfqE/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/fhsa-template-link.pdf" },
+        { label: "Clear Sample Data Guide", url: "/downloads/fhsa-clear-sample-data-guide.pdf" },
+        { label: "Complete Setup Guide", url: "/downloads/fhsa-complete-setup-guide.pdf" },
+        { label: "FHSA Guide", url: "/downloads/fhsa-guide.pdf" },
+      ],
+    },
+    bestFor: "Saving toward a first home, FHSA on its own.",
+    longDescription: "An FHSA tracker for first-time home buyers in Canada: contribution room and carry-forward, live prices, tax-free dividends, your Line 20805 deduction and down payment progress, all in one Google Sheet.",
+    overview: [
+      "The FHSA is the best deal in Canadian tax law for a first home, but its rules are easy to trip over. Room only starts the year you open the account, only $8,000 of unused room carries forward, there's no 60-day grace period, and you can deduct this year or save the deduction for a higher-income year. Get it wrong and you either leave room unused or pay 1% a month on an over-contribution.",
+      "The FHSA Tracker keeps it all in one Google Sheet, 8 tabs, built around a single Transaction Log. Enter a contribution, a buy or a dividend once and every tab updates automatically. The Main Dashboard shows your portfolio value, room used this year, carry-forward, tax-free dividends and your down payment progress toward your goal and target year, including an optional RRSP Home Buyers' Plan amount.",
+      "The FHSA Portfolio fills in with live GOOGLEFINANCE prices, cost basis and gain/loss, with 2 charts. The Tax Dashboard estimates your Line 20805 refund from your bracket and province and tracks qualifying withdrawals, and Analysis & Reco checks your room and flags over-contributions with 6 smart tips. Settings & Goals holds your limits and goals, with a 15-year account countdown, 16 FHSA rules and a year-end checklist.",
+    ],
+    whoFor: "First-time home buyers in Canada saving in an FHSA who want their contribution room, carry-forward, investments and down payment progress tracked properly, and want to know what their deduction is worth before they claim it.",
+    features: [
+      "Contribution room for the year, carry-forward up to $8,000 and the $40,000 lifetime limit, tracked from your Transaction Log",
+      "Over-contribution alert before the 1% a month penalty applies",
+      "Main Dashboard: portfolio value, room, carry-forward, tax-free dividends and your last 5 transactions, with 2 charts",
+      "Down payment progress: your withdrawal goal and target year, plus an optional RRSP Home Buyers' Plan amount",
+      "FHSA Portfolio with live prices via GOOGLEFINANCE, cost basis and gain/loss",
+      "Tax Dashboard: Line 20805 deduction and refund estimate by bracket, with your province's rates",
+      "Qualifying withdrawal tracker and a 15-year account expiry countdown",
+      "Dividend Tracker: tax-free dividends month by month with an annual run-rate",
+      "Settings & Goals with 16 FHSA rules and a year-end checklist",
+      "One Transaction Log drives all 8 tabs. Enter a transaction once and everything updates automatically",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, plus a 6-step quick start and a tour of all 8 tabs." },
+      { icon: "📄", label: "Clear Sample Data Guide PDF", desc: "A step-by-step walkthrough for safely clearing the 8 sample transactions before you add your own, without breaking a formula." },
+      { icon: "📄", label: "Complete Setup Guide PDF", desc: "Every Transaction Log column, every transaction type, the GOOGLEFINANCE ticker format and a year-end checklist." },
+      { icon: "📄", label: "FHSA Guide PDF", desc: "2026 limits and carry-forward, what your deduction is worth by bracket, qualifying withdrawals, combining with the HBP, and closing the account." },
+    ],
+  },
   {
     name: "Margin Account Tracker", tag: "Margin", price: 14.99,
     url: "https://www.etsy.com/listing/4534229751", directUrl: "https://payhip.com/b/yKoBQ",
