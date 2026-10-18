@@ -179,6 +179,43 @@ export function useJsonLd(data, id) {
 
 export const RedWord = ({ children }) => <span style={{ color: B.redLink }}>{children}</span>;
 
+// Centered promo banner that pulses to catch the eye and retires itself
+// automatically — reads CONFIG.promoText/promoExpiresAt, so bumping the
+// offer or its deadline only ever means editing data.js, never this file.
+function isPromoExpired() {
+  const t = Date.parse(CONFIG.promoExpiresAt);
+  return Number.isFinite(t) && Date.now() > t;
+}
+
+export function PromoBanner({ prefix = "", style, as: Tag = "p" }) {
+  const [expired, setExpired] = useState(() => isPromoExpired());
+
+  useEffect(() => {
+    if (expired) return undefined;
+    const msLeft = new Date(CONFIG.promoExpiresAt).getTime() - Date.now();
+    if (!Number.isFinite(msLeft)) return undefined;
+    // setTimeout's delay is a 32-bit signed int under the hood — anything
+    // past ~24.8 days silently fires immediately instead of waiting, so a
+    // far-future expiry date is capped rather than handed to it directly.
+    const timer = setTimeout(() => setExpired(true), Math.min(msLeft, 2147483647));
+    return () => clearTimeout(timer);
+  }, [expired]);
+
+  if (expired) return null;
+  return (
+    <Tag
+      className="ml-promo"
+      style={{
+        textAlign: "center", color: B.yellow, fontWeight: 800,
+        fontSize: "clamp(17px, 2.8vw, 22px)", letterSpacing: 0.2,
+        ...style,
+      }}
+    >
+      🏷 {prefix}{CONFIG.promoText}
+    </Tag>
+  );
+}
+
 export const MapleLeaf = ({ size = 14, color = B.red, style }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill={color} style={style} aria-hidden="true">
     <path d="M12 2l1.8 3.6 3.2-1.2-.9 3.4 3.9.7-2.7 2.7 3.2 2.1-3.7 1 1.3 3.6-3.6-1.2-.6 3.9L12 18l-1.9 3.6-.6-3.9-3.6 1.2 1.3-3.6-3.7-1 3.2-2.1L4 9.5l3.9-.7-.9-3.4 3.2 1.2L12 2z"/>
@@ -207,6 +244,11 @@ export function GlobalStyles() {
       .ml-card:hover { transform: translateY(-3px); border-color: ${B.red} !important; box-shadow: 0 12px 32px rgba(204,0,0,0.18); }
       .ml-fade { animation: mlFade .4s ease; }
       @keyframes mlFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+      /* Promo banner: a slow opacity pulse rather than a hard on/off blink —
+         still reads as "flashing" at a glance, but stays well under the
+         WCAG flash-rate threshold (3/sec) that a literal blink would risk. */
+      .ml-promo { animation: mlPromoPulse 1.7s ease-in-out infinite; }
+      @keyframes mlPromoPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
       .ml-nav-link { color: ${B.grayLight}; text-decoration: none; font-size: 14px; font-weight: 500; padding: 6px 2px; }
       .ml-nav-link:hover { color: ${B.white}; }
       .ml-nav-link.active { color: ${B.white}; border-bottom: 2px solid ${B.red}; }
@@ -233,7 +275,7 @@ export function GlobalStyles() {
         .ml-article-sidebar { position: static; }
       }
       @media (prefers-reduced-motion: reduce) {
-        .ml-btn, .ml-card, .ml-fade { transition: none !important; animation: none !important; }
+        .ml-btn, .ml-card, .ml-fade, .ml-promo { transition: none !important; animation: none !important; }
         html { scroll-behavior: auto; }
         .ml-reveal-js { opacity: 1 !important; transform: none !important; transition: none !important; }
       }
