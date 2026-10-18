@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, getBundleSavings } from "../data.js";
-import { PageHead, RedWord, usePageMeta, useJsonLd, Reveal } from "../ui.jsx";
+import { B, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, getBundleSavings } from "../data.js";
+import { PageHead, RedWord, usePageMeta, useJsonLd, Reveal, PromoBanner } from "../ui.jsx";
 import { trackBuyClicked } from "../analytics.js";
 
 const SITE_URL = "https://www.maplesheet.ca";
@@ -182,9 +182,7 @@ export default function Trackers() {
             );
           })}
         </div>
-        <p style={{ textAlign: "center", color: B.yellow, fontSize: 13.5, fontWeight: 600, marginTop: 24 }}>
-          🏷 {CONFIG.promoText}
-        </p>
+        <PromoBanner style={{ marginTop: 24 }} />
       </div>
     </div>
   );
