@@ -279,13 +279,20 @@ export const PRODUCTS = [
     name: "TFSA + Margin Linked Tracker", tag: "Combo", price: 24.99,
     url: "https://www.etsy.com/listing/4534821592", directUrl: "https://payhip.com/b/dOqcI",
     desc: "Linked accounts with collateral tax dashboard",
-    slug: "tfsa-margin-linked", accounts: ["TFSA", "Margin"], screenshot: "/screenshots/tfsa-margin.jpg", sku: "MS-COMBO-TFSA-MARGIN",
-    // Stripe Buy Button wired in. No real product screenshots sent yet, so
-    // this still falls back to the placeholder /screenshots/tfsa-margin.jpg
-    // + the `demo` mock widget below on the detail page — same Combo2
-    // pattern: once real screenshots arrive, add `gallery`, rewrite
-    // overview/whoFor/included, and this `demo` block + the placeholder
-    // screenshot become dead code and can come out.
+    // Real, uncropped tabs from your actual P10 sheet — same gallery pattern
+    // as Combo2/Combo3. Numbers shown throughout (e.g. $51,904 combined net
+    // worth, $5,849 collateral power) are illustrative sample data, not a
+    // real account.
+    gallery: [
+      { src: "/screenshots/tfsa-margin-gallery-1-full-overview.jpg", label: "Full Overview — combined net worth across both accounts, TFSA & Margin holdings allocation, and market value vs. cost basis charts" },
+      { src: "/screenshots/tfsa-margin-gallery-2-combined-dashboard.jpg", label: "Combined Dashboard — TFSA, Margin & Combined side by side: market value, cost basis, return %, YTD income summary & TFSA contribution room" },
+      { src: "/screenshots/tfsa-margin-gallery-3-tfsa-portfolio.jpg", label: "TFSA Portfolio — live holdings, tax-free gain tracked on its own, contribution room & quarterly distributions" },
+      { src: "/screenshots/tfsa-margin-gallery-4-margin-interest-tracker.jpg", label: "Margin Interest Tracker — monthly interest log, break-even yield, Line 22100 deduction & TFSA collateral boosting your margin power" },
+      { src: "/screenshots/tfsa-margin-gallery-5-analysis-reco.jpg", label: "Analysis & Reco — 6 smart recommendations built around using your TFSA as a collateral engine" },
+      { src: "/screenshots/tfsa-margin-gallery-6-settings-goals.jpg", label: "Settings & Goals — TFSA limits, margin rate, 70% collateral rate, province & all 12 CRA margin + TFSA rules in one place" },
+    ],
+    screenshot: "/screenshots/tfsa-margin-gallery-1-full-overview.jpg",
+    slug: "tfsa-margin-linked", accounts: ["TFSA", "Margin"], sku: "MS-COMBO-TFSA-MARGIN",
     stripeBuyButton: {
       buyButtonId: "buy_btn_1URm7eJYx6fAMdIUSzzZGXlI",
       publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
@@ -305,17 +312,30 @@ export const PRODUCTS = [
       ],
     },
     bestFor: "Using TFSA holdings as collateral against a margin account.",
-    longDescription: "For investors using a margin account alongside a TFSA — often to hold TFSA assets as collateral for margin borrowing. Tracks both accounts as linked, not just side by side, so you can see combined net worth and collateral power in one place instead of reconstructing the connection by hand every time.",
-    features: [
-      "TFSA and Margin accounts tracked as linked, not just listed together",
-      "Automatic ACB and capital gains tax dashboard for the Margin account",
-      "Collateral power visible alongside TFSA contribution room",
-      "Combined net worth across both accounts",
+    longDescription: "For investors using a margin account alongside a TFSA — often to hold TFSA assets as collateral for margin borrowing, the way Wealthsimple and similar brokers let you. Tracks both accounts as linked, not just side by side, so you can see combined net worth and real collateral power in one place instead of reconstructing the connection by hand every time.",
+    overview: [
+      "If your broker lets you hold TFSA assets as collateral against a margin account — Wealthsimple's 70% default collateral rate is the most common setup — you already know the gap: your TFSA screen shows your tax-free holdings, your margin screen shows your borrowed position, and neither one tells you how much extra borrowing power your TFSA is actually unlocking right now, today, at today's prices.",
+      "The TFSA + Margin Linked Tracker treats the two accounts as linked, not just listed together. Set your real TFSA Annual Limit, margin rate, and your broker's collateral rate once in Settings & Goals, and the tracker calculates your additional borrowing power automatically from your live TFSA value — so you always know your real number, not an estimate from your last account statement.",
+      "The Margin Interest Tracker is built around the one question that actually matters when you're borrowing against tax-free assets to invest in a taxable account: is your portfolio's dividend yield covering your interest costs? It logs every interest charge, calculates your break-even yield, and flows the total straight to Line 22100 — paired with a combined Tax Dashboard covering capital gains, eligible and foreign dividends, and a 6-recommendation Analysis & Reco tab built specifically around the TFSA-as-collateral strategy.",
     ],
-    demo: { total: "19,338", ytd: "+13.1%", accounts: [
-      { label: "TFSA", value: "16,568", change: "+12.4%" },
-      { label: "Margin", value: "2,770", change: "+22.3%" },
-    ] },
+    whoFor: "Canadian DIY investors using — or about to use — TFSA holdings as margin collateral, commonly through Wealthsimple, who want one combined dashboard and a real break-even number instead of reconstructing the connection between two accounts by hand.",
+    features: [
+      "TFSA and Margin accounts tracked as linked, not just listed side by side",
+      "Additional borrowing power calculated automatically from your live TFSA value × your broker's real collateral rate (70% Wealthsimple default, editable)",
+      "Combined Dashboard — TFSA, Margin, and Combined numbers side by side: market value, cost basis, gain $, return %",
+      "Margin Interest Tracker with break-even yield — know exactly what dividend yield you need to cover your borrowing costs",
+      "Automatic ACB and capital gains tax dashboard for the Margin account, with the Line 22100 interest deduction calculated for you",
+      "Analysis & Reco tab — 6 built-in recommendations tailored to the TFSA-as-collateral strategy (what to hold where, and why)",
+      "12 CRA margin + TFSA rules built into Settings as a plain-English reference you never have to leave the sheet to check",
+      "Live prices via GOOGLEFINANCE across both accounts",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "🍁", label: "One-click MapleSheet menu", desc: "Builds, rebuilds, and loads sample data for you right inside the sheet — no spreadsheet experience required." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "Clear Sample Data Guide PDF", desc: "A step-by-step walkthrough for safely clearing the sample data before you add your own, without breaking a formula." },
+      { icon: "📄", label: "CRA Tax Rules & Complete Guide PDF", desc: "TFSA contribution rules, the current federal tax brackets, capital gains, dividend taxation, the Line 22100 interest deduction, and how TFSA-as-collateral actually works — all in one reference." },
+    ],
   },
   {
     name: "TFSA + RRSP + Margin Tracker", tag: "Combo", price: 27.99,
