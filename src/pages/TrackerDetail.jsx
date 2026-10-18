@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, FAQS, getBundleSavings } from "../data.js";
-import { PageHead, usePageMeta, useJsonLd, DashboardMock, FaqAccordion, Reveal } from "../ui.jsx";
+import { B, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, FAQS, getBundleSavings } from "../data.js";
+import { PageHead, usePageMeta, useJsonLd, DashboardMock, FaqAccordion, Reveal, PromoBanner } from "../ui.jsx";
 import { trackBuyClicked } from "../analytics.js";
 
 // Real, uncropped tabs from the sheet itself, as a slideshow — used instead
@@ -400,9 +400,7 @@ export default function TrackerDetail() {
           <FaqAccordion faqs={FAQS} />
         </Reveal>
 
-        <p style={{ textAlign: "center", color: B.yellow, fontSize: 13.5, fontWeight: 600, marginTop: 6, marginBottom: 30 }}>
-          🏷 {CONFIG.promoText}
-        </p>
+        <PromoBanner style={{ marginTop: 6, marginBottom: 30 }} />
       </div>
 
       <StickyBuyBar product={product} />
