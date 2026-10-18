@@ -62,8 +62,68 @@ export const RETURN_POLICY = {
 export const SINGLE_TRACKER_PRICES = { TFSA: 9.99, RRSP: 9.99, RESP: 14.99, FHSA: 14.99, Margin: 14.99 };
 
 export const PRODUCTS = [
-  { name: "TFSA Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4529134188", directUrl: "https://payhip.com/b/rb9SR", desc: "Live prices, ACB, dividends, tax-free growth", sku: "MS-TFSA-01",
-    bestFor: "Your first TFSA, one brokerage, want it simple." },
+  {
+    name: "TFSA Tracker", tag: "TFSA", price: 9.99,
+    url: "https://www.etsy.com/listing/4529134188", directUrl: "https://payhip.com/b/rb9SR",
+    desc: "Live prices, ACB, dividends, tax-free growth",
+    // Real tabs from your actual P5 sheet. Numbers shown (e.g. $1,723 YTD
+    // dividends) are illustrative sample data, not a real account. The Main
+    // Dashboard, TFSA Portfolio and Settings screenshots are left out for
+    // now: the holdings don't add up to the market value shown, the
+    // portfolio table renders with its columns stacked, and Settings still
+    // says $102,000 room since 2009 (see tfsa/sheet-fixes.md).
+    gallery: [
+      { src: "/screenshots/tfsa-gallery-1-dividend-tracker.jpg", label: "Dividend Tracker — monthly tax-free income chart, DRIP shares, annual run-rate & your top dividend payers" },
+      { src: "/screenshots/tfsa-gallery-2-transaction-log.jpg", label: "Transaction Log — the one tab you type into: contributions, buys, dividends & DRIP, every other tab updates automatically" },
+    ],
+    screenshot: "/screenshots/tfsa-gallery-1-dividend-tracker.jpg",
+    slug: "tfsa-tracker", accounts: ["TFSA"], sku: "MS-TFSA-01",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URxuwJYx6fAMdIUE3UDPMPY",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery links. sheetUrl is the "/copy" URL from your uploaded
+    // P5_Template_Link.pdf. ⚠️ Lino — double-check this sheet's Share
+    // settings are "Anyone with the link" → Viewer, and confirm the Payment
+    // Link's metadata (key "sku" = "MS-TFSA-01") and its "After
+    // the payment" redirect to https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/10MArxtYTrjOoXeVcgGjAI04BNMQlyiiBPh_acF-uyKc/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/tfsa-template-link.pdf" },
+        { label: "Clear Sample Data Guide", url: "/downloads/tfsa-clear-sample-data-guide.pdf" },
+        { label: "Complete Setup Guide", url: "/downloads/tfsa-complete-setup-guide.pdf" },
+        { label: "TFSA Guide", url: "/downloads/tfsa-guide.pdf" },
+      ],
+    },
+    bestFor: "Your first TFSA, one brokerage, want it simple.",
+    longDescription: "A focused Google Sheets TFSA tracker for Canadian investors who want one account done right: live prices, automatic ACB, tax-free dividends and your contribution room, all in one sheet.",
+    overview: [
+      "Your brokerage shows you a TFSA balance, but not the things that actually trip people up. How much room do you really have left this year? Did that withdrawal in the spring free up room now, or only next January? Which holdings are carrying the account, and how much tax-free dividend income is it producing? Most investors piece it together from CRA My Account and old statements, and over-contributions happen exactly in that gap.",
+      "The TFSA Tracker keeps it all in one Google Sheet, 8 tabs, built around a single Transaction Log. Enter a contribution, a buy, a dividend or a DRIP once, and every tab updates automatically. The Main Dashboard shows your TFSA market value, cost basis, gain/loss, contribution room remaining, top holdings and your last 5 transactions.",
+      "The TFSA Portfolio fills in with live GOOGLEFINANCE prices, weighted-average ACB and gain/loss, with 2 charts built in. The Dividend Tracker charts your tax-free income month by month with DRIP tracking and an annual run-rate, and Analysis & Reco checks for over-contributions and gives 6 smart tips. Settings & Goals holds your limits and goals, with 11 TFSA rules built in for quick reference.",
+    ],
+    whoFor: "Canadian investors with one TFSA, especially those just starting out, who want their contribution room, holdings and tax-free dividends tracked properly in a simple sheet, without paying for a combo tracker with accounts they don't have.",
+    features: [
+      "Contribution room for the year calculated from your Transaction Log, with room remaining always visible",
+      "Over-contribution check, plus the rule that withdrawals only restore room on January 1 of the next year",
+      "Main Dashboard: market value, cost basis, gain/loss, return %, top holdings and your last 5 transactions",
+      "TFSA Portfolio with live prices via GOOGLEFINANCE and automatic weighted-average ACB and gain/loss",
+      "2 charts built in: holdings allocation and market value vs. cost basis",
+      "Dividend Tracker: monthly tax-free income chart, DRIP tracking, top payers and an annual run-rate",
+      "CAD and USD holdings, with live USD/CAD conversion",
+      "Settings & Goals for your TFSA limit, accumulated room and goals, with 11 TFSA rules for quick reference",
+      "Analysis & Reco tab: portfolio snapshot, over-contribution check and 6 smart tips",
+      "One Transaction Log drives all 8 tabs. Enter a transaction once and everything updates automatically",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, plus a 5-step quick start, what to enter in Settings and a tour of all 8 tabs." },
+      { icon: "📄", label: "Clear Sample Data Guide PDF", desc: "A step-by-step walkthrough for safely clearing the sample data before you add your own, without breaking a formula." },
+      { icon: "📄", label: "Complete Setup Guide PDF", desc: "Every Transaction Log column, every transaction type and the GOOGLEFINANCE ticker format for Canadian and US stocks." },
+      { icon: "📄", label: "TFSA Guide PDF", desc: "TFSA limits from 2009 to 2026, withdrawal and over-contribution rules, successor holders, and which investments belong in a TFSA." },
+    ],
+  },
   { name: "RRSP Tracker", tag: "RRSP", price: 9.99, url: "https://www.etsy.com/listing/4529584584", directUrl: "https://payhip.com/b/DQS5l", desc: "Contribution room, live prices, ACB", sku: "MS-RRSP-01",
     bestFor: "Tracking RRSP contribution room and deduction limit on their own." },
   { name: "TFSA Multi-Brokerage Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4541253114", directUrl: "https://payhip.com/b/8CqQU", desc: "Up to 8 brokerages in one sheet — the only one of its kind", badge: "NEW", screenshot: "/screenshots/multi-brokerage.jpg", sku: "MS-TFSA-MB",
