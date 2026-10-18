@@ -5,6 +5,7 @@ import WealthCalculator from "../WealthCalculator.jsx";
 import { TfsaRoomCalculator, AcbCalculator } from "../FreeCalculators.jsx";
 import { NewsletterBox } from "./Resources.jsx";
 import { trackGoalTrackerRequested } from "../analytics.js";
+import { STATIC_META } from "../seo.js";
 
 function ToolSection({ eyebrow, title, sub, children }) {
   return (
@@ -131,10 +132,7 @@ function GoalTrackerGate() {
 }
 
 export default function FreeTools() {
-  usePageMeta({
-    title: "Free Canadian Investment Calculators | MapleSheet Co.",
-    description: "Free tools to play with TFSA, RRSP, RESP, ACB, and compound growth numbers before you buy — plus a free Goal Tracker spreadsheet — built for the Canadian investing system.",
-  });
+  usePageMeta(STATIC_META["/tools"]);
   return (
     <div className="ml-fade">
       <PageHead kicker="FREE TOOLS" title={<>What could your money <RedWord>become?</RedWord></>}

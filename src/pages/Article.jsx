@@ -1,7 +1,8 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { B, RESOURCES } from "../data.js";
-import { PageHead, usePageMeta, useJsonLd, Reveal } from "../ui.jsx";
+import { PageHead, usePageMeta, useJsonLd, Reveal, Picture } from "../ui.jsx";
+import { articleMeta } from "../seo.js";
 import { NewsletterBox } from "./Resources.jsx";
 
 // Lightweight inline-markdown renderer: supports **bold**, *italic*, and
@@ -135,9 +136,10 @@ export default function Article() {
     (r) => r.type === "article" && r.slug === slug && r.live !== false && new Date(r.date) <= today
   );
 
-  usePageMeta({
-    title: article ? `${article.title} | MapleSheet Co.` : "Guide not found | MapleSheet Co.",
-    description: article ? article.summary : "This guide couldn't be found.",
+  usePageMeta(article ? articleMeta(article) : {
+    title: "Guide not found | MapleSheet Co.",
+    description: "This guide couldn't be found.",
+    noindex: true,
   });
   // Article schema — helps Google understand this is a dated, authored guide
   // (not just a generic page), which is what unlocks article-style rich
@@ -203,7 +205,7 @@ export default function Article() {
             📝 Article · {article.date}
           </div>
           {article.image && (
-            <img src={article.image} alt={article.title} style={{
+            <Picture eager src={article.image} alt={article.title} style={{
               width: "100%", borderRadius: 12, marginBottom: 16, display: "block",
               border: `1px solid ${B.line}`, aspectRatio: "1200 / 630", objectFit: "cover",
             }} />

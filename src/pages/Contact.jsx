@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { B, CONFIG } from "../data.js";
 import { PageHead, RedWord, usePageMeta, Reveal } from "../ui.jsx";
 import { trackContactFormSubmitted } from "../analytics.js";
+import { STATIC_META } from "../seo.js";
 
 const SITE_URL = "https://www.maplesheet.ca";
 const MAX_FILE_BYTES = 10 * 1024 * 1024; // FormSubmit's combined-attachment limit is 10MB
@@ -27,10 +28,7 @@ function formatBytes(bytes) {
 // of delivering them, so the very first submission should be a test one sent
 // by Lino, not a real customer inquiry.
 export default function Contact() {
-  usePageMeta({
-    title: "Contact MapleSheet Co.",
-    description: "Questions about a tracker, a bug, or a bulk order? Reach MapleSheet Co. directly — real answers from a real person, no support ticket queue.",
-  });
+  usePageMeta(STATIC_META["/contact"]);
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("idle");
   const [file, setFile] = useState(null);

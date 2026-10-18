@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { B, CONFIG } from "./data.js";
 import { trackLiveChatStarted } from "./analytics.js";
+import { SITE_URL } from "./seo.js";
 
 // Reads the user's reduced-motion preference once, synchronously, so the
 // very first render already knows whether to skip animation — avoids a
@@ -11,14 +12,15 @@ const prefersReducedMotion = () =>
     ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
     : false;
 
-const SITE_URL = "https://www.maplesheet.ca";
 
 // Sets a unique <title>, meta description, canonical link, and matching
 // OpenGraph tags for the current route. Without this, every page shared the
 // homepage's title/description and canonical — which told Google every
 // other page was a duplicate of the homepage instead of its own indexable
-// page. Call once near the top of each page component.
-export function usePageMeta({ title, description }) {
+// page. Call once near the top of each page component. Titles/descriptions
+// for the fixed pages live in src/seo.js (STATIC_META). Pass noindex: true on
+// "not found" screens so Google doesn't index them as real pages.
+export function usePageMeta({ title, description, noindex = false }) {
   const location = useLocation();
 
   useEffect(() => {
@@ -55,6 +57,18 @@ export function usePageMeta({ title, description }) {
 
     setMetaTag("property", "og:url", canonicalUrl);
 
+    let robots = document.querySelector('meta[name="robots"]');
+    if (noindex) {
+      if (!robots) {
+        robots = document.createElement("meta");
+        robots.setAttribute("name", "robots");
+        document.head.appendChild(robots);
+      }
+      robots.setAttribute("content", "noindex");
+    } else if (robots) {
+      robots.remove();
+    }
+
     // Tell Tawk.to which page a visitor is on. Without this, a chat comes in
     // completely blind — Lino has no idea if someone's asking about the
     // FHSA tracker or stuck on checkout for the Ultimate bundle, and has to
@@ -67,7 +81,28 @@ export function usePageMeta({ title, description }) {
     if (window.Tawk_API?.setAttributes) {
       window.Tawk_API.setAttributes({ "page": title || path }, () => {});
     }
-  }, [title, description, location.pathname]);
+  }, [title, description, noindex, location.pathname]);
+}
+
+// Drop-in <img> for screenshots and article banners. The originals in
+// public/resources and public/screenshots are large (often 1-2 MB each);
+// scripts/optimize-images.mjs makes a small .webp copy of every one at build
+// time, and this serves that copy to browsers (all modern ones support it),
+// falling back to the original. Images load only when scrolled near, unless
+// `eager` is set (use it for the one image at the top of a page).
+// In `npm run dev` the .webp copies don't exist yet, so the original is used.
+const OPTIMIZED_IMAGE = /^\/(resources|screenshots)\/.+\.(png|jpe?g)$/i;
+export function Picture({ src, alt, eager = false, style, ...rest }) {
+  const img = (
+    <img src={src} alt={alt} loading={eager ? "eager" : "lazy"} decoding="async" style={style} {...rest} />
+  );
+  if (!import.meta.env.PROD || !OPTIMIZED_IMAGE.test(src || "")) return img;
+  return (
+    <picture style={{ display: "contents" }}>
+      <source type="image/webp" srcSet={src.replace(/\.(png|jpe?g)$/i, ".webp")} />
+      {img}
+    </picture>
+  );
 }
 
 // Fades + slides a block in the moment it scrolls into view — the site-wide
@@ -577,8 +612,8 @@ export function ProductGallery({ slides, intervalMs = 4000 }) {
         <div style={{
           background: B.black2, borderTop: `1px solid ${B.line}`, borderBottom: `1px solid ${B.line}`, overflow: "hidden",
         }}>
-          <img
-            src={s.src} alt={s.alt} loading="lazy"
+          <Picture
+            src={s.src} alt={s.alt} eager
             style={{
               width: "100%", display: "block", aspectRatio: "2 / 1", objectFit: "contain",
               background: B.black2, maxHeight: "72vh",

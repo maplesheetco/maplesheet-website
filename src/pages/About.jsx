@@ -1,12 +1,11 @@
 import React from "react";
-import { B, CONFIG, FAQS, PRODUCTS } from "../data.js";
+import { Link } from "react-router-dom";
+import { B, FAQS, PRODUCTS } from "../data.js";
 import { PageHead, RedWord, usePageMeta, FaqAccordion, Reveal } from "../ui.jsx";
+import { STATIC_META } from "../seo.js";
 
 export default function About() {
-  usePageMeta({
-    title: "About MapleSheet Co. — Built by a Canadian, for Canadians",
-    description: "Why MapleSheet Co. exists: investment trackers built for the CRA system from the ground up, not adapted from American spreadsheets. Meet the founder.",
-  });
+  usePageMeta(STATIC_META["/about"]);
   return (
     <div className="ml-fade">
       <PageHead kicker="THE STORY" title={<>"Too complicated. Too American.<br /><RedWord>So I built my own."</RedWord></>} />
@@ -74,11 +73,11 @@ export default function About() {
           <FaqAccordion faqs={FAQS} />
         </Reveal>
         <div style={{ textAlign: "center", padding: "10px 0 10px" }}>
-          <a href={CONFIG.shopUrl} target="_blank" rel="noreferrer" className="ml-btn" style={{
+          <Link to="/trackers" className="ml-btn" style={{
             display: "inline-block", background: B.red, color: "#fff", textDecoration: "none",
             fontWeight: 700, fontSize: 15, padding: "15px 32px", borderRadius: 10,
             boxShadow: "0 6px 20px rgba(204,0,0,0.35)",
-          }}>Browse the trackers →</a>
+          }}>Browse the trackers →</Link>
         </div>
       </div>
     </div>
