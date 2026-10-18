@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, getBundleSavings } from "../data.js";
-import { PageHead, RedWord, usePageMeta, useJsonLd, Reveal } from "../ui.jsx";
+import { B, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, getBundleSavings } from "../data.js";
+import { PageHead, RedWord, usePageMeta, useJsonLd, Reveal, PromoBanner } from "../ui.jsx";
 import { trackBuyClicked } from "../analytics.js";
 
 const SITE_URL = "https://www.maplesheet.ca";
@@ -10,9 +10,9 @@ const FILTERS = ["All", "TFSA", "RRSP", "RESP", "FHSA", "Margin", "Combo", "Flag
 export default function Trackers() {
   usePageMeta({
     title: "TFSA, RRSP, RESP, FHSA & Margin Trackers | MapleSheet Co.",
-    description: "13 Google Sheets trackers for TFSA, RRSP, RESP, FHSA & Margin accounts. One-time purchase, live prices, no subscription.",
+    description: `${PRODUCTS.length} Google Sheets trackers for TFSA, RRSP, RESP, FHSA & Margin accounts. One-time purchase, live prices, no subscription.`,
   });
-  // Product schema for all 13 trackers — this page is where they're all
+  // Product schema for all trackers — this page is where they're all
   // listed, so each tracker gets its own Product entry in one @graph block.
   // Combo/Flagship products additionally carry a `url` pointing at their own
   // /trackers/:slug page now that one exists, alongside `offers.url` (the
@@ -50,7 +50,7 @@ export default function Trackers() {
   const shown = filter === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.tag === filter);
   return (
     <div className="ml-fade">
-      <PageHead kicker="THE LINEUP" title={<>13 trackers. <RedWord>Every Canadian account.</RedWord></>}
+      <PageHead kicker="THE LINEUP" title={<>{PRODUCTS.length} trackers. <RedWord>Every Canadian account.</RedWord></>}
         sub="Start with one account, or track everything at once. All prices in CAD. One-time purchase — no subscription, ever." />
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "26px 24px 0" }}>
         <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginBottom: 28 }}>
@@ -111,7 +111,7 @@ export default function Trackers() {
                     📖 {guide.label} →
                   </Link>
                 )}
-                {p.slug && (
+                {p.slug && !p.stripeBuyButton && (
                   <Link to={`/trackers/${p.slug}`} style={{
                     fontSize: 12, color: B.grayLight, textDecoration: "none", display: "inline-block",
                   }}>
@@ -119,36 +119,70 @@ export default function Trackers() {
                   </Link>
                 )}
                 <div style={{ display: "flex", gap: 8 }}>
-                  <a href={p.url} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
-                    productName: p.name, productTag: p.tag, priceCad: p.price,
-                    checkoutDestination: "etsy", sourceSection: "trackers_catalog",
-                  })} style={{
-                    flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
-                    background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
-                  }}>Buy on Etsy</a>
-                  {p.directUrl ? (
-                    <a href={p.directUrl} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
+                  {p.url && !p.stripeBuyButton && (
+                    <a href={p.url} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
+                      productName: p.name, productTag: p.tag, priceCad: p.price,
+                      checkoutDestination: "etsy", sourceSection: "trackers_catalog",
+                    })} style={{
+                      flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
+                      background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
+                    }}>Buy on Etsy</a>
+                  )}
+                  {p.stripeBuyButton && p.slug ? (
+                    // Catalog cards link to the product's own detail page rather
+                    // than embedding the Stripe Buy Button directly — the widget
+                    // is cramped at this card size, and the detail page already
+                    // has its own (same checkout, same product). This button is
+                    // the card's full-width CTA, not a secondary text link.
+                    <Link
+                      to={`/trackers/${p.slug}`}
+                      onClick={() => trackBuyClicked({
+                        productName: p.name, productTag: p.tag, priceCad: p.price,
+                        checkoutDestination: "detail_page", sourceSection: "trackers_catalog",
+                      })}
+                      style={{
+                        flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
+                        background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
+                      }}
+                    >View full details →</Link>
+                  ) : p.stripeBuyButton ? (
+                    <div
+                      style={{ flex: 1 }}
+                      onClickCapture={() => trackBuyClicked({
+                        productName: p.name, productTag: p.tag, priceCad: p.price,
+                        checkoutDestination: "stripe", sourceSection: "trackers_catalog",
+                      })}
+                    >
+                      <stripe-buy-button
+                        buy-button-id={p.stripeBuyButton.buyButtonId}
+                        publishable-key={p.stripeBuyButton.publishableKey}
+                      ></stripe-buy-button>
+                    </div>
+                  ) : p.directUrl ? (
+                    <a href={p.directUrl} target="_blank" rel="noreferrer" className="ml-btn"
+                      onClick={() => trackBuyClicked({
                       productName: p.name, productTag: p.tag, priceCad: p.price,
                       checkoutDestination: "direct", sourceSection: "trackers_catalog",
-                    })} style={{
+                    })} style={p.url ? {
                       flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: B.white,
                       background: "transparent", border: `1.5px solid ${B.white}`,
                       padding: "10px 8px", borderRadius: 8, textDecoration: "none",
-                    }}>Buy Direct</a>
-                  ) : (
+                    } : {
+                      flex: 1, textAlign: "center", fontSize: 13, fontWeight: 700, color: "#fff",
+                      background: B.red, padding: "10px 8px", borderRadius: 8, textDecoration: "none",
+                    }}>{p.url ? "Buy Direct" : "Buy on Payhip"}</a>
+                  ) : p.url ? (
                     <span title="Direct checkout coming soon" style={{
                       flex: 1, textAlign: "center", fontSize: 13, fontWeight: 600, color: B.gray,
                       border: `1.5px solid ${B.line}`, padding: "10px 8px", borderRadius: 8, cursor: "default",
                     }}>Direct — soon</span>
-                  )}
+                  ) : null}
                 </div>
               </Reveal>
             );
           })}
         </div>
-        <p style={{ textAlign: "center", color: B.yellow, fontSize: 13.5, fontWeight: 600, marginTop: 24 }}>
-          🏷 {CONFIG.promoText}
-        </p>
+        <PromoBanner style={{ marginTop: 24 }} />
       </div>
     </div>
   );

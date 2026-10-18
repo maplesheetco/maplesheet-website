@@ -1,8 +1,143 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { B, CONFIG, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, FAQS, getBundleSavings } from "../data.js";
-import { PageHead, usePageMeta, useJsonLd, DashboardMock, FaqAccordion, Reveal } from "../ui.jsx";
+import { B, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, FAQS, getBundleSavings } from "../data.js";
+import { PageHead, usePageMeta, useJsonLd, DashboardMock, FaqAccordion, Reveal, PromoBanner } from "../ui.jsx";
 import { trackBuyClicked } from "../analytics.js";
+
+// Real, uncropped tabs from the sheet itself, as a slideshow — used instead
+// of a single stretched composite image when a product defines `gallery`
+// (an array of {src, label}) in data.js. Falls back to nothing special;
+// TrackerDetail just checks product.gallery before product.screenshot.
+function ProductGallery({ images, name }) {
+  const [i, setI] = useState(0);
+  const go = (delta) => setI((cur) => (cur + delta + images.length) % images.length);
+  const current = images[i];
+  return (
+    <div style={{ marginBottom: 22 }}>
+      <div style={{ position: "relative" }}>
+        <img
+          src={current.src} alt={`${name} — ${current.label}`}
+          style={{
+            width: "100%", borderRadius: 12, display: "block",
+            border: `1px solid ${B.line}`, aspectRatio: "2 / 1", objectFit: "contain", background: B.black3,
+          }}
+        />
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={() => go(-1)} aria-label="Previous screenshot"
+              style={{
+                position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)",
+                width: 34, height: 34, borderRadius: "50%", border: "none", cursor: "pointer",
+                background: "rgba(0,0,0,0.55)", color: "#fff", fontSize: 16, fontWeight: 700,
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}
+            >‹</button>
+            <button
+              onClick={() => go(1)} aria-label="Next screenshot"
+              style={{
+                position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)",
+                width: 34, height: 34, borderRadius: "50%", border: "none", cursor: "pointer",
+                background: "rgba(0,0,0,0.55)", color: "#fff", fontSize: 16, fontWeight: 700,
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}
+            >›</button>
+          </>
+        )}
+      </div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 10 }}>
+        {images.map((img, idx) => (
+          <button
+            key={idx} onClick={() => setI(idx)} aria-label={`Show screenshot ${idx + 1}`}
+            style={{
+              width: idx === i ? 18 : 7, height: 7, borderRadius: 999, border: "none", cursor: "pointer",
+              background: idx === i ? B.red : B.line, transition: "width 0.15s, background 0.15s", padding: 0,
+            }}
+          />
+        ))}
+      </div>
+      <div style={{ textAlign: "center", color: B.grayLight, fontSize: 12.5, marginTop: 6 }}>
+        {current.label}
+      </div>
+    </div>
+  );
+}
+
+// Persistent "don't miss it" CTA — fixed to the bottom of the viewport and
+// hidden until 3 seconds after the visitor lands on the page (the "hook"),
+// then slides up and stays visible while they read/scroll, so the buy
+// button is never more than a glance away. Dismissible (×) per page view;
+// re-appears on a fresh visit since state resets on mount. Renders nothing
+// when the product has no purchase path at all.
+function StickyBuyBar({ product }) {
+  const [visible, setVisible] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), 3000);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (!product.stripeBuyButton && !product.directUrl && !product.url) return null;
+
+  return (
+    <div
+      style={{
+        position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 40,
+        background: B.black2, borderTop: `1px solid ${B.line}`,
+        boxShadow: "0 -10px 28px rgba(0,0,0,0.4)",
+        transform: visible && !dismissed ? "translateY(0)" : "translateY(110%)",
+        opacity: visible && !dismissed ? 1 : 0,
+        transition: "transform 0.5s cubic-bezier(.16,.8,.24,1), opacity 0.5s ease",
+        pointerEvents: visible && !dismissed ? "auto" : "none",
+      }}
+    >
+      <div style={{
+        maxWidth: 780, margin: "0 auto", padding: "10px 16px",
+        display: "flex", alignItems: "center", gap: 12,
+      }}>
+        <button
+          onClick={() => setDismissed(true)} aria-label="Dismiss"
+          style={{
+            background: "none", border: "none", color: B.gray, fontSize: 20,
+            cursor: "pointer", padding: "0 4px", lineHeight: 1, flexShrink: 0,
+          }}
+        >×</button>
+        <div style={{ flex: "1 1 auto", minWidth: 0 }}>
+          <div style={{ color: B.white, fontWeight: 700, fontSize: 13.5, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {product.name}
+          </div>
+          <div style={{ color: B.grayLight, fontSize: 12.5 }}>CA${product.price.toFixed(2)} — one-time, no subscription</div>
+        </div>
+        <div style={{ flexShrink: 0, display: "flex", justifyContent: "flex-end" }}>
+          {product.stripeBuyButton ? (
+            <div onClickCapture={() => trackBuyClicked({
+              productName: product.name, productTag: product.tag, priceCad: product.price,
+              checkoutDestination: "stripe", sourceSection: "tracker_detail_sticky_bar",
+            })}>
+              <stripe-buy-button
+                buy-button-id={product.stripeBuyButton.buyButtonId}
+                publishable-key={product.stripeBuyButton.publishableKey}
+              ></stripe-buy-button>
+            </div>
+          ) : (
+            <a
+              href={product.directUrl || product.url} target="_blank" rel="noreferrer"
+              onClick={() => trackBuyClicked({
+                productName: product.name, productTag: product.tag, priceCad: product.price,
+                checkoutDestination: product.directUrl ? "direct" : "etsy", sourceSection: "tracker_detail_sticky_bar",
+              })}
+              style={{
+                fontSize: 13, fontWeight: 700, color: "#fff", background: B.red,
+                padding: "9px 18px", borderRadius: 8, textDecoration: "none", whiteSpace: "nowrap",
+              }}
+            >Buy now</a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const SITE_URL = "https://www.maplesheet.ca";
 
@@ -80,8 +215,10 @@ export default function TrackerDetail() {
 
   const savings = getBundleSavings(product);
 
+  const hasBuyPath = !!(product.stripeBuyButton || product.directUrl || product.url);
+
   return (
-    <div className="ml-fade">
+    <div className="ml-fade" style={{ paddingBottom: hasBuyPath ? 70 : 0 }}>
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "24px 24px 0" }}>
         <Link to="/trackers" style={{ color: B.gray, fontSize: 13.5, fontWeight: 600, textDecoration: "none" }}>
           ← All trackers
@@ -97,7 +234,9 @@ export default function TrackerDetail() {
           background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18,
           padding: "clamp(22px, 4vw, 32px)", marginBottom: 18,
         }}>
-          {product.screenshot ? (
+          {product.gallery ? (
+            <ProductGallery images={product.gallery} name={product.name} />
+          ) : product.screenshot ? (
             <img
               src={product.screenshot} alt={`${product.name} dashboard screenshot`}
               style={{
@@ -131,50 +270,103 @@ export default function TrackerDetail() {
             </div>
           )}
 
-          <div style={{ display: "flex", gap: 10, marginBottom: product.features ? 26 : 0 }}>
-            <a
-              href={product.url} target="_blank" rel="noreferrer" className="ml-btn"
-              onClick={() => trackBuyClicked({
-                productName: product.name, productTag: product.tag, priceCad: product.price,
-                checkoutDestination: "etsy", sourceSection: "tracker_detail",
-              })}
-              style={{
-                flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: "#fff",
-                background: B.red, padding: "14px 10px", borderRadius: 10, textDecoration: "none",
-              }}
-            >Buy on Etsy</a>
-            {product.directUrl ? (
+          <div style={{ display: "flex", gap: 10, marginBottom: (product.overview || product.features || product.included) ? 26 : 0 }}>
+            {product.url && !product.stripeBuyButton && (
+              <a
+                href={product.url} target="_blank" rel="noreferrer" className="ml-btn"
+                onClick={() => trackBuyClicked({
+                  productName: product.name, productTag: product.tag, priceCad: product.price,
+                  checkoutDestination: "etsy", sourceSection: "tracker_detail",
+                })}
+                style={{
+                  flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: "#fff",
+                  background: B.red, padding: "14px 10px", borderRadius: 10, textDecoration: "none",
+                }}
+              >Buy on Etsy</a>
+            )}
+            {product.stripeBuyButton ? (
+              <div
+                style={{ flex: 1, display: "flex", justifyContent: "center" }}
+                onClickCapture={() => trackBuyClicked({
+                  productName: product.name, productTag: product.tag, priceCad: product.price,
+                  checkoutDestination: "stripe", sourceSection: "tracker_detail",
+                })}
+              >
+                <stripe-buy-button
+                  buy-button-id={product.stripeBuyButton.buyButtonId}
+                  publishable-key={product.stripeBuyButton.publishableKey}
+                ></stripe-buy-button>
+              </div>
+            ) : product.directUrl ? (
               <a
                 href={product.directUrl} target="_blank" rel="noreferrer" className="ml-btn"
                 onClick={() => trackBuyClicked({
                   productName: product.name, productTag: product.tag, priceCad: product.price,
                   checkoutDestination: "direct", sourceSection: "tracker_detail",
                 })}
-                style={{
+                style={product.url ? {
                   flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: B.white,
                   background: "transparent", border: `1.5px solid ${B.white}`,
                   padding: "14px 10px", borderRadius: 10, textDecoration: "none",
+                } : {
+                  flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: "#fff",
+                  background: B.red, padding: "14px 10px", borderRadius: 10, textDecoration: "none",
                 }}
-              >Buy Direct</a>
-            ) : (
+              >{product.url ? "Buy Direct" : "Buy on Payhip"}</a>
+            ) : product.url ? (
               <span title="Direct checkout coming soon" style={{
                 flex: 1, textAlign: "center", fontSize: 14, fontWeight: 600, color: B.gray,
                 border: `1.5px solid ${B.line}`, padding: "14px 10px", borderRadius: 10, cursor: "default",
               }}>Direct — soon</span>
-            )}
+            ) : null}
           </div>
 
+          {product.overview && (
+            <div style={{ marginBottom: 26 }}>
+              {product.overview.map((para, i) => (
+                <p key={i} style={{
+                  color: B.grayLight, fontSize: 14.5, lineHeight: 1.75,
+                  marginTop: i === 0 ? 0 : 14, marginBottom: 0,
+                }}>{para}</p>
+              ))}
+              {product.whoFor && (
+                <p style={{ color: B.grayLight, fontSize: 14.5, lineHeight: 1.75, marginTop: 14, marginBottom: 0 }}>
+                  <span style={{ color: B.white, fontWeight: 700 }}>Who it's for: </span>{product.whoFor}
+                </p>
+              )}
+            </div>
+          )}
+
           {product.features && (
-            <>
+            <div style={{ marginBottom: product.included ? 26 : 0 }}>
               <div style={{ fontSize: 12, letterSpacing: "0.1em", color: B.redLink, fontWeight: 700, marginBottom: 10, textTransform: "uppercase" }}>
-                What's included
+                What's included in the tracker
               </div>
               <ul style={{ margin: 0, paddingLeft: 20 }}>
                 {product.features.map((f, i) => (
                   <li key={i} style={{ color: B.grayLight, fontSize: 14.5, lineHeight: 1.75, marginBottom: 6 }}>{f}</li>
                 ))}
               </ul>
-            </>
+            </div>
+          )}
+
+          {product.included && (
+            <div>
+              <div style={{ fontSize: 12, letterSpacing: "0.1em", color: B.redLink, fontWeight: 700, marginBottom: 10, textTransform: "uppercase" }}>
+                What you get after you purchase
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {product.included.map((item, i) => (
+                  <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                    <span style={{ fontSize: 17, lineHeight: 1.5 }}>{item.icon}</span>
+                    <div>
+                      <div style={{ color: B.white, fontWeight: 700, fontSize: 14 }}>{item.label}</div>
+                      <div style={{ color: B.grayLight, fontSize: 13.5, lineHeight: 1.6 }}>{item.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </Reveal>
 
@@ -208,10 +400,10 @@ export default function TrackerDetail() {
           <FaqAccordion faqs={FAQS} />
         </Reveal>
 
-        <p style={{ textAlign: "center", color: B.yellow, fontSize: 13.5, fontWeight: 600, marginTop: 6, marginBottom: 30 }}>
-          🏷 {CONFIG.promoText}
-        </p>
+        <PromoBanner style={{ marginTop: 6, marginBottom: 30 }} />
       </div>
+
+      <StickyBuyBar product={product} />
     </div>
   );
 }

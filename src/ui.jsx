@@ -84,6 +84,14 @@ export function Reveal({ children, as: Tag = "div", delay = 0, y = 24, style, cl
   useEffect(() => {
     if (shown || !ref.current) return;
     const el = ref.current;
+    // threshold is intentionally tiny (not e.g. 0.15): it's a ratio of the
+    // WHOLE element's height, and for very long content (a full in-depth
+    // article can easily run 8,000-15,000px tall) no scroll position can
+    // ever put 15% of the total element inside a normal browser viewport at
+    // once — isIntersecting would simply never fire, leaving the content
+    // stuck at opacity:0 forever. Firing as soon as any sliver is visible
+    // keeps the same fade-in feel for short content and actually works for
+    // tall content too.
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -91,7 +99,7 @@ export function Reveal({ children, as: Tag = "div", delay = 0, y = 24, style, cl
           io.disconnect();
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0, rootMargin: "0px 0px -8% 0px" }
     );
     io.observe(el);
     return () => io.disconnect();
@@ -171,6 +179,43 @@ export function useJsonLd(data, id) {
 
 export const RedWord = ({ children }) => <span style={{ color: B.redLink }}>{children}</span>;
 
+// Centered promo banner that pulses to catch the eye and retires itself
+// automatically — reads CONFIG.promoText/promoExpiresAt, so bumping the
+// offer or its deadline only ever means editing data.js, never this file.
+function isPromoExpired() {
+  const t = Date.parse(CONFIG.promoExpiresAt);
+  return Number.isFinite(t) && Date.now() > t;
+}
+
+export function PromoBanner({ prefix = "", style, as: Tag = "p" }) {
+  const [expired, setExpired] = useState(() => isPromoExpired());
+
+  useEffect(() => {
+    if (expired) return undefined;
+    const msLeft = new Date(CONFIG.promoExpiresAt).getTime() - Date.now();
+    if (!Number.isFinite(msLeft)) return undefined;
+    // setTimeout's delay is a 32-bit signed int under the hood — anything
+    // past ~24.8 days silently fires immediately instead of waiting, so a
+    // far-future expiry date is capped rather than handed to it directly.
+    const timer = setTimeout(() => setExpired(true), Math.min(msLeft, 2147483647));
+    return () => clearTimeout(timer);
+  }, [expired]);
+
+  if (expired) return null;
+  return (
+    <Tag
+      className="ml-promo"
+      style={{
+        textAlign: "center", color: B.yellow, fontWeight: 800,
+        fontSize: "clamp(17px, 2.8vw, 22px)", letterSpacing: 0.2,
+        ...style,
+      }}
+    >
+      🏷 {prefix}{CONFIG.promoText}
+    </Tag>
+  );
+}
+
 export const MapleLeaf = ({ size = 14, color = B.red, style }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill={color} style={style} aria-hidden="true">
     <path d="M12 2l1.8 3.6 3.2-1.2-.9 3.4 3.9.7-2.7 2.7 3.2 2.1-3.7 1 1.3 3.6-3.6-1.2-.6 3.9L12 18l-1.9 3.6-.6-3.9-3.6 1.2 1.3-3.6-3.7-1 3.2-2.1L4 9.5l3.9-.7-.9-3.4 3.2 1.2L12 2z"/>
@@ -199,14 +244,38 @@ export function GlobalStyles() {
       .ml-card:hover { transform: translateY(-3px); border-color: ${B.red} !important; box-shadow: 0 12px 32px rgba(204,0,0,0.18); }
       .ml-fade { animation: mlFade .4s ease; }
       @keyframes mlFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+      /* Promo banner: a slow opacity pulse rather than a hard on/off blink —
+         still reads as "flashing" at a glance, but stays well under the
+         WCAG flash-rate threshold (3/sec) that a literal blink would risk. */
+      .ml-promo { animation: mlPromoPulse 1.7s ease-in-out infinite; }
+      @keyframes mlPromoPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
       .ml-nav-link { color: ${B.grayLight}; text-decoration: none; font-size: 14px; font-weight: 500; padding: 6px 2px; }
       .ml-nav-link:hover { color: ${B.white}; }
       .ml-nav-link.active { color: ${B.white}; border-bottom: 2px solid ${B.red}; }
       .ml-input { width: 100%; background: ${B.black}; border: 1.5px solid ${B.line}; border-radius: 10px;
         color: ${B.white}; font-family: inherit; font-size: 14.5px; padding: 13px 15px; outline: none; }
       .ml-input:focus { border-color: ${B.red}; }
+      .ml-article-grid { display: grid; grid-template-columns: 1fr 320px; gap: 28px; align-items: start; }
+      /* Grid items default to min-width: auto, which lets their content's
+         natural (unwrapped) width force the track wider than the container
+         — on a narrow screen that silently overflows the page horizontally
+         even though the column itself is nominally 1fr. min-width: 0 lets
+         the column actually shrink to fit and wrap text normally. */
+      .ml-article-grid > * { min-width: 0; }
+      .ml-article-sidebar { position: sticky; top: 86px; display: flex; flex-direction: column; }
+      /* Thin, dark-themed scrollbar for the "More Guides" list so it doesn't
+         show a jarring default white scrollbar on top of the dark card. */
+      .ml-more-guides-list { scrollbar-width: thin; scrollbar-color: ${B.line} transparent; }
+      .ml-more-guides-list::-webkit-scrollbar { width: 6px; }
+      .ml-more-guides-list::-webkit-scrollbar-track { background: transparent; }
+      .ml-more-guides-list::-webkit-scrollbar-thumb { background: ${B.line}; border-radius: 10px; }
+      .ml-more-guides-list::-webkit-scrollbar-thumb:hover { background: ${B.gray}; }
+      @media (max-width: 860px) {
+        .ml-article-grid { grid-template-columns: 1fr; }
+        .ml-article-sidebar { position: static; }
+      }
       @media (prefers-reduced-motion: reduce) {
-        .ml-btn, .ml-card, .ml-fade { transition: none !important; animation: none !important; }
+        .ml-btn, .ml-card, .ml-fade, .ml-promo { transition: none !important; animation: none !important; }
         html { scroll-behavior: auto; }
         .ml-reveal-js { opacity: 1 !important; transform: none !important; transition: none !important; }
       }
@@ -276,30 +345,120 @@ export function Nav() {
   );
 }
 
+const FOOT_LINK_STYLE = {
+  color: B.grayLight, textDecoration: "none", fontSize: 13.5,
+  display: "inline-flex", alignItems: "center", gap: 5, width: "fit-content",
+};
+
+function FootCol({ heading, children }) {
+  return (
+    <div>
+      <h3 style={{ margin: "0 0 16px", fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: B.gray }}>
+        {heading}
+      </h3>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>{children}</div>
+    </div>
+  );
+}
+
 export function Footer() {
   return (
     <footer style={{ borderTop: `1px solid ${B.line}`, marginTop: 60 }}>
-      <div style={{
-        maxWidth: 1100, margin: "0 auto", padding: "30px 24px",
-        display: "flex", justifyContent: "space-between", alignItems: "center", gap: 14, flexWrap: "wrap",
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <img src="/logo.png" alt="" style={{ width: 30, height: 30, borderRadius: 7 }} />
-          <span style={{ fontSize: 13, color: B.gray }}>
-            © 2026 MapleSheet Co. · British Columbia, Canada · Stop Guessing. Start Tracking.
-          </span>
+      <div className="ml-foot-grid" style={{ maxWidth: 1100, margin: "0 auto", padding: "60px 24px 44px" }}>
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <img src="/logo.png" alt="" style={{ width: 28, height: 28, borderRadius: 7 }} />
+            <span style={{ fontWeight: 800, fontSize: 17, letterSpacing: "-0.01em" }}>MapleSheet Co.</span>
+          </div>
+          <p style={{ margin: "16px 0 0", fontSize: 18, fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.3, maxWidth: 280 }}>
+            Stop guessing. Start <span style={{ color: B.redLink }}>tracking.</span>
+          </p>
+          <p style={{ margin: "10px 0 0", fontSize: 13.5, color: B.gray, lineHeight: 1.6, maxWidth: 260 }}>
+            Google Sheets trackers for Canadian investors — TFSA, RRSP, RESP, FHSA and multi-brokerage.
+          </p>
+          <div style={{ display: "flex", gap: 10, marginTop: 20, flexWrap: "wrap" }}>
+            <a href={CONFIG.shopUrl} target="_blank" rel="noreferrer"
+              style={{ fontSize: 13.5, fontWeight: 600, textDecoration: "none", padding: "10px 18px", borderRadius: 8, background: B.red, color: B.white, border: `1px solid ${B.red}` }}>
+              Shop Trackers
+            </a>
+            <a href={`mailto:${CONFIG.email}`}
+              style={{ fontSize: 13.5, fontWeight: 600, textDecoration: "none", padding: "10px 18px", borderRadius: 8, background: "transparent", color: B.white, border: `1px solid ${B.line}` }}>
+              Email us
+            </a>
+          </div>
         </div>
-        <div style={{ display: "flex", gap: 18, fontSize: 13.5, flexWrap: "wrap" }}>
-          <a href={CONFIG.shopUrl} target="_blank" rel="noreferrer" style={{ color: B.grayLight, textDecoration: "none" }}>Etsy</a>
-          <a href={CONFIG.youtubeUrl} target="_blank" rel="noreferrer" style={{ color: B.grayLight, textDecoration: "none" }}>YouTube</a>
-          <a href={CONFIG.xUrl} target="_blank" rel="noreferrer" style={{ color: B.grayLight, textDecoration: "none" }}>X</a>
-          <a href={CONFIG.affiliateUrl} target="_blank" rel="noreferrer" style={{ color: B.grayLight, textDecoration: "none" }}>Become an Affiliate</a>
-          <a href={`mailto:${CONFIG.email}`} style={{ color: B.grayLight, textDecoration: "none" }}>{CONFIG.email}</a>
+
+        <FootCol heading="Products">
+          <NavLink to="/trackers" style={FOOT_LINK_STYLE}>Trackers</NavLink>
+          <NavLink to="/tools" style={FOOT_LINK_STYLE}>Free Tools</NavLink>
+          <NavLink to="/resources" style={FOOT_LINK_STYLE}>Resources</NavLink>
+        </FootCol>
+
+        <FootCol heading="Company">
+          <NavLink to="/about" style={FOOT_LINK_STYLE}>About</NavLink>
+          <NavLink to="/contact" style={FOOT_LINK_STYLE}>Contact</NavLink>
+          <NavLink to="/disclaimer" style={FOOT_LINK_STYLE}>Disclaimer</NavLink>
+          <NavLink to="/privacy" style={FOOT_LINK_STYLE}>Privacy Policy</NavLink>
+          <a href={CONFIG.shopUrl} target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>Etsy Shop ↗</a>
+        </FootCol>
+
+        <FootCol heading="Recommended">
+          <a href="https://wealthsimple.com/invite/R7ENSA" target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>Wealthsimple ↗</a>
+          <div>
+            <a href="https://www.questrade.com" target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>Questrade ↗</a>
+            <div style={{ fontSize: 11.5, color: B.gray, marginTop: 2 }}>code: 786314335499127</div>
+          </div>
+          <a href={CONFIG.youtubeUrl} target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>YouTube ↗</a>
+          <a href={CONFIG.xUrl} target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>X ↗</a>
+          <a href={CONFIG.affiliateUrl} target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>Become an Affiliate</a>
+          <p style={{ margin: "8px 0 0", fontSize: 11, color: B.gray, lineHeight: 1.5, maxWidth: 190 }}>
+            Wealthsimple and Questrade are referral links/codes — MapleSheet may receive a benefit at no cost to you.
+          </p>
+        </FootCol>
+      </div>
+
+      <div style={{ borderTop: `1px solid ${B.line}` }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "18px 24px" }}>
+          <p style={{ margin: "0 0 16px", fontSize: 11.5, color: B.gray, lineHeight: 1.6, maxWidth: 760 }}>
+            MapleSheet trackers are record-keeping tools, not financial advice. Google Sheets is a trademark of Google LLC; MapleSheet Co. is not affiliated with Google or Etsy.{" "}
+            <NavLink to="/disclaimer" style={{ color: B.grayLight, textDecoration: "underline" }}>Read the full disclaimer →</NavLink>
+            {" "}·{" "}
+            <NavLink to="/privacy" style={{ color: B.grayLight, textDecoration: "underline" }}>Privacy Policy →</NavLink>
+          </p>
+          <div className="ml-foot-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap", paddingTop: 16, borderTop: `1px solid ${B.line}` }}>
+            <div className="ml-foot-bottom-left" style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", fontSize: 11.5, color: B.gray }}>
+              <span>© 2026 MapleSheet Co. All rights reserved.</span>
+              <span style={{ color: B.line }}>·</span>
+              <a href="https://linocondigital.com" target="_blank" rel="noreferrer"
+                style={{ display: "flex", alignItems: "center", gap: 6, color: B.gray, textDecoration: "none" }}>
+                Built by
+                <img src="/linocon-digital-logo.png" alt="LinoCon Digital" style={{ width: 15, height: 15, borderRadius: 4 }} />
+                LinoCon Digital
+              </a>
+            </div>
+            <div className="ml-foot-bottom-right" style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap", fontSize: 11.5 }}>
+              <a href={`mailto:${CONFIG.email}`} style={{ color: B.gray, textDecoration: "none" }}>{CONFIG.email}</a>
+              <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                style={{ display: "inline-flex", alignItems: "center", gap: 4, fontWeight: 600, color: B.grayLight, background: "none", border: "none", padding: 0, font: "inherit", cursor: "pointer" }}>
+                Back to top ↑
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px 26px", fontSize: 11.5, color: B.gray, lineHeight: 1.6 }}>
-        MapleSheet trackers are record-keeping tools, not financial advice. Google Sheets is a trademark of Google LLC; MapleSheet Co. is not affiliated with Google or Etsy.
-      </div>
+
+      <style>{`
+        .ml-foot-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
+        .ml-foot-grid a:hover { color: ${B.white} !important; }
+        @media (max-width: 760px) {
+          .ml-foot-grid { grid-template-columns: 1fr 1fr; row-gap: 36px; }
+          .ml-foot-grid > div:first-child { grid-column: 1 / -1; }
+        }
+        @media (max-width: 600px) {
+          .ml-foot-bottom { flex-direction: column; text-align: center; }
+          .ml-foot-bottom-left, .ml-foot-bottom-right { justify-content: center; }
+        }
+      `}</style>
     </footer>
   );
 }

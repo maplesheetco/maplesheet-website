@@ -10,6 +10,12 @@ export const CONFIG = {
   affiliateUrl: "https://payhip.com/auth/register/af6a64b512341ea",
   promoCode: "MAPLE25",
   promoText: "25% off everything with code MAPLE25",
+  // Promo auto-retires after this instant — the <PromoBanner> in ui.jsx
+  // stops rendering once the visitor's clock passes it, no redeploy needed.
+  // Set to Jan 16, 2027, 11:59 PM Eastern (-05:00, since mid-January is
+  // outside Daylight Saving Time in Toronto). ⚠️ Lino — if you meant a
+  // different time zone, update the offset here.
+  promoExpiresAt: "2027-01-16T23:59:00-05:00",
   freeToolUrl: "https://claude.ai/public/artifacts/1620ddd7-219c-4052-8557-2a8c6d63e7fb",
   // Web3Forms: create a free access key at https://web3forms.com (enter hello@maplesheet.ca)
   // and paste it below to activate the contact + newsletter forms:
@@ -61,7 +67,161 @@ export const PRODUCTS = [
   { name: "RRSP Tracker", tag: "RRSP", price: 9.99, url: "https://www.etsy.com/listing/4529584584", directUrl: "https://payhip.com/b/DQS5l", desc: "Contribution room, live prices, ACB", sku: "MS-RRSP-01",
     bestFor: "Tracking RRSP contribution room and deduction limit on their own." },
   { name: "TFSA Multi-Brokerage Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4541253114", directUrl: "https://payhip.com/b/8CqQU", desc: "Up to 8 brokerages in one sheet — the only one of its kind", badge: "NEW", screenshot: "/screenshots/multi-brokerage.jpg", sku: "MS-TFSA-MB",
-    bestFor: "One TFSA spread across multiple brokerages (up to 8)." },
+    // Real, uncropped tabs from the actual sheet — same pattern as the RRSP
+    // Multi-Brokerage Tracker's gallery below. Renders as a slideshow on
+    // the detail page when `gallery` is present.
+    gallery: [
+      { src: "/screenshots/tfsa-mb-gallery-1-start-here.jpg", label: "Start Here — How to Clear Sample Data & menu overview" },
+      { src: "/screenshots/tfsa-mb-gallery-2-main-dashboard.jpg", label: "Main Dashboard — combined room & top holdings across every brokerage" },
+      { src: "/screenshots/tfsa-mb-gallery-3-institution-dashboard.jpg", label: "Institution Dashboard — side-by-side across all 8 brokerages" },
+      { src: "/screenshots/tfsa-mb-gallery-4-tfsa-portfolio.jpg", label: "TFSA Portfolio — combined holdings, live prices, gain/loss" },
+      { src: "/screenshots/tfsa-mb-gallery-5-transaction-log.jpg", label: "Transaction Log — your single source of truth" },
+      { src: "/screenshots/tfsa-mb-gallery-6-dividend-tracker.jpg", label: "Dividend Tracker — monthly income vs. goal" },
+      { src: "/screenshots/tfsa-mb-gallery-7-settings.jpg", label: "Settings & Goals — the only tab you edit" },
+      { src: "/screenshots/tfsa-mb-gallery-8-cra-rules.jpg", label: "TFSA CRA Rules — built-in plain-English reference" },
+    ],
+    // Checkout powered directly by MapleSheet's own Stripe account, same
+    // Buy Button pattern as the RRSP Multi-Brokerage Tracker. Now that this
+    // is set, TrackerDetail.jsx / Trackers.jsx switch from the Etsy/Payhip
+    // buttons to this Stripe one automatically.
+    //
+    // ⚠️ Lino — double-check (if you haven't already) that on this same
+    // Payment Link: (1) metadata key "sku" = "MS-TFSA-MB" is set under
+    // Edit → Advanced → Metadata, and (2) "After the payment" redirects to
+    // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}
+    // — without #1 the webhook can't match a sale to this product (shows
+    // the safe "email us" fallback instead of download links, since the
+    // old guess-RRSP fallback was removed); without #2 the on-site reveal
+    // page never loads after payment.
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1UR0IJJYx6fAMdIUhv9jkY9T",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real sheet link — swapped in from your own P13 Template Link PDF.
+    // ⚠️ Lino — double-check this sheet's Share settings are "Anyone with
+    // the link" → Viewer (same as RRSP-MB and Ultimate), same as every
+    // other tracker's delivery link.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1VmfxXQtrrfSZT47YqwSPiPD3MW9IwElcxtyVMxEaerQ/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/tfsa-mb-template-link.pdf" },
+        { label: "User Guide", url: "/downloads/tfsa-mb-user-guide.pdf" },
+        { label: "TFSA Government Rules", url: "/downloads/tfsa-mb-government-rules.pdf" },
+      ],
+    },
+    slug: "tfsa-multi-brokerage", accounts: ["TFSA"],
+    bestFor: "One TFSA spread across multiple brokerages (up to 8) — whether that's a few commission-free platforms, or a legacy bank account alongside a newer discount brokerage.",
+    longDescription: "One TFSA held at Wealthsimple, Questrade, RBC, TD — and you're tracking it in your head? Every institution shows you its own slice, but none shows you the whole picture. This tracker pulls every TFSA account you hold, across up to 8 brokerages, into one Google Sheet that calculates your real combined contribution room, holdings, and dividend income automatically — so you know your actual position instead of finding out about an over-contribution the hard way.",
+    overview: [
+      "If you hold your TFSA at more than one brokerage, you already know the problem: every institution shows you its slice of the picture, but none of them shows you the whole thing. How much total room do you actually have left this year? What's your real combined contribution room across every account? Are you about to over-contribute without realizing it?",
+      "The Canadian TFSA Multi-Brokerage Tracker pulls every TFSA account you hold — across up to 8 different brokerages — into one Google Sheet that calculates your real numbers automatically. Enter your TFSA Annual Limit and Accumulated Room straight from your CRA My Account, and the tracker measures every contribution across every brokerage against that one real number — with a side-by-side Institution Dashboard so you can see exactly which brokerage is carrying your returns.",
+      "It's built around how TFSAs actually work, not copied from an RRSP template. TFSA room is a flat dollar amount CRA sets each year — not tied to income — and a withdrawal does restore room, just not until January 1 of the following year, never the same year. There's no CRA limit on how many TFSAs you can hold, no RRSP-style first-60-days grace period (it's a strict December 31 cutoff), and US dividend payers face a real, unrecoverable 15% IRS withholding tax that an RRSP is exempt from — this tracker reflects all of it, not a copy-pasted RRSP ruleset.",
+    ],
+    whoFor: "Canadian DIY investors who hold — or are about to hold — a TFSA at more than one brokerage: spreading investments across a few commission-free platforms, keeping a legacy account open at a bank while using a discount brokerage for everything new, or simply wanting one real number for how much TFSA room is actually left.",
+    features: [
+      "Combined contribution room across up to 8 brokerages, calculated against your real CRA My Account numbers",
+      "Institution Dashboard — side-by-side comparison across all 8 brokerages, so you see which account is really carrying your returns",
+      "Live prices via GOOGLEFINANCE, with correct USD→CAD conversion — no exchange prefixes needed for US tickers",
+      "Automatic average cost and gain/loss, calculated per brokerage and combined",
+      "Dividend tracker that shows your actual income after the 15% US withholding tax TFSAs don't get exempted from",
+      "Built-in TFSA CRA Rules tab — a plain-English reference you never have to leave the sheet to check",
+      "One combined portfolio view across every account holding the TFSA",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "🍁", label: "One-click MapleSheet menu", desc: "Builds, rebuilds, and loads sample data for you right inside the sheet — no spreadsheet experience required." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "User Guide PDF", desc: "A full tab-by-tab, column-by-column walkthrough of every part of the sheet." },
+      { icon: "📄", label: "TFSA Government Rules PDF", desc: "An 18-section plain-English reference to CRA's actual TFSA rules — contribution limits, the January 1 withdrawal-room rule, over-contribution penalties, US withholding tax, and more — so you're not hunting through canada.ca mid-tax-season." },
+    ],
+  },
+  // Payhip-only by design: no `url` (Etsy) field here on purpose — this
+  // product is sold through Payhip exclusively. The buy-button rendering in
+  // App.jsx / Trackers.jsx / TrackerDetail.jsx checks `p.url` before showing
+  // an Etsy button, so a product with only `directUrl` shows a single
+  // full-width "Buy on Payhip" button instead.
+  // ⚠️ Lino: price assumed at $9.99 to match the TFSA Multi-Brokerage Tracker — confirm/adjust.
+  { name: "Canadian RRSP Multi-Brokerage Tracker", tag: "RRSP", price: 9.99, directUrl: "https://payhip.com/b/sZ3r0", desc: "Up to 8 brokerages in one sheet — the RRSP companion to our #1 TFSA tracker", badge: "NEW", screenshot: "/screenshots/rrsp-multi-brokerage.jpg", sku: "MS-RRSP-MB",
+    // Real, uncropped tabs from the actual sheet (not the stretched
+    // composite collage) — the detail page renders these as a slideshow
+    // when `gallery` is present, falling back to the single `screenshot`
+    // above everywhere else (catalog card, Etsy/schema image, etc.).
+    gallery: [
+      { src: "/screenshots/rrsp-mb-gallery-1-start-here.jpg", label: "Start Here — quick-start steps & menu overview" },
+      { src: "/screenshots/rrsp-mb-gallery-2-main-dashboard.jpg", label: "Main Dashboard — combined room across every brokerage" },
+      { src: "/screenshots/rrsp-mb-gallery-3-transaction-log.jpg", label: "Transaction Log — your single source of truth" },
+      { src: "/screenshots/rrsp-mb-gallery-4-dividend-tracker.jpg", label: "Dividend Tracker — monthly income vs. goal" },
+      { src: "/screenshots/rrsp-mb-gallery-5-settings.jpg", label: "Settings & Goals — the only tab you edit" },
+    ],
+    // Checkout powered directly by MapleSheet's own Stripe account, using
+    // Stripe's own "Buy Button" embed — opens the payment form as an
+    // overlay right on maplesheet.ca (the address bar never changes), with
+    // no custom backend needed for the purchase itself. Configured once in
+    // the Stripe Dashboard under this product's Payment Link; the IDs below
+    // are just what that embed needs to render.
+    //
+    // api/create-checkout-session.js and src/pages/Checkout.jsx (the
+    // earlier hand-built embedded-checkout route) are unused now that this
+    // exists — left in place but unreferenced, harmless to leave as-is.
+    //
+    // ⚠️ Lino: in the Stripe Dashboard, on this product's Payment Link,
+    // set "After the payment" → redirect to your own URL →
+    // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}
+    // — that reuses api/session-status.js + CheckoutReturn.jsx exactly as
+    // built, so the buyer still lands on a page revealing the delivery
+    // links below, same as the custom flow would have done.
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1UQhDJJYx6fAMdIUWrqjD6yk",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery links. sheetUrl uses the "/copy" format (not /edit) so a
+    // buyer is prompted to make their own copy rather than landing on an
+    // edit view of the master. ⚠️ Lino: double-check this sheet's Share
+    // settings are "Anyone with the link" → Viewer — if it's still
+    // restricted to specific people, this link will fail for every buyer
+    // regardless of the URL format being correct.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1dU_Hsd1ZIPlbrdnvfY7rdvLIXWRm6RN-ce4sGiYc5pM/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/rrsp-mb-template-link.pdf" },
+        { label: "User Guide", url: "/downloads/rrsp-mb-user-guide.pdf" },
+        { label: "RRSP Government Rules", url: "/downloads/rrsp-mb-government-rules.pdf" },
+      ],
+    },
+    slug: "rrsp-multi-brokerage", accounts: ["RRSP"],
+    bestFor: "One RRSP spread across multiple brokerages (up to 8) — whether that's a few commission-free platforms, or a legacy bank account alongside a newer discount brokerage.",
+    longDescription: "One RRSP held at Wealthsimple, Questrade, RBC, TD — and you're tracking it in your head? Every institution shows you its own slice, but none shows you the whole picture. This tracker pulls every RRSP account you hold, across up to 8 brokerages, into one Google Sheet that calculates your real combined contribution room, ACB, and portfolio value automatically — so you know your actual position instead of finding out about an over-contribution the hard way.",
+    // Full-length body copy for the detail page — pulled from the Payhip
+    // listing description, broken into paragraphs. Kept separate from
+    // longDescription (which stays short, since that one also feeds the
+    // page's meta description and PageHead sub-headline).
+    overview: [
+      "If you hold your RRSP at more than one brokerage, you already know the problem: every institution shows you its slice of the picture, but none of them shows you the whole thing. How much total room do you actually have left this year? What's your real combined contribution room across every account? Are you about to over-contribute without realizing it?",
+      "The Canadian RRSP Multi-Brokerage Tracker pulls every RRSP account you hold — across up to 8 different brokerages — into one Google Sheet that calculates your real numbers automatically. Enter your RRSP Deduction Limit and Unused Room Carried Forward straight from your CRA Notice of Assessment, and the tracker sums them into your true Total Available Room, then measures every contribution across every brokerage against that one number.",
+      "It's built around how RRSPs actually work, not copied from a TFSA template. RRSP room doesn't reset or restore the way TFSA room does, contributions are deductible, and withdrawals are taxed as income — so this tracker reflects the real rules: one combined deduction limit, withdrawals that never restore room, CRA's $2,000 lifetime over-contribution buffer, plus reference info for the Home Buyers' Plan, Lifelong Learning Plan, and the mandatory RRIF conversion at age 71.",
+    ],
+    whoFor: "Canadian DIY investors who hold — or are about to hold — an RRSP at more than one brokerage: spreading investments across a few commission-free platforms, keeping a legacy account open at a bank while using a discount brokerage for everything new, or simply wanting one real number for how much RRSP room is actually left.",
+    features: [
+      "Combined contribution room across up to 8 brokerages, calculated against your real CRA Notice of Assessment numbers",
+      "4-state over-contribution buffer warning — matches CRA's actual $2,000 lifetime buffer, not just a flat over/under flag",
+      "Live prices via GOOGLEFINANCE, with correct USD→CAD conversion — no exchange prefixes needed",
+      "Automatic ACB and capital gains, calculated per brokerage and combined",
+      "Institution Dashboard — side-by-side comparison across all 8 brokerages, so you see which account is really carrying your returns",
+      "Dividend tracker that estimates the US withholding tax you're saving by holding dividend stocks inside your RRSP",
+      "One combined net worth view across every account holding the RRSP",
+    ],
+    // What actually lands in the buyer's hands after checkout — kept
+    // separate from `features` (what the sheet does) so the page can
+    // answer "what am I getting" and "what will it do for me" as two
+    // distinct questions. Rendered as its own "What you get" section.
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "🍁", label: "One-click MapleSheet menu", desc: "Builds, rebuilds, and loads sample data for you right inside the sheet — no spreadsheet experience required." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "User Guide PDF", desc: "A full tab-by-tab, column-by-column walkthrough of every part of the sheet." },
+      { icon: "📄", label: "RRSP Government Rules PDF", desc: "A 20+ section plain-English reference to CRA's actual RRSP rules — contribution limits, HBP, LLP, spousal attribution, RRIF conversion, and more — so you're not hunting through canada.ca mid-tax-season." },
+    ],
+  },
   { name: "RESP Tracker", tag: "RESP", price: 14.99, url: "https://www.etsy.com/listing/4530779418", directUrl: "https://payhip.com/b/w8PXD", desc: "CESG grants, up to 4 beneficiaries", screenshot: "/screenshots/resp.jpg", sku: "MS-RESP-01",
     bestFor: "Parents tracking CESG grants for up to 4 kids." },
   { name: "FHSA Tracker", tag: "FHSA", price: 14.99, url: "https://www.etsy.com/listing/4534938230", directUrl: "https://payhip.com/b/dEXy3", desc: "First Home Savings, Line 20805 tax dashboard", screenshot: "/screenshots/fhsa.jpg", sku: "MS-FHSA-01",
@@ -137,72 +297,325 @@ export const PRODUCTS = [
     name: "TFSA + RRSP + Margin Tracker", tag: "Combo", price: 27.99,
     url: "https://www.etsy.com/listing/4523804765", directUrl: "https://payhip.com/b/29CVO",
     desc: "Registered + taxable in one place",
+    // Real tabs from your actual P2 sheet, plus the two promotional cover
+    // slides you sent (Main Dashboard "Live Preview" and the Charts &
+    // Analytics "See Your Portfolio Grow" page) — same gallery pattern as
+    // Combo3/Combo4. Numbers shown throughout (e.g. $115,250 net worth,
+    // $487.50 margin interest) are illustrative sample data, not a real
+    // account.
+    gallery: [
+      { src: "/screenshots/combo2-gallery-1-main-dashboard.jpg", label: "Main Dashboard — combined net worth across all 3 accounts, YTD investment income summary & portfolio growth chart" },
+      { src: "/screenshots/combo2-gallery-2-transaction-log.jpg", label: "Transaction Log — the one tab you type into, everything else calculates automatically" },
+      { src: "/screenshots/combo2-gallery-3-tfsa-portfolio.jpg", label: "TFSA Portfolio — auto-populated holdings, live prices, ACB & gain/loss" },
+      { src: "/screenshots/combo2-gallery-4-rrsp-portfolio.jpg", label: "RRSP Portfolio — CAD + USD holdings together, with the Canada-US treaty tax tip built right in" },
+      { src: "/screenshots/combo2-gallery-5-margin-portfolio.jpg", label: "Margin Portfolio — ACB tracking, live prices, margin loan & equity ratio, capital gains flow to Tax Dashboard" },
+      { src: "/screenshots/combo2-gallery-6-dividend-tracker.jpg", label: "Dividend Tracker — monthly distribution across all 3 accounts, per-ticker summary, DRIP tracked, annual run-rate vs. your own goal" },
+      { src: "/screenshots/combo2-gallery-7-margin-interest-tracker.jpg", label: "Margin Interest Tracker — monthly interest log, break-even yield, CRA Line 22100 deduction calculated automatically" },
+      { src: "/screenshots/combo2-gallery-8-tax-dashboard.jpg", label: "Tax Dashboard — Lines 12000, 12100 & 22100 and Schedule 3, calculated from your real entries" },
+      { src: "/screenshots/combo2-gallery-9-charts-analytics.jpg", label: "Charts & Analytics — portfolio allocation, monthly value & dividend income, all auto-built from your Transaction Log" },
+    ],
+    screenshot: "/screenshots/combo2-gallery-1-main-dashboard.jpg",
     slug: "tfsa-rrsp-margin", accounts: ["TFSA", "RRSP", "Margin"], sku: "MS-COMBO-TFSA-RRSP-MARGIN",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URlJCJYx6fAMdIUSqdG3fVO",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1rIUDRNGVXlCu9zTeqcWMuXG4iG01nFO5qJBPqglje4A/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/combo2-template-link.pdf" },
+        { label: "TFSA Guide", url: "/downloads/combo2-tfsa-guide.pdf" },
+        { label: "RRSP Guide", url: "/downloads/combo2-rrsp-guide.pdf" },
+        { label: "Margin Guide", url: "/downloads/combo2-margin-guide.pdf" },
+      ],
+    },
     bestFor: "Maxed-out registered room, now investing in a taxable account too.",
     longDescription: "Covers the most common three-account setup for investors who've maxed out registered room and moved into taxable investing: TFSA and RRSP for the tax-advantaged side, Margin for everything beyond it. One dashboard instead of switching between three.",
-    features: [
-      "TFSA, RRSP, and Margin tracked separately with one combined total",
-      "Automatic ACB and capital gains on the taxable Margin account",
-      "Contribution room and deduction limit tracked for both registered accounts",
-      "Live prices via GOOGLEFINANCE across all three",
+    overview: [
+      "A TFSA, an RRSP, and a Margin account you opened once you maxed out registered room — tracked across your brokerage's own screens, or three separate spreadsheets you have to add up by hand? Each one shows its own slice. None of them shows your actual combined net worth, and the Margin account's capital gains and interest — the two things CRA actually wants at tax time — end up reconstructed from statements every April instead of tracked as you go.",
+      "The TFSA + RRSP + Margin Tracker pulls all three into one Google Sheet, 11 tabs, built around a single Transaction Log — enter a contribution, a buy, a dividend, or a margin interest charge once, and every tab updates automatically. The Main Dashboard rolls all three accounts into one combined net worth total; the Margin Portfolio's capital gains and interest flow straight into a dedicated Tax Dashboard that calculates Line 12000, Line 12100, the Schedule 3 capital gains inclusion, and the Line 22100 interest deduction for you.",
+      "Each account is tracked the way it actually works, not one generic ruleset reused three times. The TFSA and RRSP Portfolios auto-populate from the Transaction Log with live GOOGLEFINANCE pricing and weighted-average ACB; the RRSP handles CAD and USD holdings together, with a built-in reminder to hold US dividend stocks there instead of the TFSA or Margin, where the 15% IRS withholding is permanently gone. The Margin Portfolio carries its own ACB tracking, margin loan and equity ratio, plus a dedicated Margin Interest Tracker with a break-even yield calculation and CRA Line 22100 carrying-charge tracking. A Dividend Tracker and a Charts & Analytics tab — both auto-built, no manual charting — round out the picture across all three accounts.",
     ],
-    demo: { total: "46,660", ytd: "+11.9%", accounts: [
-      { label: "TFSA", value: "16,568", change: "+12.4%" },
-      { label: "RRSP", value: "27,322", change: "+9.1%" },
-      { label: "Margin", value: "2,770", change: "+22.3%" },
-    ] },
+    whoFor: "Canadian DIY investors running a TFSA and an RRSP for the tax-advantaged side, with a Margin account for everything past their registered room, who want one combined dashboard and one Tax Dashboard instead of reconciling three accounts by hand every April.",
+    features: [
+      "TFSA, RRSP, and Margin tracked individually with one combined Main Dashboard net worth total",
+      "Automatic ACB tracking (CRA method) and capital gains on the Margin account, flowing straight into a dedicated Tax Dashboard",
+      "RRSP Portfolio handles CAD + USD holdings together — Canada-US tax treaty means 0% IRS withholding on US dividends held there, not in the TFSA or Margin",
+      "Margin Interest Tracker — monthly interest log, break-even yield with green/amber/red zones, and the CRA Line 22100 deduction calculated automatically",
+      "Tax Dashboard covers all 4 CRA income types — eligible dividends (Line 12000), US/foreign dividends (Line 12100), capital gains (Schedule 3 → Line 12700), and the Line 22100 interest deduction — rolled into one Net Taxable Investment Income total",
+      "Dividend Tracker across all three accounts, DRIP handling, per-ticker summary, monthly distribution vs. your own goal",
+      "Margin loan and equity ratio tracked right alongside your margin holdings, so you always know your real leverage",
+      "Charts & Analytics tab auto-builds portfolio allocation, monthly value, and monthly dividend income charts straight from your Transaction Log",
+      "Live prices via GOOGLEFINANCE across all three accounts, updating every minute",
+      "One Transaction Log drives all 11 tabs — enter a transaction once and everything updates automatically",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "TFSA Guide PDF", desc: "Contribution limits, the rules you need to know, tax implications, and which investments belong in a TFSA." },
+      { icon: "📄", label: "RRSP Guide PDF", desc: "Contribution rules, the Home Buyers' Plan, spousal RRSPs, and why US dividend stocks belong here instead of your TFSA." },
+      { icon: "📄", label: "Margin Guide PDF", desc: "ACB tracking, the Line 22100 interest deduction, break-even yield, and how Canadian vs. US dividends are taxed differently in a non-registered account." },
+    ],
   },
   {
     name: "TFSA + RRSP + RESP Tracker", tag: "Combo", price: 27.99,
     url: "https://www.etsy.com/listing/4526534020", directUrl: "https://payhip.com/b/DrfbA",
     desc: "Family bundle with CESG maximizer",
+    // Real, uncropped tabs from your actual P3 sheet. One screenshot you sent
+    // (the dark-navy "TFSA · RRSP · RESP Tracker v1.0 · 11 Tabs" one-pager)
+    // was left out of the gallery — its version/tab-count label conflicts
+    // with the real v1.5 / 10-tab Template Link already confirmed for this
+    // product, so it reads as outdated marketing art rather than a real tab.
+    // Say the word if you want it added back in anyway.
+    gallery: [
+      { src: "/screenshots/combo3-gallery-2-main-dashboard.jpg", label: "Main Dashboard — TFSA, RRSP & RESP portfolios plus a Combined column for net worth, shown fresh after copying (all $0.00 until you add your own data)" },
+      { src: "/screenshots/combo3-gallery-3-transaction-log.jpg", label: "Transaction Log — the one tab you type into; dropdowns handle Account, Type & Currency, FX rate pulls live from GOOGLEFINANCE" },
+      { src: "/screenshots/combo3-gallery-4-resp-portfolio.jpg", label: "RESP Portfolio — live holdings, auto-calculated ACB, Holdings Allocation & Mkt Value vs Cost Basis charts" },
+      { src: "/screenshots/combo3-gallery-5-tfsa-rrsp-portfolios.jpg", label: "TFSA & RRSP Portfolios — side by side, each with its own holdings table, gain/loss and donut chart" },
+      { src: "/screenshots/combo3-gallery-1-cesg-calculator.jpg", label: "CESG Calculator — the 20% grant formula, $500/year max, $7,200 lifetime cap and catch-up rule, built right in" },
+      { src: "/screenshots/combo3-gallery-6-dividend-tracker.jpg", label: "Dividend Tracker — monthly distribution chart, per-ticker summary, DRIP tracked, annual run-rate vs your own goal" },
+    ],
+    screenshot: "/screenshots/combo3-gallery-6-dividend-tracker.jpg",
     slug: "tfsa-rrsp-resp", accounts: ["TFSA", "RRSP", "RESP"], sku: "MS-COMBO-TFSA-RRSP-RESP",
+    // ⚠️ Lino — double-check this Payment Link, same as the other 4:
+    // (1) metadata key "sku" = "MS-COMBO-TFSA-RRSP-RESP" under Edit →
+    // Advanced → Metadata, and (2) "After the payment" redirects to
+    // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URZGeJYx6fAMdIUPcAn2zIi",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery link. sheetUrl is your own P3 Template Link's "/copy"
+    // URL. ⚠️ Double-check this sheet's Share settings are "Anyone with the
+    // link" → Viewer, same as the other trackers.
+    //
+    // The Template Link PDF was rebuilt in your real brand this session. The
+    // 3 account guides (TFSA/RRSP/RESP) are newly built too — you didn't
+    // have guide PDFs on file for this product, so these reuse the same
+    // real, verified CRA facts and figures already on file in Combo4's
+    // guides (account rules aren't product-specific), rewritten for this
+    // product's real context: "Account X of 3" (no Margin), v1.5, correct
+    // maplesheetco.etsy.com.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1ZYpMBtEeDp-hOmPJvJd9sg6PGN0LX1cl2Eo7gkmZM1Y/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/combo3-template-link.pdf" },
+        { label: "TFSA Guide", url: "/downloads/combo3-tfsa-guide.pdf" },
+        { label: "RRSP Guide", url: "/downloads/combo3-rrsp-guide.pdf" },
+        { label: "RESP Guide", url: "/downloads/combo3-resp-guide.pdf" },
+      ],
+    },
     bestFor: "Parents balancing personal investing with saving for their kids' education.",
     longDescription: "Built for parents balancing their own investing with saving for a child's education — TFSA and RRSP for personal accounts, RESP for the kids, with the CESG grant math handled automatically so government matching never gets left on the table.",
-    features: [
-      "TFSA and RRSP contribution room tracked alongside RESP room",
-      "CESG grant tracking — annual room, carry-forward, and the $7,200 lifetime cap",
-      "Up to 4 RESP beneficiaries supported",
-      "One combined household view across all three accounts",
+    overview: [
+      "A TFSA for flexible savings, an RRSP for retirement, and an RESP for the kids — tracked in three separate spreadsheets, or reconstructed by hand whenever you want to know where you actually stand? The Main Dashboard rolls all three into one Combined column: net worth, total cost, total gain, average return, and all dividends in one place, alongside the individual TFSA, RRSP and RESP figures.",
+      "The RESP side gets its own CESG Calculator — the 20% grant formula spelled out ($2,500 contributed → $500 CESG), the $500/year and $7,200 lifetime caps, and the catch-up rule for a missed year, all built in so government matching never gets left on the table. The RESP Tracker shows years of CESG eligibility remaining, this year's and last year's contribution status, how much lifetime CESG room is left, and an auto-calculated School Start year.",
+      "One Transaction Log drives every tab — enter a contribution, a buy, a CESG grant, or a dividend once, with dropdowns for Account, Type and Currency so there's no way to mistype them, and USD transactions convert to CAD automatically with a live FX rate from GOOGLEFINANCE. Each portfolio tab carries its own auto-calculated ACB, live GOOGLEFINANCE prices, and Holdings Allocation + Mkt Value vs Cost Basis charts, and a Dividend Tracker rolls monthly income across all three accounts into one chart with DRIP tracking and an annual run-rate projection.",
     ],
-    demo: { total: "48,106", ytd: "+12.8%", accounts: [
-      { label: "TFSA", value: "16,568", change: "+12.4%" },
-      { label: "RRSP", value: "27,322", change: "+9.1%" },
-      { label: "RESP", value: "4,216", change: "+18.7%" },
-    ] },
+    whoFor: "Canadian DIY investors running a TFSA and an RRSP for themselves alongside an RESP for their kids, who want one combined household view instead of three disconnected spreadsheets — and who want the CESG grant math done automatically so they never miss the government match.",
+    features: [
+      "TFSA, RRSP, and RESP portfolios tracked separately, with a Combined column rolling all three into one net worth total",
+      "CESG Calculator built in — the 20% grant formula, $500/year max, $7,200 lifetime cap, and the catch-up rule (contribute up to $5,000 in one year to earn $1,000 CESG) calculated automatically",
+      "RESP Tracker shows CESG years remaining, this year's and last year's contribution status, lifetime CESG room left, and an auto-calculated School Start year",
+      "One Transaction Log drives every tab — dropdowns handle Account, Type, and Currency, with USD transactions converted to CAD via a live FX rate from GOOGLEFINANCE",
+      "Live prices via GOOGLEFINANCE across all three accounts, with ACB auto-calculated from your Transaction Log history",
+      "Dividend Tracker across all three accounts — monthly distribution chart, per-ticker summary, DRIP tracking, and an annual run-rate projection against your own goal",
+      "Each portfolio tab includes a Holdings Allocation donut chart and a Market Value vs. Cost Basis column chart",
+      "3 dedicated account guides — real CRA contribution limits, rules, tax implications, and best-investments tables for TFSA, RRSP, and RESP",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "TFSA Guide PDF", desc: "Contribution limits, the rules you need to know, tax implications, and which investments belong in a TFSA." },
+      { icon: "📄", label: "RRSP Guide PDF", desc: "Contribution rules, the Home Buyers' Plan, spousal RRSPs, and why US dividend stocks belong here instead of your TFSA." },
+      { icon: "📄", label: "RESP Guide PDF", desc: "How the CESG grant works, the glide-path investment strategy by age, and family vs. individual RESPs." },
+    ],
   },
   {
     name: "TFSA + RRSP + RESP + Margin", tag: "Combo", price: 34.99,
     url: "https://www.etsy.com/listing/4528655460", directUrl: "https://payhip.com/b/xNGr1",
     desc: "Four accounts — ACB, CESG, capital gains",
-    slug: "tfsa-rrsp-resp-margin", accounts: ["TFSA", "RRSP", "RESP", "Margin"], sku: "MS-COMBO-TFSA-RRSP-RESP-MARGIN",
-    bestFor: "Households running registered, education, and taxable accounts together.",
-    longDescription: "For households running registered accounts, education savings, and taxable investing all at once. Four accounts, four different sets of rules — contribution room, CESG grants, and capital gains — all reconciled in one sheet instead of four disconnected ones.",
-    features: [
-      "TFSA, RRSP, RESP, and Margin tracked individually with one combined total",
-      "CESG grant tracking for the RESP, including the lifetime cap",
-      "Automatic ACB and capital gains tax dashboard for the Margin account",
-      "Live prices via GOOGLEFINANCE across all four accounts",
+    // Real, uncropped tabs from your actual P4 sheet — same gallery pattern
+    // as the other trackers below. One duplicate "Main Dashboard" capture
+    // you sent (a second, narrower crop of the same tab/numbers) was left
+    // out rather than shown twice — say the word if you wanted that second
+    // version used instead.
+    gallery: [
+      { src: "/screenshots/combo4-gallery-2-main-dashboard.jpg", label: "Main Dashboard — combined net worth across all 4 accounts, YTD income summary & last 5 transactions" },
+      { src: "/screenshots/combo4-gallery-3-transaction-log.jpg", label: "Transaction Log — the one tab you type into, everything else calculates automatically" },
+      { src: "/screenshots/combo4-gallery-1-tfsa-portfolio.jpg", label: "TFSA Portfolio — auto-populated holdings, live prices, ACB & gain/loss" },
+      { src: "/screenshots/combo4-gallery-4-resp-tracker.jpg", label: "RESP Tracker — CESG grant monitor for up to 4 beneficiaries, eligibility countdown" },
+      { src: "/screenshots/combo4-gallery-5-margin-portfolio.jpg", label: "Margin Portfolio — ACB tracking, live prices, capital gains flow to Tax Dashboard" },
+      { src: "/screenshots/combo4-gallery-6-tax-dashboard.jpg", label: "Tax Dashboard — Lines 12000, 12100 & 22100 and Schedule 3, calculated from your real entries" },
+      { src: "/screenshots/combo4-gallery-7-dividend-tracker.jpg", label: "Dividend Tracker — monthly income across all 4 accounts, DRIP tracked, annual run-rate" },
+      { src: "/screenshots/combo4-gallery-8-margin-interest-tracker.jpg", label: "Margin Interest Tracker — break-even yield, monthly log, CRA Line 22100 deduction" },
+      { src: "/screenshots/combo4-gallery-9-account-placement-guide.jpg", label: "Account Placement Guide — which investments belong in which account, and why" },
     ],
-    demo: { total: "50,876", ytd: "+13.4%", accounts: [
-      { label: "TFSA", value: "16,568", change: "+12.4%" },
-      { label: "RRSP", value: "27,322", change: "+9.1%" },
-      { label: "RESP", value: "4,216", change: "+18.7%" },
-      { label: "Margin", value: "2,770", change: "+22.3%" },
+    slug: "tfsa-rrsp-resp-margin", accounts: ["TFSA", "RRSP", "RESP", "Margin"], screenshot: "/screenshots/combo4-gallery-2-main-dashboard.jpg", sku: "MS-COMBO-TFSA-RRSP-RESP-MARGIN",
+    // ⚠️ Lino — double-check on this Payment Link, same as the other 3:
+    // (1) metadata key "sku" = "MS-COMBO-TFSA-RRSP-RESP-MARGIN" under Edit →
+    // Advanced → Metadata, and (2) "After the payment" redirects to
+    // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URQ1LJYx6fAMdIUqVGnBEDI",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery links. sheetUrl is your own P4 Template Link's "/copy"
+    // URL. ⚠️ Lino — double-check this sheet's Share settings are "Anyone
+    // with the link" → Viewer, same as the other 3 trackers.
+    //
+    // The Template Link PDF was rebuilt (real logo/brand colors, same real
+    // sheet link) earlier this session. The other 5 PDFs below are your own
+    // real P4_*.pdf guides, copied in as-is — each one's footer also reads
+    // "maplesheeet.etsy.com" (three e's), same leftover typo flagged on the
+    // Ultimate Tracker's PDFs, worth a batch fix across all of them sometime.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1Co8Bmaz51DLHRFCkkpb2AHM0hoBvYE3EEq9Ejuy-ouU/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/combo4-template-link.pdf" },
+        { label: "Clear Sample Data Guide", url: "/downloads/combo4-clear-sample-data-guide.pdf" },
+        { label: "TFSA Guide", url: "/downloads/combo4-tfsa-guide.pdf" },
+        { label: "RRSP Guide", url: "/downloads/combo4-rrsp-guide.pdf" },
+        { label: "RESP Guide", url: "/downloads/combo4-resp-guide.pdf" },
+        { label: "Margin Account Guide", url: "/downloads/combo4-margin-guide.pdf" },
+      ],
+    },
+    bestFor: "Households running registered, education, and taxable accounts together.",
+    longDescription: "For households running registered accounts, education savings, and taxable investing all at once. Four accounts, four different sets of rules — contribution room, CESG grants, and capital gains — all reconciled in one Google Sheet, 13 tabs, instead of four disconnected ones.",
+    overview: [
+      "A TFSA for flexible savings, an RRSP for retirement, an RESP for the kids, and a Margin account for everything that doesn't fit a registered account — tracked in four separate spreadsheets, or worse, four separate brokerage apps? Each one shows its own slice. None of them shows the household's actual net worth, and the two accounts that matter most for tax season — the RESP's CESG grant and the Margin account's capital gains — end up tracked nowhere at all, or reconstructed by hand every April.",
+      "The TFSA + RRSP + RESP + Margin Tracker pulls all four into one Google Sheet, 13 tabs, built around a single Transaction Log — enter a contribution, a buy, a CESG grant, or a dividend once, and every tab updates automatically. The Main Dashboard rolls all four accounts into one combined net worth total; the Margin Portfolio's capital gains flow straight into a dedicated Tax Dashboard that calculates Line 12000, Line 12100, and the Line 22100 interest deduction for you.",
+      "Each account is tracked the way it actually works, not one generic ruleset reused four times. The RESP Tracker follows the CESG grant per child, up to 4 beneficiaries, against the real $7,200 lifetime cap. The RRSP Portfolio handles CAD and USD holdings together — the Canada-US tax treaty means 0% IRS withholding on US dividends held there, which is why the included Account Placement Guide tells you to hold US dividend stocks in the RRSP, not the TFSA, RESP, or Margin, where that same 15% is permanently gone. The Margin tab carries full ACB tracking plus a Margin Interest Tracker with CRA Line 22100 carrying-charge tracking and a break-even yield calculation. A Dividend Tracker and an Analysis & Reco tab round out the picture across all four accounts.",
+    ],
+    whoFor: "Canadian DIY investors running a TFSA, an RRSP, an RESP for their kids, and a taxable Margin account at the same time — especially parents balancing registered and education savings with a non-registered account on the side, who'd rather buy one tracker than juggle four spreadsheets.",
+    features: [
+      "TFSA, RRSP, RESP, and Margin tracked individually with one combined Main Dashboard total",
+      "CESG grant tracking for up to 4 RESP beneficiaries — $500/year per child against the real $7,200 lifetime cap",
+      "Automatic ACB tracking and a dedicated Tax Dashboard for Margin account capital gains (Schedule 3, 50% inclusion)",
+      "RRSP Portfolio handles CAD + USD holdings together — Canada-US tax treaty means 0% IRS withholding on US dividends held there",
+      "Margin Interest Tracker — monthly interest log, break-even yield, and the CRA Line 22100 deduction calculated automatically",
+      "Dividend Tracker across all four accounts, with DRIP handling, per-ticker summary, and annual run-rate",
+      "Analysis & Reco tab reads all 4 portfolio tabs to flag concentration and diversification gaps",
+      "4 dedicated account guides show exactly which investments belong where — e.g. US dividend stocks in the RRSP, not the TFSA, RESP, or Margin, to avoid the unrecoverable 15% IRS withholding",
+      "Live prices via GOOGLEFINANCE across all four accounts",
+      "One Transaction Log drives all 13 tabs — enter a transaction once and everything updates automatically",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "Clear Sample Data Guide PDF", desc: "The safe, step-by-step way to clear the sample data — only the Transaction Log needs clearing, every other tab resets itself automatically." },
+      { icon: "📄", label: "TFSA Guide PDF", desc: "Contribution limits, the rules you need to know, tax implications, and which investments belong in a TFSA." },
+      { icon: "📄", label: "RRSP Guide PDF", desc: "Contribution rules, the Home Buyers' Plan, spousal RRSPs, and why US dividend stocks belong here instead of your TFSA." },
+      { icon: "📄", label: "RESP Guide PDF", desc: "How the CESG grant works, the glide-path investment strategy by age, and family vs. individual RESPs." },
+      { icon: "📄", label: "Margin Account Guide PDF", desc: "ACB tracking, the Line 22100 interest deduction, and how Canadian vs. US dividends are taxed differently in a non-registered account." },
+    ],
+    demo: { total: "229,210", ytd: "+10.4%", accounts: [
+      { label: "TFSA", value: "94,210", change: "+9.7%" },
+      { label: "RRSP", value: "68,450", change: "+8.1%" },
+      { label: "RESP", value: "24,670", change: "+18.7%" },
+      { label: "Margin", value: "41,880", change: "+11.2%" },
     ] },
   },
   {
-    name: "Ultimate Tracker — All 5 Accounts", tag: "Flagship", price: 44.99,
+    name: "Canadian Ultimate Tracker — All 5 Accounts", tag: "Flagship", price: 44.99,
     url: "https://www.etsy.com/listing/4536628550", directUrl: "https://payhip.com/b/wkqoH",
-    desc: "TFSA + RRSP + RESP + FHSA + Margin. Everything, one sheet.", badge: "FLAGSHIP",
+    desc: "TFSA + RRSP + Spousal RRSP + RESP + FHSA + Margin. Everything, one sheet.", badge: "FLAGSHIP",
+    // Real, uncropped tabs from the actual sheet — same pattern as the two
+    // Multi-Brokerage Trackers' galleries above. Renders as a slideshow on
+    // the detail page when `gallery` is present.
+    gallery: [
+      { src: "/screenshots/ultimate-gallery-1-start-here.jpg", label: "Start Here — CRA rules, FAQs & setup steps for all 5 accounts, built right in" },
+      { src: "/screenshots/ultimate-gallery-2-main-dashboard.jpg", label: "Main Dashboard — 5-column metrics, 4 live charts, YTD summary" },
+      { src: "/screenshots/ultimate-gallery-3-settings.jpg", label: "Settings & Goals — 8 sections, fill the amber cells once" },
+      { src: "/screenshots/ultimate-gallery-4-transaction-log.jpg", label: "Transaction Log — enter once, all 15 tabs update automatically" },
+      { src: "/screenshots/ultimate-gallery-5-portfolio-performance.jpg", label: "Portfolio Performance — live prices, ACB, and return % across all 6 accounts" },
+      { src: "/screenshots/ultimate-gallery-6-attribution-tracker.jpg", label: "Attribution Tracker — the 3-year spousal RRSP rule, tracked automatically" },
+      { src: "/screenshots/ultimate-gallery-7-resp-tracker.jpg", label: "RESP Tracker — CESG grant monitor for up to 4 beneficiaries" },
+      { src: "/screenshots/ultimate-gallery-8-fhsa.jpg", label: "FHSA — the triple tax advantage, tracked start to finish" },
+      { src: "/screenshots/ultimate-gallery-9-dividend-tracker.jpg", label: "Dividend Tracker — all 6 accounts, monthly breakdown & run-rate" },
+      { src: "/screenshots/ultimate-gallery-10-tax-dashboard.jpg", label: "Tax Dashboard — Line 208, 20805 & 22100, all 13 provinces" },
+      { src: "/screenshots/ultimate-gallery-11-income-splitting.jpg", label: "Income Splitting — the actual household tax savings from a spousal RRSP" },
+      { src: "/screenshots/ultimate-gallery-12-analysis-reco.jpg", label: "Analysis & Reco — contribution priority order and projected growth" },
+      { src: "/screenshots/ultimate-gallery-13-vs-competitors.jpg", label: "P12 vs. Competitors — what no other Canadian tracker on Etsy covers" },
+    ],
     slug: "ultimate-all-5-accounts", accounts: ["TFSA", "RRSP", "RESP", "FHSA", "Margin"], screenshot: "/screenshots/ultimate.jpg", sku: "MS-FLAGSHIP-ULTIMATE",
-    bestFor: "Anyone who'd rather track everything in one sheet instead of picking a combo.",
-    longDescription: "Every account MapleSheet tracks, in a single sheet: TFSA, RRSP, RESP, FHSA, and Margin. Built for anyone who'd rather stop deciding which combo tracker fits and just track everything — contribution room, deduction limits, CESG grants, and capital gains, all reconciled against each other instead of five separate spreadsheets.",
+    // Checkout powered directly by MapleSheet's own Stripe account, same
+    // Buy Button pattern as the other two. This switches TrackerDetail.jsx
+    // / Trackers.jsx over from the Etsy/Payhip buttons to this Stripe one
+    // automatically, now that it's set.
+    //
+    // ⚠️ Lino — double-check on this Payment Link: (1) metadata key "sku"
+    // = "MS-FLAGSHIP-ULTIMATE" is set under Edit → Advanced → Metadata,
+    // and (2) "After the payment" redirects to
+    // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}
+    // — without #1 the webhook can't match a sale to this product (shows
+    // the safe "email us" fallback instead of download links); without #2
+    // the on-site reveal page never loads after payment.
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URMm9JYx6fAMdIUGIPkPHZI",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery links, from your own P12 Ultimate Tracker v1.0 source
+    // material. sheetUrl uses the "/copy" format (not /edit) so a buyer is
+    // prompted to make their own copy rather than landing on an edit view
+    // of the master. ⚠️ Lino — double-check this sheet's Share settings are
+    // "Anyone with the link" → Viewer, same as the other trackers.
+    //
+    // The 3 PDFs below are your own real P12_*.pdf files, copied in as-is
+    // (already correctly branded "MapleSheet Co.", already carrying real,
+    // correct data) rather than rebuilt from scratch — just renamed to match
+    // the site's /downloads naming convention. One honesty note: they're
+    // labeled "Template Link" / "Clear Sample Data Guide" / "CRA Rules &
+    // Complete Guide" rather than "Template Link / User Guide / Government
+    // Rules" like the Multi-Brokerage Trackers, because what you supplied is
+    // a sample-data-clearing guide, not a full tab-by-tab user guide — the
+    // label matches what the PDF actually is. Also: every page footer in
+    // these 3 PDFs reads "maplesheeet.etsy.com" (three e's) — looks like a
+    // leftover typo from the Etsy listing artwork. Harmless, but worth a
+    // fix next time you touch these files.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1gHyu1fUXfSPMw5sIPR_6-VTtSfhAtflRKsPFHvxKvE8/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/ultimate-template-link.pdf" },
+        { label: "Clear Sample Data Guide", url: "/downloads/ultimate-clear-sample-data-guide.pdf" },
+        { label: "CRA Rules & Complete Guide", url: "/downloads/ultimate-cra-rules-complete-guide.pdf" },
+      ],
+    },
+    bestFor: "Anyone who'd rather track everything in one sheet instead of picking a combo — including couples using a spousal RRSP to split retirement income.",
+    // `accounts` above stays the 5 named in the product ("All 5 Accounts")
+    // since that's what drives ACCOUNT_GUIDES and the demo/bundle display —
+    // Spousal RRSP is the same account *type* as RRSP, tracked as a second,
+    // separate RRSP inside the sheet (same pattern as the dedicated "RRSP +
+    // Spousal RRSP Tracker" combo above, which also keeps accounts: ["RRSP"]
+    // and uses compareAccounts + extraGuide instead of a 6th account tag).
+    // compareAccounts prices it honestly as 6 single-trackers' worth
+    // (RRSP counted twice) for the "save $X vs buying separately" math.
+    compareAccounts: ["TFSA", "RRSP", "RRSP", "RESP", "FHSA", "Margin"],
+    extraGuide: { slug: "spousal-rrsp-income-splitting", label: "Spousal RRSP income splitting guide" },
+    longDescription: "Every account MapleSheet tracks, in a single sheet: TFSA, RRSP, Spousal RRSP, RESP, FHSA, and Margin — 6 accounts, 15 automated tabs. Built for anyone who'd rather stop deciding which combo tracker fits and just track everything — contribution room, deduction limits, CESG grants, spousal attribution, and capital gains, all reconciled against each other instead of five or six separate spreadsheets.",
+    overview: [
+      "Running a TFSA, an RRSP, a spousal RRSP for income splitting, an RESP for the kids, an FHSA for a first home, and a Margin account for everything else — in five or six different spreadsheets, or worse, five or six different apps? Every one of them shows you its own slice. None of them shows you the whole household picture, and the accounts that actually interact with each other — your RRSP room and your spousal RRSP contributions, your FHSA and your RRSP's Home Buyers' Plan — end up tracked as if they were unrelated.",
+      "The Canadian Ultimate Tracker — All 5 Accounts pulls every one of those accounts into one Google Sheet, 15 tabs, built around a single Transaction Log — enter a contribution, a buy, a CESG grant, or a dividend once, and all 15 tabs update automatically. A Main Dashboard rolls everything into one 5-column net worth view with 4 live charts; a Tax Dashboard turns your actual entries into Line 208, Line 20805, and Line 22100 figures, auto-switching across all 13 provinces' combined federal + provincial rates.",
+      "It's built around how each account actually works, not one ruleset copy-pasted six times. The Attribution Tracker watches the 3-year spousal RRSP rule in calendar years, not months, and flags exactly when each contribution becomes safe to withdraw. The RESP Tracker tracks the CESG grant per child, up to 4 beneficiaries, against the real $7,200 lifetime cap. The FHSA tab reflects its real, stricter rule — no 60-day grace period, miss December 31 and that year's room is gone. The Margin tab carries full ACB tracking for Schedule 3. And the Income Splitting calculator shows the actual household tax saving a spousal RRSP produces — not a rule of thumb, your real numbers.",
+    ],
+    whoFor: "Canadian DIY investors running more than a couple of account types — especially couples using a spousal RRSP to split retirement income, parents saving in an RESP alongside their own TFSA and RRSP, first-time home buyers using an FHSA, and anyone investing in a taxable Margin account on top of their registered accounts — who'd rather buy one tracker than five.",
     features: [
-      "All 5 account types tracked individually with one combined net worth total",
-      "Contribution room and deduction limits for TFSA, RRSP, RESP, and FHSA",
-      "CESG grant tracking and automatic ACB/capital gains for Margin",
-      "5-column metrics dashboard with 4 live charts and a YTD summary",
+      "All 6 accounts in one sheet — TFSA, RRSP, Spousal RRSP (tracked separately from your own RRSP), RESP, FHSA, and Margin — with one combined net worth total",
+      "15 fully automated tabs, single data entry — log a transaction once in the Transaction Log and every tab updates automatically",
+      "Attribution Tracker — the 3-year spousal RRSP rule tracked in calendar years, with a SAFE / AT RISK status and the exact date each contribution becomes safe to withdraw",
+      "RESP Tracker — CESG grant tracking for up to 4 beneficiaries, with cumulative contributions, CESG received, and CESG room remaining shown per child",
+      "Tax Dashboard — Line 208, Line 20805, and Line 22100 auto-calculated from your real entries, with all 13 provinces + federal brackets for a real deduction-value estimate",
+      "Income Splitting calculator — the actual household tax saving from a spousal RRSP strategy, shown year by year",
+      "10 transaction types (Buy, Sell, Contribution, Withdrawal, Dividend, DRIP, Transfer In, Transfer Out, CESG, Margin Interest), live prices via GOOGLEFINANCE, and automatic ACB/capital gains for the Margin account",
+      "Dividend Tracker across all 6 accounts, with a monthly breakdown and projected annual run-rate",
+      "Analysis & Reco tab — a recommended contribution priority order (RESP first for the CESG match, then FHSA, RRSP, TFSA, Margin) and projected portfolio growth to 2040",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "🍁", label: "One-click MapleSheet menu", desc: "Builds, rebuilds, and loads sample data for you right inside the sheet — no spreadsheet experience required." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "Clear Sample Data Guide PDF", desc: "The safe, step-by-step way to clear the 16 sample transactions without breaking a formula — never right-click delete a row, use Delete instead." },
+      { icon: "📄", label: "CRA Rules & Complete Guide PDF", desc: "All 5 account types' real CRA rules in one reference — TFSA, RRSP + Spousal RRSP, RESP + CESG, FHSA, and Margin — plus the 2026 federal brackets and all 13 provinces' combined tax rates." },
     ],
     demo: { total: "59,097", ytd: "+15.6%", accounts: [
       { label: "TFSA", value: "16,568", change: "+12.4%" },
@@ -255,9 +668,250 @@ export const RESOURCES = [
   // after its date passes, until you remove the flag.
   {
     type: "article",
+    title: "RRSP Tax Refund: What Should You Actually Do With It?",
+    slug: "rrsp-tax-refund-what-should-you-do-with-it",
+    image: "/resources/nov162026-rrsp-tax-refund-what-should-you-do-with-it.png",
+    date: "2026-11-16",
+    summary: "An RRSP tax refund isn't free money — it's the result of your tax situation. Here's a decision framework for reinvesting it, paying down debt, building an emergency fund, or using a TFSA or FHSA.",
+    body: [
+      "Getting an RRSP tax refund can feel like a financial bonus. But there's a better way to think about it. An RRSP contribution can reduce your taxable income when you claim an eligible deduction — if the deduction reduces the tax you ultimately owe, the difference can show up as a larger refund or a smaller amount owing. That refund is not a government gift. It's a consequence of your tax situation. So the real question isn't simply \"What should I spend my refund on?\" For an investor, the better question is: **\"How can I use this money to improve my financial position?\"** The answer depends on your debt, emergency savings, upcoming goals, tax situation, investment plan, and existing account balances.",
+      "## First: Understand Where the RRSP Refund Came From",
+      "A deductible RRSP contribution can reduce your taxable income. CRA explains that deductible RRSP contributions can be used to reduce income tax, while income earned inside the RRSP is generally exempt from tax while it remains in the plan. For example, suppose a taxpayer makes a $10,000 eligible RRSP contribution and claims the deduction — the tax effect depends on that person's circumstances and marginal tax rates. A $10,000 contribution does **not** automatically create a $10,000 refund. The refund is the result of the overall tax calculation. **Key idea:** your RRSP contribution and your tax refund are two different transactions.",
+      "## Don't Think of the Refund as \"Free Money\"",
+      "This mindset matters. If an RRSP contribution helped reduce the tax you paid, the resulting refund is connected to the tax deduction you received — it should therefore be treated as part of your overall financial plan. Using the refund for a long-term purpose can make the original RRSP contribution more powerful. Using it immediately on discretionary spending is not necessarily wrong, but it means the refund may have little lasting effect on your financial position.",
+      "## Option #1: Reinvest the Refund",
+      "For an investor who already has an emergency fund and manageable debt, reinvesting the refund may be one of the most straightforward choices. You could use the money to make an additional investment in an existing portfolio, increase a TFSA investment, contribute to an FHSA if eligible, add to a non-registered investment account, or build a cash reserve for a future investment opportunity. The right account depends on your goals and available contribution room — the important principle is to give the refund a job rather than letting it disappear into everyday spending.",
+      "## Option #2: Put the Refund Back Into the RRSP",
+      "Some investors choose to reinvest their refund in the RRSP. That can increase the amount invested for retirement, but you must still consider your available RRSP deduction limit and whether making another contribution is appropriate — a refund received because of an RRSP contribution does not mean you automatically have unlimited additional RRSP room. **Better approach:** check your current RRSP deduction limit before making another contribution.",
+      "## Option #3: Use It to Pay Down High-Interest Debt",
+      "If you have high-interest consumer debt, using a tax refund to reduce that debt can be financially powerful. For example, paying down a credit-card balance can eliminate future interest costs and improve cash flow. This isn't necessarily an \"investing versus debt\" argument — it's about comparing the guaranteed benefit of reducing expensive debt with the uncertain future return of an investment. **Practical rule:** before investing a refund, look at your debt interest rates and ask whether paying down the debt should come first.",
+      "## Option #4: Build or Strengthen Your Emergency Fund",
+      "An emergency fund can prevent an unexpected expense from forcing you to sell investments or borrow money. If your emergency savings are thin, the refund could be used to build a cash reserve. A common mistake is to invest every available dollar while having no accessible cash for emergencies — a strong financial plan usually needs both long-term investments and short-term liquidity.",
+      "## Option #5: Use It for Your FHSA — If You Qualify",
+      "For an eligible first-time home buyer, an FHSA can be another account worth considering. FHSA contributions can generally be deductible, subject to the applicable rules and available room. Unlike an RRSP, FHSA contributions made during the first 60 days of a year cannot be deducted for the previous tax year — this makes account timing important. If you're considering using a refund to fund an FHSA, confirm your eligibility, contribution room, and the tax year for which the contribution can be deducted.",
+      "## Option #6: Use It to Maximize Your TFSA",
+      "A TFSA can be attractive when flexibility matters. Unlike an RRSP contribution, a TFSA contribution is not deductible — however, qualifying investment income and withdrawals are generally tax-free. For an investor who has unused TFSA room and wants future access to the money without creating RRSP-style taxable withdrawals, using a refund to fund the TFSA may make sense. The best account is the one that fits the goal, not necessarily the account that produced the refund.",
+      "## Option #7: Invest in Yourself",
+      "Not every productive use of a refund involves buying a financial asset. The money could potentially be used for professional education, training that can increase earning power, tools or equipment needed for a business, a certification or skill, or a carefully planned business investment. The key is distinguishing a genuine investment in earning capacity from an impulse purchase.",
+      "## Option #8: Split the Refund Between Goals",
+      "You don't have to choose one destination. For example, a $2,000 refund could theoretically be divided among several priorities — say, $800 toward high-interest debt, $600 toward an emergency fund, $400 into a TFSA, and $200 toward a planned personal or education goal. Those numbers are only an illustration, not a recommendation. A split strategy can work well when several financial priorities compete for the same dollars.",
+      "## What If Your Income May Be Higher Next Year?",
+      "There's another RRSP decision that beginners sometimes overlook: **when to claim the deduction.** CRA notes that you do not necessarily have to claim the full amount of deductible RRSP contributions in the year they were made — unused contributions can potentially be carried forward and deducted in a future year when you may be subject to a higher tax rate. That means \"the biggest possible refund today\" isn't always the only objective. If your income is expected to rise significantly, the timing of the deduction may deserve consideration.",
+      "## A Simple Decision Framework",
+      "Before deciding what to do with your RRSP refund, ask these five questions. Do I have high-interest debt? If yes, debt reduction may deserve priority. Do I have enough emergency savings? If no, strengthen your cash reserve. Do I have unused TFSA or FHSA room? If yes, these accounts may deserve consideration depending on your goals. Is my RRSP strategy already on track? If yes, the refund could potentially support another financial priority. Can I give this refund a specific job before I receive it? If yes, you're less likely to spend it accidentally.",
+      "*MapleSheet principle: give every dollar a job before you spend or invest it.*",
+      "## The \"Refund Loop\"",
+      "One powerful long-term concept is to avoid treating an RRSP refund as an annual spending bonus. Instead, create a repeatable cycle: earn income → contribute to RRSP → claim eligible deduction → receive refund → deliberately allocate refund → continue investing. The refund becomes part of the system rather than a one-time windfall. For disciplined investors, this can turn tax-season money into another contribution toward long-term financial progress.",
+      "## Tracking the Refund Matters Too",
+      "This is where MapleSheet fits naturally. Your investment tracker should not only show what you own — it can also help you maintain the bigger picture across accounts and brokerages. If you receive a refund and decide to invest it in a TFSA, FHSA, RRSP, or non-registered account, record the transaction as part of your overall plan. That makes it easier to answer: where did the refund go? How much did I invest? Which account received it? How did that investment affect my portfolio? Am I actually following the plan I created?",
+      "## MapleSheet Solution: Turn Tax-Season Money Into Trackable Progress",
+      "If your refund ends up invested in more than one account type — say, a top-up to your [RRSP Tracker](/trackers), some into your [TFSA Tracker](/trackers), and the rest toward an [FHSA Tracker](/trackers) — the [TFSA Multi-Brokerage Tracker](/trackers) can help you organize holdings across different institutions and account types. If you receive an RRSP refund and use it to invest, the tracker can become part of the process: record the account, investment, amount, and portfolio impact rather than leaving the transaction buried inside a brokerage statement. This is especially useful when you have investments at more than one brokerage, such as Wealthsimple and another Canadian institution. The product doesn't decide what you should do with your refund — it helps you see and track what you actually did with it.",
+      "## Wealthsimple as a Brokerage Example",
+      "Wealthsimple is one example of a Canadian brokerage that investors may use for registered and non-registered investing. As a Canadian DIY investor, I personally use [Wealthsimple](https://wealthsimple.com/invite/R7ENSA). If a refund is invested through Wealthsimple, that investment can be tracked alongside accounts held elsewhere so you can review your complete portfolio rather than looking at one brokerage at a time.",
+      "### Referral Disclosure",
+      "Some links in this article may be referral links. If you open an account through a MapleSheet referral link, MapleSheet Co. may receive a referral benefit at no additional cost to you. Any referral relationship does not change the educational purpose of this article.",
+      "## MapleSheet Takeaway",
+      "An RRSP tax refund isn't really about the refund itself — the bigger opportunity is what you do next. You could spend it. You could pay down debt. You could build an emergency fund. You could invest through a TFSA, FHSA, RRSP, or another account. You could invest in your earning power. Or you could split it among several priorities. There's no universal answer, but there is one useful principle: don't let the refund decide where the money goes — decide first, then put the refund to work. And once you decide, track it.",
+      "**Stop Guessing. Start Tracking.**",
+      "## Official Sources",
+      "- Canada Revenue Agency — RRSP deduction (Line 20800)\n- Canada Revenue Agency — How contributions affect your RRSP deduction limit\n- Canada Revenue Agency — Questions and answers about contributing to an RRSP\n- Canada Revenue Agency — Saving for the future\n- Canada Revenue Agency — What to do with unused RRSP contributions\n- Canada Revenue Agency — FHSA contribution deductions",
+      "---",
+      "*This article is for educational purposes only and is not investment, tax, legal or financial advice. Tax refunds and the tax consequences of RRSP, TFSA and FHSA contributions depend on individual circumstances. Always verify current rules with the Canada Revenue Agency and consider professional advice where appropriate.*",
+    ],
+  },
+  {
+    type: "article",
+    title: "RRSP Investing Mistakes Beginners Should Avoid",
+    slug: "rrsp-investing-mistakes-beginners-should-avoid",
+    image: "/resources/nov302026-rrsp-investing-mistakes-beginners-should-avoid.png",
+    date: "2026-11-30",
+    summary: "The biggest RRSP problems for beginners are rarely complicated investment products — they're simple, avoidable mistakes around contribution limits, withdrawal tax, diversification, and record-keeping.",
+    body: [
+      "An RRSP can be one of the most useful retirement-investing tools available to Canadians. Contributions may be deductible within your available RRSP deduction limit, investment income earned inside the plan is generally not taxed while it remains in the RRSP, and withdrawals are generally taxable when taken out. But the RRSP's tax advantages do not automatically make every RRSP strategy a good one. For beginners, the biggest problems are often not complicated investment products — they're simple mistakes: misunderstanding the contribution limit, failing to track contributions, choosing investments without considering diversification, withdrawing without understanding the tax consequences, or losing sight of the portfolio because investments are spread across multiple brokerages.",
+      "## Mistake #1: Confusing Your RRSP Deduction Limit With How Much You Can Simply \"Put In\"",
+      "Your RRSP deduction limit is personal. It's shown on your CRA information and is generally affected by factors such as prior-year earned income, the annual RRSP dollar limit, unused room, and pension adjustments. A common mistake is treating a headline annual RRSP limit as though it were everyone's personal contribution amount. **Better approach:** before making a large contribution, check your current RRSP deduction limit through your CRA account or latest Notice of Assessment/Reassessment — CRA specifically directs taxpayers to these sources for the current figure.",
+      "## Mistake #2: Overcontributing and Ignoring the $2,000 Buffer",
+      "CRA generally considers you to have RRSP excess contributions when your contributions exceed your RRSP deduction limit by more than $2,000. The excess amount can generally be subject to a **1% tax per month** while it remains subject to the excess-contribution rules. The $2,000 amount is not a free extra deduction — it's better understood as a limited buffer before the excess-contribution tax generally applies. **Better approach:** track contributions throughout the year rather than relying on memory or waiting until tax season.",
+      "*MapleSheet reminder: track the number before you make the transaction — not after the mistake happens.*",
+      "## Mistake #3: Thinking the Tax Withheld on a Withdrawal Is the Final Tax Bill",
+      "When you withdraw money from an RRSP, the financial institution generally withholds tax. For Canadian residents outside Quebec, CRA currently lists withholding rates of 10% on amounts up to $5,000, 20% on amounts over $5,000 up to and including $15,000, and 30% on amounts over $15,000. But withholding is not necessarily your final tax liability — the withdrawal is generally included in your income for the year, and your actual tax outcome depends on your overall income and tax situation. **Better approach:** treat an RRSP withdrawal as a taxable-income decision, not simply a cash withdrawal.",
+      "## Mistake #4: Withdrawing From an RRSP Without a Plan",
+      "An RRSP is designed primarily for retirement savings. While an unlocked RRSP can generally be withdrawn from before retirement, the withdrawal can create taxable income and permanently removes those funds from the RRSP unless they're subsequently replaced through available contribution room. Certain programs have special rules — for example, the Home Buyers' Plan and Lifelong Learning Plan can allow qualifying withdrawals under specific conditions and repayment rules. **Better approach:** before withdrawing, ask what the withdrawal is accomplishing, what tax it may create, and whether another source of funds or a tax-advantaged program is more appropriate.",
+      "## Mistake #5: Buying Investments Without Thinking About the Whole Portfolio",
+      "An RRSP can hold a wide range of qualified investments, but eligibility does not mean the investment is automatically appropriate. A beginner may buy several ETFs or individual stocks that look different but actually overlap heavily. Another investor may concentrate too much of the RRSP in one company, sector, country, or theme. **Better approach:** look at the RRSP as part of your overall household portfolio — consider asset allocation, diversification, fees, risk, and time horizon across all accounts, not just one brokerage screen.",
+      "## Mistake #6: Ignoring What You Already Own in Other Accounts",
+      "Your RRSP may be only one piece of the puzzle. You might have an RRSP at one brokerage, a TFSA at another, a non-registered investment account at a third institution, a workplace pension, and cash or GICs elsewhere. If you only review each account independently, you may miss the bigger portfolio picture. **Better approach:** consolidate your investment information into one tracking system so you can review holdings, allocation, performance, and income across institutions.",
+      "## Mistake #7: Not Keeping a Clear Record of RRSP Contributions and Investments",
+      "Your brokerage knows what happened inside its own account. But as an investor, you may need a broader record of what happened across multiple accounts and institutions. This becomes especially important when contributions occur at different brokerages, when you make transfers, when you reinvest distributions, or when you're reviewing your progress over several years. CRA also recommends relying on your own records when dealing with registered-plan information — your brokerage records and CRA information serve different purposes, so keeping an organized personal record is valuable. **Better approach:** record contributions, holdings, transactions, and portfolio values in a consistent system.",
+      "## Bonus Mistake: Assuming a \"Qualified\" RRSP Investment Is Automatically a Good Investment",
+      "A security can qualify to be held inside an RRSP and still be unsuitable for your personal situation. Think of the decision in two stages. Stage 1 — eligibility: can the investment legally be held inside the RRSP? Stage 2 — portfolio fit: does this investment make sense for my goals, risk tolerance, time horizon, diversification, and overall portfolio? The first question is about the rules. The second is about investing.",
+      "## A Simple RRSP Checklist Before You Invest",
+      "Before placing an RRSP trade or making a major contribution, consider this checklist: have I checked my current RRSP deduction limit? Have I accounted for contributions already made this year? Am I leaving enough room to avoid an excess contribution? Does the investment qualify for my RRSP? How does this investment affect my overall asset allocation? Am I duplicating an exposure I already have elsewhere? What are the fees and risks? If I may need the money soon, is an RRSP withdrawal actually the right strategy? Have I recorded the transaction in my investment tracker?",
+      "## Turning RRSP Information Into a System",
+      "Avoiding RRSP mistakes becomes much easier when your information is organized. Instead of checking one brokerage for an RRSP, another for a TFSA, and another for a non-registered account, you can organize your investment information in one place — brokerage and account, investment and quantity, purchase information, portfolio allocation, dividends and investment income, performance, and overall portfolio value. The objective is simple: stop guessing what you own and start tracking the full picture. Our [RRSP Tracker](/trackers) handles contribution room, deduction limits, and live pricing in one sheet, and if your investments are spread across more than one brokerage, the [TFSA Multi-Brokerage Tracker](/trackers) brings those accounts into a single consolidated view.",
+      "## Wealthsimple as a Brokerage Example",
+      "Wealthsimple is one Canadian brokerage example that investors may use for registered and non-registered investing. If you use Wealthsimple alongside another brokerage, a consolidated tracker can help you review the complete portfolio rather than evaluating each account separately. As a Canadian DIY investor, I personally use [Wealthsimple](https://wealthsimple.com/invite/R7ENSA) as one of the platforms in my own investing journey.",
+      "### Referral Disclosure",
+      "Some links in this article may be referral links. If you open an account through a MapleSheet referral link, MapleSheet Co. may receive a referral benefit at no additional cost to you. We mention [Wealthsimple](https://wealthsimple.com/invite/R7ENSA) because it's a service I personally use and because it may be useful for Canadian investors to research. This does not mean it's suitable for everyone.",
+      "## MapleSheet Takeaway",
+      "An RRSP can be powerful, but the account itself does not eliminate investing mistakes. The biggest beginner wins are often simple: know your room, track your contributions, understand withdrawal tax, diversify, review the whole portfolio, and keep good records. Once your investments are spread across multiple accounts or brokerages, organization becomes part of the investing process — that's where MapleSheet fits.",
+      "**Stop Guessing. Start Tracking.**",
+      "## Official Sources",
+      "- Canada Revenue Agency — How contributions affect your RRSP deduction limit\n- Canada Revenue Agency — Where can you find your RRSP deduction limit\n- Canada Revenue Agency — Excess contributions\n- Canada Revenue Agency — Making withdrawals\n- Canada Revenue Agency — Tax rates on withdrawals\n- Canada Revenue Agency — Home Buyers' Plan & Lifelong Learning Plan withdrawals",
+      "---",
+      "*This article is for educational purposes only and is not investment, tax, legal or financial advice. RRSP rules and tax outcomes can depend on individual circumstances. Always verify current information with the Canada Revenue Agency, your financial institution, and a qualified professional where appropriate.*",
+    ],
+  },
+  {
+    type: "article",
+    title: "What Can You Hold Inside an RRSP?",
+    slug: "what-can-you-hold-inside-an-rrsp",
+    image: "/resources/nov232026-what-can-you-hold-inside-an-rrsp.png",
+    date: "2026-11-23",
+    summary: "Stocks, ETFs, GICs, bonds and mutual funds can all play a role in a self-directed RRSP — but investors need to understand Canada's qualified-investment rules before buying.",
+    body: [
+      "An RRSP is more than a place to make a tax-deductible contribution. For a self-directed investor, it can also be an investment account where you choose and manage a portfolio for long-term goals. But one question often gets overlooked: what can you actually hold inside an RRSP? The answer is broader than many beginners expect. Common qualified investments include cash and deposits, GICs, mutual funds, and most securities listed on a designated stock exchange — that can include shares, exchange-traded funds (ETFs), certain bonds, and other listed securities. At the same time, \"I can buy it through my brokerage\" does not automatically mean \"it is a qualified RRSP investment.\" The CRA rules distinguish between qualified investments, non-qualified investments, and prohibited investments, and your financial institution may also impose its own restrictions.",
+      "## The Basic Idea: Your RRSP Is the Account, Not the Investment",
+      "Think of the RRSP as the tax-advantaged account wrapper — the investments sit inside that account. A self-directed RRSP can allow you to choose investments rather than leaving the account entirely in a savings deposit or a pre-selected fund. CRA says common qualified investments include money, GICs, Canada and provincial savings bonds, mutual funds, and most securities listed on a designated stock exchange.",
+      "## Stocks",
+      "Many investors use an RRSP to hold publicly traded shares for long-term investing. CRA's qualified-investment rules generally include most securities listed on a designated stock exchange, which can include shares of corporations, subject to the detailed rules. The key point is that the security must meet the applicable qualified-investment requirements — a ticker being visible on a brokerage platform is not, by itself, a complete tax determination.",
+      "## ETFs",
+      "ETFs are a common building block for Canadian DIY portfolios. CRA's technical guidance specifically identifies units of exchange-traded funds listed on designated stock exchanges as examples of qualified investments. For a beginner, this makes an RRSP capable of holding diversified market exposure through ETFs rather than requiring the investor to select individual companies.",
+      "## GICs and Cash",
+      "RRSPs can hold cash and deposits, including guaranteed investment certificates (GICs). These can be useful for investors who want part of the account in lower-volatility assets or who are matching a portion of their portfolio to a known future need. A GIC inside an RRSP is still an RRSP investment — the account's tax treatment and the investment's own features are separate concepts.",
+      "## Bonds and Other Debt Securities",
+      "Qualified investments can include certain debt obligations. CRA identifies government and corporate debt meeting the applicable requirements, including debt obligations of corporations listed on designated stock exchanges and certain investment-grade debt obligations. The important lesson is that \"bonds\" are not one single tax category — the specific security and the rules applying to it matter.",
+      "## Mutual Funds and Segregated Funds",
+      "Mutual funds are another common qualified investment. CRA's folio also identifies segregated funds within the qualified-investment framework. Investors should still evaluate the fund itself — including fees, holdings, risk, liquidity, and investment objective — rather than assuming that being RRSP-eligible makes an investment appropriate.",
+      "## Real Estate Exposure: REITs",
+      "Some investors are surprised to learn that units of real estate investment trusts (REITs) can qualify when the applicable listing and other requirements are met. This can provide real-estate exposure without directly owning a rental property inside the RRSP. Again, the focus should be on the actual security and whether it meets the qualified-investment rules.",
+      "## What About Foreign Investments?",
+      "An RRSP can hold many foreign securities when they meet the applicable qualified-investment rules. The qualified-investment framework is not simply a rule that says \"Canadian investments only.\" For DIY investors, this means a self-directed RRSP may be used for a diversified portfolio that includes Canadian and international exposure — the investment must still qualify under the rules and be supported by the plan provider.",
+      "## Qualified Does Not Mean \"Good Investment\"",
+      "This distinction is critical. A security can be **eligible** to be held inside an RRSP without being a good investment for you. Qualified-investment status answers a tax/plan eligibility question — it does not answer questions such as: is the investment diversified? Are the fees reasonable? Does it fit your risk tolerance? Does it match your time horizon? Does it belong in an RRSP rather than a TFSA or non-registered account? The RRSP wrapper does not remove investment risk.",
+      "*MapleSheet principle: account eligibility is only the first filter — portfolio fit comes next.*",
+      "## Non-Qualified vs. Prohibited Investments",
+      "These terms are easy to confuse. A **non-qualified investment** is property that does not meet the qualified-investment rules — CRA states that a special tax equal to 50% of the fair market value can apply when an RRSP acquires a non-qualified investment or an existing investment becomes non-qualified. A **prohibited investment** is different — it generally involves a close connection between the investment and the RRSP holder, such as certain interests in a corporation, trust, or partnership in which the holder has a significant interest, and CRA's rules can impose a 50% tax on the fair market value, along with other consequences. For a DIY investor, the practical rule is simple: do not assume that every security available through your brokerage is automatically acceptable for your RRSP. When in doubt, confirm eligibility with the plan provider and review CRA guidance.",
+      "## Your Brokerage May Have Additional Restrictions",
+      "CRA notes that financial institutions may have internal policies that further limit which qualified investments their registered plans will accept. That means two investors could encounter different platform-level choices even though the underlying tax rules are the same. Before purchasing an unusual security, check the brokerage's RRSP eligibility rules and, where necessary, confirm the security's status.",
+      "## A Simple RRSP Portfolio Example",
+      "Imagine a Canadian investor has a self-directed RRSP with $50,000. One possible educational example could be: $5,000 in cash or a short-term deposit, $10,000 in GICs, $25,000 in diversified ETFs, and $10,000 in individual listed Canadian and/or international securities. This is **not** a recommended allocation — it simply illustrates how several different investment types can coexist inside an RRSP when they meet the applicable qualified-investment rules. The investor's real allocation should be based on goals, time horizon, risk tolerance, diversification, and overall household portfolio.",
+      "## Why Tracking Matters More When You Have Multiple Brokerages",
+      "Once you have an RRSP at one brokerage and other accounts elsewhere, it becomes harder to see the complete picture. You may know the balance of each account, but still struggle to answer: what investments do I own across all institutions? How much is invested in each asset or ETF? How much cash is sitting idle? What percentage of my portfolio is in each category? How is my overall portfolio performing? How much income or dividends are being generated? This is where a portfolio-tracking system can add value — the brokerage remains the place where transactions occur, and the tracker becomes your consolidated view of what you own.",
+      "## MapleSheet Solution: Track Your Investments Across Brokerages",
+      "If you have an RRSP at Wealthsimple, another RRSP at a second brokerage, and additional TFSA or non-registered investments elsewhere, the information can quickly become fragmented. The [TFSA Multi-Brokerage Tracker](/trackers) is designed to help bring those holdings into one organized view — account and brokerage, holdings and quantities, purchase information, portfolio allocation, dividends and investment income, performance information, and combined portfolio visibility. The goal is not to replace your brokerage — it's to help you understand the bigger picture across the accounts you already have. If your investments are concentrated in a single RRSP, our dedicated [RRSP Tracker](/trackers) handles contribution room, deduction limits, and live pricing in one sheet.",
+      "## Wealthsimple as a Brokerage Example",
+      "Wealthsimple is one example of a Canadian brokerage where investors can access registered investment accounts. As a Canadian DIY investor, I personally use [Wealthsimple](https://wealthsimple.com/invite/R7ENSA). If you use Wealthsimple alongside another brokerage, keeping a consolidated tracking system can make it easier to review your overall portfolio rather than looking at each account in isolation.",
+      "### Referral Disclosure",
+      "Some links in this article may be referral links. If you open an account through a MapleSheet referral link, MapleSheet Co. may receive a referral benefit at no additional cost to you. We mention [Wealthsimple](https://wealthsimple.com/invite/R7ENSA) because it's a service I personally use and because it may be useful for Canadian investors to research. This does not mean it's suitable for everyone.",
+      "## MapleSheet Takeaway",
+      "An RRSP can hold much more than a savings deposit. For many self-directed investors, it can contain a mix of stocks, ETFs, GICs, bonds, mutual funds, cash, and other investments that meet the qualified-investment rules. The important distinction is this: \"Can I hold it in an RRSP?\" is an eligibility question. \"Should I hold it in my RRSP?\" is an investing question. Those are not the same thing. Once your portfolio spans multiple accounts or brokerages, the next challenge is organization — knowing what you own, and seeing it in one place, can make portfolio reviews far more useful.",
+      "**Stop Guessing. Start Tracking.**",
+      "## Official Sources",
+      "- Canada Revenue Agency — Self-directed RRSPs\n- Canada Revenue Agency — Income Tax Folio S3-F10-C1: Qualified Investments\n- Canada Revenue Agency — Tax payable on non-qualified investments\n- Canada Revenue Agency — Tax payable on prohibited investments",
+      "---",
+      "*This article is for educational purposes only and is not investment, tax, legal or financial advice. RRSP rules can be detailed, and the eligibility of a specific investment may depend on the applicable legislation, the security, and the plan provider. Always verify the current rules with the Canada Revenue Agency and your financial institution before making a transaction.*",
+    ],
+  },
+  {
+    type: "article",
+    title: "How to Track Your TFSA When You Have Multiple Brokerages",
+    slug: "track-tfsa-multiple-brokerages",
+    image: "/resources/nov92026-track-tfsa-multiple-brokerages.png",
+    date: "2026-11-09",
+    summary: "Have a TFSA at multiple brokerages? Here's how to track contributions, holdings, dividends, withdrawals and performance in one consolidated view instead of guessing across platforms.",
+    body: [
+      "Having more than one brokerage can give Canadian DIY investors more choices — but it can also make a TFSA much harder to track. You might have a TFSA at your bank, another TFSA at Wealthsimple, and perhaps a third account at another brokerage. Each institution gives you its own statements, transaction history, and portfolio view. The problem is that your TFSA contribution room does not belong to each brokerage separately — your available room applies across all of your TFSAs combined. CRA specifically says that investors with multiple TFSAs should consider all of their financial statements when determining their complete TFSA information. That makes organization more important as your portfolio becomes more complex.",
+      "## The Real Problem: Your Money Is Spread Across Different Platforms",
+      "Imagine you have a TFSA at your primary bank, a TFSA at Wealthsimple, a TFSA at another brokerage, monthly automatic contributions, dividend or distribution payments, different ETFs or stocks, occasional withdrawals, and transfers between institutions. Each platform may show you only its own slice of the picture. You may know what is happening inside each account, but still struggle to answer a simple question: **\"What do I actually own across all of my TFSAs?\"**",
+      "## Multiple Brokerages Don't Mean Multiple TFSA Contribution Limits",
+      "This is the rule that should sit at the centre of your tracking system. Your available TFSA contribution room applies to all of your TFSAs collectively. For 2026, the annual TFSA dollar limit is $7,000, although your personal available room can be higher because of unused room carried forward and other factors. Opening another TFSA at another institution does not create another contribution limit — your tracking system should treat your accounts as separate accounts but your contribution room as one combined number.",
+      "## What Should You Track?",
+      "A useful TFSA tracking system should capture more than the account balance: the institution, account name and TFSA type (so you know where each asset is held); the date and amount of every contribution (to track combined TFSA activity); the date and amount of every withdrawal (to understand future room); the ticker/security and shares you hold (to know what you own); your purchase price or cost basis where relevant (to understand your investment position); dividend payments and reinvestments (to track portfolio income); and market value, gain/loss, and return (to measure portfolio progress).",
+      "## Track the Account — and the Portfolio",
+      "There are really two layers to multiple-brokerage tracking. Layer 1 is account tracking: which brokerage holds the TFSA, and what contributions and withdrawals occurred there? Layer 2 is investment tracking: what securities are inside the account, how many shares do you own, what is the current value, and what income or distributions have you received? Keeping both layers together gives you a much clearer picture than checking account balances one brokerage at a time.",
+      "## Example: One Investor, Three TFSAs",
+      "Picture an investor with a bank TFSA holding $12,000 in cash and GICs, a Wealthsimple TFSA holding a $28,500 ETF portfolio, and a TFSA at a third brokerage holding a $14,500 dividend portfolio. That investor now has a consolidated view of $55,000, while still being able to see which institution holds each portion.",
+      "## Why Wealthsimple Can Be Part of the Tracking Challenge",
+      "Wealthsimple is one example of a Canadian brokerage where investors may hold self-directed investments. If you also use a bank or another brokerage, your portfolio information is distributed across multiple platforms. The issue isn't that any one platform is necessarily difficult to use — the issue is that each platform naturally shows its own account. A multi-brokerage investor needs a way to see the accounts together, which becomes increasingly useful when you're tracking a portfolio for the long term and want to compare your total holdings, contributions, and performance rather than looking at isolated account balances.",
+      "## How TFSA Withdrawals Affect Your Tracking",
+      "Withdrawals deserve special attention. A TFSA withdrawal generally does not create new contribution room immediately — the withdrawn amount is generally added back as contribution room on January 1 of the following calendar year. For example, if you withdraw $5,000 from Wealthsimple in November 2026, you should not assume that you can immediately contribute that $5,000 to your bank TFSA unless you already have enough unused room. Your tracker should therefore distinguish between contributions made this year, withdrawals made this year, unused room from previous years, and new room created for the following year.",
+      "## Don't Rely on Memory",
+      "The more accounts you have, the easier it is to forget a contribution. A $500 automatic contribution here, a $1,000 deposit there, and a $2,000 lump sum somewhere else can become difficult to reconstruct months later. CRA currently advises taxpayers to use their own financial records when calculating current TFSA contribution room — CRA account information is updated annually with prior-year transaction information, so current-year activity may not yet appear there. Your CRA account is an important reference, but your own transaction records still matter.",
+      "## Direct Transfers Between TFSAs",
+      "If you decide to move a TFSA from one institution to another, don't automatically withdraw the money and redeposit it yourself. CRA says to ask the receiving financial institution to arrange a **direct TFSA transfer** — a direct transfer does not affect your contribution room. This is particularly important when consolidating accounts or moving investments to a brokerage such as Wealthsimple. Your tracking system should record the transfer so you can distinguish it from a new contribution.",
+      "## A Practical Monthly Tracking Routine",
+      "A simple monthly routine can keep a multi-brokerage portfolio organized: record every TFSA contribution by date, institution, and amount; record every withdrawal separately; update holdings and share quantities; record dividends and distributions; update market values and portfolio performance; reconcile your tracker against brokerage statements; and review your combined TFSA contribution activity before making a new contribution.",
+      "## How MapleSheet Fits Into the Problem",
+      "This is exactly the type of situation where a multi-brokerage investment tracker can be useful. Instead of keeping separate notes for every institution, a consolidated tracker can help you organize the information in one place. The [TFSA Multi-Brokerage Tracker](/trackers) is designed for investors who hold investments across multiple brokerages and want one organized view of their portfolio — tracking accounts, holdings, transactions, contributions, dividends, portfolio value, and performance. The purpose isn't to replace your brokerage statements or CRA records — those remain important source records. The purpose is to make your overall investment picture easier to understand and manage.",
+      "A consolidated view can tell you how much you have across all brokerages, how much of your portfolio is in each account, which ETFs or stocks you own across platforms, how much you've contributed over time, how much dividend income your portfolio has generated, which account holds particular investments, and how your overall portfolio is performing. In the earlier example, that dashboard would show a $55,000 total TFSA value ($12,000 bank, $28,500 Wealthsimple, $14,500 at the third brokerage), $6,500 in contributions this year, and $1,240 in dividends and distributions — all in one place.",
+      "## Common Tracking Mistakes",
+      "Tracking each brokerage separately without maintaining a combined view. Counting investment growth as a TFSA contribution. Forgetting automatic contributions. Re-contributing a withdrawal without checking available room. Treating a transfer between TFSAs as a new investment contribution when it was actually a direct transfer. Relying only on the current balance instead of transaction history. Not recording dividends or distributions. Having multiple spreadsheets that don't agree with one another.",
+      "### Referral Disclosure",
+      "Some links in this article may be referral links. If you open an account through a MapleSheet referral link, MapleSheet Co. may receive a referral benefit at no additional cost to you. We mention [Wealthsimple](https://wealthsimple.com/invite/R7ENSA) because it's a service I personally use and because it may be useful for Canadian investors to research. This does not mean it's suitable for everyone — readers should compare available platforms, fees, features, and services for their own circumstances.",
+      "## MapleSheet Takeaway",
+      "Multiple brokerages can be useful — they can give you access to different products, platforms, and investment choices. But more brokerages also create more information to organize. The more places your investments live, the more important it becomes to see the whole picture. Your bank may show your bank TFSA, Wealthsimple may show your Wealthsimple TFSA, and another brokerage may show another account — a consolidated MapleSheet tracker helps you bring those pieces together so you can understand your overall investment position.",
+      "**Stop Guessing. Start Tracking.**",
+      "## Official Sources",
+      "- Canada Revenue Agency — Calculate your TFSA contribution room\n- Canada Revenue Agency — Before you contribute to a TFSA\n- Canada Revenue Agency — Withdrawing from a TFSA\n- Canada Revenue Agency — Requesting a TFSA transfer",
+      "---",
+      "*This article is for educational purposes only and is not personalized financial, investment, or tax advice. TFSA rules and CRA administrative information can change. Verify your current contribution room and transaction records before contributing, especially when using multiple TFSAs or brokerages.*",
+    ],
+  },
+  {
+    type: "article",
+    title: "Can You Have Multiple TFSAs at Different Institutions?",
+    slug: "multiple-tfsas-different-institutions",
+    image: "/resources/nov22026-multiple-tfsas-different-institutions.png",
+    date: "2026-11-02",
+    summary: "Yes — you can have multiple TFSAs in Canada. Here's how contribution room works across all your accounts, how transfers and withdrawals affect it, and how to avoid an accidental over-contribution.",
+    body: [
+      "Can you have more than one Tax-Free Savings Account (TFSA) in Canada? Yes. You can have multiple TFSAs, including TFSAs at different financial institutions. The important part is understanding that your TFSA contribution room is not multiplied by having multiple accounts — your available contribution room applies to all of your TFSAs combined. Multiple TFSAs can actually be useful: one account might hold a long-term ETF portfolio, another might hold GICs, and another might be used for a different savings goal. The problem begins when investors treat each account as if it has its own separate contribution limit.",
+      "## Yes — You Can Have Multiple TFSAs",
+      "There is no rule requiring you to keep all of your TFSA assets in one account or at one institution. You may have more than one TFSA at the same time, including accounts with different banks or brokerages — for example, a bank TFSA for cash savings or GICs, a brokerage TFSA for ETFs and other qualified investments, and a TFSA at another brokerage for a separate investment strategy or portfolio. The important distinction is that these are three accounts but **one combined TFSA contribution-room limit**.",
+      "## Why Would Someone Have Multiple TFSAs?",
+      "There are several practical reasons an investor may choose to use more than one TFSA: different institutions (preferring different banks or brokerages for rates, investment choices, fees, or platform features), different purposes (separating medium-term savings from a long-term investment portfolio), different investments (one TFSA holding GICs while another holds ETFs or other qualified securities), different platforms (a bank TFSA alongside a self-directed brokerage account), and organization (separate accounts making different strategies easier to identify, provided you track the combined totals).",
+      "## The Rule That Matters Most: One Combined Contribution Limit",
+      "Imagine your available TFSA contribution room for 2026 is $10,000, and you have two TFSAs: $6,000 contributed to a TFSA at Bank A (leaving $4,000 remaining room) and $4,000 contributed to a TFSA at Brokerage B (leaving $0 remaining room). You have used the full $10,000. Opening another TFSA does not create another $10,000 of room — if you then contribute another $2,000 to a third TFSA without additional available room, that amount can become an excess contribution.",
+      "*Multiple TFSAs require better record keeping — not separate contribution limits.*",
+      "## Your TFSA Room Is Personal — and Shared Across Your Accounts",
+      "Your TFSA contribution room belongs to **you**, not to a particular bank or brokerage. The CRA calculation includes your current-year dollar limit, unused room carried forward from previous years, qualifying withdrawals from earlier years, and contributions already made during the current year. For 2026, the annual TFSA dollar limit is $7,000 — your actual available room may be higher depending on your personal history. CRA recommends that taxpayers consider their own records and information from their financial institutions when managing their contribution room, particularly when current-year transactions have occurred.",
+      "## Investment Growth Does Not Use Contribution Room",
+      "Suppose you contribute $7,000 to a TFSA and the investments inside it grow to $9,000 — the $2,000 increase in value does not count as a new TFSA contribution. Likewise, if the account falls from $7,000 to $5,000, the $2,000 investment loss does not create new contribution room. Contribution room is based on contributions and withdrawals under the TFSA rules, not on the market value of the account.",
+      "## What Happens When You Withdraw From One TFSA?",
+      "If you withdraw money from a TFSA during the year, the amount withdrawn generally does **not** become available contribution room immediately — it's generally added back as new contribution room on January 1 of the following calendar year. For example, suppose you withdraw $8,000 from TFSA A in November 2026 — that $8,000 generally becomes available as new room on January 1, 2027, not immediately in November 2026. If you put that $8,000 into TFSA B during 2026 without enough unused room, you could create an over-contribution.",
+      "## Moving Money Between TFSAs: Use a Direct Transfer",
+      "Suppose you have $25,000 in a TFSA at Bank A and decide another institution offers a better investment platform. **Correct approach:** ask the receiving institution to arrange a direct TFSA-to-TFSA transfer — a direct transfer generally does not affect your contribution room. **Risky approach:** withdraw the money yourself, then deposit it into the new TFSA. The second transaction is treated as a new contribution — if you don't have enough available room, you could create an excess contribution and potentially owe the 1% monthly tax on the excess. This is especially relevant when moving a TFSA to or from a self-directed brokerage such as Wealthsimple. If you use Wealthsimple, follow its current transfer process rather than assuming a withdrawal-and-redeposit is equivalent to a direct transfer.",
+      "## Multiple TFSAs Make Tracking More Important",
+      "This is where the MapleSheet philosophy becomes especially relevant. If you have one TFSA and make one contribution, tracking is relatively simple. Now imagine you have a bank TFSA, a self-directed brokerage TFSA, automatic monthly contributions, lump-sum contributions, withdrawals, and transfers — your total contribution activity can become surprisingly difficult to reconstruct from memory. The solution isn't necessarily to have only one TFSA. The solution is to track all of your TFSAs as one combined contribution picture.",
+      "## A Simple Multiple-TFSA Tracking System",
+      "A transaction-level record can help you see the combined picture instead of treating each institution as a separate contribution allowance — for example: $3,000 contributed to Bank A on Jan. 10 (running total $3,000), $2,000 contributed to Wealthsimple on Feb. 5 (running total $5,000), $1,500 contributed to Bank A on Jun. 15 (running total $6,500), and $500 contributed to Brokerage C on Sep. 20 (running total $7,000). For a multi-brokerage investor, this is exactly the problem a dedicated tracker can solve: one place to see accounts, contributions, holdings, and portfolio information across institutions.",
+      "## Why a Multi-Brokerage Tracker Can Help",
+      "Once you have TFSAs at multiple institutions, the challenge becomes more than knowing your total balance — you need to know which account holds what, where contributions were made, and how your combined portfolio is performing. For example, you might have a TFSA at your bank and another TFSA at Wealthsimple. Instead of opening several apps and spreadsheets every time you want to understand your portfolio, a multi-brokerage tracker can give you a consolidated view. The [TFSA Multi-Brokerage Tracker](/trackers) is built for investors who hold investments across multiple brokerages and want their portfolio information brought together in one organized place — tracking accounts, holdings, transactions, contributions, dividends, and performance across up to 8 brokerages in a single sheet. MapleSheet isn't about telling you what to buy — it's about helping you understand where your money is, what you own, what you've contributed, and how your investments are performing.",
+      "## Wealthsimple as a Brokerage Example",
+      "As a Canadian DIY investor, I personally use [Wealthsimple](https://wealthsimple.com/invite/R7ENSA) as one of the platforms in my own investing. If you use more than one brokerage, including Wealthsimple, a multi-brokerage tracker can help bring those investments together in one place.",
+      "### Referral Disclosure",
+      "Some links in this article may be referral links. If you open an account through a MapleSheet referral link, MapleSheet Co. may receive a referral benefit at no additional cost to you. We mention [Wealthsimple](https://wealthsimple.com/invite/R7ENSA) because it's a service I personally use and because it may be useful for Canadian investors to research. This does not mean it's suitable for everyone.",
+      "## Should You Have Multiple TFSAs?",
+      "There is no universal rule that says one TFSA is better than several. The right setup depends on your goals, investment preferences, fees, available products, and how well you can keep track of your activity. One TFSA may be simpler if you want minimal administration and straightforward tracking. Multiple TFSAs may be useful if different institutions provide different products, rates, or investment tools. And multiple TFSAs require discipline, because every contribution must be counted toward the same personal contribution room.",
+      "## The 7 Rules to Remember",
+      "1. Yes, you can have multiple TFSAs at different financial institutions. 2. Your TFSA contribution room applies to all of your TFSAs combined. 3. The 2026 annual TFSA dollar limit is $7,000, but your personal available room may be different. 4. Investment gains do not create new contribution room, and investment losses do not create room either. 5. A withdrawal generally comes back as contribution room on January 1 of the following calendar year. 6. Use a direct institutional transfer when moving money from one TFSA to another. 7. Keep your own records across every TFSA, because current-year activity may not yet be reflected in CRA's records.",
+      "## Common Mistakes to Avoid",
+      "Assuming every TFSA has its own $7,000 contribution limit. Forgetting contributions made at another bank or brokerage. Making automatic contributions without including them in your overall calculation. Re-contributing a withdrawal during the same calendar year without enough available room. Withdrawing money and depositing it into a new TFSA instead of arranging a direct transfer. Relying only on an outdated CRA balance instead of checking current financial institution records. Ignoring small contributions because they \"don't seem like much\" — small contributions across several accounts can add up quickly.",
+      "## MapleSheet Takeaway",
+      "Multiple TFSAs can be perfectly legitimate and useful. The danger isn't the number of accounts — it's losing track of the combined contribution activity. Think of your TFSAs as multiple containers connected to one contribution-room limit. You may have different institutions, different investments, and different goals, but the CRA still looks at your TFSA activity collectively. That's why good tracking matters — MapleSheet helps DIY investors organize their investment information across accounts so they can see the bigger picture.",
+      "**Stop Guessing. Start Tracking.**",
+      "## Official Sources",
+      "- Canada Revenue Agency — Before you contribute to a TFSA\n- Canada Revenue Agency — Calculate your TFSA contribution room\n- Canada Revenue Agency — How to contribute to a TFSA\n- Canada Revenue Agency — Requesting a TFSA transfer",
+      "---",
+      "*This article is for educational purposes only and is not personalized financial, investment, or tax advice. TFSA rules and CRA administrative information can change. Always verify your available contribution room and transaction history before making a contribution, especially when you have multiple TFSAs.*",
+    ],
+  },
+  {
+    type: "article",
     title: "TFSA Investment Mistakes Canadian Beginners Should Avoid",
     slug: "tfsa-investment-mistakes-beginners",
-    image: "/resources/oct52026-tfsa-investment-mistakes-beginners.jpg",
+    image: "/resources/oct52026-tfsa-investment-mistakes-beginners.png",
     date: "2026-10-05",
     summary: "A TFSA doesn't make you a successful investor by itself. Here are the mistakes that quietly cost beginners money — from treating it like cash storage to re-contributing a withdrawal too soon.",
     body: [
@@ -295,32 +949,66 @@ export const RESOURCES = [
     type: "article",
     title: "What Happens When You Withdraw Money From Your TFSA?",
     slug: "tfsa-withdrawal-rules-explained",
-    image: "/resources/oct122026-tfsa-withdrawal-rules-explained.jpg",
+    image: "/resources/oct122026-tfsa-withdrawal-rules-explained.png",
     date: "2026-10-12",
     summary: "Withdrawals are generally tax-free, but the contribution room doesn't come back until next January — the rule behind one of the most common, and most expensive, TFSA mistakes.",
     body: [
-      "One of the TFSA's biggest advantages is flexibility — you can invest, let it grow, and withdraw when you need to, generally without owing tax on the amount you take out. But there's one rule that trips up more Canadian investors than almost any other: **a TFSA withdrawal does not immediately give you that contribution room back.**",
-      "## Withdrawals are generally tax-free — of anything",
-      "Whether the money you're withdrawing represents your original contributions, investment gains, dividends, or interest, it's generally all treated the same way: not taxable income. That applies whether you withdraw $500 or your entire account.",
-      "## The rule that actually matters: room returns next January 1",
-      "The amount you withdraw is generally added back to your available contribution room on **January 1 of the following calendar year** — not the day you withdraw it. Withdraw $10,000 in October 2026, and that $10,000 of new room doesn't arrive until January 1, 2027. Assume otherwise, and you can easily over-contribute the same year.",
-      "## The classic mistake",
-      "Imagine someone with $0 available room who withdraws $8,000 in June, then decides two months later to put that same $8,000 back, reasoning \"it's my money, I already contributed it once.\" That's not how the room works — the June withdrawal doesn't create new room until the following January, so the August deposit is a brand-new contribution, creating an $8,000 excess subject to the 1% monthly tax.",
-      "## Growth counts in your favour — losses don't work backwards",
-      "If a $30,000 contribution grows to $60,000 and you withdraw all of it, the **full $60,000** — including the growth — generally becomes new contribution room the following year. Your investment gains don't shrink the room you get back. But it doesn't run in reverse: if that same $30,000 fell to $20,000 before you withdrew it, you only get $20,000 of new room back, and the $10,000 loss is simply gone, not compensated for elsewhere.",
-      "## Multiple TFSAs share one room, not separate ones",
-      "Withdrawing $10,000 from a TFSA at Bank A doesn't give you a separate \"Bank A room\" — your contribution room applies across every TFSA you hold, combined. Investors with more than one account need to track total contributions and withdrawals across all of them, not just the one they're actively using.",
-      "## Don't confuse a withdrawal with a transfer",
-      "Moving a TFSA from one institution to another by withdrawing the money yourself and redepositing it at the new institution is treated as a withdrawal plus a brand-new contribution — which can create an excess if you don't have enough room. A proper **direct TFSA-to-TFSA transfer**, arranged through the financial institutions, doesn't use any contribution room at all.",
-      "## TFSA withdrawal vs. RRSP withdrawal",
-      "A TFSA withdrawal is generally tax-free, has no tax withheld at source, and generally restores contribution room the following year. An RRSP withdrawal is generally taxable, has tax withheld immediately, and never restores contribution room — this difference is exactly why TFSA assets tend to be especially valuable to draw on in retirement, particularly for anyone concerned about income-tested benefits like OAS or GIS.",
-      "## The opportunity cost of withdrawing",
-      "A withdrawal isn't taxed, but it isn't free either — money taken out stops compounding. $20,000 withdrawn today that could have grown at a hypothetical 7% for 20 years represents roughly $77,000 of forgone future value. That's not a reason to never withdraw; it's a reason to be deliberate about when you do.",
-      "## Five rules worth memorizing",
-      "TFSA withdrawals are generally tax-free. A withdrawal does not immediately create new contribution room. The withdrawn amount is generally added back on January 1 of the following year. Don't re-contribute a withdrawal in the same year unless you already have enough unused room. And investment losses never create contribution room, regardless of what you withdraw.",
+      "One of the TFSA's biggest advantages is flexibility — you can invest, let it grow, and withdraw when you need to, generally without owing tax on the amount you take out. But there's one rule that trips up more Canadian investors than almost any other: **a TFSA withdrawal does not immediately give you that contribution room back.** This guide walks through exactly what happens when you withdraw from your TFSA, with real numbers, so the rule actually sticks.",
+      "## Are TFSA Withdrawals Taxable?",
+      "Generally, no. Whether the money you're withdrawing represents your original contributions, investment gains, dividends, interest, or capital appreciation, it's generally all treated the same way: not taxable income. Suppose you contributed $20,000 to your TFSA over several years, your investments grew the account to $35,000, and you withdraw $10,000 — you generally don't report that $10,000 as taxable income simply because you took money out. That's one of the TFSA's biggest advantages. But the tax-free treatment doesn't mean the contribution-room rules stop mattering.",
+      "## The Rule That Actually Matters: Room Returns the Following January 1",
+      "When you withdraw money from a TFSA, the amount withdrawn is generally added back to your available contribution room on **January 1 of the following calendar year** — not the day you withdraw it. Withdraw $10,000 in October 2026, and that $10,000 of new room doesn't arrive until January 1, 2027. It does **not** become available room immediately. Assume otherwise, and you can easily over-contribute the same year.",
+      "## Why This Catches People Off Guard",
+      "Imagine you start 2026 with $7,000 of available TFSA room. You contribute $7,000, leaving $0 remaining. Later in the year, you withdraw that same $7,000. You might think \"I withdrew $7,000, so now I have $7,000 of room\" — you don't. Your available room for the rest of 2026 remains $0. The $7,000 withdrawal is generally added back on January 1, 2027. This distinction can prevent a costly mistake.",
+      "## The Classic TFSA Withdrawal Mistake",
+      "Let's say Sarah has $0 available contribution room in 2026 and $30,000 invested in her TFSA. In June, she withdraws $10,000. In August, her plans change and she decides to put that $10,000 back, reasoning \"it's my money, and I already contributed it once.\" Unfortunately, that's not how the contribution rules work — because Sarah has no unused room, the $10,000 August deposit is a brand-new contribution. Her June withdrawal doesn't create new room until January 1, 2027, so she may now have an excess TFSA amount.",
+      "## Can You Re-Contribute a Withdrawal in the Same Year?",
+      "Yes — **if** you already have enough unused room. Suppose you start 2026 with $15,000 of available room, contribute $5,000 (leaving $10,000 remaining), then later withdraw $5,000. Your current-year contribution room is still $10,000, so if you re-contribute that $5,000 during 2026, you're still within your available room — that's allowed. But if you had only $0 available room before the withdrawal, you couldn't use that withdrawal to create room for a new contribution the same year. CRA specifically advises against re-contributing all or part of a withdrawal during the same calendar year unless you know you have enough unused room.",
+      "## A Realistic 2026 Example",
+      "Using the $7,000 TFSA dollar limit for 2026, imagine Taylor starts the year with $7,000 of available room. On January 10, Taylor contributes $4,000, leaving $3,000 of remaining room. On February 10, Taylor withdraws $4,000 — but the current-year room stays at $3,000, because the withdrawal doesn't increase it. In October, Taylor wants to put $3,500 back into the TFSA but only has $3,000 of available room. Contributing $3,500 would create a **$500 excess contribution**. The $4,000 withdrawal only becomes new room in 2027. This is why withdrawal tracking matters.",
+      "## What Happens to the Withdrawn Amount Next Year",
+      "The withdrawal gets added back to your available contribution room on January 1 of the following year, **in addition to** the new annual dollar limit. Suppose you withdraw $12,000 in 2026. Assuming the withdrawal qualifies for the normal room calculation, you generally receive $12,000 of additional contribution room in 2027 — on top of the 2027 annual dollar limit. If that limit were $7,000, your new room from those two components alone would be $19,000, plus any unused room carried forward. Always verify the actual annual dollar limit for future years when planning contributions.",
+      "## What If You Withdraw Your Entire TFSA?",
+      "Say your TFSA is worth $75,000 and you withdraw the entire amount in 2026. You don't generally get $75,000 of new contribution room immediately — instead, that $75,000 is generally added to your available room on January 1, 2027, which can create a significant amount of contribution room. If you had $0 unused room before the withdrawal, you could potentially have $75,000 of new room at the start of 2027, plus the new annual dollar limit — one reason TFSA withdrawals can provide considerable flexibility over a lifetime.",
+      "## What Happens to Investment Gains When You Withdraw?",
+      "Suppose you contributed $30,000 over several years and your investments performed well, growing your TFSA to $50,000. You withdraw $20,000. That $20,000 withdrawal generally becomes additional contribution room the following year — it doesn't matter that part of it represents investment growth rather than your original contributions. The amount withdrawn is what matters for the room calculation, which is part of what makes successful long-term investing inside a TFSA particularly powerful. The same applies to dividends: if your TFSA generates $2,000 of dividends during the year and you withdraw that $2,000, it's generally tax-free, and the $2,000 is generally added back to your room the following January 1. The TFSA doesn't distinguish between contributions, dividends, interest, and capital gains for this purpose — only the amount withdrawn matters.",
+      "## What If Your TFSA Investment Loses Money?",
+      "This works differently. Suppose you contribute $30,000 and your investments fall, leaving your TFSA worth $20,000. You withdraw the entire $20,000. You generally receive $20,000 of additional contribution room the following year — **not** the original $30,000 you contributed. The $10,000 investment loss does not create additional TFSA contribution room; CRA specifically states that investment losses don't create contribution room. The distinction is simple: a withdrawal can create new room the following year, but an investment loss never does.",
+      "## What If Your TFSA Grows Instead?",
+      "Now the opposite situation. You contribute $30,000, your investments perform well, and your TFSA grows to $60,000. You withdraw the full $60,000. The amount withdrawn — $60,000 — can generally become additional contribution room the following year, because your investment gains don't reduce the amount of room you get back. CRA confirms that growth and earnings in a TFSA don't reduce the contribution room available the following year. This is one of the TFSA's more attractive features: if your investments grow substantially, you can potentially withdraw those gains and later regain contribution room for the full withdrawal amount, growth included.",
+      "## Can You Withdraw Money for Any Reason?",
+      "Generally, yes. There's no requirement that a normal TFSA withdrawal be used for retirement, education, a home purchase, or any other specific purpose. You can generally use the money for an emergency, a vehicle, a home renovation, a vacation, education, a business opportunity, a major purchase, retirement, or unexpected expenses. This flexibility is one of the major differences between a TFSA and an RRSP. However, just because you **can** withdraw doesn't mean you should — every withdrawal potentially interrupts the compounding of your investments.",
+      "## The Opportunity Cost of a TFSA Withdrawal",
+      "This is something investors sometimes overlook. Suppose you have $50,000 invested in your TFSA and you withdraw $20,000. You don't necessarily pay tax on the withdrawal, but that $20,000 is no longer invested — and if that money could have generated investment returns over the next 10 or 20 years, withdrawing it has a real opportunity cost. Imagine $20,000 growing at a hypothetical 7% annual rate for 20 years: it could grow to approximately **$77,394**. That doesn't mean you should never withdraw money — it simply illustrates the potential cost of removing long-term investment capital. The TFSA's flexibility is valuable, but so is the power of compounding.",
+      "## TFSA Withdrawals Can Be Strategic",
+      "A TFSA withdrawal isn't necessarily a bad thing — sometimes it's a smart financial decision. For example, suppose you have $20,000 in a TFSA and $20,000 of high-interest debt. If the interest rate on that debt is significantly higher than your expected long-term investment return, using TFSA funds to pay it down may be worth considering. The same logic can apply to a major life expense that would otherwise require expensive borrowing. A TFSA is designed to provide flexibility — the key is using that flexibility intentionally.",
+      "## Don't Confuse a TFSA Withdrawal With a TFSA Transfer",
+      "This is another area where investors can get into trouble. Suppose you have $50,000 in a TFSA at Brokerage A and want to move it to Brokerage B. You might think \"I'll just withdraw the $50,000 and deposit it into the new TFSA\" — be careful. If you withdraw the money yourself and then contribute it to the new TFSA, that new deposit is generally treated as a **new contribution**, and if you don't have enough contribution room, you could create an over-contribution. Instead, a qualifying TFSA-to-TFSA transfer should generally be completed directly through the financial institutions. CRA specifically warns that withdrawing funds and then contributing them to another TFSA can result in an over-contribution, while a proper direct transfer does not use any contribution room at all. The lesson: moving a TFSA is not the same thing as withdrawing from one — if you're changing institutions, ask about a **direct TFSA transfer**.",
+      "## What If You Have Multiple TFSAs?",
+      "Your contribution room is not calculated separately for each account — you have one overall TFSA limit. Say you have $20,000 in a TFSA at Bank A and $30,000 in a TFSA at Brokerage B, for $50,000 total. If you withdraw $10,000 from Bank A, that withdrawal affects your overall TFSA contribution-room calculation — you don't receive a separate \"Bank A room.\" Similarly, if you withdraw $10,000 from TFSA A and then deposit $10,000 into TFSA B during the same year without $10,000 of unused room available, that second deposit can be treated as a new contribution and potentially create an excess, since the earlier withdrawal doesn't create room until the following calendar year. Withdrawal and contribution are always separate transactions, and investors with more than one account need to maintain their own combined records.",
+      "## Timing Can Make a Difference",
+      "Suppose you withdraw $20,000 on December 30, 2026 — that amount is generally added to your available contribution room on January 1, 2027, only a couple of days later. Compare that with a withdrawal made in January 2026, where you might be waiting almost an entire year before the withdrawn amount becomes available as new room. This doesn't mean you should make financial decisions solely to manipulate timing, but it's useful to understand how the calendar-year rule works, particularly if you expect to need the money again within the same year.",
+      "## TFSA Withdrawals and Your Other Benefits",
+      "Another important advantage: TFSA withdrawals are generally not included in income for purposes of federal income-tested benefits and credits. CRA states that TFSA income and withdrawals generally do not affect eligibility for benefits and credits such as Old Age Security (OAS), the Guaranteed Income Supplement (GIS), Employment Insurance (EI), the Canada Child Benefit (CCB), and the GST credit, among others. This can make TFSA withdrawals particularly useful during retirement — someone may be able to use TFSA funds to supplement retirement spending without creating the same taxable-income effect as an RRSP or RRIF withdrawal.",
+      "| Feature | TFSA Withdrawal | RRSP Withdrawal\n| Generally taxable as income? | No | Yes\n| Tax withheld at source? | Generally no | Generally yes\n| Creates new contribution room? | Yes, generally the following year | No\n| Can be used for any purpose? | Generally yes | Generally yes, but taxable\n| Effect on taxable income | Generally none | Generally increases income\n| Main planning concern | Timing of re-contribution | Tax cost of withdrawal",
+      "This difference is one reason TFSA assets can be especially valuable to draw on in retirement.",
+      "## A Withdrawal Doesn't Erase Your Contribution History",
+      "Another common misunderstanding: \"If I withdraw money, I lose my TFSA room forever.\" Not necessarily. Say that over the years you've contributed $50,000, your investments grew the account to $80,000, and you withdraw $30,000. You haven't permanently lost $30,000 of TFSA contribution capacity — instead, that $30,000 can generally become new contribution room the following year. The TFSA does **not** allow you to repeatedly contribute, withdraw, and immediately re-contribute unlimited amounts, though — the room created by a withdrawal always comes back **the following year**, and during the current year you still have to respect your existing available room. A good TFSA strategy includes both investment management and contribution-room management.",
+      "## A Simple TFSA Withdrawal Formula",
+      "For basic planning purposes, think of next year's available room as: unused room from the current year, **plus** the new annual TFSA dollar limit, **plus** withdrawals from the previous year, **minus** contributions already made. Specific transactions, such as qualifying transfers, can affect the exact calculation — CRA's own framework is essentially this formula.",
+      "## Before You Withdraw, Ask Five Questions",
+      "☐ How much am I withdrawing? Record the exact amount.\n☐ Why am I withdrawing it — an emergency, a purchase, debt repayment, an investment opportunity, or retirement spending?\n☐ Do I expect to put the money back this year? If yes, check your available room first.\n☐ When will the withdrawal create new room? Generally, January 1 of the following year.\n☐ Have I recorded the transaction? Keep a personal record — don't rely exclusively on memory.",
+      "## The MapleSheet Way to Track a Withdrawal",
+      "A useful TFSA tracker records every transaction so you can see exactly what happened instead of guessing:",
+      "| Date | Transaction | Amount | Account | Effect on Current Room | Future Room\n| Jan. 10, 2026 | Contribution | $5,000 | TFSA | -$5,000 | —\n| Jun. 15, 2026 | Withdrawal | $3,000 | TFSA | No immediate increase | +$3,000 in 2027\n| Jan. 1, 2027 | Room restored | $3,000 | TFSA | +$3,000 | Available",
+      "This is simple, but it can prevent exactly the kind of mistake Sarah and Taylor ran into above — and it's especially useful if you're running more than one TFSA.",
+      "## Five Rules Worth Memorizing",
+      "If you remember nothing else from this guide, remember these five rules: TFSA withdrawals are generally tax-free. A withdrawal does not immediately create new contribution room. The withdrawn amount is generally added back on January 1 of the following year. Don't re-contribute a withdrawal in the same year unless you already have enough unused room. And investment losses never create contribution room, regardless of what you withdraw.",
       "## MapleSheet Takeaway",
       "Your TFSA gives you real flexibility, but the timing of that flexibility matters. The biggest mistake is assuming \"I withdrew $10,000, so I can put $10,000 back right away\" — that's only true if you already have enough unused room sitting there. Otherwise, the room from that withdrawal isn't available until the following January. Know what you've contributed, know what you've withdrawn, and know when that withdrawn room actually becomes available again. Our [TFSA Tracker](/trackers) keeps your current-year room and next-year's incoming room visible side by side, so a withdrawal never turns into an accidental over-contribution.",
       "**Stop Guessing. Start Tracking.**",
+      "## Official Sources",
+      "- Canada Revenue Agency — Withdrawing from a TFSA\n- Canada Revenue Agency — Calculate your TFSA contribution room\n- Canada Revenue Agency — How to contribute to a TFSA\n- Canada Revenue Agency — Before you contribute to a TFSA\n- Canada Revenue Agency — Requesting a TFSA transfer",
       "---",
       "*This article is for educational purposes only and isn't personalized financial, investment, or tax advice. TFSA rules can change, and individual circumstances can affect the calculation of contribution room — always verify your available room using your own records and current CRA information before making a contribution.*",
     ],
@@ -329,60 +1017,159 @@ export const RESOURCES = [
     type: "article",
     title: "TFSA Over-Contributions: How the 1% Monthly Penalty Works",
     slug: "tfsa-over-contribution-penalty",
-    image: "/resources/oct192026-tfsa-over-contribution-penalty.jpg",
+    image: "/resources/oct192026-tfsa-over-contribution-penalty.png",
     date: "2026-10-19",
     summary: "Even $1 over your limit can trigger a monthly tax — there's no $2,000 grace amount like the RRSP gets. Here's exactly how the penalty is calculated, and how to fix it fast.",
     body: [
-      "The TFSA is one of the most valuable accounts available to Canadian investors — tax-free growth, tax-free withdrawals, no strings attached. But contribute more than your available room allows, and the excess is generally subject to a **1% tax per month** for as long as it remains. Most over-contributions are avoidable once you understand exactly how the rule works.",
-      "## The basic formula",
-      "The tax is 1% of the **highest excess amount for each month**, not the balance at month-end. Over-contribute $1,000 for four months and the simplified math is $1,000 × 1% × 4 = $40. Over-contribute $5,000 for six months, and it's $5,000 × 1% × 6 = $300. The longer an excess sits, the more it costs.",
-      "## There is no $2,000 grace amount",
-      "This is the detail that catches people who mix up TFSA and RRSP rules. The RRSP has a $2,000 lifetime cushion before its over-contribution penalty kicks in — the TFSA has **none**. Even a $100 excess for one month generates a real (if small) tax: $100 × 1% = $1. The principle matters more than the dollar amount.",
-      "## Why CRA uses the *highest* excess, not the ending balance",
-      "Over-contribute $6,000 in August, withdraw $4,000 in mid-September, and you might assume September's tax is based on the remaining $2,000. It isn't — CRA generally uses the highest excess amount **during** that month, which could still be the full $6,000, producing $60 of tax for both August and September before the amount finally drops in October.",
-      "## How over-contributions actually happen",
-      "The most common causes: miscalculating your available room; running multiple TFSAs without a combined record of contributions across all of them; re-contributing a withdrawal in the same year without enough unused room (the withdrawal generally doesn't restore room until the following January 1); assuming CRA's account balance is a live, up-to-the-minute number rather than something updated annually; and withdrawing-then-redepositing when moving a TFSA between institutions instead of requesting a **direct transfer**, which doesn't use contribution room at all.",
-      "## What to do if you discover an excess",
-      "Don't panic, but don't wait either. Confirm the exact numbers across every TFSA you hold, stop contributing further while you sort it out, withdraw the excess as soon as possible to stop the monthly tax from continuing to accrue, and file the required TFSA return — Form RC243 with Schedule A (RC243-SCH-A) — generally due by June 30 of the following calendar year. Removing the excess stops future months from adding to the tax, but it doesn't erase what already accrued for the months the excess existed.",
-      "## Honest mistakes vs. deliberate ones",
-      "CRA has a process that may waive or cancel some or all of the tax for a genuine, explainable mistake — but that's discretionary, not guaranteed, so prevention beats hoping for a waiver. Deliberate over-contributions are treated more seriously and can trigger additional \"advantage\" rules on top of the standard monthly tax.",
-      "## How to avoid it going forward",
-      "Track every contribution and withdrawal — date, amount, institution, account — across **all** of your TFSAs combined, not each one in isolation. Request a direct transfer rather than withdrawing and redepositing when switching institutions. Check your actual available room before any large contribution, especially after a bonus or lump sum. And remember that a withdrawal's room doesn't return until the following January 1, so don't assume you can replace it the same year.",
+      "The TFSA is one of Canada's most valuable investment accounts — contribute money, invest it, and generally earn investment income and capital gains without paying tax on that growth inside the account, with withdrawals generally tax-free as well. But there's one TFSA rule that can turn a simple contribution mistake into an unexpected tax bill: **you cannot contribute more than your available TFSA contribution room.** If you do, the excess amount is generally subject to a **1% tax per month** for as long as the excess remains — and there is no $2,000 grace amount for TFSA over-contributions like the RRSP gets. Most over-contributions are avoidable once you understand exactly how the rule works, which is what this guide walks through.",
+      "## What Is a TFSA Over-Contribution?",
+      "A TFSA over-contribution occurs when the total amount you contribute to your TFSAs is greater than your available contribution room. Your contribution room is **not calculated separately for each TFSA** — if you have three TFSAs at three different institutions, your contributions to all three count toward one overall limit. Imagine you have $5,000 of available TFSA room, and you contribute $3,000 to TFSA A, $2,000 to TFSA B, and $1,000 to TFSA C. Your total contributions are $6,000, but you only had $5,000 of available room — your excess contribution is therefore $1,000, and that $1,000 can be subject to the TFSA's 1% monthly tax. This is exactly why investors with multiple TFSAs need to track their total contributions across every institution, not just one account at a time.",
+      "## How Much Is the TFSA Penalty?",
+      "The basic rule is straightforward: **1% of the highest excess amount in your TFSA for each month the excess remains.** This matters because the calculation isn't simply based on the balance at the end of the month — CRA calculates the tax based on the highest excess amount for each month. The basic formula is: monthly TFSA excess tax = highest excess amount for the month × 1%, and annual tax = the total of the monthly amounts. Suppose you accidentally over-contribute $1,000 and the excess remains for 4 months: a simplified calculation is $1,000 × 1% = $10 per month, so 4 months comes to $10 × 4 = **$40**. Now suppose you accidentally contribute $5,000 more than your available room, and the excess remains for 6 months: $5,000 × 1% = $50 per month, and 6 months comes to $50 × 6 = **$300**. The longer the excess remains, the more the tax can accumulate.",
+      "## There Is No $2,000 TFSA Grace Amount",
+      "This deserves special attention, because some investors confuse TFSA rules with RRSP rules. The TFSA does **not** have a $2,000 grace amount for excess contributions — the 1% monthly tax applies to the excess amount starting with the first dollar. If you're over your contribution limit by just $100 and the excess remains for one month, the potential tax is $100 × 1% = **$1**. It may be small, but the rule still applies.",
+      "## Why Does CRA Use the Highest Excess Amount?",
+      "This is one of the most important details to understand. Suppose you over-contribute $6,000 in August, then in September you withdraw $4,000. You might think \"now I'm only $2,000 over, so September's penalty should be based on $2,000\" — that's not necessarily how the calculation works. CRA explains that the 1% tax is based on the **highest excess amount during each month**. If you had $6,000 of excess during September before withdrawing $4,000, the highest excess amount for that month could still be $6,000. In an example CRA uses in its own guidance, over-contributing $6,000 in August and withdrawing $4,000 in mid-September can still mean you owe $60 for August and $60 for September, because the highest excess amount during September was $6,000. Then, if you withdraw the remaining $2,000 in October, the October tax might be $20. This example demonstrates why removing an excess quickly matters.",
+      "## The Earlier You Fix It, the Better",
+      "The 1% tax applies for each month that an excess remains, so correcting the problem quickly can reduce the amount of tax you owe. Suppose you accidentally contribute $2,000 too much in June. If you remove the excess in June, the 1% tax still applies for that month — a potential June tax of $20. But if you leave the excess until September instead, you could owe roughly $20 for June, $20 for July, $20 for August, and $20 for September — a potential total of **$80**. The lesson is simple: don't wait for CRA to contact you — if you know you've over-contributed, investigate and correct the excess as soon as possible.",
+      "## How Can a TFSA Over-Contribution Happen?",
+      "There are several common ways. You might **miscalculate your available room** — thinking you have $10,000 available when you actually have $7,000, then contributing $10,000 and creating a $3,000 excess. You might have **multiple TFSAs** and contribute to several institutions without keeping a combined record — say $4,000 to Bank A, $3,000 to Brokerage B, and $2,000 to Bank C for $9,000 total, when your available room was only $7,000, leaving a $2,000 excess. You might **re-contribute a withdrawal too soon**: Mark has $0 available TFSA room at the beginning of July 2026 and withdraws $8,000 from his TFSA; two weeks later he deposits that same $8,000 back, reasoning \"I only replaced the money I withdrew\" — but the withdrawal doesn't create new room until 2027, so the $8,000 deposit is a new contribution, and Mark could have $8,000 of excess contributions, potentially generating $80 per month of tax while the full excess remains. You might **assume CRA's account balance is a live, real-time number** — it isn't; financial institutions report TFSA transactions to CRA after the calendar year, so there can be a real delay between a transaction happening and it showing up in your CRA information, which is why it's better to rely on CRA records plus your financial institution statements plus your own tracking rather than any one source alone. You might **transfer money between TFSAs incorrectly** — withdrawing $50,000 from a TFSA at Bank A yourself and depositing it into a new TFSA, which can be treated as a $50,000 withdrawal plus a $50,000 new contribution, creating a large excess if you don't have that much unused room; a proper **direct TFSA transfer** between financial institutions doesn't use contribution room at all. And you might assume **investment growth creates room** — contributing $20,000 that grows to $30,000 doesn't hand you an extra $10,000 of contribution room, because investment growth doesn't create contribution room, only the TFSA rules and your actual contributions do. The reverse mistake also happens: contributing $20,000 that falls to $15,000 doesn't create $5,000 of new room either — **investment losses do not create TFSA contribution room.**",
+      "## Contribution Room vs. Account Value Are Different Numbers",
+      "This distinction is fundamental. Your **account value** is how much your investments are worth today. Your **contribution room** is how much you're allowed to contribute under the TFSA rules. They are completely different numbers — you could have $100,000 of TFSA value and only $5,000 of contribution room, or $10,000 of TFSA value and $30,000 of contribution room. The two numbers aren't directly linked, and confusing them is a common source of over-contribution mistakes.",
+      "## What Happens If You Discover an Over-Contribution?",
+      "First: **don't panic.** The situation needs to be corrected, but acting quickly can limit the tax. CRA's current guidance says that if an excess amount is still in your TFSA, you should withdraw the excess amount as soon as possible — the goal is to eliminate the excess. But withdrawing the excess doesn't necessarily mean you're finished with the paperwork: you may also need to file the appropriate TFSA return. Work through it in order. **Step 1 — Confirm the excess:** before taking action, establish how much you contributed, when you contributed it, every TFSA account involved, your actual available contribution room, any withdrawals, and whether any transactions were direct transfers — don't rely on one account statement, look at the entire picture. **Step 2 — Stop making additional contributions:** if you believe you're already over your limit, don't keep contributing while you're trying to determine the problem, since more contributions can increase the excess. **Step 3 — Withdraw the excess:** CRA recommends withdrawing the excess amount as soon as possible to reduce the 1% monthly tax, and the financial institution will generally report the withdrawal to CRA. **Step 4 — File the required TFSA return:** if you have an excess amount, CRA says you're required to report it by filing a **TFSA Return** — the relevant form is **Form RC243, Tax-Free Savings Account Return**, with **Schedule A (RC243-SCH-A, Excess TFSA Amounts)**. CRA's current instructions state that the return and applicable payment are generally due by **June 30 of the following calendar year** — if the excess occurred during 2026, the applicable return and payment are generally due June 30, 2027. Always check CRA's current instructions for the applicable tax year.",
+      "## Does Withdrawing the Excess Eliminate the Tax?",
+      "Not necessarily. Removing the excess stops it from continuing to generate the monthly 1% tax, but you can still owe tax for the months in which the excess existed. Suppose you over-contribute $3,000 in June and remove it in September. The excess existed during June, July, August, and September — a simplified calculation of $3,000 × 1% × 4 months comes to **$120**. Removing the excess in September prevents additional months from accumulating the same excess tax, but it doesn't erase the tax that already arose for the months it was there.",
+      "## What If the Excess Was an Honest Mistake?",
+      "CRA has a process that may allow it to waive or cancel all or part of the tax in certain circumstances, but this should not be treated as a guaranteed solution. CRA considers the circumstances and requires an explanation of why the tax arose and why it would be fair to cancel or waive all or part of it. The better strategy is simple: **prevent the over-contribution in the first place** rather than relying on a possible waiver.",
+      "## What If the Over-Contribution Was Deliberate?",
+      "That's more serious. CRA notes that deliberate over-contributions can have additional tax consequences — in certain circumstances, the advantage rules can apply, potentially resulting in a tax equal to the advantage obtained. The takeaway: don't intentionally exceed your TFSA room. The TFSA is already an extremely valuable tax-advantaged account, and there's no reason to deliberately create an excess contribution.",
+      "## How the 1% Tax Can Add Up",
+      "| Excess Amount | Months | Simplified Tax\n| $500 | 1 | $5\n| $1,000 | 3 | $30\n| $2,000 | 6 | $120\n| $5,000 | 6 | $300\n| $10,000 | 12 | $1,200\n| $20,000 | 12 | $2,400",
+      "These examples assume the stated excess amount was the highest excess for every month shown. The actual CRA calculation can differ depending on the timing and amount of contributions and withdrawals during each month — the key principle is that CRA uses the highest excess amount for each month. The 1% rate might not sound significant on its own, but 1% per month is potentially 12% over 12 months on the excess amount, before even considering how the monthly calculation compounds. And this isn't an investment return — it's a tax. You're not paying 1% to earn something; you're paying 1% because your contribution exceeded the available room. That's why fixing the mistake quickly matters.",
+      "## A Real-World Scenario: Jennifer's Bonus",
+      "Let's imagine Jennifer has $15,000 of available TFSA room. She contributes $15,000, bringing her available room to $0. Later that year, she receives a $5,000 bonus and decides to invest it in her TFSA, contributing $5,000. Now she has a **$5,000 excess**. If she leaves the excess in her TFSA for six months, a simplified calculation is $5,000 × 1% × 6 = **$300**. If she discovers the mistake immediately and removes it much sooner, the potential tax is reduced accordingly. The lesson: **check your room before contributing — especially after receiving a large lump sum.**",
+      "## Watch Out for Automatic Monthly Contributions",
+      "Automatic contributions can be convenient, but they can also create problems if you don't monitor your available room. Suppose you set up $500 per month to your TFSA — that's $6,000 per year. If you have enough room, that's fine. But what if you already used most of your room earlier in the year? The automatic contribution doesn't know that — it will keep going. That's why automatic investing should be combined with contribution-room tracking. The problem becomes even more important if you're contributing automatically to several accounts: imagine $300/month to Brokerage A, $200/month to Bank B, and $100/month to Brokerage C — a combined $600/month, or **$7,200 per year**. If your available room is only $7,000, you could accidentally exceed your annual room by **$200** — and that's before considering unused room or other contributions. The solution isn't to avoid automatic investing; it's to coordinate your contributions across every account.",
+      "## New and Non-Resident Investors Need Extra Care",
+      "TFSA contribution room doesn't simply accumulate for every year since the TFSA program began if you weren't eligible or weren't a Canadian resident. CRA explains that new residents begin accumulating TFSA contribution room starting in the year they become a resident of Canada, provided they meet the applicable eligibility requirements — someone who becomes a Canadian resident in 2026 doesn't automatically receive all historical TFSA room dating back to 2009; their room begins based on their eligibility and residency. This is an important issue for new Canadian residents who may assume they have accumulated years of unused room. Non-residents need to be careful too: if you become a non-resident of Canada for tax purposes, TFSA rules can become more complicated, and CRA states that you generally should **not contribute to a TFSA while you're a non-resident** — contributions made while non-resident can be subject to a separate 1% monthly tax. If residency is part of your situation, check the current CRA rules before contributing.",
+      "## Don't Confuse an Over-Contribution With an Investment Loss",
+      "These are completely different things. An **investment loss** is simply the market value of your holdings falling — you invested $10,000, it falls to $8,000, and you have a $2,000 investment loss, which does not create an over-contribution. A **TFSA over-contribution**, on the other hand, happens when your contributions exceed your available room — you had $5,000 of contribution room, you contributed $7,000, and you have a $2,000 excess contribution, which can be subject to the 1% monthly tax. The market value of your investments doesn't determine whether you've over-contributed — your contributions relative to your available room do.",
+      "## Your TFSA Balance Alone Doesn't Tell You Whether You're Over-Contributed",
+      "This is another important distinction. Imagine TFSA A is worth $50,000. That single number could mean you have **$0 excess**, or a **$5,000 excess**, or **$10,000 of available room** — the account balance alone doesn't tell you which. You need to know your contribution history plus your withdrawal history plus your available room, together.",
+      "## How to Avoid TFSA Over-Contributions",
+      "The best solution is prevention. **Track every contribution** — record the date, amount, institution, TFSA account, and transaction type. **Track every withdrawal** — record the date, amount, institution, and account, and remember that withdrawals generally create new room the following year, not immediately. **Combine all your TFSAs** — don't track each account in isolation; track your total TFSA contributions across every financial institution. **Be careful with transfers** — if you're moving a TFSA, ask for a direct transfer, and don't withdraw and redeposit the money yourself unless you have sufficient contribution room. **Check before large contributions** — before depositing $5,000, $10,000, $20,000, or another large amount, confirm your available room. And **be careful after withdrawals** — if you withdrew money earlier in the year, remember that the withdrawn amount generally comes back as room next January 1, so don't automatically assume you can replace it immediately.",
+      "## The MapleSheet Method",
+      "This is exactly where a TFSA tracker becomes useful — instead of keeping the information scattered across CRA records, bank statements, brokerage accounts, emails, and memory, you put the transactions into one organized record:",
+      "| Date | Type | Amount | Institution | Current-Year Room Impact | Future Room\n| Jan. 5 | Contribution | $3,000 | Brokerage | -$3,000 | —\n| Mar. 10 | Contribution | $2,000 | Bank | -$2,000 | —\n| Jun. 15 | Withdrawal | $4,000 | Brokerage | No immediate room | +$4,000 next year\n| Oct. 1 | Contribution | $2,000 | Bank | -$2,000 | —",
+      "Now you can see exactly what happened — which is especially useful if you have several TFSAs.",
+      "## Your TFSA Dashboard Should Answer Five Questions",
+      "☐ How much have I contributed this year?\n☐ How much have I withdrawn?\n☐ How much contribution room do I have?\n☐ How much withdrawal room will return next year?\n☐ Do my planned contributions exceed my available room?",
+      "If you can answer those five questions, you're already reducing your risk of making a TFSA contribution mistake.",
+      "## A Simple TFSA Contribution Safety Check",
+      "Before making a contribution, run this five-step checklist: check your available contribution room; add up contributions you've already made this calendar year across **all** TFSAs; check whether you've made withdrawals in the previous year that have created new room; check whether you have any recent transactions that aren't yet reflected in CRA's records; then subtract your planned contribution. If the result is negative — **stop.** You may be about to over-contribute.",
+      "## Even a $50 Excess Is Still an Excess",
+      "Don't ignore a small mistake. A $50 excess may produce only about $0.50 per month of tax, but the principle is the same — the longer it remains, the longer the tax can apply, and small mistakes can become larger mistakes when they're repeated. The goal isn't to minimize the penalty. The goal is to **avoid the penalty entirely.**",
+      "## The Three Numbers Every TFSA Investor Should Track",
+      "If you only track three TFSA numbers, make them these: **Total Contributions** — how much have you contributed during the current year? **Total Withdrawals** — how much have you withdrawn? And **Available Contribution Room** — how much can you contribute without creating an excess? Everything else is built around these three numbers.",
       "## MapleSheet Takeaway",
-      "A TFSA over-contribution isn't something to panic about, but it is something to take seriously — the tax is calculated on the highest excess for every month it remains, with no grace amount to soften a small mistake. The fix is simple even if the rule is easy to misread: know your room before you contribute, track it after you contribute, remember the room from a withdrawal returns next year rather than immediately, and correct any excess quickly rather than waiting for a letter from CRA. Our [TFSA Tracker](/trackers) keeps your combined contribution room current across every account, so you can see the actual number before you send the next dollar in.",
+      "Your TFSA is designed to help you build wealth — not create unnecessary tax bills. A simple contribution mistake can result in a **1% monthly tax on the highest excess amount** for every month the excess remains, with no $2,000 grace amount to soften it like the RRSP gets. The solution isn't complicated: check your room before you contribute, track it after you contribute, remember the room from a withdrawal returns next year rather than immediately, combine every TFSA into one running total, use direct transfers when moving between institutions, and if you discover an excess, correct it quickly rather than waiting for a letter from CRA. Our [TFSA Tracker](/trackers) keeps your combined contribution room current across every account, so you can see the actual number before you send the next dollar in.",
       "**Stop Guessing. Start Tracking.**",
+      "## Official Sources",
+      "- Canada Revenue Agency — If you over-contribute to a TFSA\n- Canada Revenue Agency — Tax on excess TFSA amounts\n- Canada Revenue Agency — Examples of tax payable on excess TFSA amounts\n- Canada Revenue Agency — How to contribute to a TFSA\n- Canada Revenue Agency — TFSA withdrawals and contribution room\n- Canada Revenue Agency — Direct TFSA transfers",
       "---",
-      "*This article is for educational purposes only and isn't personalized financial, investment, or tax advice. TFSA rules and Canadian tax legislation can change, and examples here are simplified illustrations. If you discover you've over-contributed to a TFSA, review your situation with the CRA and consider professional tax advice.*",
+      "*This article is for educational purposes only and isn't personalized financial, investment, or tax advice. TFSA rules and Canadian tax legislation can change. The examples in this article are simplified illustrations and may not reflect your individual tax situation. If you discover that you've over-contributed to a TFSA, review your situation with the Canada Revenue Agency and consider obtaining professional tax advice.*",
     ],
   },
   {
     type: "article",
     title: "TFSA vs. Savings Account: Where Should Your Money Go?",
     slug: "tfsa-vs-savings-account",
-    image: "/resources/oct262026-tfsa-vs-savings-account.jpg",
+    image: "/resources/oct262026-tfsa-vs-savings-account.png",
     date: "2026-10-26",
     summary: "A TFSA and a savings account aren't really competitors — a TFSA can *be* a savings account, a GIC, or a full investment portfolio. The real question is what job each dollar needs to do.",
     body: [
-      "You've got $10,000 sitting in your bank account and you know you should probably do something with it — but a savings account, a TFSA, a GIC, and \"just invest it\" all sound like competing options. They're not necessarily. The key distinction most beginners miss: **a TFSA is an account structure, not an investment.** A savings account is a type of deposit account. You can actually have a TFSA savings account, a TFSA holding GICs, a self-directed TFSA full of ETFs, or a regular taxable savings account entirely outside any TFSA.",
-      "## A TFSA isn't one thing",
-      "CRA recognizes a TFSA that's structured as a simple deposit account (cash or GICs, working much like a regular savings account) right alongside a self-directed TFSA holding stocks, bonds, ETFs, and mutual funds. Both are TFSAs. They perform completely different jobs — one prioritizes stability and access, the other prioritizes long-term growth with real market risk attached.",
-      "## The real first question: when will you need it?",
-      "This matters more than which account has \"tax-free\" in its description. Money needed in six months for rent, a vehicle, or a home repair shouldn't be exposed to a market that could be down 20% exactly when you need to withdraw it. Money you genuinely won't touch for 20 or 25 years has time to absorb that same volatility and benefit from long-term compounding instead. Same dollar amount, completely different strategy, depending purely on timeline.",
-      "## Where an emergency fund fits",
-      "An emergency fund should generally be accessible, stable, and separate from anything intended for long-term growth. A high-interest savings account works well here — a TFSA savings account can too, if you have the contribution room, since the interest earned stays tax-free. The tradeoff is that room used for cash savings is room you can't also use for long-term investment growth, though a TFSA withdrawal does generally restore that room the following calendar year, which softens the tradeoff somewhat.",
-      "## A TFSA doesn't make a bad investment good",
-      "This is worth repeating: the TFSA shelters qualifying income and gains from tax. It does not protect you from a poor investment decision. $10,000 in a speculative holding that falls to $4,000 is still a real $6,000 loss, tax-free account or not — and that loss still doesn't create new contribution room.",
-      "## GICs as a middle ground",
-      "A GIC offers a predetermined interest rate for a fixed term, and can be held inside a TFSA if it's a qualified investment — combining more certainty than the stock market with the TFSA's tax-free interest. That fits well for money with a known timeline, like a renovation two or three years out, where you'd rather not expose the full amount to market swings.",
-      "## Savings account vs. TFSA savings vs. TFSA investing",
-      "A regular savings account is simple and generally taxable on the interest it earns, with no contribution room limit attached. A TFSA savings account earns interest tax-free but still uses your limited TFSA room. A TFSA investment account can hold stocks and ETFs, carries real market risk, and offers the highest long-term growth potential — also inside your limited TFSA room. None of the three is automatically \"better\"; they're built for different jobs. One more practical detail: standard savings accounts and GICs at CDIC member institutions may qualify for deposit insurance up to applicable limits — stocks, ETFs, and mutual funds never do, TFSA or not.",
-      "## Give every dollar a job",
-      "Money needed soon belongs in a savings account. Emergency money stays accessible. A known goal one to five years out fits savings, a GIC, or another appropriately low-risk option. Long-term wealth building points toward a TFSA or RRSP investment account. A first home points toward the FHSA. None of this requires forcing every dollar into one account — most people are best served spreading money across several accounts, each doing a specific job.",
+      "You have $10,000 sitting in your bank account. You know you should probably do something with it — but should you leave it in a savings account? Put it into a TFSA? Invest it? Buy a GIC? Keep some in cash and invest the rest? For a beginner Canadian investor, these questions can be confusing because **TFSA** and **savings account** are often treated as if they're competing products. They're not necessarily. There's an important distinction: **a TFSA is an account structure. A savings account is a type of deposit account.** You can have a TFSA savings account. You can also have a self-directed TFSA containing investments. And you can have a regular taxable savings account entirely outside a TFSA. CRA specifically describes different types of TFSAs, including deposit TFSAs that work like savings accounts or GICs, and self-directed TFSAs that can hold qualified investments such as stocks, bonds, mutual funds, and ETFs. So the real question isn't simply \"TFSA or savings account?\" A better question is: **what is this money for, when will I need it, and what account and investment make sense for that goal?**",
+      "## First: A TFSA Isn't an Investment",
+      "Let's clear up the biggest misconception. A TFSA doesn't automatically mean you're investing in stocks. A TFSA is a **registered account** that can hold different types of qualified assets — depending on the type of TFSA, you may be able to hold cash, savings deposits, GICs, bonds, mutual funds, ETFs, stocks, or other qualified investments. CRA confirms that a TFSA can be structured as a simple deposit account or as a self-directed investment account, which means a **regular savings account** (cash earning interest, no TFSA), a **TFSA savings account** (cash earning interest with the TFSA's tax advantage), a **TFSA GIC** (money locked into a GIC with a specified rate and term), and a **self-directed TFSA** (money invested in securities such as ETFs or stocks) are all genuinely different ways of using your money.",
+      "## What Is a Regular Savings Account?",
+      "A traditional savings account is a bank or credit-union account designed primarily for holding cash and earning interest. You deposit money, the financial institution pays interest according to the account's terms, and you can generally access the money when you need it. But the interest earned in a regular, non-registered savings account is generally taxable income. Suppose you keep $10,000 in a regular savings account earning 3% interest — over a year you earn approximately $300, and that $300 is generally taxable income because the account isn't sheltered by a TFSA. The exact after-tax amount depends on your tax situation.",
+      "## What Is a TFSA Savings Account?",
+      "A TFSA savings account combines the basic concept of a savings account with the TFSA's tax treatment. You hold cash or a qualifying deposit inside the TFSA, the account earns interest, and that interest is generally tax-free inside the TFSA — CRA states that income earned in a TFSA, including interest, dividends, and capital gains, is generally tax-free, including when you withdraw it. Suppose you have $10,000 in a TFSA savings account earning 3% interest — you earn approximately $300, and unlike the regular savings account, that $300 is generally not taxable. This can make a TFSA savings account attractive for certain short- and medium-term goals. But there's an important question: **should you use valuable TFSA contribution room for cash savings?** Sometimes yes. Sometimes no.",
+      "## The First Question: When Will You Need the Money?",
+      "This is probably the most important question in this entire guide. Before deciding where to put your money, ask: **when will I need it?** There's a huge difference between money you need next month and money you won't need for 25 years. **Short-term money** generally needs stability and accessibility. **Long-term money** has more time to withstand market volatility and potentially benefit from long-term investment growth. Your time horizon should influence both the account and the investment.",
+      "## If You Need the Money Soon",
+      "A savings account may make more sense. Imagine you're saving for rent, a vehicle purchase, a vacation next summer, property taxes, a home repair, an emergency fund, or a major purchase within the next year — you probably don't want to depend on the stock market to provide the money exactly when you need it. The market can fall, and it can fall at the worst possible time. If you need $10,000 in six months and your investment portfolio falls 20%, you may suddenly have only $8,000 when you need $10,000. That's not an ideal situation. For short-term goals, preserving the money can be more important than maximizing potential returns.",
+      "## If You Don't Need the Money for 10, 20, or 30 Years",
+      "Now the situation changes. Suppose you're investing $10,000 and you don't expect to need it for 25 years — you have much more time to deal with market fluctuations. Instead of focusing only on the interest rate offered by a savings account, you might consider a diversified investment portfolio appropriate for your risk tolerance and time horizon. This is where a **self-directed TFSA** can become useful — it can hold qualified investments such as ETFs and stocks, meaning the TFSA can be used not just for saving cash, but for long-term investing.",
+      "## The Difference Between Saving and Investing",
+      "This distinction matters. **Saving** generally aims to preserve the money, earn some interest, and maintain accessibility. **Investing** generally aims to grow the money over a longer period while accepting some risk and volatility. Neither is automatically better — they serve different purposes. Think of it this way: saving is about protecting money you may need. Investing is about putting long-term money to work.",
+      "## Where Does an Emergency Fund Fit?",
+      "An emergency fund is one of the strongest arguments for keeping some money in cash. Imagine your car breaks down, your furnace stops working, or you suddenly have an unexpected expense — you don't want to sell a long-term investment during a market downturn simply because you need cash tomorrow. An emergency fund should generally be accessible, relatively stable, easy to understand, and separate from money intended for long-term investment. A high-interest savings account can be appropriate for this purpose. A TFSA savings account may also be considered if you have available contribution room and the account's terms make sense for your situation — the key is recognizing that **the purpose of the money matters more than the label on the account.**",
+      "## Should Your Emergency Fund Be Inside a TFSA?",
+      "There isn't one universal answer. On the one hand, if your emergency savings are held in a TFSA savings account, the interest earned is generally tax-free, which can be more tax-efficient than holding the same cash in a regular taxable savings account. On the other hand, you're using TFSA contribution room for money that may not be invested for long-term growth — for someone with limited TFSA room, that opportunity cost can matter. However, TFSA withdrawals generally create new contribution room in the following calendar year, which can provide flexibility. The right answer depends on your available room, your financial goals, and your alternatives.",
+      "## A TFSA Doesn't Make a Bad Investment Good",
+      "This is a crucial lesson. Some investors hear \"tax-free\" and immediately think \"anything inside a TFSA must be a good idea.\" No. The TFSA provides tax advantages — it doesn't eliminate investment risk. If you put $10,000 into a speculative investment inside your TFSA and it falls to $4,000, you still have a real $6,000 investment loss. The TFSA doesn't refund the loss, and investment losses don't create new TFSA contribution room. A tax shelter protects qualifying income and gains from tax. It does not protect you from poor investment decisions.",
+      "## What About GICs?",
+      "GICs can occupy an interesting middle ground between traditional savings and market investing. A GIC can provide a predetermined interest rate for a specified term, and GICs can be held inside a TFSA if they're qualified investments. This can be useful for investors who want more certainty than stocks provide, have a known future goal, don't want market volatility, and can leave the money invested for the GIC's term. Suppose you're saving for a home renovation two years from now and you have $20,000 — you don't necessarily want to expose the entire amount to stock-market volatility, so a suitable savings account or GIC may make more sense than a stock-heavy portfolio, and if you have TFSA room, a TFSA GIC may provide tax-free interest on top of that.",
+      "## TFSA Savings Account vs. TFSA Investment Account",
+      "This is a very important distinction. A **TFSA Savings Account** holds cash or deposits earning interest — lower investment risk, generally easy access, tax-free interest. A **TFSA Investment Account** can hold stocks, ETFs, bonds, mutual funds, and other qualified investments — real market risk, potential for losses, but potentially higher long-term returns and tax-free qualifying income and gains. Both are TFSAs. They perform very different jobs.",
+      "## What About a Regular Savings Account If You Already Have a TFSA?",
+      "A regular savings account can still be useful even if you have a TFSA. You may want to keep $5,000 in an easily accessible savings account for immediate expenses while your TFSA holds $40,000 of long-term investments. There's nothing wrong with having both — in fact, many people should. The goal isn't to force every dollar into a TFSA. The goal is to **give every dollar a job.**",
+      "## Give Every Dollar a Job",
+      "This is a simple framework that can help: money needed soon → a savings account. Emergency money → accessible savings. Money needed in 1–5 years → savings, a GIC, or another appropriate low-risk option. Long-term wealth building → a TFSA investment account, an RRSP, or other long-term investments. Retirement savings → TFSA + RRSP + other retirement assets. First-home savings → an FHSA plus other appropriate savings or investments. The exact strategy depends on the person, but the principle is powerful: **match the account and investment to the job the money needs to perform.**",
+      "## Don't Compare Interest Rates With Investment Returns as If They're the Same Thing",
+      "This is another common beginner mistake. Someone sees a savings account offering 4% and an ETF with an 8% historical return, and concludes \"the ETF is obviously better.\" Not necessarily. The 4% savings rate may represent a relatively predictable interest payment. The 8% investment return is not guaranteed — the ETF's value can rise or fall, and one year it could earn much more while another year it could lose money. The two numbers represent different risk profiles. Saving and investing involve different trade-offs: lower risk usually means lower expected return, and higher potential return usually comes with greater risk and uncertainty.",
+      "## What If You Have $20,000?",
+      "Let's put the concepts together. Suppose you have $20,000 available. **Option A — you need it in six months:** a savings account or another suitable short-term option may make more sense. **Option B — you need it in three years:** you might consider savings, GICs, or other investments appropriate for the time horizon and risk. **Option C — you don't need it for 20 years:** a diversified long-term investment strategy may make more sense. **Option D — you need part of it soon:** you could split it — for example, $5,000 into emergency savings, $5,000 toward a short-term goal, and $10,000 into a long-term investment. The exact percentages aren't the point. The point is: **you don't have to choose one account for every dollar you own.**",
+      "## What About the TFSA Contribution Limit?",
+      "The TFSA can be an extremely valuable place to hold investments, but contribution room is limited. For 2026, the annual TFSA dollar limit is $7,000. Unused room can carry forward, so your actual available room may be much higher depending on your history. This creates an important planning question: **should I use my TFSA room for cash savings or long-term investments?** There isn't one universal answer. If you have plenty of room, using a TFSA savings account for short-term money may be perfectly reasonable. If your TFSA room is limited and you have substantial long-term investments elsewhere, you may want to think carefully about where your most tax-sensitive or growth-oriented assets should be held.",
+      "## The Opportunity Cost of Using TFSA Room for Cash",
+      "Imagine you have $50,000 of TFSA room and $50,000 of cash savings. You put the entire $50,000 into a TFSA savings account — that's perfectly possible if you have the room and the account is suitable. But now you've used your TFSA room, and you don't have that room available for other investments. If you're also holding a long-term portfolio in a taxable account, you may want to consider whether the TFSA room could be used more efficiently for long-term investment growth instead. This is not a universal rule — it depends on your tax situation, your investment portfolio, your goals, your time horizon, your available TFSA room, and your need for liquidity. The important thing is to make the choice deliberately.",
+      "## Tax-Free Growth Can Become More Valuable Over Time",
+      "Suppose you have a long-term investment that generates $5,000 of investment income and gains. Inside a TFSA, qualifying income and gains are generally tax-free. Outside a TFSA, investment income can create taxable income depending on its type. Over many years, that difference can compound — which is why TFSA room can be especially valuable for long-term investing. The goal isn't simply to avoid paying tax this year; it's to allow more of your investment growth to remain invested over time.",
+      "## What About Dividends?",
+      "Suppose you own dividend-paying investments. Inside a TFSA, qualifying dividends are generally not taxed as they're earned in the account, which can make the TFSA useful for investors building long-term income-producing portfolios. But don't choose an investment simply because it pays a high dividend — a high yield can come with significant risk. Focus on total return, business quality, diversification, sustainability, fees, and risk. The TFSA protects qualifying investment income from tax. It doesn't guarantee that the investment itself will perform well.",
+      "## What About Foreign Investments?",
+      "Canadian investors often hold U.S. and international investments. The TFSA can hold many qualified foreign securities, but foreign withholding taxes can still apply depending on the investment, the country, and the account structure — so the TFSA isn't necessarily completely free of every form of foreign tax. This is one area where account location becomes more complicated, and for larger portfolios, understanding how foreign withholding taxes interact with TFSA, RRSP, and non-registered accounts can become part of broader tax planning.",
+      "## What About Deposit Insurance?",
+      "If you're using a savings account or GIC, another consideration is deposit insurance. Eligible deposits at CDIC member institutions are automatically insured up to applicable limits — CDIC generally covers eligible deposits separately up to $100,000 per insured category, including savings accounts and GICs. It does **not** insure stocks, bonds, ETFs, or mutual funds. This is an important distinction: savings and GICs may qualify for deposit insurance if held with a CDIC member institution and within the applicable coverage rules, while ETFs and stocks are not covered by CDIC and can rise or fall in value — another reason saving and investing shouldn't be treated as identical.",
+      "| Feature | Regular Savings Account | TFSA Savings Account | TFSA Investment Account\n| Main purpose | Cash savings | Tax-free cash savings | Long-term investing\n| Interest taxable? | Generally yes | Generally no | Generally no for qualifying income\n| Market risk | Usually low | Usually low | Yes\n| Easy access | Usually | Usually | Depends on investment\n| Can hold stocks/ETFs? | No, generally | No, unless it's an investment TFSA | Yes, if qualified\n| Contribution room | None | TFSA room applies | TFSA room applies\n| Investment growth potential | Usually limited | Usually limited | Higher potential, but uncertain\n| CDIC coverage | May apply | May apply to eligible deposits | No",
+      "## What Should a Beginner Do First?",
+      "If you're just starting, don't overcomplicate the decision. Start with three questions. **Question 1 — what is this money for?** Emergency? A home? A car? Retirement? General wealth building? **Question 2 — when will I need it?** Months? A few years? 10+ years? **Question 3 — how much risk can I accept?** If seeing your investment fall 20% would cause you to sell everything, a high-risk portfolio may not be appropriate for your goals. These three questions will eliminate many poor choices.",
+      "## A Simple Decision Tree",
+      "Do you need the money within the next year? **Yes** → consider accessible savings or another suitable low-risk option. **No** → continue. Is the money for an emergency fund? **Yes** → prioritize liquidity and stability. **No** → continue. Do you have a medium-term goal? **Yes** → consider savings, GICs, or other investments appropriate for the time horizon. **No** → continue. Is the money for long-term wealth building? **Yes** → consider investing through a TFSA, RRSP, or other appropriate account. The goal is not to maximize returns on every dollar — the goal is to **match risk and account type to the purpose of the money.**",
+      "## The TFSA and Savings Account Can Work Together",
+      "This may be the biggest takeaway from this guide. You don't have to choose TFSA **or** savings account — you can use a **TFSA + savings account** together. A regular savings account can hold emergency cash. A TFSA savings account or TFSA GIC can hold short- or medium-term money where the TFSA tax treatment is useful. A TFSA investment account can hold your long-term investment portfolio. An RRSP can hold retirement-focused savings. An FHSA can hold eligible first-home savings. Different accounts can have different jobs.",
+      "## The MapleSheet Approach: Track the Purpose of Your Money",
+      "A portfolio tracker shouldn't only tell you \"I have $100,000.\" It should help you understand **where** that $100,000 actually is. For example:",
+      "| Account | Purpose | Balance\n| Savings | Emergency fund | $10,000\n| TFSA | Long-term investments | $40,000\n| RRSP | Retirement | $35,000\n| FHSA | First home | $15,000\n| Total | | $100,000",
+      "Now your financial picture is much clearer — you can see what is liquid, what is invested, what is tax-free, what is retirement-focused, and what is designated for a specific goal. That kind of organization makes financial decisions easier.",
+      "## Don't Let the Word \"Savings\" Fool You",
+      "A TFSA's name contains the word \"savings,\" but a TFSA can be much more than a savings account. It can be a cash account, a GIC account, an ETF portfolio, a stock portfolio, or a fully diversified investment account. CRA explicitly recognizes this range of TFSA structures. That's why the more useful question isn't \"should I save or use a TFSA?\" Instead ask: **should this money be saved or invested, and which account is most appropriate for that purpose?**",
+      "## The Biggest Beginner Mistakes",
+      "When comparing savings and TFSA options, watch for these: putting emergency money into volatile investments; leaving long-term investment money in low-return cash indefinitely; assuming a TFSA automatically means you're investing; using valuable TFSA room without considering your overall portfolio; choosing an investment based only on its dividend yield; ignoring fees and interest rates; forgetting that TFSA contribution room is limited; thinking every TFSA has the same features; assuming investment returns are guaranteed; and not tracking where your money is actually held.",
+      "## A Practical Example: One Person, Three Goals",
+      "Let's imagine a Canadian investor has $30,000 to allocate across three different goals. **Goal 1 — emergency fund, $8,000:** this money needs to remain accessible, so a savings account may make sense. **Goal 2 — home renovation in three years, $7,000:** the investor may consider a savings account, GIC, or another suitable lower-risk option depending on the exact timeline and risk tolerance. **Goal 3 — retirement in 25 years, $15,000:** this money has a much longer horizon, so a diversified investment portfolio inside a TFSA or RRSP may be more appropriate depending on the investor's overall situation. Notice what happened — we didn't choose one account for everything. We matched each dollar to a goal.",
+      "## What If You Have Limited TFSA Room?",
+      "Now the decision becomes more interesting. Suppose you have $20,000 in cash but only $7,000 of available TFSA contribution room — you can't put the entire $20,000 into the TFSA without exceeding your available room, so you might need to decide which portion deserves the TFSA space. This is where understanding your overall financial plan becomes important: you could potentially use the TFSA for long-term investments and a regular savings account for short-term cash, depending on your circumstances. The best allocation isn't determined solely by which account has the word \"tax-free.\"",
+      "## What If You Have Plenty of TFSA Room?",
+      "The decision may be easier. If you have substantial unused TFSA room, you could potentially hold short-term cash in a TFSA savings account, use a TFSA GIC for a suitable goal, or invest through a self-directed TFSA. But again: **available room doesn't mean you should automatically fill it with cash.** Think about what the money needs to accomplish.",
+      "## The Long-Term Investor's Perspective",
+      "For a long-term investor, the TFSA can be extremely valuable. Imagine you contribute consistently over many years — your investments grow, dividends are reinvested, capital gains accumulate, and the account becomes larger. Because qualifying income and gains inside the TFSA are generally tax-free, more of that growth can remain invested rather than being reduced by annual income tax. This is where the TFSA can become much more powerful than a simple savings account — but it requires a long-term mindset.",
+      "## The Short-Term Saver's Perspective",
+      "For someone saving for a goal next year, the priorities can be different — you may care more about safety, liquidity, and predictability than maximizing long-term investment returns. That's perfectly reasonable. Not every dollar needs to be invested in the stock market. Sometimes the best financial decision is simply to protect the money you know you'll need soon.",
+      "## So, Where Should Your Money Go?",
+      "There isn't one answer. **Use a regular savings account when** you need immediate access, you're building an emergency fund, you need the money very soon, you want simplicity, or you don't want to use TFSA room for that cash. **Consider a TFSA savings account when** you want cash savings with the TFSA's tax treatment, you have available TFSA room, the account's rate and terms are competitive, and you want the flexibility of TFSA withdrawals. **Consider a TFSA investment account when** your goal is long-term, you can tolerate market volatility, you're building wealth, you want tax-free qualifying investment growth, and you understand the investments you're buying. **Consider a GIC when** you want a defined interest rate, you can commit the money for the term, you want lower risk than market investments, and the term fits your financial timeline.",
+      "## The Real Answer: It Depends on the Job of the Money",
+      "This is the simplest way to think about it. Money for tomorrow: save it. Money for an emergency: keep it accessible. Money for a known medium-term goal: protect it and match the investment to the timeline. Money for retirement decades from now: consider investing it. Money for long-term wealth building: use an appropriate investment account and strategy. The account is a tool. The investment is another tool. The goal determines how you use them.",
       "## MapleSheet Takeaway",
-      "The real question was never \"TFSA or savings account\" — you can have both, and often should. What actually matters is asking what each dollar is for, when you'll need it, and how much risk that specific goal can tolerate. Emergency money needs accessibility. Short-term money needs stability. Long-term money needs time to compound. These are general educational guidelines, not personalized advice — your right mix depends on your own goals, timeline, and available room. Whichever combination you land on, our [TFSA Tracker](/trackers) keeps contributions, room, and what's actually invested organized in one place, so you always know where your money is and what job it's doing.",
+      "The question was never really \"TFSA vs. savings account\" — because you can have a **TFSA savings account**. The better question is: **should this money be saved or invested, and where should I hold it?** A regular savings account can be useful for emergency funds and short-term needs. A TFSA savings account can provide tax-free interest while keeping money relatively stable. A TFSA investment account can provide a tax-efficient home for long-term investments. GICs can provide another option for money with a defined timeline. The key is matching the tool to the job — don't invest emergency money just because you want higher returns, don't leave retirement money in cash forever just because investing feels complicated, and don't assume that putting money into a TFSA automatically means you've made an investment. Know the purpose. Choose the appropriate account. Choose the appropriate investment. Then track the numbers. Our [TFSA Tracker](/trackers) helps you see where your money actually is, what it's invested in, what each account is for, how much you've contributed, how much you've earned, and how your portfolio is growing — because when you know what your money is doing, you can make better decisions about what it should do next.",
       "**Stop Guessing. Start Tracking.**",
+      "## Official Sources",
+      "- Canada Revenue Agency — What is a TFSA?\n- Canada Revenue Agency — Calculate your TFSA contribution room\n- Canada Revenue Agency — Before you contribute to a TFSA\n- Canada Revenue Agency — Withdrawing from a TFSA\n- Canada Revenue Agency — TFSA qualified investments\n- Financial Consumer Agency of Canada — Deposit insurance",
       "---",
-      "*This article is for educational purposes only and isn't personalized financial, investment, or tax advice. Canadian tax rules, TFSA rules, interest rates, and financial products can change. Consider your own financial goals, time horizon, and risk tolerance before making financial decisions.*",
+      "*This article is for educational purposes only and isn't personalized financial, investment, or tax advice. Canadian tax rules, TFSA rules, interest rates, and financial products can change. The examples in this article are simplified illustrations and are not recommendations to buy or sell any particular investment. Consider your own financial goals, time horizon, and risk tolerance before making financial decisions.*",
     ],
   },
   {

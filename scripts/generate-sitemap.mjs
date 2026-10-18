@@ -28,6 +28,8 @@ const staticPages = [
   { loc: "/resources", changefreq: "weekly", priority: "0.8" },
   { loc: "/about", changefreq: "monthly", priority: "0.6" },
   { loc: "/contact", changefreq: "yearly", priority: "0.5" },
+  { loc: "/disclaimer", changefreq: "yearly", priority: "0.3" },
+  { loc: "/privacy", changefreq: "yearly", priority: "0.3" },
 ];
 
 // Combo/Flagship trackers each have their own /trackers/:slug page. Single-
