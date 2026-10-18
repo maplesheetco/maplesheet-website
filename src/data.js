@@ -291,20 +291,65 @@ export const PRODUCTS = [
     name: "TFSA + RRSP + Margin Tracker", tag: "Combo", price: 27.99,
     url: "https://www.etsy.com/listing/4523804765", directUrl: "https://payhip.com/b/29CVO",
     desc: "Registered + taxable in one place",
+    // Real tabs from your actual P2 sheet, plus the two promotional cover
+    // slides you sent (Main Dashboard "Live Preview" and the Charts &
+    // Analytics "See Your Portfolio Grow" page) — same gallery pattern as
+    // Combo3/Combo4. Numbers shown throughout (e.g. $115,250 net worth,
+    // $487.50 margin interest) are illustrative sample data, not a real
+    // account.
+    gallery: [
+      { src: "/screenshots/combo2-gallery-1-main-dashboard.jpg", label: "Main Dashboard — combined net worth across all 3 accounts, YTD investment income summary & portfolio growth chart" },
+      { src: "/screenshots/combo2-gallery-2-transaction-log.jpg", label: "Transaction Log — the one tab you type into, everything else calculates automatically" },
+      { src: "/screenshots/combo2-gallery-3-tfsa-portfolio.jpg", label: "TFSA Portfolio — auto-populated holdings, live prices, ACB & gain/loss" },
+      { src: "/screenshots/combo2-gallery-4-rrsp-portfolio.jpg", label: "RRSP Portfolio — CAD + USD holdings together, with the Canada-US treaty tax tip built right in" },
+      { src: "/screenshots/combo2-gallery-5-margin-portfolio.jpg", label: "Margin Portfolio — ACB tracking, live prices, margin loan & equity ratio, capital gains flow to Tax Dashboard" },
+      { src: "/screenshots/combo2-gallery-6-dividend-tracker.jpg", label: "Dividend Tracker — monthly distribution across all 3 accounts, per-ticker summary, DRIP tracked, annual run-rate vs. your own goal" },
+      { src: "/screenshots/combo2-gallery-7-margin-interest-tracker.jpg", label: "Margin Interest Tracker — monthly interest log, break-even yield, CRA Line 22100 deduction calculated automatically" },
+      { src: "/screenshots/combo2-gallery-8-tax-dashboard.jpg", label: "Tax Dashboard — Lines 12000, 12100 & 22100 and Schedule 3, calculated from your real entries" },
+      { src: "/screenshots/combo2-gallery-9-charts-analytics.jpg", label: "Charts & Analytics — portfolio allocation, monthly value & dividend income, all auto-built from your Transaction Log" },
+    ],
+    screenshot: "/screenshots/combo2-gallery-1-main-dashboard.jpg",
     slug: "tfsa-rrsp-margin", accounts: ["TFSA", "RRSP", "Margin"], sku: "MS-COMBO-TFSA-RRSP-MARGIN",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URlJCJYx6fAMdIUSqdG3fVO",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1rIUDRNGVXlCu9zTeqcWMuXG4iG01nFO5qJBPqglje4A/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/combo2-template-link.pdf" },
+        { label: "TFSA Guide", url: "/downloads/combo2-tfsa-guide.pdf" },
+        { label: "RRSP Guide", url: "/downloads/combo2-rrsp-guide.pdf" },
+        { label: "Margin Guide", url: "/downloads/combo2-margin-guide.pdf" },
+      ],
+    },
     bestFor: "Maxed-out registered room, now investing in a taxable account too.",
     longDescription: "Covers the most common three-account setup for investors who've maxed out registered room and moved into taxable investing: TFSA and RRSP for the tax-advantaged side, Margin for everything beyond it. One dashboard instead of switching between three.",
-    features: [
-      "TFSA, RRSP, and Margin tracked separately with one combined total",
-      "Automatic ACB and capital gains on the taxable Margin account",
-      "Contribution room and deduction limit tracked for both registered accounts",
-      "Live prices via GOOGLEFINANCE across all three",
+    overview: [
+      "A TFSA, an RRSP, and a Margin account you opened once you maxed out registered room — tracked across your brokerage's own screens, or three separate spreadsheets you have to add up by hand? Each one shows its own slice. None of them shows your actual combined net worth, and the Margin account's capital gains and interest — the two things CRA actually wants at tax time — end up reconstructed from statements every April instead of tracked as you go.",
+      "The TFSA + RRSP + Margin Tracker pulls all three into one Google Sheet, 11 tabs, built around a single Transaction Log — enter a contribution, a buy, a dividend, or a margin interest charge once, and every tab updates automatically. The Main Dashboard rolls all three accounts into one combined net worth total; the Margin Portfolio's capital gains and interest flow straight into a dedicated Tax Dashboard that calculates Line 12000, Line 12100, the Schedule 3 capital gains inclusion, and the Line 22100 interest deduction for you.",
+      "Each account is tracked the way it actually works, not one generic ruleset reused three times. The TFSA and RRSP Portfolios auto-populate from the Transaction Log with live GOOGLEFINANCE pricing and weighted-average ACB; the RRSP handles CAD and USD holdings together, with a built-in reminder to hold US dividend stocks there instead of the TFSA or Margin, where the 15% IRS withholding is permanently gone. The Margin Portfolio carries its own ACB tracking, margin loan and equity ratio, plus a dedicated Margin Interest Tracker with a break-even yield calculation and CRA Line 22100 carrying-charge tracking. A Dividend Tracker and a Charts & Analytics tab — both auto-built, no manual charting — round out the picture across all three accounts.",
     ],
-    demo: { total: "46,660", ytd: "+11.9%", accounts: [
-      { label: "TFSA", value: "16,568", change: "+12.4%" },
-      { label: "RRSP", value: "27,322", change: "+9.1%" },
-      { label: "Margin", value: "2,770", change: "+22.3%" },
-    ] },
+    whoFor: "Canadian DIY investors running a TFSA and an RRSP for the tax-advantaged side, with a Margin account for everything past their registered room, who want one combined dashboard and one Tax Dashboard instead of reconciling three accounts by hand every April.",
+    features: [
+      "TFSA, RRSP, and Margin tracked individually with one combined Main Dashboard net worth total",
+      "Automatic ACB tracking (CRA method) and capital gains on the Margin account, flowing straight into a dedicated Tax Dashboard",
+      "RRSP Portfolio handles CAD + USD holdings together — Canada-US tax treaty means 0% IRS withholding on US dividends held there, not in the TFSA or Margin",
+      "Margin Interest Tracker — monthly interest log, break-even yield with green/amber/red zones, and the CRA Line 22100 deduction calculated automatically",
+      "Tax Dashboard covers all 4 CRA income types — eligible dividends (Line 12000), US/foreign dividends (Line 12100), capital gains (Schedule 3 → Line 12700), and the Line 22100 interest deduction — rolled into one Net Taxable Investment Income total",
+      "Dividend Tracker across all three accounts, DRIP handling, per-ticker summary, monthly distribution vs. your own goal",
+      "Margin loan and equity ratio tracked right alongside your margin holdings, so you always know your real leverage",
+      "Charts & Analytics tab auto-builds portfolio allocation, monthly value, and monthly dividend income charts straight from your Transaction Log",
+      "Live prices via GOOGLEFINANCE across all three accounts, updating every minute",
+      "One Transaction Log drives all 11 tabs — enter a transaction once and everything updates automatically",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "TFSA Guide PDF", desc: "Contribution limits, the rules you need to know, tax implications, and which investments belong in a TFSA." },
+      { icon: "📄", label: "RRSP Guide PDF", desc: "Contribution rules, the Home Buyers' Plan, spousal RRSPs, and why US dividend stocks belong here instead of your TFSA." },
+      { icon: "📄", label: "Margin Guide PDF", desc: "ACB tracking, the Line 22100 interest deduction, break-even yield, and how Canadian vs. US dividends are taxed differently in a non-registered account." },
+    ],
   },
   {
     name: "TFSA + RRSP + RESP Tracker", tag: "Combo", price: 27.99,
