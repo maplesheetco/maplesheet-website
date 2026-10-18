@@ -280,6 +280,30 @@ export const PRODUCTS = [
     url: "https://www.etsy.com/listing/4534821592", directUrl: "https://payhip.com/b/dOqcI",
     desc: "Linked accounts with collateral tax dashboard",
     slug: "tfsa-margin-linked", accounts: ["TFSA", "Margin"], screenshot: "/screenshots/tfsa-margin.jpg", sku: "MS-COMBO-TFSA-MARGIN",
+    // Stripe Buy Button wired in. No real product screenshots sent yet, so
+    // this still falls back to the placeholder /screenshots/tfsa-margin.jpg
+    // + the `demo` mock widget below on the detail page — same Combo2
+    // pattern: once real screenshots arrive, add `gallery`, rewrite
+    // overview/whoFor/included, and this `demo` block + the placeholder
+    // screenshot become dead code and can come out.
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URm7eJYx6fAMdIUSzzZGXlI",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery links. sheetUrl is the real Template Link's "/copy" URL
+    // from your own uploaded P10_Template_Link.pdf. ⚠️ Lino — double-check
+    // this sheet's Share settings are "Anyone with the link" → Viewer, same
+    // as the other 6 trackers, and confirm the Payment Link's metadata
+    // (key "sku" = "MS-COMBO-TFSA-MARGIN") and its "After the payment"
+    // redirect to https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1RF7cjx22nEdT5e-By8TuVO-GqzlwQ9UbWbiEXesNz2I/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/tfsa-margin-template-link.pdf" },
+        { label: "Clear Sample Data Guide", url: "/downloads/tfsa-margin-clear-sample-data-guide.pdf" },
+        { label: "CRA Tax Rules & Complete Guide", url: "/downloads/tfsa-margin-cra-tax-guide.pdf" },
+      ],
+    },
     bestFor: "Using TFSA holdings as collateral against a margin account.",
     longDescription: "For investors using a margin account alongside a TFSA — often to hold TFSA assets as collateral for margin borrowing. Tracks both accounts as linked, not just side by side, so you can see combined net worth and collateral power in one place instead of reconstructing the connection by hand every time.",
     features: [
