@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { B, CONFIG, PRODUCTS, RESOURCES } from "./data.js";
-import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, ProductGallery, GrowthChart, usePageMeta, LiveChatTracker, Reveal } from "./ui.jsx";
+import { B, PRODUCTS, RESOURCES } from "./data.js";
+import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, ProductGallery, GrowthChart, usePageMeta, LiveChatTracker, Reveal, PromoBanner } from "./ui.jsx";
 import { trackBuyClicked } from "./analytics.js";
 import Trackers from "./pages/Trackers.jsx";
 import TrackerDetail from "./pages/TrackerDetail.jsx";
@@ -223,9 +223,7 @@ function Home() {
               padding: "15px 30px", borderRadius: 10, border: `1.5px solid ${B.line}`,
             }}>Try the free calculator</Link>
           </div>
-          <div style={{ marginTop: 24, marginBottom: 40, fontSize: 13.5, color: B.yellow, fontWeight: 600 }}>
-            🏷 Launch offer: {CONFIG.promoText}
-          </div>
+          <PromoBanner as="div" prefix="Launch offer: " style={{ marginTop: 24, marginBottom: 40 }} />
         </div>
         <div ref={heroGalleryRef}>
           <ProductGallery slides={GALLERY_SLIDES} />
