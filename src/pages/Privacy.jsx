@@ -1,6 +1,7 @@
 import React from "react";
 import { B, CONFIG } from "../data.js";
 import { PageHead, RedWord, usePageMeta, Reveal } from "../ui.jsx";
+import { STATIC_META } from "../seo.js";
 
 const SECTIONS = [
   {
@@ -69,10 +70,7 @@ const SECTIONS = [
 ];
 
 export default function Privacy() {
-  usePageMeta({
-    title: "Privacy Policy — MapleSheet Co.",
-    description: "What information MapleSheet Co. collects when you buy a tracker or contact us, how it's used, who it's shared with, and your rights under Canadian privacy law.",
-  });
+  usePageMeta(STATIC_META["/privacy"]);
   return (
     <div className="ml-fade">
       <PageHead kicker="LEGAL" title={<>Your information,<br /><RedWord>handled plainly.</RedWord></>}

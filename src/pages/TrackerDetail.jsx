@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { B, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, FAQS, getBundleSavings } from "../data.js";
-import { PageHead, usePageMeta, useJsonLd, DashboardMock, FaqAccordion, Reveal, PromoBanner } from "../ui.jsx";
+import { PageHead, usePageMeta, useJsonLd, DashboardMock, FaqAccordion, Reveal, PromoBanner, Picture } from "../ui.jsx";
+import { trackerMeta } from "../seo.js";
 import { trackBuyClicked } from "../analytics.js";
 
 // Real, uncropped tabs from the sheet itself, as a slideshow — used instead
@@ -15,8 +16,8 @@ function ProductGallery({ images, name }) {
   return (
     <div style={{ marginBottom: 22 }}>
       <div style={{ position: "relative" }}>
-        <img
-          src={current.src} alt={`${name} — ${current.label}`}
+        <Picture
+          eager src={current.src} alt={`${name} — ${current.label}`}
           style={{
             width: "100%", borderRadius: 12, display: "block",
             border: `1px solid ${B.line}`, aspectRatio: "2 / 1", objectFit: "contain", background: B.black3,
@@ -152,9 +153,10 @@ export default function TrackerDetail() {
   const { slug } = useParams();
   const product = PRODUCTS.find((p) => p.slug === slug);
 
-  usePageMeta({
-    title: product ? `${product.name} | MapleSheet Co.` : "Tracker not found | MapleSheet Co.",
-    description: product ? (product.longDescription || product.desc).slice(0, 155) : "This tracker couldn't be found.",
+  usePageMeta(product ? trackerMeta(product) : {
+    title: "Tracker not found | MapleSheet Co.",
+    description: "This tracker couldn't be found.",
+    noindex: true,
   });
 
   useJsonLd(product ? {
@@ -237,8 +239,8 @@ export default function TrackerDetail() {
           {product.gallery ? (
             <ProductGallery images={product.gallery} name={product.name} />
           ) : product.screenshot ? (
-            <img
-              src={product.screenshot} alt={`${product.name} dashboard screenshot`}
+            <Picture
+              eager src={product.screenshot} alt={`${product.name} dashboard screenshot`}
               style={{
                 width: "100%", borderRadius: 12, marginBottom: 22, display: "block",
                 border: `1px solid ${B.line}`, aspectRatio: "2 / 1", objectFit: "contain", background: B.black3,

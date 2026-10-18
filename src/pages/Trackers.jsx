@@ -3,15 +3,13 @@ import { Link } from "react-router-dom";
 import { B, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, getBundleSavings } from "../data.js";
 import { PageHead, RedWord, usePageMeta, useJsonLd, Reveal, PromoBanner } from "../ui.jsx";
 import { trackBuyClicked } from "../analytics.js";
+import { STATIC_META } from "../seo.js";
 
 const SITE_URL = "https://www.maplesheet.ca";
 const FILTERS = ["All", "TFSA", "RRSP", "RESP", "FHSA", "Margin", "Combo", "Flagship"];
 
 export default function Trackers() {
-  usePageMeta({
-    title: "TFSA, RRSP, RESP, FHSA & Margin Trackers | MapleSheet Co.",
-    description: `${PRODUCTS.length} Google Sheets trackers for TFSA, RRSP, RESP, FHSA & Margin accounts. One-time purchase, live prices, no subscription.`,
-  });
+  usePageMeta(STATIC_META["/trackers"]);
   // Product schema for all trackers — this page is where they're all
   // listed, so each tracker gets its own Product entry in one @graph block.
   // Combo/Flagship products additionally carry a `url` pointing at their own

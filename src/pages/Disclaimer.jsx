@@ -1,6 +1,7 @@
 import React from "react";
 import { B, CONFIG } from "../data.js";
 import { PageHead, RedWord, usePageMeta, Reveal } from "../ui.jsx";
+import { STATIC_META } from "../seo.js";
 
 const SECTIONS = [
   {
@@ -76,10 +77,7 @@ const SECTIONS = [
 ];
 
 export default function Disclaimer() {
-  usePageMeta({
-    title: "Disclaimer — MapleSheet Co.",
-    description: "MapleSheet Co.'s trackers and guides are educational tools, not financial, tax, or legal advice. Read the full disclaimer before relying on any figure for a real decision.",
-  });
+  usePageMeta(STATIC_META["/disclaimer"]);
   return (
     <div className="ml-fade">
       <PageHead kicker="LEGAL" title={<>Not advice.<br /><RedWord>Just a better spreadsheet.</RedWord></>}

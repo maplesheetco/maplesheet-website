@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { B, CONFIG, RESOURCES } from "../data.js";
-import { PageHead, RedWord, usePageMeta, Reveal } from "../ui.jsx";
+import { PageHead, RedWord, usePageMeta, Reveal, Picture } from "../ui.jsx";
+import { STATIC_META } from "../seo.js";
 import { trackNewsletterSubscribed } from "../analytics.js";
 
 const ML_FORM_ID = "44245461";
@@ -754,10 +755,7 @@ export function NewsletterBox({
 }
 
 export default function Resources() {
-  usePageMeta({
-    title: "Canadian Investing Guides — TFSA, RRSP, RESP & FHSA | MapleSheet Co.",
-    description: "Plain-English guides to TFSA vs. RRSP, RESP & CESG grants, and the FHSA — written for Canadian investors who want to stop guessing and start tracking.",
-  });
+  usePageMeta(STATIC_META["/resources"]);
   // An article/video appears automatically once its `date` arrives — no need to
   // flip `live` by hand. `live: false` is still respected as a hard override for
   // content that truly isn't ready yet (e.g. a video with no youtubeId set),
@@ -791,7 +789,7 @@ export default function Resources() {
               ) : r.title}
             </h2>
             {r.image && (
-              <img src={r.image} alt={r.title} style={{
+              <Picture eager={i === 0} src={r.image} alt={r.title} style={{
                 width: "100%", borderRadius: 12, marginBottom: 16, display: "block",
                 border: `1px solid ${B.line}`, aspectRatio: "1200 / 630", objectFit: "cover",
               }} />

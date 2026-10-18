@@ -11,6 +11,8 @@ import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import Disclaimer from "./pages/Disclaimer.jsx";
 import Privacy from "./pages/Privacy.jsx";
+import NotFound from "./pages/NotFound.jsx";
+import { STATIC_META } from "./seo.js";
 // FreeTools pulls in the recharts-powered calculator (~100KB+ gzipped) — lazy-load
 // it so that weight only downloads for people who actually visit /tools, not on
 // every page of the site.
@@ -173,10 +175,7 @@ function useHeroPin({ sectionRef, textRef, galleryRef }) {
 }
 
 function Home() {
-  usePageMeta({
-    title: "MapleSheet Co. — Canadian TFSA, RRSP & RESP Trackers",
-    description: "Google Sheets trackers built for the Canadian system — TFSA, RRSP, RESP, FHSA & Margin. Live prices, one-time purchase, no subscription.",
-  });
+  usePageMeta(STATIC_META["/"]);
   const featured = PRODUCTS.filter((p) => p.badge);
   const latest = RESOURCES[0];
   const [demoTab, setDemoTab] = useState(0);
@@ -455,7 +454,7 @@ export default function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/disclaimer" element={<Disclaimer />} />
             <Route path="/privacy" element={<Privacy />} />
-            <Route path="*" element={<Home />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <Footer />
