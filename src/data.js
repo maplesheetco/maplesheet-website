@@ -342,8 +342,69 @@ export const PRODUCTS = [
       { icon: "📄", label: "RRSP Government Rules PDF", desc: "A 20+ section plain-English reference to CRA's actual RRSP rules — contribution limits, HBP, LLP, spousal attribution, RRIF conversion, and more — so you're not hunting through canada.ca mid-tax-season." },
     ],
   },
-  { name: "RESP Tracker", tag: "RESP", price: 14.99, url: "https://www.etsy.com/listing/4530779418", directUrl: "https://payhip.com/b/w8PXD", desc: "CESG grants, up to 4 beneficiaries", screenshot: "/screenshots/resp.jpg", sku: "MS-RESP-01",
-    bestFor: "Parents tracking CESG grants for up to 4 kids." },
+  {
+    name: "RESP Tracker", tag: "RESP", price: 14.99,
+    url: "https://www.etsy.com/listing/4530779418", directUrl: "https://payhip.com/b/w8PXD",
+    desc: "CESG grants, up to 4 beneficiaries",
+    // Real tabs from your actual P7 sheet, cropped to the parts whose
+    // numbers check out (sample children Ervin and Ellamae). Portfolio,
+    // Analysis, Dividend Tracker and the CESG Grant Guide are left out for
+    // now: +306% gain on sample data, a limit check that says $44,000 and
+    // $45,000 remaining (each child has $47,500 left), a $2,168 projection
+    // that assumes $2,000 of CESG a year, and "over 18 years that's $7,200"
+    // (see resp/sheet-fixes.md).
+    gallery: [
+      { src: "/screenshots/resp-gallery-1-cesg-per-child.jpg", label: "RESP Tracker — CESG received and remaining for each child, with the last eligible year worked out from their date of birth" },
+      { src: "/screenshots/resp-gallery-2-beneficiaries.jpg", label: "Settings & Goals — up to 4 beneficiary panels: name, date of birth, contribution goal and CESG received" },
+    ],
+    screenshot: "/screenshots/resp.jpg",
+    slug: "resp-tracker", accounts: ["RESP"], sku: "MS-RESP-01",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URxnoJYx6fAMdIU4cpTd6ON",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery links. sheetUrl is the "/copy" URL from your uploaded
+    // P7_Template_Link.pdf. ⚠️ Lino — double-check this sheet's Share
+    // settings are "Anyone with the link" → Viewer, and confirm the Payment
+    // Link's metadata (key "sku" = "MS-RESP-01") and its "After
+    // the payment" redirect to https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1wOVElw8mMhbNScVB0-cNtCgnXtnreoOG3BaA0Bkxp3Q/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/resp-template-link.pdf" },
+        { label: "Clear Sample Data Guide", url: "/downloads/resp-clear-sample-data-guide.pdf" },
+        { label: "Complete Setup Guide", url: "/downloads/resp-complete-setup-guide.pdf" },
+        { label: "RESP Guide", url: "/downloads/resp-guide.pdf" },
+      ],
+    },
+    bestFor: "Parents tracking CESG grants for up to 4 kids.",
+    longDescription: "A Google Sheets RESP tracker for Canadian parents: CESG grants tracked per child for up to 4 children, live prices, automatic ACB and a $50,000 lifetime limit check, all in one sheet.",
+    overview: [
+      "The Canada Education Savings Grant is free money, but it's easy to leave some on the table. Did you contribute the $2,500 that earns each child the full $500 this year? How much of the $7,200 lifetime grant has each child collected, and how many eligible years are left before they turn 17? With more than one child, and grants arriving weeks after you contribute, most parents lose track somewhere between their bank and their RESP statement.",
+      "The RESP Tracker keeps it all in one Google Sheet, 9 tabs, built around a single Transaction Log. Enter a contribution, a buy, a CESG grant or a distribution once and every tab updates automatically. The RESP Tracker tab shows CESG received and remaining for each of up to 4 children, with their last eligible year worked out from their date of birth.",
+      "The RESP Portfolio fills in with live GOOGLEFINANCE prices, weighted-average ACB and gain/loss, with 2 charts built in. The Main Dashboard shows your portfolio value, contributions and grants at a glance, the Dividend Tracker follows distributions and grants through the year, and Analysis & Reco checks the $50,000 lifetime limit and gives 6 smart tips. Settings & Goals holds each child's details, with 12 RESP rules and a year-end checklist built in.",
+    ],
+    whoFor: "Canadian parents and grandparents saving in an RESP for one to four children who want every child's CESG, contributions and investments tracked properly, without piecing it together from statements.",
+    features: [
+      "CESG tracked per child for up to 4 beneficiaries: received, remaining and the $7,200 lifetime maximum",
+      "Each child's last CESG year calculated automatically from their date of birth",
+      "$50,000 lifetime contribution limit check per child, so you never over-contribute",
+      "Main Dashboard: portfolio value, CESG received, contributions and your last 5 transactions, with 2 charts",
+      "RESP Portfolio with live prices via GOOGLEFINANCE and automatic weighted-average ACB and gain/loss",
+      "2 charts built in: holdings allocation and market value vs. cost basis",
+      "Dividend Tracker: monthly distributions, CESG received this year, DRIP tracking and an annual run-rate",
+      "Transaction types for every RESP event: contributions, CESG grants, buys, distributions, DRIP, EAPs and withdrawals",
+      "Settings & Goals with 4 beneficiary panels, 12 RESP rules and a year-end checklist",
+      "One Transaction Log drives all 9 tabs. Enter a transaction once and everything updates automatically",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, plus a 5-step quick start, what to enter for each child and a tour of all 9 tabs." },
+      { icon: "📄", label: "Clear Sample Data Guide PDF", desc: "A step-by-step walkthrough for safely clearing the 8 sample transactions before you add your own, without breaking a formula." },
+      { icon: "📄", label: "Complete Setup Guide PDF", desc: "Every Transaction Log column, every transaction type, how to log CESG grants and the GOOGLEFINANCE ticker format." },
+      { icon: "📄", label: "RESP Guide PDF", desc: "CESG rules including catch-up and the age 16–17 rule, the $50,000 limit, EAPs and withdrawals, and what to hold as school gets closer." },
+    ],
+  },
   { name: "FHSA Tracker", tag: "FHSA", price: 14.99, url: "https://www.etsy.com/listing/4534938230", directUrl: "https://payhip.com/b/dEXy3", desc: "First Home Savings, Line 20805 tax dashboard", screenshot: "/screenshots/fhsa.jpg", sku: "MS-FHSA-01",
     bestFor: "Saving toward a first home, FHSA on its own." },
   {
