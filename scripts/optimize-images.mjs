@@ -1,6 +1,7 @@
 // Runs after every build (see "postbuild" in package.json). Makes a small
 // .webp copy of every screenshot and article banner in dist/, next to the
-// original — e.g. dist/resources/foo.png → dist/resources/foo.webp.
+// original — e.g. dist/resources/foo.png → dist/resources/foo.webp — plus a
+// 640px-wide foo-640.webp for small card images.
 // The <Picture> component in src/ui.jsx serves these copies to visitors.
 //
 // Why: the originals are 1-2 MB each (the Resources page alone was ~18 MB).
@@ -30,6 +31,10 @@ for (const [folder, maxWidth] of Object.entries(FOLDERS)) {
       .resize({ width: maxWidth, withoutEnlargement: true })
       .webp({ quality: 80 })
       .toFile(src.replace(/\.(png|jpe?g)$/i, ".webp"));
+    await sharp(src)
+      .resize({ width: 640, withoutEnlargement: true })
+      .webp({ quality: 78 })
+      .toFile(src.replace(/\.(png|jpe?g)$/i, "-640.webp"));
     before += statSync(src).size;
     after += info.size;
     count += 1;

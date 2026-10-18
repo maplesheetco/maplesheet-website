@@ -9,6 +9,7 @@
 //   3. By api/sitemap.js, which builds sitemap.xml fresh on request.
 // Plain JS (no JSX) on purpose: Node imports this file directly.
 import { PRODUCTS, RESOURCES } from "./data.js";
+import { CATALOG, cardImage } from "./trackerPages.js";
 
 export const SITE_URL = "https://www.maplesheet.ca";
 export const DEFAULT_OG_IMAGE = "/og.png";
@@ -68,7 +69,7 @@ export function trackerMeta(product) {
   return {
     title: `${product.name} | MapleSheet Co.`,
     description: metaDescription(product.longDescription || product.desc),
-    image: product.gallery?.[0]?.src || product.screenshot || DEFAULT_OG_IMAGE,
+    image: cardImage(product) || DEFAULT_OG_IMAGE,
   };
 }
 
@@ -86,7 +87,7 @@ export function isLiveArticle(r, today = new Date()) {
   return r.type === "article" && r.slug && r.live !== false && new Date(r.date) <= today;
 }
 
-export const trackerPages = () => PRODUCTS.filter((p) => p.slug);
+export const trackerPages = () => CATALOG.filter((p) => p.slug);
 // Every article with a page, including ones scheduled for a future date —
 // the build writes their page ahead of time so it's already there the day
 // the article goes live (until then the page itself shows "Guide not found").
@@ -106,8 +107,8 @@ export function buildSitemapXml(today = new Date()) {
     { loc: "/disclaimer", changefreq: "yearly", priority: "0.3" },
     { loc: "/privacy", changefreq: "yearly", priority: "0.3" },
   ];
-  // Combo/Flagship trackers each have their own /trackers/:slug page;
-  // single-account trackers are catalog-only (see src/pages/Trackers.jsx).
+  // Every tracker with a slug (in data.js or src/trackerPages.js) has its
+  // own /trackers/:slug page.
   const productPages = trackerPages().map((p) => ({
     loc: `/trackers/${p.slug}`,
     changefreq: "monthly",
