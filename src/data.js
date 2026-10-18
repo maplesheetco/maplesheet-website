@@ -228,24 +228,71 @@ export const PRODUCTS = [
     bestFor: "Saving toward a first home, FHSA on its own." },
   { name: "Margin Account Tracker", tag: "Margin", price: 14.99, url: "https://www.etsy.com/listing/4534229751", directUrl: "https://payhip.com/b/yKoBQ", desc: "ACB, capital gains tax dashboard", screenshot: "/screenshots/margin.jpg", sku: "MS-MARGIN-01",
     bestFor: "A taxable account where you need ACB and capital gains handled." },
-  // ⚠️ Lino: double-check this one — you sent "fSgIz" (capital I), earlier test-purchase record shows "fSglz" (lowercase l). Same-looking chars, please verify against your Payhip dashboard before publishing.
   {
     name: "TFSA + RRSP Tracker", tag: "Combo", price: 19.99,
     url: "https://www.etsy.com/listing/4522093988", directUrl: "https://payhip.com/b/fSgIz",
     desc: "Our original — both registered accounts, one sheet",
+    // Real tabs from your actual P1 v2 sheet. Numbers shown (e.g. $111,290
+    // combined net worth, $1,630 YTD dividends) are illustrative sample data,
+    // not a real account. The TFSA Portfolio, RRSP Portfolio, Transaction Log
+    // and Portfolio Charts screenshots are left out for now: their tables
+    // render with the columns stacked, and the RRSP totals and chart
+    // percentages don't add up (see tfsa-rrsp/sheet-fixes.md).
+    gallery: [
+      { src: "/screenshots/tfsa-rrsp-gallery-1-main-dashboard.jpg", label: "Main Dashboard — combined TFSA + RRSP net worth, contribution room for both accounts, YTD income & your last 5 transactions" },
+      { src: "/screenshots/tfsa-rrsp-gallery-2-contribution-room.jpg", label: "Contribution Room Tracker — TFSA and RRSP room auto-calculated, over-contribution alert & the TFSA withdrawal rule explained" },
+      { src: "/screenshots/tfsa-rrsp-gallery-3-dividend-tracker.jpg", label: "Dividend Tracker — monthly TFSA + RRSP income, DRIP shares, annual run-rate & your top dividend payers" },
+      { src: "/screenshots/tfsa-rrsp-gallery-4-settings-goals.jpg", label: "Settings & Goals — your TFSA and RRSP limits, annual goals & CRA quick reference rules built in" },
+    ],
+    screenshot: "/screenshots/tfsa-rrsp-gallery-1-main-dashboard.jpg",
     slug: "tfsa-rrsp", accounts: ["TFSA", "RRSP"], sku: "MS-COMBO-TFSA-RRSP",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URxQ4JYx6fAMdIUr0MgMuKt",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery links. sheetUrl is the "/copy" URL from your uploaded
+    // P1 v2 Template Link PDF. ⚠️ Lino — double-check this sheet's Share
+    // settings are "Anyone with the link" → Viewer, and confirm the Payment
+    // Link's metadata (key "sku" = "MS-COMBO-TFSA-RRSP") and its "After
+    // the payment" redirect to https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1G0NG5VVzYqutyNQ248sbnDv6lHCl6f_SaKlAu0YHvL4/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/tfsa-rrsp-template-link.pdf" },
+        { label: "Clear Sample Data Guide", url: "/downloads/tfsa-rrsp-clear-sample-data-guide.pdf" },
+        { label: "Complete Setup Guide", url: "/downloads/tfsa-rrsp-complete-setup-guide.pdf" },
+        { label: "TFSA Guide", url: "/downloads/tfsa-rrsp-tfsa-guide.pdf" },
+        { label: "RRSP Guide", url: "/downloads/tfsa-rrsp-rrsp-guide.pdf" },
+      ],
+    },
     bestFor: "Anyone contributing to both a TFSA and RRSP regularly.",
     longDescription: "The two accounts almost every Canadian investor ends up using, run side by side in one sheet instead of two separate ones you have to cross-reference by hand. This is the bundle most people upgrade to once they're contributing to both a TFSA and an RRSP regularly.",
-    features: [
-      "TFSA and RRSP contribution room tracked separately, side by side",
-      "Live prices via GOOGLEFINANCE for both accounts",
-      "Automatic ACB and capital gains, calculated per account",
-      "One combined net worth view across both accounts",
+    overview: [
+      "Most Canadian investors end up with both a TFSA and an RRSP, often at different brokerages, each with its own screen and its own contribution limit. Neither one shows your combined net worth, how much room you have left in the other account, or whether a TFSA withdrawal you made in the spring means you can't put it back until January. That picture usually gets rebuilt from statements and CRA My Account, or found out the hard way with an over-contribution letter.",
+      "The TFSA + RRSP Tracker puts both accounts in one Google Sheet, 9 tabs, built around a single Transaction Log. Enter a contribution, a buy, a dividend or a DRIP once, choose TFSA or RRSP, and every tab updates automatically. The Main Dashboard rolls both accounts into one combined net worth, shows the contribution room left in each, totals your year-to-date income and lists your last 5 transactions.",
+      "Each account is tracked the way it actually works. The TFSA Portfolio and RRSP Portfolio fill in with live GOOGLEFINANCE prices, weighted-average ACB and gain/loss, with 2 charts each; the RRSP handles CAD and USD holdings together with live FX conversion, because that's where US dividend stocks belong under the Canada-US tax treaty. The Dividend Tracker shows monthly income across both accounts with DRIP and an annual run-rate, and Analysis & Reco flags over-contributions before CRA does.",
     ],
-    demo: { total: "43,890", ytd: "+11.2%", accounts: [
-      { label: "TFSA", value: "16,568", change: "+12.4%" },
-      { label: "RRSP", value: "27,322", change: "+9.1%" },
-    ] },
+    whoFor: "Canadian DIY investors contributing to both a TFSA and an RRSP, who want one combined net worth, both contribution limits and every dividend tracked in one sheet instead of two brokerage screens and a CRA My Account login.",
+    features: [
+      "TFSA and RRSP tracked as two separate portfolios, with one combined net worth on the Main Dashboard",
+      "Contribution room for both accounts calculated from your Transaction Log, with room remaining always visible",
+      "Over-contribution alerts for both accounts, plus the TFSA rule that withdrawals only restore room on January 1 of the next year",
+      "RRSP Portfolio handles CAD + USD holdings together with live FX conversion, built for holding US dividend stocks where the treaty spares them the 15% US withholding",
+      "Live prices via GOOGLEFINANCE and automatic weighted-average ACB and gain/loss in both portfolios",
+      "2 charts per portfolio: holdings allocation and market value vs. cost basis, built automatically",
+      "Dividend Tracker across both accounts: monthly income chart, DRIP tracking, top payers and an annual run-rate",
+      "Settings & Goals for your TFSA limit, RRSP deduction limit, annual contribution and dividend goals, with CRA quick-reference rules",
+      "Analysis & Reco tab: portfolio snapshot, over-contribution check and smart TFSA/RRSP tips",
+      "One Transaction Log drives all 9 tabs. Enter a transaction once and everything updates automatically",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, plus a 5-step quick start, what to enter in Settings and a tour of all 9 tabs." },
+      { icon: "📄", label: "Clear Sample Data Guide PDF", desc: "A step-by-step walkthrough for safely clearing the sample data before you add your own, without breaking a formula." },
+      { icon: "📄", label: "Complete Setup Guide PDF", desc: "Every Transaction Log column, every transaction type and the GOOGLEFINANCE ticker format for Canadian and US stocks." },
+      { icon: "📄", label: "TFSA Guide PDF", desc: "TFSA limits from 2009 to 2026, withdrawal and over-contribution rules, and which investments belong in a TFSA." },
+      { icon: "📄", label: "RRSP Guide PDF", desc: "2026 RRSP limits and deadline, the Home Buyers' Plan, the Canada-US treaty on US dividends, and what to hold in an RRSP." },
+    ],
   },
   {
     name: "RRSP + Spousal RRSP Tracker", tag: "Combo", price: 19.99,
