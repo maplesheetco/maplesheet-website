@@ -10,6 +10,12 @@ export const CONFIG = {
   affiliateUrl: "https://payhip.com/auth/register/af6a64b512341ea",
   promoCode: "MAPLE25",
   promoText: "25% off everything with code MAPLE25",
+  // Promo auto-retires after this instant — the <PromoBanner> in ui.jsx
+  // stops rendering once the visitor's clock passes it, no redeploy needed.
+  // Set to Jan 16, 2027, 11:59 PM Eastern (-05:00, since mid-January is
+  // outside Daylight Saving Time in Toronto). ⚠️ Lino — if you meant a
+  // different time zone, update the offset here.
+  promoExpiresAt: "2027-01-16T23:59:00-05:00",
   freeToolUrl: "https://claude.ai/public/artifacts/1620ddd7-219c-4052-8557-2a8c6d63e7fb",
   // Web3Forms: create a free access key at https://web3forms.com (enter hello@maplesheet.ca)
   // and paste it below to activate the contact + newsletter forms:
