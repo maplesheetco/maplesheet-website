@@ -226,8 +226,68 @@ export const PRODUCTS = [
     bestFor: "Parents tracking CESG grants for up to 4 kids." },
   { name: "FHSA Tracker", tag: "FHSA", price: 14.99, url: "https://www.etsy.com/listing/4534938230", directUrl: "https://payhip.com/b/dEXy3", desc: "First Home Savings, Line 20805 tax dashboard", screenshot: "/screenshots/fhsa.jpg", sku: "MS-FHSA-01",
     bestFor: "Saving toward a first home, FHSA on its own." },
-  { name: "Margin Account Tracker", tag: "Margin", price: 14.99, url: "https://www.etsy.com/listing/4534229751", directUrl: "https://payhip.com/b/yKoBQ", desc: "ACB, capital gains tax dashboard", screenshot: "/screenshots/margin.jpg", sku: "MS-MARGIN-01",
-    bestFor: "A taxable account where you need ACB and capital gains handled." },
+  {
+    name: "Margin Account Tracker", tag: "Margin", price: 14.99,
+    url: "https://www.etsy.com/listing/4534229751", directUrl: "https://payhip.com/b/yKoBQ",
+    desc: "ACB, capital gains tax dashboard",
+    // Real tabs from your actual P8 sheet. Numbers shown (e.g. $148.50 monthly
+    // interest) are illustrative sample data, not a real account. The Margin
+    // Portfolio, Tax Dashboard, Settings, CRA Tax Rules and Break-Even Yield
+    // screenshots are left out for now: they repeat the "deduction ceiling =
+    // net investment income" rule (not a Canadian rule) or show sample
+    // numbers that don't add up (see margin/sheet-fixes.md).
+    gallery: [
+      { src: "/screenshots/margin-gallery-1-margin-interest.jpg", label: "Margin Interest Tracker — monthly interest chart, year-to-date total & your Line 22100 deduction, filled in from your Transaction Log" },
+      { src: "/screenshots/margin-gallery-2-transaction-log.jpg", label: "Transaction Log — the one tab you type into: deposits, buys, dividends & monthly margin interest" },
+    ],
+    // Kept as the catalog card picture until the sheet's dashboard
+    // screenshots are fixed.
+    screenshot: "/screenshots/margin.jpg",
+    slug: "margin-account-tracker", accounts: ["Margin"], sku: "MS-MARGIN-01",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URxcTJYx6fAMdIU20SXRL8n",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery links. sheetUrl is the "/copy" URL from your uploaded
+    // P8_Template_Link.pdf. ⚠️ Lino — double-check this sheet's Share
+    // settings are "Anyone with the link" → Viewer, and confirm the Payment
+    // Link's metadata (key "sku" = "MS-MARGIN-01") and its "After
+    // the payment" redirect to https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/13_VqbZm08_CvNIPAAhbJ1upSOvxyi9x82q-zouc1w0o/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/margin-template-link.pdf" },
+        { label: "Clear Sample Data Guide", url: "/downloads/margin-clear-sample-data-guide.pdf" },
+        { label: "Margin Account Guide", url: "/downloads/margin-account-guide.pdf" },
+      ],
+    },
+    bestFor: "A taxable account where you need ACB and capital gains handled.",
+    longDescription: "A margin account tracker for Canadians: automatic ACB and capital gains, the Line 22100 interest deduction, and the break-even yield to cover your borrowing.",
+    overview: [
+      "A margin account is the one place where your broker's screens tell you the least about what CRA actually wants. Your adjusted cost base drifts with every buy, DRIP and partial sale, the T5008 slip often doesn't show your true cost, and the monthly interest charges you can deduct are scattered across a year of statements. On top of that, nothing tells you the one number that matters with leverage: whether your dividends are actually covering what you pay to borrow.",
+      "The Margin Account Tracker puts it all in one Google Sheet, 9 tabs, built around a single Transaction Log. Enter a deposit, a buy, a sale, a dividend or a monthly margin interest charge once, and every tab updates automatically. The Margin Portfolio fills in with live GOOGLEFINANCE prices and weighted-average ACB, and the Main Dashboard puts your portfolio value, interest paid, dividends received and break-even yield side by side.",
+      "The tax side is done as you go, not every April. The Margin Interest tab charts every month's charge and totals your Line 22100 carrying charges; the Tax Dashboard works out your realized capital gains at the 50% inclusion rate for Schedule 3 and your eligible dividends with the gross-up and dividend tax credit. The Dividend Tracker shows your income net of interest, and Analysis & Reco flags when interest is outrunning your dividends, with 6 built-in tips.",
+    ],
+    whoFor: "Canadian investors using a margin or other non-registered account, whether borrowing to invest or simply investing past their TFSA and RRSP room, who want ACB, capital gains, dividend income and the interest deduction tracked properly instead of rebuilt from statements at tax time.",
+    features: [
+      "Automatic weighted-average ACB on every buy, sell, DRIP and transfer, the way CRA requires",
+      "Tax Dashboard: realized capital gains at the 50% inclusion rate (Schedule 3, Line 12700) and eligible dividends with the gross-up and dividend tax credit",
+      "Margin Interest tab: a monthly interest chart and your year-to-date Line 22100 carrying charges, filled in from your Transaction Log",
+      "Break-even yield: the dividend yield your portfolio needs to cover your borrowing cost, compared with what it actually yields",
+      "Net income after interest, so you can see at a glance whether your leverage is paying off",
+      "Margin Portfolio with live prices via GOOGLEFINANCE, gain/loss, and 2 charts: holdings allocation and market value vs. cost basis",
+      "Dividend Tracker: monthly dividends, DRIP tracking and an annual run-rate",
+      "Settings & Goals for your margin rate, borrowed balance and income goals, with CRA rules and a year-end checklist built in",
+      "Analysis & Reco tab: interest vs. dividend alert, break-even check and 6 tips",
+      "One Transaction Log drives all 9 tabs. Enter a transaction once and everything updates automatically",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, plus a 5-step setup and a tour of all 9 tabs." },
+      { icon: "📄", label: "Clear Sample Data Guide PDF", desc: "A step-by-step walkthrough for safely clearing the 8 sample transactions before you add your own, without breaking a formula." },
+      { icon: "📄", label: "Margin Account Guide PDF", desc: "How margin interest works, the Line 22100 deduction, break-even yield with worked examples, 2026 CRA rules for gains, dividends and superficial losses, and what to hold." },
+    ],
+  },
   {
     name: "TFSA + RRSP Tracker", tag: "Combo", price: 19.99,
     url: "https://www.etsy.com/listing/4522093988", directUrl: "https://payhip.com/b/fSgIz",
