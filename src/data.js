@@ -250,8 +250,38 @@ export const PRODUCTS = [
   {
     name: "RRSP + Spousal RRSP Tracker", tag: "Combo", price: 19.99,
     url: "https://www.etsy.com/listing/4535354991", directUrl: "https://payhip.com/b/mdRzx",
-    desc: "Income splitting, attribution rules, Line 208",
-    slug: "rrsp-spousal-rrsp", accounts: ["RRSP"], screenshot: "/screenshots/combined-rrsp.jpg", sku: "MS-COMBO-RRSP-SPOUSAL",
+    desc: "Income splitting, attribution rules, Line 20800",
+    // Real tabs from your actual P11 sheet. Numbers shown (e.g. $21,945
+    // combined, $8,000 spousal contribution) are illustrative sample data,
+    // not a real account. The Income Splitting and Tax Dashboard tabs are
+    // left out for now: those screenshots still show the old Line 208 name,
+    // last year's federal brackets and an inflated ~$10,800 savings figure.
+    gallery: [
+      { src: "/screenshots/rrsp-spousal-gallery-1-combined-dashboard.jpg", label: "Combined Dashboard — your RRSP and spousal RRSP side by side: market value, cost basis, gain/loss, allocation charts & contribution room" },
+      { src: "/screenshots/rrsp-spousal-gallery-2-both-portfolios.jpg", label: "Both RRSP Portfolios — live prices, ACB & gain/loss for each account, plus your household balance ratio" },
+      { src: "/screenshots/rrsp-spousal-gallery-3-transaction-log.jpg", label: "Transaction Log — one log for both accounts, the only tab you type into" },
+      { src: "/screenshots/rrsp-spousal-gallery-4-settings-goals.jpg", label: "Settings & Goals — contributor + annuitant setup, attribution safe-withdrawal year & CRA rules built in" },
+      { src: "/screenshots/rrsp-spousal-gallery-5-analysis-reco.jpg", label: "Analysis & Reco — household snapshot, income gap analysis & 6 spousal RRSP recommendations" },
+    ],
+    screenshot: "/screenshots/rrsp-spousal-gallery-1-combined-dashboard.jpg",
+    slug: "rrsp-spousal-rrsp", accounts: ["RRSP"], sku: "MS-COMBO-RRSP-SPOUSAL",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URxJcJYx6fAMdIURFhKdZfA",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery links. sheetUrl is the "/copy" URL from your uploaded
+    // P11_Template_Link.pdf. ⚠️ Lino — double-check this sheet's Share
+    // settings are "Anyone with the link" → Viewer, and confirm the Payment
+    // Link's metadata (key "sku" = "MS-COMBO-RRSP-SPOUSAL") and its "After
+    // the payment" redirect to https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/10SExmlnxh_xoE5NTlcrQgzu9oHmjoxM2kPsJvYXbSho/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/rrsp-spousal-template-link.pdf" },
+        { label: "Clear Sample Data Guide", url: "/downloads/rrsp-spousal-clear-sample-data-guide.pdf" },
+        { label: "CRA Rules & Complete Guide", url: "/downloads/rrsp-spousal-cra-tax-guide.pdf" },
+      ],
+    },
     bestFor: "Couples splitting retirement income through a spousal RRSP.",
     // This is really two RRSPs (yours + spousal), but `accounts` above stays
     // ["RRSP"] since that's what drives the single "RRSP guide" link — this
@@ -263,17 +293,14 @@ export const PRODUCTS = [
     // deduction limit guide), so this product also needs its own
     // spousal-specific guide surfaced on its detail page.
     extraGuide: { slug: "spousal-rrsp-income-splitting", label: "Spousal RRSP income splitting guide" },
-    longDescription: "Built for couples using a spousal RRSP to split retirement income and lower their combined household tax bill. Tracks both RRSPs independently while keeping the attribution rules and Line 208 reporting straight, so you're not guessing which contribution belongs to which return at tax time.",
+    longDescription: "Built for couples using a spousal RRSP to split retirement income and lower their combined household tax bill. Tracks both RRSPs independently while keeping the attribution rules and Line 20800 reporting straight, so you're not guessing which contribution belongs to which return at tax time.",
     features: [
       "Separate room and deduction-limit tracking for each spouse's RRSP",
       "Spousal attribution rules built in, not left for you to remember",
-      "Line 208 tax dashboard for both accounts",
+      "Attribution Tracker shows which years are safe to withdraw and the exact safe date",
+      "Line 20800 tax dashboard for both accounts",
       "Combined household net worth view",
     ],
-    demo: { total: "47,167", ytd: "+8.8%", accounts: [
-      { label: "RRSP", value: "27,322", change: "+9.1%" },
-      { label: "Spousal RRSP", value: "19,845", change: "+8.4%" },
-    ] },
   },
   {
     name: "TFSA + Margin Linked Tracker", tag: "Combo", price: 24.99,
