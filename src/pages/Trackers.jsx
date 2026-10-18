@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { B, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, getBundleSavings } from "../data.js";
-import { PageHead, RedWord, usePageMeta, useJsonLd, Reveal, PromoBanner } from "../ui.jsx";
+import { B, ACCOUNT_GUIDES, RETURN_POLICY, getBundleSavings } from "../data.js";
+import { PageHead, RedWord, usePageMeta, useJsonLd, Reveal, PromoBanner, Picture } from "../ui.jsx";
+import { CATALOG, cardImage } from "../trackerPages.js";
 import { trackBuyClicked } from "../analytics.js";
 import { STATIC_META } from "../seo.js";
 
@@ -22,12 +23,12 @@ export default function Trackers() {
   // general share image (og.png) for the few trackers without one yet.
   useJsonLd({
     "@context": "https://schema.org",
-    "@graph": PRODUCTS.map((p) => ({
+    "@graph": CATALOG.map((p) => ({
       "@type": "Product",
       name: p.name,
       description: p.desc,
       category: p.tag,
-      image: `${SITE_URL}${p.screenshot || "/og.png"}`,
+      image: `${SITE_URL}${cardImage(p) || "/og.png"}`,
       ...(p.sku ? { sku: p.sku } : {}),
       ...(p.slug ? { url: `${SITE_URL}/trackers/${p.slug}` } : {}),
       brand: { "@type": "Brand", name: "MapleSheet Co." },
@@ -45,10 +46,10 @@ export default function Trackers() {
     })),
   }, "trackers-product-schema");
   const [filter, setFilter] = useState("All");
-  const shown = filter === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.tag === filter);
+  const shown = filter === "All" ? CATALOG : CATALOG.filter((p) => p.tag === filter);
   return (
     <div className="ml-fade">
-      <PageHead kicker="THE LINEUP" title={<>{PRODUCTS.length} trackers. <RedWord>Every Canadian account.</RedWord></>}
+      <PageHead kicker="THE LINEUP" title={<>{CATALOG.length} trackers. <RedWord>Every Canadian account.</RedWord></>}
         sub="Start with one account, or track everything at once. All prices in CAD. One-time purchase — no subscription, ever." />
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "26px 24px 0" }}>
         <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginBottom: 28 }}>
@@ -66,6 +67,14 @@ export default function Trackers() {
             const flagship = p.badge === "FLAGSHIP";
             const guide = ACCOUNT_GUIDES[p.tag];
             const savings = getBundleSavings(p);
+            const image = cardImage(p);
+            const thumb = image && (
+              <Picture thumb src={image} alt={`${p.name} dashboard screenshot`} style={{
+                width: "100%", display: "block", borderRadius: 10, aspectRatio: "16 / 9",
+                objectFit: "cover", objectPosition: "top", background: B.black3,
+                border: `1px solid ${B.line}`, marginBottom: 4,
+              }} />
+            );
             return (
               <Reveal key={p.name} delay={Math.min(i * 50, 350)} className="ml-card" style={{
                 display: "flex", flexDirection: "column", gap: 10,
@@ -81,6 +90,7 @@ export default function Trackers() {
                     padding: "4px 10px", borderRadius: 999,
                   }}>{p.badge}</span>
                 )}
+                {thumb && (p.slug ? <Link to={`/trackers/${p.slug}`} aria-hidden="true" tabIndex={-1}>{thumb}</Link> : thumb)}
                 <span style={{ fontSize: 11, letterSpacing: "0.1em", color: B.gray, fontWeight: 700, textTransform: "uppercase" }}>{p.tag}</span>
                 {p.slug ? (
                   <Link to={`/trackers/${p.slug}`} style={{

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { B, PRODUCTS, ACCOUNT_GUIDES, RETURN_POLICY, FAQS, getBundleSavings } from "../data.js";
+import { B, ACCOUNT_GUIDES, RETURN_POLICY, FAQS, getBundleSavings } from "../data.js";
 import { PageHead, usePageMeta, useJsonLd, DashboardMock, FaqAccordion, Reveal, PromoBanner, Picture } from "../ui.jsx";
 import { trackerMeta } from "../seo.js";
+import { CATALOG, cardImage } from "../trackerPages.js";
 import { trackBuyClicked } from "../analytics.js";
 
 // Real, uncropped tabs from the sheet itself, as a slideshow — used instead
@@ -146,12 +147,11 @@ const SITE_URL = "https://www.maplesheet.ca";
 // Ultimate Tracker, etc.) — these products only ever appeared as catalog
 // cards on /trackers before, with no page of their own to rank for their
 // specific keyword ("TFSA multi-brokerage tracker Canada" and similar) or
-// to carry a full description, feature list, and Product schema. Only
-// products with a `slug` in data.js get a page here; single-account
-// trackers (TFSA Tracker, RRSP Tracker, etc.) are catalog-only by design.
+// to carry a full description, feature list, and Product schema. Products
+// with a `slug` (in data.js, or added in src/trackerPages.js) get a page.
 export default function TrackerDetail() {
   const { slug } = useParams();
-  const product = PRODUCTS.find((p) => p.slug === slug);
+  const product = CATALOG.find((p) => p.slug === slug);
 
   usePageMeta(product ? trackerMeta(product) : {
     title: "Tracker not found | MapleSheet Co.",
@@ -165,7 +165,7 @@ export default function TrackerDetail() {
     name: product.name,
     description: product.longDescription || product.desc,
     category: product.tag,
-    image: `${SITE_URL}${product.screenshot || "/og.png"}`,
+    image: `${SITE_URL}${cardImage(product) || "/og.png"}`,
     ...(product.sku ? { sku: product.sku } : {}),
     url: `${SITE_URL}/trackers/${product.slug}`,
     brand: { "@type": "Brand", name: "MapleSheet Co." },

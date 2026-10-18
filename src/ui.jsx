@@ -89,17 +89,18 @@ export function usePageMeta({ title, description, noindex = false }) {
 // scripts/optimize-images.mjs makes a small .webp copy of every one at build
 // time, and this serves that copy to browsers (all modern ones support it),
 // falling back to the original. Images load only when scrolled near, unless
-// `eager` is set (use it for the one image at the top of a page).
+// `eager` is set (use it for the one image at the top of a page). `thumb`
+// serves the 640px-wide copy instead, for small card images.
 // In `npm run dev` the .webp copies don't exist yet, so the original is used.
 const OPTIMIZED_IMAGE = /^\/(resources|screenshots)\/.+\.(png|jpe?g)$/i;
-export function Picture({ src, alt, eager = false, style, ...rest }) {
+export function Picture({ src, alt, eager = false, thumb = false, style, ...rest }) {
   const img = (
     <img src={src} alt={alt} loading={eager ? "eager" : "lazy"} decoding="async" style={style} {...rest} />
   );
   if (!import.meta.env.PROD || !OPTIMIZED_IMAGE.test(src || "")) return img;
   return (
     <picture style={{ display: "contents" }}>
-      <source type="image/webp" srcSet={src.replace(/\.(png|jpe?g)$/i, ".webp")} />
+      <source type="image/webp" srcSet={src.replace(/\.(png|jpe?g)$/i, thumb ? "-640.webp" : ".webp")} />
       {img}
     </picture>
   );
