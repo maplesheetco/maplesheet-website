@@ -124,8 +124,68 @@ export const PRODUCTS = [
       { icon: "📄", label: "TFSA Guide PDF", desc: "TFSA limits from 2009 to 2026, withdrawal and over-contribution rules, successor holders, and which investments belong in a TFSA." },
     ],
   },
-  { name: "RRSP Tracker", tag: "RRSP", price: 9.99, url: "https://www.etsy.com/listing/4529584584", directUrl: "https://payhip.com/b/DQS5l", desc: "Contribution room, live prices, ACB", sku: "MS-RRSP-01",
-    bestFor: "Tracking RRSP contribution room and deduction limit on their own." },
+  {
+    name: "RRSP Tracker", tag: "RRSP", price: 9.99,
+    url: "https://www.etsy.com/listing/4529584584", directUrl: "https://payhip.com/b/DQS5l",
+    desc: "Contribution room, live prices, ACB",
+    // Real tabs from your actual P6 sheet, cropped to the parts whose
+    // numbers check out. Figures are illustrative sample data. Portfolio,
+    // Transaction Log and Settings are left out for now: market value
+    // $68,450 on $10,258 cost (+567%), buys that add up to more than the
+    // $10,000 contributed, column headers stacked, and Settings still says
+    // the 2026 maximum is $32,490 (it's $33,810). See rrsp/sheet-fixes.md.
+    gallery: [
+      { src: "/screenshots/rrsp-gallery-1-dividend-tracker.jpg", label: "Dividend Tracker — monthly RRSP income chart, USD dividends converted to CAD, annual run-rate & US withholding at $0" },
+      { src: "/screenshots/rrsp-gallery-2-canada-us-treaty.jpg", label: "Canada-US tax treaty — US dividends in an RRSP have 0% US withholding, vs 15% lost in a TFSA" },
+    ],
+    screenshot: "/screenshots/rrsp-gallery-1-dividend-tracker.jpg",
+    slug: "rrsp-tracker", accounts: ["RRSP"], sku: "MS-RRSP-01",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1URxrwJYx6fAMdIUwOoAjtZZ",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    // Real delivery links. sheetUrl is the "/copy" URL from your uploaded
+    // P6_Template_Link.pdf. ⚠️ Lino — double-check this sheet's Share
+    // settings are "Anyone with the link" → Viewer, and confirm the Payment
+    // Link's metadata (key "sku" = "MS-RRSP-01") and its "After
+    // the payment" redirect to https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}.
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1yYG6m8rYcbTQSdctDBwXnwYVV1p-oWOzzht2I9QTbqo/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/rrsp-template-link.pdf" },
+        { label: "Clear Sample Data Guide", url: "/downloads/rrsp-clear-sample-data-guide.pdf" },
+        { label: "Complete Setup Guide", url: "/downloads/rrsp-complete-setup-guide.pdf" },
+        { label: "RRSP Guide", url: "/downloads/rrsp-guide.pdf" },
+      ],
+    },
+    bestFor: "Tracking RRSP contribution room and deduction limit on their own.",
+    longDescription: "A focused Google Sheets RRSP tracker for Canadian investors: contribution room against your CRA deduction limit, live prices, automatic ACB, and US dividends with 0% withholding, all in one sheet.",
+    overview: [
+      "Your brokerage shows your RRSP balance, but not the numbers you actually plan around. How much of your deduction limit have you used this year, and how much is left before the March 1 deadline? Are you about to go past the $2,000 over-contribution buffer? Are your US dividend stocks in the account where the US takes nothing, or in the one where 15% disappears every year? Most investors piece it together from their Notice of Assessment and old statements.",
+      "The RRSP Tracker keeps it all in one Google Sheet, 8 tabs, built around a single Transaction Log. Enter a contribution, a buy, a dividend or a DRIP once, in CAD or USD, and every tab updates automatically. The Main Dashboard shows your RRSP market value, contribution room remaining and your last 5 transactions, with 2 charts.",
+      "The RRSP Portfolio fills in with live GOOGLEFINANCE prices, weighted-average ACB and gain/loss, with 2 charts built in. The Dividend Tracker charts your income month by month, converting USD dividends to CAD, and Analysis & Reco flags over-contributions, shows the US withholding you're saving and gives 6 smart tips. Settings & Goals holds your deduction limit and goals, with 12 RRSP rules and a year-end checklist built in.",
+    ],
+    whoFor: "Canadian investors with one RRSP who want their deduction limit, contribution room, holdings and dividends tracked properly in a simple sheet, especially if they hold US dividend stocks, without paying for a combo tracker with accounts they don't have.",
+    features: [
+      "Contribution room tracked against your CRA deduction limit, with room remaining colour-coded green, amber or red",
+      "Over-contribution alert built around the $2,000 buffer, before the 1% a month penalty applies",
+      "Main Dashboard: RRSP market value, contribution room and your last 5 transactions, with 2 charts",
+      "RRSP Portfolio with live prices via GOOGLEFINANCE and automatic weighted-average ACB and gain/loss",
+      "CAD and USD holdings, with live USD/CAD conversion or your own rate for older trades",
+      "US withholding tracked: see the 15% you save by holding US-listed dividend stocks in your RRSP",
+      "Dividend Tracker: monthly income chart, DRIP tracking, top payers and an annual run-rate",
+      "Settings & Goals with 12 RRSP rules, your RRIF conversion year and a year-end checklist",
+      "Analysis & Reco tab: portfolio snapshot, over-contribution check and 6 smart RRSP tips",
+      "One Transaction Log drives all 8 tabs. Enter a transaction once and everything updates automatically",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, plus a 5-step quick start, what to enter in Settings and a tour of all 8 tabs." },
+      { icon: "📄", label: "Clear Sample Data Guide PDF", desc: "A step-by-step walkthrough for safely clearing the sample data before you add your own, without breaking a formula." },
+      { icon: "📄", label: "Complete Setup Guide PDF", desc: "Every Transaction Log column, every transaction type and the GOOGLEFINANCE ticker format for Canadian and US stocks." },
+      { icon: "📄", label: "RRSP Guide PDF", desc: "2026 limits and deadlines, over-contributions, withdrawal tax, the Canada-US treaty, the Home Buyers' Plan and what to hold in an RRSP." },
+    ],
+  },
   { name: "TFSA Multi-Brokerage Tracker", tag: "TFSA", price: 9.99, url: "https://www.etsy.com/listing/4541253114", directUrl: "https://payhip.com/b/8CqQU", desc: "Up to 8 brokerages in one sheet — the only one of its kind", badge: "NEW", screenshot: "/screenshots/multi-brokerage.jpg", sku: "MS-TFSA-MB",
     // Real, uncropped tabs from the actual sheet — same pattern as the RRSP
     // Multi-Brokerage Tracker's gallery below. Renders as a slideshow on
