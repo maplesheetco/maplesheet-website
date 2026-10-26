@@ -196,6 +196,12 @@ export function LiveChatTracker() {
 // clobbering each other. Pass `data: null` to skip (e.g. article not found).
 // Removes its tag on unmount so stale schema never leaks onto another route.
 export function useJsonLd(data, id) {
+  // During the build's prerender (src/entry-server.jsx) effects never run, so
+  // hand the schema to the prerender instead; it writes the same tag into the
+  // page's HTML, and the effect below then finds and reuses that tag.
+  if (typeof document === "undefined" && data && globalThis.__MS_JSONLD__) {
+    globalThis.__MS_JSONLD__.set(id, data);
+  }
   useEffect(() => {
     if (!data) return;
     let el = document.querySelector(`script[data-jsonld-id="${id}"]`);

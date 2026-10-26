@@ -412,53 +412,62 @@ function Home() {
   );
 }
 
+// The whole site minus the router, so the build can also render it with a
+// StaticRouter (src/entry-server.jsx) and bake each page's real text into
+// its HTML file — see scripts/prerender-meta.mjs.
+export function Site() {
+  return (
+    <div style={{ minHeight: "100vh", background: B.black, color: B.white, fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
+      <GlobalStyles />
+      {/* Mounted once at the app root (not per-page) so the Tawk.to
+          chat-started handler is only ever wired up a single time. Must be
+          rendered here, inside <BrowserRouter>, not called directly in
+          App() — it uses useLocation() internally, which needs Router
+          context. Renders nothing. */}
+      <LiveChatTracker />
+      <Nav />
+      {/* A real <main> landmark — without it, screen reader users have no
+          "skip to main content" shortcut, and it's a semantic-HTML signal
+          search engines use to identify the primary content of the page
+          versus chrome like the nav and footer. */}
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/trackers" element={<Trackers />} />
+          <Route path="/trackers/:slug" element={<TrackerDetail />} />
+          <Route path="/tools" element={
+            <Suspense fallback={<div style={{ padding: "80px 24px", textAlign: "center", color: B.grayLight }}>Loading calculator…</div>}>
+              <FreeTools />
+            </Suspense>
+          } />
+          <Route path="/checkout/return" element={
+            <Suspense fallback={<div style={{ padding: "80px 24px", textAlign: "center", color: B.grayLight }}>Loading…</div>}>
+              <CheckoutReturn />
+            </Suspense>
+          } />
+          <Route path="/checkout/:sku" element={
+            <Suspense fallback={<div style={{ padding: "80px 24px", textAlign: "center", color: B.grayLight }}>Loading checkout…</div>}>
+              <Checkout />
+            </Suspense>
+          } />
+          <Route path="/resources" element={<Resources />} />
+          <Route path="/resources/:slug" element={<Article />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
-      <div style={{ minHeight: "100vh", background: B.black, color: B.white, fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
-        <GlobalStyles />
-        {/* Mounted once at the app root (not per-page) so the Tawk.to
-            chat-started handler is only ever wired up a single time. Must be
-            rendered here, inside <BrowserRouter>, not called directly in
-            App() — it uses useLocation() internally, which needs Router
-            context. Renders nothing. */}
-        <LiveChatTracker />
-        <Nav />
-        {/* A real <main> landmark — without it, screen reader users have no
-            "skip to main content" shortcut, and it's a semantic-HTML signal
-            search engines use to identify the primary content of the page
-            versus chrome like the nav and footer. */}
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/trackers" element={<Trackers />} />
-            <Route path="/trackers/:slug" element={<TrackerDetail />} />
-            <Route path="/tools" element={
-              <Suspense fallback={<div style={{ padding: "80px 24px", textAlign: "center", color: B.grayLight }}>Loading calculator…</div>}>
-                <FreeTools />
-              </Suspense>
-            } />
-            <Route path="/checkout/return" element={
-              <Suspense fallback={<div style={{ padding: "80px 24px", textAlign: "center", color: B.grayLight }}>Loading…</div>}>
-                <CheckoutReturn />
-              </Suspense>
-            } />
-            <Route path="/checkout/:sku" element={
-              <Suspense fallback={<div style={{ padding: "80px 24px", textAlign: "center", color: B.grayLight }}>Loading checkout…</div>}>
-                <Checkout />
-              </Suspense>
-            } />
-            <Route path="/resources" element={<Resources />} />
-            <Route path="/resources/:slug" element={<Article />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/disclaimer" element={<Disclaimer />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <Site />
     </BrowserRouter>
   );
 }
