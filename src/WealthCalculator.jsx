@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   ResponsiveContainer, AreaChart, Area, LineChart, Line,
   XAxis, YAxis, CartesianGrid,
 } from "recharts";
-import { B, CONFIG } from "./data.js";
+import { B } from "./data.js";
 import { trackCalculatorToolUsed } from "./analytics.js";
 
 // ─── math helpers ──────────────────────────────────────────────
@@ -423,10 +424,10 @@ export default function WealthCalculator() {
           <div style={{ fontWeight: 800, color: B.white, fontSize: 15, marginBottom: 3 }}>Stop Guessing. Start Tracking.</div>
           <div style={{ color: B.grayLight, fontSize: 13 }}>Canadian TFSA · RRSP · FHSA trackers — live prices, ACB & CRA rules built in.</div>
         </div>
-        <a href={CONFIG.shopUrl} target="_blank" rel="noreferrer" style={{
+        <Link to="/trackers" style={{
           background: B.red, color: "#fff", textDecoration: "none", fontWeight: 700, fontSize: 14,
           padding: "11px 20px", borderRadius: 9, whiteSpace: "nowrap",
-        }}>Shop trackers →</a>
+        }}>Shop trackers →</Link>
       </div>
       <p style={{ fontSize: 11.5, color: B.gray, textAlign: "center", marginTop: 14, lineHeight: 1.6 }}>
         For illustration only — assumes constant returns compounded monthly, before fees. Tax comparisons are simplified.

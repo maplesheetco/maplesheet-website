@@ -26,10 +26,10 @@ export const STATIC_META = {
   },
   "/tools": {
     title: "Free Canadian Investment Calculators | MapleSheet Co.",
-    description: "Free tools to play with TFSA, RRSP, RESP, ACB, and compound growth numbers before you buy — plus a free Goal Tracker spreadsheet — built for the Canadian investing system.",
+    description: "Free TFSA, RRSP, RESP, ACB, and compound growth calculators, plus a free Goal Tracker spreadsheet, built for the Canadian investing system.",
   },
   "/resources": {
-    title: "Canadian Investing Guides — TFSA, RRSP, RESP & FHSA | MapleSheet Co.",
+    title: "Canadian Investing Guides: TFSA, RRSP, RESP & FHSA",
     description: "Plain-English guides to TFSA vs. RRSP, RESP & CESG grants, and the FHSA — written for Canadian investors who want to stop guessing and start tracking.",
   },
   "/about": {
@@ -42,7 +42,7 @@ export const STATIC_META = {
   },
   "/disclaimer": {
     title: "Disclaimer — MapleSheet Co.",
-    description: "MapleSheet Co.'s trackers and guides are educational tools, not financial, tax, or legal advice. Read the full disclaimer before relying on any figure for a real decision.",
+    description: "MapleSheet Co.'s trackers and guides are educational tools, not financial, tax, or legal advice. Read this before relying on any figure for a real decision.",
   },
   "/privacy": {
     title: "Privacy Policy — MapleSheet Co.",
@@ -65,9 +65,13 @@ export function metaDescription(text, max = 158) {
   return (lastSpace > 80 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:—–-]+$/, "") + "…";
 }
 
+// Google cuts titles off around 60 characters, so long names drop the
+// brand suffix rather than lose the end of the name.
+const withBrand = (name) => (name.length <= 44 ? `${name} | MapleSheet Co.` : name);
+
 export function trackerMeta(product) {
   return {
-    title: `${product.name} | MapleSheet Co.`,
+    title: withBrand(product.name),
     description: metaDescription(product.longDescription || product.desc),
     image: cardImage(product) || DEFAULT_OG_IMAGE,
   };
@@ -75,7 +79,7 @@ export function trackerMeta(product) {
 
 export function articleMeta(article) {
   return {
-    title: `${article.title} | MapleSheet Co.`,
+    title: withBrand(article.title),
     description: metaDescription(article.summary),
     image: article.image || DEFAULT_OG_IMAGE,
   };

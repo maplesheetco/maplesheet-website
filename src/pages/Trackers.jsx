@@ -41,7 +41,7 @@ export default function Trackers() {
         // "refurbished" state for an instant download.
         itemCondition: "https://schema.org/NewCondition",
         hasMerchantReturnPolicy: RETURN_POLICY,
-        url: p.directUrl || p.url,
+        ...(p.slug ? { url: `${SITE_URL}/trackers/${p.slug}` } : {}),
       },
     })),
   }, "trackers-product-schema");
