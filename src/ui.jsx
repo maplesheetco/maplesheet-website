@@ -351,10 +351,10 @@ export function Nav() {
               <NavLink key={l.to} to={l.to} end={l.to === "/"} className={({ isActive }) => "ml-nav-link" + (isActive ? " active" : "")}>{l.label}</NavLink>
             ))}
           </div>
-          <a href={CONFIG.shopUrl} target="_blank" rel="noreferrer" className="ml-btn" style={{
+          <Link to="/trackers" className="ml-btn" style={{
             background: B.red, color: "#fff", textDecoration: "none", fontWeight: 600, fontSize: 14,
             padding: "9px 17px", borderRadius: 8, whiteSpace: "nowrap",
-          }}>Shop</a>
+          }}>Shop</Link>
           <button onClick={() => setOpen(!open)} aria-label="Menu" className="ml-burger" style={{
             display: "none", background: "none", border: `1px solid ${B.line}`, borderRadius: 8,
             color: B.white, fontSize: 18, padding: "6px 12px", cursor: "pointer",
@@ -413,10 +413,10 @@ export function Footer() {
             Google Sheets trackers for Canadian investors — TFSA, RRSP, RESP, FHSA and multi-brokerage.
           </p>
           <div style={{ display: "flex", gap: 10, marginTop: 20, flexWrap: "wrap" }}>
-            <a href={CONFIG.shopUrl} target="_blank" rel="noreferrer"
+            <Link to="/trackers"
               style={{ fontSize: 13.5, fontWeight: 600, textDecoration: "none", padding: "10px 18px", borderRadius: 8, background: B.red, color: B.white, border: `1px solid ${B.red}` }}>
               Shop Trackers
-            </a>
+            </Link>
             <a href={`mailto:${CONFIG.email}`}
               style={{ fontSize: 13.5, fontWeight: 600, textDecoration: "none", padding: "10px 18px", borderRadius: 8, background: "transparent", color: B.white, border: `1px solid ${B.line}` }}>
               Email us

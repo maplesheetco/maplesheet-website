@@ -178,7 +178,7 @@ export default function TrackerDetail() {
       // "refurbished" state for an instant download.
       itemCondition: "https://schema.org/NewCondition",
       hasMerchantReturnPolicy: RETURN_POLICY,
-      url: product.directUrl || product.url,
+      url: `${SITE_URL}/trackers/${product.slug}`,
     },
   } : null, "tracker-detail-schema");
 
