@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { B, ACCOUNT_GUIDES, RETURN_POLICY, getBundleSavings } from "../data.js";
+import { B, ACCOUNT_GUIDES, RETURN_POLICY, SHIPPING_DETAILS, getBundleSavings } from "../data.js";
 import { PageHead, RedWord, usePageMeta, useJsonLd, Reveal, PromoBanner, Picture } from "../ui.jsx";
 import { CATALOG, cardImage } from "../trackerPages.js";
 import { trackBuyClicked } from "../analytics.js";
@@ -41,6 +41,7 @@ export default function Trackers() {
         // "refurbished" state for an instant download.
         itemCondition: "https://schema.org/NewCondition",
         hasMerchantReturnPolicy: RETURN_POLICY,
+        shippingDetails: SHIPPING_DETAILS,
         ...(p.slug ? { url: `${SITE_URL}/trackers/${p.slug}` } : {}),
       },
     })),

@@ -53,6 +53,21 @@ export const RETURN_POLICY = {
   returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
 };
 
+// Google's Merchant listings report flags any Offer without shippingDetails.
+// Every tracker is an instant digital download, so "shipping" is free and
+// instant: $0 to Canada, 0 days handling and 0 days transit. Same reason as
+// RETURN_POLICY for living here: both Product schemas share it.
+export const SHIPPING_DETAILS = {
+  "@type": "OfferShippingDetails",
+  shippingRate: { "@type": "MonetaryAmount", value: "0", currency: "CAD" },
+  shippingDestination: { "@type": "DefinedRegion", addressCountry: "CA" },
+  deliveryTime: {
+    "@type": "ShippingDeliveryTime",
+    handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 0, unitCode: "DAY" },
+    transitTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 0, unitCode: "DAY" },
+  },
+};
+
 // Single-account tracker prices, used to compute an honest "save $X vs
 // buying separately" figure for the combo/flagship products below — keep
 // these in sync with the actual single-tracker prices in PRODUCTS so the
