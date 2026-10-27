@@ -452,7 +452,6 @@ export function Footer() {
           </div>
           <a href={CONFIG.youtubeUrl} target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>YouTube ↗</a>
           <a href={CONFIG.xUrl} target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>X ↗</a>
-          <a href={CONFIG.affiliateUrl} target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>Become an Affiliate</a>
           <p style={{ margin: "8px 0 0", fontSize: 11, color: B.gray, lineHeight: 1.5, maxWidth: 190 }}>
             Wealthsimple and Questrade are referral links/codes — MapleSheet may receive a benefit at no cost to you.
           </p>
