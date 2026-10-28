@@ -419,16 +419,16 @@ export const PRODUCTS = [
   // Product Pipeline plan (Oct 2026). Price assumed at $9.99 like the other
   // Multi-Brokerage Trackers.
   //
-  // ⚠️ Lino — NOT READY TO GO LIVE YET. Still missing, in this order:
-  //   1. stripeBuyButton — the Buy Button code from Stripe (set metadata
-  //      key "sku" = "MS-RESP-MB" on its Payment Link, and the "After the
-  //      payment" redirect to
-  //      https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID})
-  //   2. gallery screenshots
-  // Sheet link + 3 PDFs are in. Check the master sheet is shared as
-  // "Anyone with the link" → Viewer, or the /copy link fails for buyers.
-  // Until stripeBuyButton is set, the page shows no buy button.
+  // Still missing: gallery screenshots. The Payment Link needs metadata
+  // "sku" = "MS-RESP-MB" and the "After the payment" redirect to
+  // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}.
+  // The master sheet must be shared as "Anyone with the link" → Viewer, or
+  // the /copy link fails for buyers.
   { name: "RESP Multi-Brokerage Tracker", tag: "RESP", price: 9.99, desc: "Up to 8 brokerages and 4 children in one sheet — every child's $50,000 limit and CESG in one place", badge: "NEW", sku: "MS-RESP-MB",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1UVgSNJYx6fAMdIUSXnYyBPn",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
     delivery: {
       sheetUrl: "https://docs.google.com/spreadsheets/d/10qfSKMsDM4bra3EBzD2TqgN_4aEdz8ev0ezBuFIbNjo/copy",
       pdfs: [
