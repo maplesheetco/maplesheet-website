@@ -359,16 +359,25 @@ export const PRODUCTS = [
   // Third single-account multi-brokerage tracker, per the Multi-Brokerage
   // Product Pipeline plan (Oct 2026). Price is the $9.99 from that plan.
   //
-  // ⚠️ Lino — NOT READY TO GO LIVE YET. Still missing, in this order:
-  //   1. stripeBuyButton — the Buy Button code from Stripe (set metadata
-  //      key "sku" = "MS-FHSA-MB" on its Payment Link, and the "After the
-  //      payment" redirect to
-  //      https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID})
-  //   2. gallery / screenshot — screenshots of the finished sheet
-  //   3. Check the master sheet's Share setting is "Anyone with the link" → Viewer,
-  //      or the /copy link below fails for every buyer
-  // Until #1 is set, this page shows no buy button at all.
+  // ⚠️ Lino — on this product's Payment Link, double-check (1) metadata
+  // key "sku" = "MS-FHSA-MB" and (2) "After the payment" redirects to
+  // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}
+  // Also check the master sheet's Share setting is "Anyone with the link" →
+  // Viewer, or the /copy link below fails for every buyer.
   { name: "FHSA Multi-Brokerage Tracker", tag: "FHSA", price: 9.99, desc: "Up to 8 brokerages in one sheet — your FHSA room, holdings and deduction in one place", badge: "NEW", sku: "MS-FHSA-MB",
+    gallery: [
+      { src: "/screenshots/fhsa-mb-gallery-1-main-dashboard.jpg", label: "Main Dashboard — combined FHSA room, lifetime $40,000 progress, closing date, down payment goal & charts by institution" },
+      { src: "/screenshots/fhsa-mb-gallery-2-institution-dashboard.jpg", label: "Institution Dashboard — market value, ACB, gain/loss, contributions & dividends side by side for up to 8 brokerages" },
+      { src: "/screenshots/fhsa-mb-gallery-3-fhsa-portfolio.jpg", label: "FHSA Portfolio — every holding combined across institutions, live prices in CAD, ACB & return" },
+      { src: "/screenshots/fhsa-mb-gallery-4-transaction-log.jpg", label: "Transaction Log — the one tab you type into, including direct FHSA-to-FHSA transfers that use no room" },
+      { src: "/screenshots/fhsa-mb-gallery-5-dividend-tracker.jpg", label: "Dividend Tracker — monthly income vs target, every dividend & DRIP by institution, per-ticker annual run-rate" },
+      { src: "/screenshots/fhsa-mb-gallery-6-cra-rules.jpg", label: "FHSA CRA Rules — colour-coded: deduction, US withholding, qualifying withdrawals, HBP & closing date" },
+    ],
+    screenshot: "/screenshots/fhsa-mb-gallery-1-main-dashboard.jpg",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1UVOzGJYx6fAMdIU78ZSzEF6",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
     delivery: {
       sheetUrl: "https://docs.google.com/spreadsheets/d/1lbCQrXG_ZZIsAb0Aj1FGFkSGTZKk7NsWmTBm-F-kkxs/copy",
       pdfs: [
