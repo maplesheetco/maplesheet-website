@@ -364,12 +364,13 @@ export const PRODUCTS = [
   //      key "sku" = "MS-FHSA-MB" on its Payment Link, and the "After the
   //      payment" redirect to
   //      https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID})
-  //   2. delivery.sheetUrl — the Google Sheet's "/copy" link
-  //   3. The 3 PDFs below, saved into public/downloads/
-  //   4. gallery / screenshot — screenshots of the finished sheet
+  //   2. gallery / screenshot — screenshots of the finished sheet
+  //   3. Check the master sheet's Share setting is "Anyone with the link" → Viewer,
+  //      or the /copy link below fails for every buyer
   // Until #1 is set, this page shows no buy button at all.
   { name: "FHSA Multi-Brokerage Tracker", tag: "FHSA", price: 9.99, desc: "Up to 8 brokerages in one sheet — your FHSA room, holdings and deduction in one place", badge: "NEW", sku: "MS-FHSA-MB",
     delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1lbCQrXG_ZZIsAb0Aj1FGFkSGTZKk7NsWmTBm-F-kkxs/copy",
       pdfs: [
         { label: "Template Link", url: "/downloads/fhsa-mb-template-link.pdf" },
         { label: "User Guide", url: "/downloads/fhsa-mb-user-guide.pdf" },
