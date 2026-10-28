@@ -424,12 +424,19 @@ export const PRODUCTS = [
   //      key "sku" = "MS-RESP-MB" on its Payment Link, and the "After the
   //      payment" redirect to
   //      https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID})
-  //   2. delivery.sheetUrl — the master sheet's /copy link, shared as
-  //      "Anyone with the link" → Viewer
-  //   3. delivery.pdfs — Template Link, User Guide, RESP Government Rules
-  //   4. gallery screenshots
+  //   2. gallery screenshots
+  // Sheet link + 3 PDFs are in. Check the master sheet is shared as
+  // "Anyone with the link" → Viewer, or the /copy link fails for buyers.
   // Until stripeBuyButton is set, the page shows no buy button.
   { name: "RESP Multi-Brokerage Tracker", tag: "RESP", price: 9.99, desc: "Up to 8 brokerages and 4 children in one sheet — every child's $50,000 limit and CESG in one place", badge: "NEW", sku: "MS-RESP-MB",
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/10qfSKMsDM4bra3EBzD2TqgN_4aEdz8ev0ezBuFIbNjo/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/resp-mb-template-link.pdf" },
+        { label: "User Guide", url: "/downloads/resp-mb-user-guide.pdf" },
+        { label: "RESP Government Rules", url: "/downloads/resp-mb-government-rules.pdf" },
+      ],
+    },
     slug: "resp-multi-brokerage", accounts: ["RESP"],
     bestFor: "RESPs spread across more than one brokerage (up to 8) for up to 4 children — often a bank or group plan opened at birth, plus a self-directed RESP at a discount brokerage.",
     longDescription: "Opened an RESP at your bank when your first child was born, then another at Wealthsimple or Questrade? The $50,000 limit and the $7,200 CESG maximum belong to each child, not to each account, and no institution shows you the total. This tracker pulls every RESP you hold, across up to 8 brokerages and up to 4 children, into one Google Sheet that tracks each child's contributions, grants and holdings automatically.",
