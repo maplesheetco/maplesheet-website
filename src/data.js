@@ -356,6 +356,65 @@ export const PRODUCTS = [
       { icon: "📄", label: "RRSP Government Rules PDF", desc: "A 20+ section plain-English reference to CRA's actual RRSP rules — contribution limits, HBP, LLP, spousal attribution, RRIF conversion, and more — so you're not hunting through canada.ca mid-tax-season." },
     ],
   },
+  // Third single-account multi-brokerage tracker, per the Multi-Brokerage
+  // Product Pipeline plan (Oct 2026). Price is the $9.99 from that plan.
+  //
+  // ⚠️ Lino — on this product's Payment Link, double-check (1) metadata
+  // key "sku" = "MS-FHSA-MB" and (2) "After the payment" redirects to
+  // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}
+  // Also check the master sheet's Share setting is "Anyone with the link" →
+  // Viewer, or the /copy link below fails for every buyer.
+  { name: "FHSA Multi-Brokerage Tracker", tag: "FHSA", price: 9.99, desc: "Up to 8 brokerages in one sheet — your FHSA room, holdings and deduction in one place", badge: "NEW", sku: "MS-FHSA-MB",
+    gallery: [
+      { src: "/screenshots/fhsa-mb-gallery-1-main-dashboard.jpg", label: "Main Dashboard — combined FHSA room, lifetime $40,000 progress, closing date, down payment goal & charts by institution" },
+      { src: "/screenshots/fhsa-mb-gallery-2-institution-dashboard.jpg", label: "Institution Dashboard — market value, ACB, gain/loss, contributions & dividends side by side for up to 8 brokerages" },
+      { src: "/screenshots/fhsa-mb-gallery-3-fhsa-portfolio.jpg", label: "FHSA Portfolio — every holding combined across institutions, live prices in CAD, ACB & return" },
+      { src: "/screenshots/fhsa-mb-gallery-4-transaction-log.jpg", label: "Transaction Log — the one tab you type into, including direct FHSA-to-FHSA transfers that use no room" },
+      { src: "/screenshots/fhsa-mb-gallery-5-dividend-tracker.jpg", label: "Dividend Tracker — monthly income vs target, every dividend & DRIP by institution, per-ticker annual run-rate" },
+      { src: "/screenshots/fhsa-mb-gallery-6-cra-rules.jpg", label: "FHSA CRA Rules — colour-coded: deduction, US withholding, qualifying withdrawals, HBP & closing date" },
+    ],
+    screenshot: "/screenshots/fhsa-mb-gallery-1-main-dashboard.jpg",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1UVOzGJYx6fAMdIU78ZSzEF6",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1lbCQrXG_ZZIsAb0Aj1FGFkSGTZKk7NsWmTBm-F-kkxs/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/fhsa-mb-template-link.pdf" },
+        { label: "User Guide", url: "/downloads/fhsa-mb-user-guide.pdf" },
+        { label: "FHSA Government Rules", url: "/downloads/fhsa-mb-government-rules.pdf" },
+      ],
+    },
+    slug: "fhsa-multi-brokerage", accounts: ["FHSA"],
+    bestFor: "An FHSA spread across more than one brokerage (up to 8) — often a bank FHSA opened early for the deduction, plus a self-directed brokerage FHSA for investing.",
+    longDescription: "Opened an FHSA at your bank, then a second one at Wealthsimple or Questrade once you wanted to invest? CRA gives you one set of FHSA limits no matter how many accounts you hold, but no institution shows you the total. This tracker pulls every FHSA you hold, across up to 8 brokerages, into one Google Sheet that tracks your combined room, carry-forward, holdings and down payment progress automatically.",
+    overview: [
+      "If you hold an FHSA at more than one institution, you already know the problem: each one shows you its own balance and its own contributions, but none of them knows about the others. How much room do you really have left this year? How much of last year's room carried forward? Are the contributions at your bank and your brokerage about to add up to more than $8,000?",
+      "The FHSA Multi-Brokerage Tracker pulls every FHSA you hold — across up to 8 different brokerages — into one Google Sheet that calculates your real numbers automatically. Enter your FHSA participation room from CRA My Account, log each contribution against the institution it went to, and the tracker measures every dollar across every account against that one real number, with a side-by-side Institution Dashboard so you can see which account is doing the work.",
+      "It's built around how FHSAs actually work, not copied from a TFSA or RRSP template. Your room is $8,000 a year and $40,000 for life, and it only starts the year you open your first FHSA. At most $8,000 of unused room carries forward, so you can never put in more than $16,000 in one year. Withdrawals never give room back, there's no 60-day grace period after December 31, and there's no $2,000 over-contribution buffer like an RRSP has. A direct transfer between your own FHSAs doesn't use room, but a withdrawal and re-deposit does. This tracker reflects all of it.",
+    ],
+    whoFor: "First-time home buyers in Canada who hold — or are about to hold — an FHSA at more than one institution: an account opened at the bank to start the room clock, a second one at a discount brokerage for ETFs, or a couple who want each person's FHSA tracked properly before the down payment.",
+    features: [
+      "Combined FHSA room across up to 8 brokerages, measured against your participation room from CRA My Account",
+      "Annual $8,000 limit, carry-forward up to $8,000 and the $40,000 lifetime limit, tracked across every account",
+      "Over-contribution warning before the 1% a month tax on the excess applies — FHSAs have no $2,000 buffer",
+      "Lifetime room tracker: how much of your $40,000 you have used and how much is left",
+      "Institution Dashboard — side-by-side comparison across all 8 brokerages, so you see which account is really carrying your returns",
+      "Transfers between your own FHSAs logged separately, so they never count against your room",
+      "Live prices via GOOGLEFINANCE, with correct USD→CAD conversion for US-listed holdings",
+      "Automatic average cost and gain/loss, calculated per brokerage and combined",
+      "Built-in FHSA CRA Rules tab — colour-coded cards for the costly traps, the limits and deadlines, and the benefits, including Line 20805 and qualifying withdrawals",
+      "Down payment progress toward your goal and target year, plus a countdown to the 15-year account limit",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "🍁", label: "One-click MapleSheet menu", desc: "Builds, rebuilds, and loads sample data for you right inside the sheet — no spreadsheet experience required." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "User Guide PDF", desc: "A full tab-by-tab, column-by-column walkthrough of every part of the sheet." },
+      { icon: "📄", label: "FHSA Government Rules PDF", desc: "A plain-English reference to CRA's actual FHSA rules — annual and lifetime limits, carry-forward, holding more than one FHSA, transfers, qualifying withdrawals, the Line 20805 deduction and the 15-year limit — so you're not hunting through canada.ca mid-tax-season." },
+    ],
+  },
   {
     name: "RESP Tracker", tag: "RESP", price: 14.99,
     url: "https://www.etsy.com/listing/4530779418", directUrl: "https://payhip.com/b/w8PXD",
