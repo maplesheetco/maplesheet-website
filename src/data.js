@@ -415,6 +415,67 @@ export const PRODUCTS = [
       { icon: "📄", label: "FHSA Government Rules PDF", desc: "A plain-English reference to CRA's actual FHSA rules — annual and lifetime limits, carry-forward, holding more than one FHSA, transfers, qualifying withdrawals, the Line 20805 deduction and the 15-year limit — so you're not hunting through canada.ca mid-tax-season." },
     ],
   },
+  // Fourth single-account multi-brokerage tracker, per the Multi-Brokerage
+  // Product Pipeline plan (Oct 2026). Price assumed at $9.99 like the other
+  // Multi-Brokerage Trackers.
+  //
+  // The Payment Link needs metadata
+  // "sku" = "MS-RESP-MB" and the "After the payment" redirect to
+  // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}.
+  // The master sheet must be shared as "Anyone with the link" → Viewer, or
+  // the /copy link fails for buyers.
+  { name: "RESP Multi-Brokerage Tracker", tag: "RESP", price: 9.99, desc: "Up to 8 brokerages and 4 children in one sheet — every child's $50,000 limit and CESG in one place", badge: "NEW", sku: "MS-RESP-MB",
+    gallery: [
+      { src: "/screenshots/resp-mb-gallery-1-main-dashboard.jpg", label: "Per-Child RESP & CESG — every child's contributions, $50,000 room, CESG earned and how much more to contribute this year, across all institutions" },
+      { src: "/screenshots/resp-mb-gallery-2-main-totals.jpg", label: "Main Dashboard — market value, ACB, gain/loss, contributions, grants & withdrawals for up to 8 brokerages" },
+      { src: "/screenshots/resp-mb-gallery-3-institution-dashboard.jpg", label: "Institution Dashboard — see which RESP is doing the work, including dividends by institution" },
+      { src: "/screenshots/resp-mb-gallery-4-charts.jpg", label: "Charts — market value by institution and each child's CESG received vs what's left of $7,200" },
+      { src: "/screenshots/resp-mb-gallery-5-transaction-log.jpg", label: "Transaction Log — the one tab you type into: pick the institution and the child, every other tab updates automatically" },
+      { src: "/screenshots/resp-mb-gallery-6-dividend-tracker.jpg", label: "Dividend Tracker — monthly income vs target, every dividend by institution, per-ticker annual run-rate" },
+      { src: "/screenshots/resp-mb-gallery-7-cra-rules.jpg", label: "RESP CRA Rules — colour-coded: the $50,000 per-child limit, CESG catch-up, grants and deadlines" },
+    ],
+    screenshot: "/screenshots/resp-mb-gallery-1-main-dashboard.jpg",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1UVgSNJYx6fAMdIUSXnYyBPn",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/10qfSKMsDM4bra3EBzD2TqgN_4aEdz8ev0ezBuFIbNjo/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/resp-mb-template-link.pdf" },
+        { label: "User Guide", url: "/downloads/resp-mb-user-guide.pdf" },
+        { label: "RESP Government Rules", url: "/downloads/resp-mb-government-rules.pdf" },
+      ],
+    },
+    slug: "resp-multi-brokerage", accounts: ["RESP"],
+    bestFor: "RESPs spread across more than one brokerage (up to 8) for up to 4 children — often a bank or group plan opened at birth, plus a self-directed RESP at a discount brokerage.",
+    longDescription: "Opened an RESP at your bank when your first child was born, then another at Wealthsimple or Questrade? The $50,000 limit and the $7,200 CESG maximum belong to each child, not to each account, and no institution shows you the total. This tracker pulls every RESP you hold, across up to 8 brokerages and up to 4 children, into one Google Sheet that tracks each child's contributions, grants and holdings automatically.",
+    overview: [
+      "If your family's RESP money sits at more than one institution, you already know the problem: each one shows its own balance and its own grant deposits, but none of them knows about the others. How much has each child received in CESG so far? How much more do you need to contribute before December 31 to get this year's full grant? Is one child getting close to the $50,000 lifetime limit when you add every account together?",
+      "The RESP Multi-Brokerage Tracker pulls every RESP you hold — across up to 8 different brokerages — into one Google Sheet that calculates your real numbers for each child. Log every contribution and grant against the child and the institution it belongs to, and the tracker adds them up per child across every account, with a side-by-side Institution Dashboard so you can see which RESP is doing the work.",
+      "It's built around how RESPs actually work. The limits are per child: $50,000 of contributions for life, across every plan and every subscriber, including a grandparent's. The CESG pays 20% on the first $2,500 a year, each child earns $500 of grant room every year from birth, and unused room carries forward so you can catch up by up to $1,000 a year until $7,200 is reached. The last CESG year is the year the child turns 17, with a special rule at 16 and 17. Withdrawing contributions never gives room back. This tracker reflects all of it.",
+    ],
+    whoFor: "Canadian parents who hold RESPs at more than one institution: a bank or group plan opened when the first child was born, a self-directed RESP at a discount brokerage for ETFs, or a family plan plus individual plans for each child — for up to 4 children.",
+    features: [
+      "Every RESP across up to 8 brokerages and up to 4 children in one sheet, with a Child column so each contribution and grant counts for the right child",
+      "Each child's $50,000 lifetime contribution limit tracked across every account, with an over-contribution warning before the 1% a month tax applies",
+      "CESG engine per child: grant room since birth, carry-forward up to $1,000 a year, and the $7,200 lifetime maximum",
+      "\"Contribute this much more\" per child — exactly how much to put in before December 31 to collect this year's full CESG",
+      "Age 16 and 17 check and last-CESG-year warning, so the final grant years aren't lost",
+      "CESG, Canada Learning Bond and provincial grants logged as their own transaction types",
+      "Institution Dashboard — market value, ACB, gain/loss, contributions, grants and dividends side by side for all 8 brokerages",
+      "Live prices via GOOGLEFINANCE, with correct USD→CAD conversion for US-listed holdings",
+      "Built-in RESP CRA Rules tab — colour-coded cards for the costly traps, the limits and deadlines, and the benefits, including EAPs and what happens if no child goes to school",
+      "RESP timeline and education goal: last contribution year, plan closing year, and progress toward your savings goal",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "🍁", label: "One-click MapleSheet menu", desc: "Builds, rebuilds, and loads sample data for you right inside the sheet — no spreadsheet experience required." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "User Guide PDF", desc: "A full tab-by-tab, column-by-column walkthrough of every part of the sheet." },
+      { icon: "📄", label: "RESP Government Rules PDF", desc: "A plain-English reference to the actual RESP rules — the $50,000 lifetime limit, CESG and catch-up room, the age 16–17 rule, the Canada Learning Bond, EAPs and what happens if your child doesn't go to school — so you're not hunting through canada.ca." },
+    ],
+  },
   {
     name: "RESP Tracker", tag: "RESP", price: 14.99,
     url: "https://www.etsy.com/listing/4530779418", directUrl: "https://payhip.com/b/w8PXD",
