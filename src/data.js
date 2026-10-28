@@ -419,12 +419,22 @@ export const PRODUCTS = [
   // Product Pipeline plan (Oct 2026). Price assumed at $9.99 like the other
   // Multi-Brokerage Trackers.
   //
-  // Still missing: gallery screenshots. The Payment Link needs metadata
+  // The Payment Link needs metadata
   // "sku" = "MS-RESP-MB" and the "After the payment" redirect to
   // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}.
   // The master sheet must be shared as "Anyone with the link" → Viewer, or
   // the /copy link fails for buyers.
   { name: "RESP Multi-Brokerage Tracker", tag: "RESP", price: 9.99, desc: "Up to 8 brokerages and 4 children in one sheet — every child's $50,000 limit and CESG in one place", badge: "NEW", sku: "MS-RESP-MB",
+    gallery: [
+      { src: "/screenshots/resp-mb-gallery-1-main-dashboard.jpg", label: "Per-Child RESP & CESG — every child's contributions, $50,000 room, CESG earned and how much more to contribute this year, across all institutions" },
+      { src: "/screenshots/resp-mb-gallery-2-main-totals.jpg", label: "Main Dashboard — market value, ACB, gain/loss, contributions, grants & withdrawals for up to 8 brokerages" },
+      { src: "/screenshots/resp-mb-gallery-3-institution-dashboard.jpg", label: "Institution Dashboard — see which RESP is doing the work, including dividends by institution" },
+      { src: "/screenshots/resp-mb-gallery-4-charts.jpg", label: "Charts — market value by institution and each child's CESG received vs what's left of $7,200" },
+      { src: "/screenshots/resp-mb-gallery-5-transaction-log.jpg", label: "Transaction Log — the one tab you type into: pick the institution and the child, every other tab updates automatically" },
+      { src: "/screenshots/resp-mb-gallery-6-dividend-tracker.jpg", label: "Dividend Tracker — monthly income vs target, every dividend by institution, per-ticker annual run-rate" },
+      { src: "/screenshots/resp-mb-gallery-7-cra-rules.jpg", label: "RESP CRA Rules — colour-coded: the $50,000 per-child limit, CESG catch-up, grants and deadlines" },
+    ],
+    screenshot: "/screenshots/resp-mb-gallery-1-main-dashboard.jpg",
     stripeBuyButton: {
       buyButtonId: "buy_btn_1UVgSNJYx6fAMdIUSXnYyBPn",
       publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
