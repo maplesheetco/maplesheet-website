@@ -330,9 +330,11 @@ export function GlobalStyles() {
       .ml-grid-5 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
       .ml-picker { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
       .ml-mobile-only { display: none; }
+      .ml-contact { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+      .ml-contact-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
       .ml-chip-input:focus-visible + span { outline: 2px solid ${B.yellow}; outline-offset: 2px; }
       @media (max-width: 960px) {
-        .ml-pdp, .ml-pdp-body, .ml-about-hero, .ml-picker { grid-template-columns: 1fr; }
+        .ml-pdp, .ml-pdp-body, .ml-about-hero, .ml-picker, .ml-contact { grid-template-columns: 1fr; }
         .ml-pdp-buy { position: static; }
         .ml-feat-grid, .ml-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .ml-grid-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -340,7 +342,7 @@ export function GlobalStyles() {
         .ml-mobile-only { display: block; }
       }
       @media (max-width: 600px) {
-        .ml-feat-grid, .ml-grid-4, .ml-faq-2 { grid-template-columns: 1fr; }
+        .ml-feat-grid, .ml-grid-4, .ml-faq-2, .ml-contact-pair { grid-template-columns: 1fr; }
         .ml-grid-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       }
       @media (prefers-reduced-motion: reduce) {
