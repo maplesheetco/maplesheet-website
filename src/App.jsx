@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { B, PRODUCTS, RESOURCES, getBundleSavings } from "./data.js";
+import { B, PRODUCTS, getBundleSavings } from "./data.js";
 import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, ProductGallery, GrowthChart, usePageMeta, LiveChatTracker, Reveal, PromoBanner } from "./ui.jsx";
 import { trackBuyClicked } from "./analytics.js";
 import Trackers from "./pages/Trackers.jsx";
@@ -12,7 +12,8 @@ import Contact from "./pages/Contact.jsx";
 import Disclaimer from "./pages/Disclaimer.jsx";
 import Privacy from "./pages/Privacy.jsx";
 import NotFound from "./pages/NotFound.jsx";
-import { STATIC_META } from "./seo.js";
+import { STATIC_META, liveArticles } from "./seo.js";
+import { CATALOG } from "./trackerPages.js";
 // FreeTools pulls in the recharts-powered calculator (~100KB+ gzipped) — lazy-load
 // it so that weight only downloads for people who actually visit /tools, not on
 // every page of the site.
@@ -34,14 +35,16 @@ const GALLERY_SLIDES = [
 
 const DEMO_VIEWS = [
   {
-    tab: "Core", label: "TFSA + RRSP", total: "43,890", ytd: "+11.2%",
+    tab: "Core", label: "TFSA + RRSP", slug: "tfsa-rrsp",
+    blurb: "Your two main accounts, with contribution room for both.", total: "43,890", ytd: "+11.2%",
     accounts: [
       { label: "TFSA", value: "16,568", change: "+12.4%" },
       { label: "RRSP", value: "27,322", change: "+9.1%" },
     ],
   },
   {
-    tab: "Family", label: "TFSA + RRSP + RESP", total: "48,106", ytd: "+12.8%",
+    tab: "Family", label: "TFSA + RRSP + RESP", slug: "tfsa-rrsp-resp",
+    blurb: "Adds your kids' RESP, with CESG grants tracked per child.", total: "48,106", ytd: "+12.8%",
     accounts: [
       { label: "TFSA", value: "16,568", change: "+12.4%" },
       { label: "RRSP", value: "27,322", change: "+9.1%" },
@@ -49,7 +52,8 @@ const DEMO_VIEWS = [
     ],
   },
   {
-    tab: "Ultimate", label: "All 5 accounts", total: "59,097", ytd: "+15.6%",
+    tab: "Ultimate", label: "All 5 accounts", slug: "ultimate-all-5-accounts",
+    blurb: "TFSA, RRSP, RESP, FHSA and Margin in one net worth.", total: "59,097", ytd: "+15.6%",
     accounts: [
       { label: "TFSA", value: "16,568", change: "+12.4%" },
       { label: "RRSP", value: "27,322", change: "+9.1%" },
@@ -179,9 +183,11 @@ function Home() {
   // Flagship first: it gets its own full-width row above the grid.
   const featured = PRODUCTS.filter((p) => p.badge)
     .sort((a, b) => (b.badge === "FLAGSHIP") - (a.badge === "FLAGSHIP"));
-  const latest = RESOURCES[0];
+  // Newest published articles first (RESOURCES isn't stored by date).
+  const latest = liveArticles().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
   const [demoTab, setDemoTab] = useState(0);
   const demo = DEMO_VIEWS[demoTab];
+  const demoProduct = CATALOG.find((p) => p.slug === demo.slug);
 
   const heroRef = useRef(null);
   const heroTextRef = useRef(null);
@@ -257,20 +263,30 @@ function Home() {
         <p style={{ color: B.grayLight, fontSize: 14.5, textAlign: "center", margin: "0 0 30px" }}>
           Same $200/month. Same 7% average return. The only difference is when you started.
         </p>
-        <div style={{ display: "flex", gap: 16, justifyContent: "center", alignItems: "center", flexWrap: "wrap", marginBottom: 20 }}>
-          <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16, padding: "26px 34px", textAlign: "center", minWidth: 220 }}>
-            <div style={{ fontSize: 11.5, letterSpacing: "0.1em", color: B.grayLight, fontWeight: 700, marginBottom: 8 }}>START AT 25</div>
-            <div ref={count25.ref} style={{ fontSize: 34, fontWeight: 800, color: B.white, letterSpacing: "-0.02em" }}>{count25.initial}</div>
-            <div style={{ fontSize: 12.5, color: B.grayLight, marginTop: 4 }}>by age 65</div>
-          </div>
-          <div style={{ fontSize: 14, color: B.gray, fontWeight: 700 }}>vs</div>
-          <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16, padding: "26px 34px", textAlign: "center", minWidth: 220 }}>
-            <div style={{ fontSize: 11.5, letterSpacing: "0.1em", color: B.grayLight, fontWeight: 700, marginBottom: 8 }}>START AT 35</div>
-            <div ref={count35.ref} style={{ fontSize: 34, fontWeight: 800, color: B.grayLight, letterSpacing: "-0.02em" }}>{count35.initial}</div>
-            <div style={{ fontSize: 12.5, color: B.grayLight, marginTop: 4 }}>by age 65</div>
-          </div>
+        {/* Wide 2-card layout with bigger numbers on desktop (.ml-tenyr in
+            ui.jsx); phones keep the original compact stacked cards. */}
+        <div className="ml-tenyr">
+          {[
+            ["START AT 25", count25, B.white, "$96,000", "100%", B.red],
+            null,
+            ["START AT 35", count35, B.grayLight, "$72,000", "46%", B.gray],
+          ].map((c, i) => c === null ? (
+            <div key="vs" style={{ fontSize: 14, color: B.gray, fontWeight: 700, textAlign: "center" }}>vs</div>
+          ) : (
+            <div key={c[0]} className="ml-tenyr-card" style={{ background: B.black2, border: `1px solid ${i === 0 ? B.red : B.line}`, borderRadius: 16, textAlign: "center" }}>
+              <div className="ml-tenyr-kicker" style={{ letterSpacing: "0.1em", color: B.grayLight, fontWeight: 700, marginBottom: 8 }}>{c[0]}</div>
+              <div ref={c[1].ref} className="ml-tenyr-num" style={{ fontWeight: 800, color: c[2], letterSpacing: "-0.02em" }}>{c[1].initial}</div>
+              <div className="ml-tenyr-sub" style={{ color: B.grayLight, marginTop: 4 }}>by age 65</div>
+              <div className="ml-desktop-only" style={{ marginTop: 18 }}>
+                <div style={{ height: 8, borderRadius: 999, background: B.black3, overflow: "hidden" }}>
+                  <div style={{ width: c[4], height: "100%", background: c[5], borderRadius: 999 }} />
+                </div>
+                <div style={{ fontSize: 14, color: B.grayLight, marginTop: 12 }}>You put in <strong style={{ color: B.white }}>{c[3]}</strong></div>
+              </div>
+            </div>
+          ))}
         </div>
-        <div style={{ textAlign: "center", fontSize: 14, color: B.yellow, fontWeight: 700, marginBottom: 10 }}>
+        <div className="ml-tenyr-gap" style={{ textAlign: "center", color: B.yellow, fontWeight: 700, marginBottom: 10 }}>
           10 years earlier ≈ $280,968 more — same effort, same monthly amount.
         </div>
         <p style={{ textAlign: "center", fontSize: 12.5, color: B.gray, maxWidth: 520, margin: "0 auto 26px", lineHeight: 1.6 }}>
@@ -408,50 +424,85 @@ function Home() {
         </div>
       </Reveal>
 
-      {/* See it in action */}
+      {/* See it in action: plan picker on the left, live mock on the right
+          (stacks on tablets and phones, where the picker becomes 3 tabs). */}
       <Reveal as="section" style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px 8px" }}>
         <h2 style={{ fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 800, margin: "0 0 6px", letterSpacing: "-0.02em", color: B.white, textAlign: "center" }}>
           See it <RedWord>in action</RedWord>
         </h2>
-        <p style={{ color: B.grayLight, fontSize: 14.5, textAlign: "center", margin: "0 0 26px" }}>
+        <p style={{ color: B.grayLight, fontSize: 14.5, textAlign: "center", margin: "0 0 28px" }}>
           Same dashboard, scaled to however many accounts you're tracking.
         </p>
-        <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 22, flexWrap: "wrap" }}>
-          {DEMO_VIEWS.map((v, i) => (
-            <button key={v.tab} onClick={() => setDemoTab(i)} className="ml-btn" style={{
-              background: i === demoTab ? B.red : "transparent", color: i === demoTab ? "#fff" : B.grayLight,
-              border: `1.5px solid ${i === demoTab ? B.red : B.line}`, borderRadius: 999,
-              padding: "9px 18px", fontSize: 13.5, fontWeight: 700, cursor: "pointer",
-            }}>{v.tab}</button>
-          ))}
-        </div>
-        <div style={{ maxWidth: 460, margin: "0 auto" }}>
-          <DashboardMock total={demo.total} ytd={demo.ytd} totalLabel={demo.label} accounts={demo.accounts} minContentHeight={350} />
+        <div className="ml-demo">
+          <div>
+            <div className="ml-demo-opts" role="tablist" aria-label="Tracker size">
+              {DEMO_VIEWS.map((v, i) => {
+                const on = i === demoTab;
+                const p = CATALOG.find((x) => x.slug === v.slug);
+                return (
+                  <button key={v.tab} role="tab" aria-selected={on} onClick={() => setDemoTab(i)} className="ml-btn" style={{
+                    textAlign: "left", cursor: "pointer", fontFamily: "inherit", borderRadius: 14, padding: "14px 16px",
+                    background: on ? "#2A0A0A" : B.black2, border: `1.5px solid ${on ? B.red : B.line}`,
+                  }}>
+                    <span style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
+                      <span style={{ fontSize: 16, fontWeight: 800, color: B.white }}>{v.tab}</span>
+                      {p && <span style={{ fontSize: 13, fontWeight: 700, color: on ? B.white : B.grayLight }}>CA${p.price.toFixed(2)}</span>}
+                    </span>
+                    <span style={{ display: "block", fontSize: 12.5, fontWeight: 600, color: on ? B.redLink : B.gray, marginTop: 3 }}>{v.label}</span>
+                    <span className="ml-demo-opt-sub" style={{ fontSize: 13, color: B.grayLight, lineHeight: 1.5, marginTop: 6 }}>{v.blurb}</span>
+                  </button>
+                );
+              })}
+            </div>
+            {demoProduct && (
+              <Link to={`/trackers/${demoProduct.slug}`} className="ml-btn" style={{
+                display: "inline-block", marginTop: 16, background: B.red, color: "#fff", textDecoration: "none",
+                fontWeight: 700, fontSize: 14, padding: "12px 22px", borderRadius: 10,
+              }}>See the {demo.tab} tracker →</Link>
+            )}
+            <div style={{ fontSize: 12.5, color: B.gray, marginTop: 12 }}>Sample numbers. Your sheet fills in from your own Transaction Log.</div>
+          </div>
+          <DashboardMock total={demo.total} ytd={demo.ytd} totalLabel={demo.label} accounts={demo.accounts} allocation />
         </div>
       </Reveal>
 
-      <Reveal as="section" style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px 40px", display: "flex", gap: 18, flexWrap: "wrap" }}>
-        <Link to="/resources" className="ml-card" style={{
-          flex: "1 1 300px", background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16,
-          padding: "24px 22px", textDecoration: "none",
-        }}>
-          <div style={{ fontSize: 11.5, letterSpacing: "0.12em", color: B.redLink, fontWeight: 700, marginBottom: 10 }}>LATEST FROM RESOURCES</div>
-          <div style={{ fontSize: 17, fontWeight: 700, color: B.white, marginBottom: 8 }}>{latest.title}</div>
-          <div style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.6 }}>{latest.summary}</div>
-          <div style={{ fontSize: 13.5, color: B.redLink, fontWeight: 600, marginTop: 12 }}>Read more →</div>
-        </Link>
+      <Reveal as="section" className="ml-home-bottom" style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 24px 40px" }}>
+        <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16, padding: "24px 22px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10, marginBottom: 14 }}>
+            <div style={{ fontSize: 11.5, letterSpacing: "0.12em", color: B.redLink, fontWeight: 700 }}>LATEST FROM RESOURCES</div>
+            <Link to="/resources" style={{ fontSize: 13, color: B.redLink, fontWeight: 600, textDecoration: "none" }}>All guides →</Link>
+          </div>
+          {latest.map((r, i) => (
+            <Link key={r.slug} to={`/resources/${r.slug}`} className="ml-res-row" style={{
+              display: "block", textDecoration: "none", padding: "14px 0",
+              borderTop: i ? `1px solid ${B.line}` : "none",
+            }}>
+              <div style={{ fontSize: 12, color: B.gray, marginBottom: 4 }}>📝 {r.date}</div>
+              <div style={{ fontSize: i ? 15 : 17, fontWeight: 700, color: B.white, lineHeight: 1.35 }}>{r.title}</div>
+              {i === 0 && <div style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.6, marginTop: 6 }}>{r.summary.replace(/\*/g, "")}</div>}
+            </Link>
+          ))}
+        </div>
         <Link to="/about" className="ml-card" style={{
-          flex: "1 1 300px", background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16,
-          padding: "24px 22px", textDecoration: "none",
+          display: "flex", flexDirection: "column", textDecoration: "none", borderRadius: 16, padding: "26px 24px",
+          border: `1px solid ${B.line}`, background: `linear-gradient(150deg, #2A0A0A, ${B.black2} 70%)`,
         }}>
-          <div style={{ fontSize: 11.5, letterSpacing: "0.12em", color: B.redLink, fontWeight: 700, marginBottom: 10 }}>THE STORY</div>
-          <div style={{ fontSize: 17, fontWeight: 700, color: B.white, marginBottom: 8 }}>
-            "Too complicated. Too American. So I built my own."
+          <div style={{ fontSize: 11.5, letterSpacing: "0.12em", color: B.redLink, fontWeight: 700, marginBottom: 14 }}>THE STORY</div>
+          <div style={{ fontSize: 54, lineHeight: 0.6, color: B.red, fontFamily: "Georgia, serif", marginBottom: 6 }} aria-hidden="true">“</div>
+          <div style={{ fontSize: 20, fontWeight: 800, color: B.white, lineHeight: 1.3, marginBottom: 12, letterSpacing: "-0.01em" }}>
+            Too complicated. Too American. So I built my own.
           </div>
           <div style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.6 }}>
-            How one Canadian investor's frustration became {PRODUCTS.length} trackers — and why every buyer gets personal support.
+            How one Canadian investor's frustration became {PRODUCTS.length} trackers, and why every buyer gets personal support.
           </div>
-          <div style={{ fontSize: 13.5, color: B.redLink, fontWeight: 600, marginTop: 12 }}>Meet MapleSheet →</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: "auto", paddingTop: 20 }}>
+            <img src="/logo.png" alt="" width="40" height="40" style={{ width: 40, height: 40, borderRadius: 10 }} />
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: B.white }}>Lino, Founder</div>
+              <div style={{ fontSize: 12.5, color: B.grayLight }}>🍁 British Columbia</div>
+            </div>
+            <span style={{ marginLeft: "auto", fontSize: 13.5, color: B.redLink, fontWeight: 600 }}>Meet MapleSheet →</span>
+          </div>
         </Link>
       </Reveal>
     </div>

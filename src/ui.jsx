@@ -334,9 +334,28 @@ export function GlobalStyles() {
       .ml-mobile-only { display: none; }
       .ml-contact { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px; align-items: start; }
       .ml-contact-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+      .ml-demo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr); gap: 28px; align-items: start; }
+      .ml-tenyr { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 24px; align-items: center; max-width: 900px; margin: 0 auto 28px; }
+      .ml-tenyr-card { padding: 34px 36px; }
+      .ml-tenyr-kicker { font-size: 13px; }
+      .ml-tenyr-num { font-size: clamp(40px, 4.6vw, 58px); }
+      .ml-tenyr-sub { font-size: 15px; }
+      .ml-tenyr-gap { font-size: 18px; }
+      .ml-demo-opts { display: grid; gap: 10px; }
+      .ml-demo-opt-sub { display: block; }
+      .ml-res-row:hover div:nth-child(2) { color: ${B.redLink} !important; }
+      .ml-home-bottom { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 18px; }
       .ml-chip-input:focus-visible + span { outline: 2px solid ${B.yellow}; outline-offset: 2px; }
       @media (max-width: 960px) {
-        .ml-pdp, .ml-pdp-body, .ml-about-hero, .ml-picker, .ml-contact { grid-template-columns: 1fr; }
+        .ml-pdp, .ml-pdp-body, .ml-about-hero, .ml-picker, .ml-contact, .ml-demo, .ml-home-bottom { grid-template-columns: 1fr; }
+        .ml-demo-opts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .ml-tenyr { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-bottom: 20px; }
+        .ml-tenyr-card { padding: 26px 34px; min-width: 220px; }
+        .ml-tenyr-kicker { font-size: 11.5px; }
+        .ml-tenyr-num { font-size: 34px; }
+        .ml-tenyr-sub { font-size: 12.5px; }
+        .ml-tenyr-gap { font-size: 14px; }
+        .ml-demo-opt-sub { display: none; }
         .ml-pdp-buy { position: static; }
         .ml-feat-grid, .ml-grid-4, .ml-flag-highlights { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .ml-grid-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -676,7 +695,9 @@ export function ProductGallery({ slides, intervalMs = 4000 }) {
 
 const ACCOUNT_COLORS = { TFSA: "#5B8DEF", RRSP: "#8B7CF6", RESP: "#34C77B", FHSA: "#F5A623", Margin: B.red };
 
-export function DashboardMock({ accounts, total, totalLabel = "Combined net worth", ytd, minContentHeight }) {
+export function DashboardMock({ accounts, total, totalLabel = "Combined net worth", ytd, minContentHeight, allocation = false }) {
+  const toNum = (v) => Number(String(v).replace(/,/g, ""));
+  const sum = accounts.reduce((t, a) => t + toNum(a.value), 0);
   return (
     <div style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16, overflow: "hidden", textAlign: "left" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "12px 16px", borderBottom: `1px solid ${B.line}`, background: B.black3 }}>
@@ -685,7 +706,7 @@ export function DashboardMock({ accounts, total, totalLabel = "Combined net wort
         <span style={{ width: 9, height: 9, borderRadius: "50%", background: B.gray }} />
         <span style={{ marginLeft: 8, fontSize: 12, color: B.grayLight }}>MapleSheet Co. — Portfolio Dashboard</span>
       </div>
-      <div style={{ padding: "20px 22px", ...(minContentHeight ? { minHeight: minContentHeight, display: "flex", flexDirection: "column", justifyContent: "center" } : {}) }}>
+      <div style={{ padding: "20px 22px", ...(minContentHeight ? { minHeight: minContentHeight } : {}) }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 18, flexWrap: "wrap", gap: 10 }}>
           <div>
             <div style={{ fontSize: 12, color: B.grayLight, marginBottom: 4 }}>{totalLabel}</div>
@@ -708,6 +729,24 @@ export function DashboardMock({ accounts, total, totalLabel = "Combined net wort
             </div>
           ))}
         </div>
+        {allocation && (
+          <div style={{ marginTop: 20 }}>
+            <div style={{ fontSize: 12, color: B.grayLight, marginBottom: 8 }}>Allocation by account</div>
+            <div style={{ display: "flex", height: 12, borderRadius: 999, overflow: "hidden", gap: 2 }}>
+              {accounts.map((a) => (
+                <span key={a.label} title={a.label} style={{ width: `${(toNum(a.value) / sum) * 100}%`, background: ACCOUNT_COLORS[a.label] || B.red }} />
+              ))}
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 16px", marginTop: 10 }}>
+              {accounts.map((a) => (
+                <span key={a.label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: B.grayLight }}>
+                  <span style={{ width: 8, height: 8, borderRadius: 2, background: ACCOUNT_COLORS[a.label] || B.red }} />
+                  {a.label} {Math.round((toNum(a.value) / sum) * 100)}%
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
