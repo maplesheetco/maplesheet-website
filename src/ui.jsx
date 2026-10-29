@@ -458,6 +458,27 @@ function FootCol({ heading, children }) {
   );
 }
 
+// The site email with a one-click copy, for visitors whose computer has no
+// mail app (where a bare mailto link silently does nothing).
+function CopyEmail() {
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard?.writeText(CONFIG.email).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {});
+  };
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+      <a href={`mailto:${CONFIG.email}`} style={{ color: B.grayLight, textDecoration: "none" }}>{CONFIG.email}</a>
+      <button type="button" onClick={copy} aria-label="Copy email address" style={{
+        font: "inherit", fontSize: 11.5, fontWeight: 700, cursor: "pointer", borderRadius: 6, padding: "3px 8px",
+        background: "transparent", color: copied ? "#34C77B" : B.grayLight, border: `1px solid ${copied ? "#34C77B" : B.line}`,
+      }}>{copied ? "Copied ✓" : "Copy"}</button>
+    </span>
+  );
+}
+
 export function Footer() {
   return (
     <footer style={{ borderTop: `1px solid ${B.line}`, marginTop: 60 }}>
@@ -478,10 +499,12 @@ export function Footer() {
               style={{ fontSize: 13.5, fontWeight: 600, textDecoration: "none", padding: "10px 18px", borderRadius: 8, background: B.red, color: B.white, border: `1px solid ${B.red}` }}>
               Shop Trackers
             </Link>
-            <a href={`mailto:${CONFIG.email}`}
+            {/* /contact, not mailto: a mailto link does nothing on a computer
+                with no mail app set up, so people clicked and nothing happened. */}
+            <Link to="/contact"
               style={{ fontSize: 13.5, fontWeight: 600, textDecoration: "none", padding: "10px 18px", borderRadius: 8, background: "transparent", color: B.white, border: `1px solid ${B.line}` }}>
-              Email us
-            </a>
+              Contact us
+            </Link>
           </div>
         </div>
 
@@ -515,30 +538,35 @@ export function Footer() {
 
       <div style={{ borderTop: `1px solid ${B.line}` }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", padding: "18px 24px" }}>
-          <p style={{ margin: "0 0 16px", fontSize: 11.5, color: B.gray, lineHeight: 1.6, maxWidth: 760 }}>
+          <p style={{ margin: "0 auto 18px", fontSize: 12, color: B.gray, lineHeight: 1.6, maxWidth: 760, textAlign: "center" }}>
             MapleSheet trackers are record-keeping tools, not financial advice. Google Sheets is a trademark of Google LLC; MapleSheet Co. is not affiliated with Google or Etsy.{" "}
             <NavLink to="/disclaimer" style={{ color: B.grayLight, textDecoration: "underline" }}>Read the full disclaimer →</NavLink>
             {" "}·{" "}
             <NavLink to="/privacy" style={{ color: B.grayLight, textDecoration: "underline" }}>Privacy Policy →</NavLink>
           </p>
-          <div className="ml-foot-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap", paddingTop: 16, borderTop: `1px solid ${B.line}` }}>
-            <div className="ml-foot-bottom-left" style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", fontSize: 11.5, color: B.gray }}>
+          {/* Bottom bar, centred: copyright, email (with a copy button, since
+              mailto links do nothing without a mail app), back to top, then
+              the LinoCon Digital credit on its own line. */}
+          <div className="ml-foot-bottom" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, paddingTop: 18, borderTop: `1px solid ${B.line}`, textAlign: "center" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px 14px", flexWrap: "wrap", fontSize: 13, color: B.gray }}>
               <span>© 2026 MapleSheet Co. All rights reserved.</span>
-              <span style={{ color: B.line }}>·</span>
-              <a href="https://linocondigital.com" target="_blank" rel="noreferrer"
-                style={{ display: "flex", alignItems: "center", gap: 6, color: B.gray, textDecoration: "none" }}>
-                Built by
-                <img src="/linocon-digital-logo.png" alt="LinoCon Digital" style={{ width: 15, height: 15, borderRadius: 4 }} />
-                LinoCon Digital
-              </a>
-            </div>
-            <div className="ml-foot-bottom-right" style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap", fontSize: 11.5 }}>
-              <a href={`mailto:${CONFIG.email}`} style={{ color: B.gray, textDecoration: "none" }}>{CONFIG.email}</a>
+              <span style={{ color: B.line }} aria-hidden="true">·</span>
+              <CopyEmail />
+              <span style={{ color: B.line }} aria-hidden="true">·</span>
               <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                style={{ display: "inline-flex", alignItems: "center", gap: 4, fontWeight: 600, color: B.grayLight, background: "none", border: "none", padding: 0, font: "inherit", cursor: "pointer" }}>
+                style={{ fontWeight: 600, color: B.grayLight, background: "none", border: "none", padding: 0, font: "inherit", cursor: "pointer" }}>
                 Back to top ↑
               </button>
             </div>
+            <a href="https://linocondigital.com" target="_blank" rel="noreferrer" className="ml-foot-credit"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 10, textDecoration: "none",
+                padding: "8px 16px 8px 10px", borderRadius: 999, border: `1px solid ${B.line}`, background: B.black2,
+                fontSize: 14, color: B.grayLight,
+              }}>
+              <img src="/linocon-digital-logo.png" alt="" width="26" height="26" style={{ width: 26, height: 26, borderRadius: 6 }} />
+              <span>Built by <strong style={{ color: B.white, fontWeight: 700 }}>LinoCon Digital</strong> ↗</span>
+            </a>
           </div>
         </div>
       </div>
@@ -550,10 +578,7 @@ export function Footer() {
           .ml-foot-grid { grid-template-columns: 1fr 1fr; row-gap: 36px; }
           .ml-foot-grid > div:first-child { grid-column: 1 / -1; }
         }
-        @media (max-width: 600px) {
-          .ml-foot-bottom { flex-direction: column; text-align: center; }
-          .ml-foot-bottom-left, .ml-foot-bottom-right { justify-content: center; }
-        }
+        .ml-foot-credit:hover { border-color: ${B.red} !important; }
       `}</style>
     </footer>
   );
