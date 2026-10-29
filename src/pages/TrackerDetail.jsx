@@ -47,22 +47,41 @@ function ProductGallery({ images, name }) {
           </>
         )}
       </div>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 10 }}>
-        {images.map((img, idx) => (
-          <button
-            key={idx} onClick={() => setI(idx)} aria-label={`Show screenshot ${idx + 1}`}
-            style={{
-              width: idx === i ? 18 : 7, height: 7, borderRadius: 999, border: "none", cursor: "pointer",
-              background: idx === i ? B.red : B.line, transition: "width 0.15s, background 0.15s", padding: 0,
-            }}
-          />
-        ))}
-      </div>
-      <div style={{ textAlign: "center", color: B.grayLight, fontSize: 12.5, marginTop: 6 }}>
+      <div style={{ textAlign: "center", color: B.grayLight, fontSize: 12.5, marginTop: 8 }}>
         {current.label}
       </div>
+      {/* Thumbnail strip: every screenshot at a glance, scrolls sideways when
+          a tracker has more than fit. */}
+      {images.length > 1 && (
+        <div className="ml-thumbs" style={{ display: "flex", gap: 10, marginTop: 12, overflowX: "auto", paddingBottom: 4 }}>
+          {images.map((img, idx) => (
+            <button
+              key={idx} onClick={() => setI(idx)} aria-label={`Show screenshot ${idx + 1}: ${img.label}`}
+              aria-current={idx === i}
+              style={{
+                flex: "0 0 calc((100% - 30px) / 4)", minWidth: 90, padding: 0, cursor: "pointer",
+                borderRadius: 8, overflow: "hidden", background: B.black3,
+                border: `2px solid ${idx === i ? B.red : B.line}`, opacity: idx === i ? 1 : 0.75,
+              }}
+            >
+              <Picture thumb src={img.src} alt="" style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", objectPosition: "top", display: "block" }} />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
+}
+// Short "what you get" list for the buy box, from the product's own
+// `included` list: the sheet first, the PDFs and menu next (the template-link
+// PDF is left out, it's just the copy link), then personal support.
+function getChecklist(included) {
+  const items = included
+    .map((x) => x.label)
+    .filter((l) => l !== "Template Link PDF")
+    .map((l) => (l === "The Google Sheets template" ? "Google Sheets template, yours forever" : l))
+    .slice(0, 4);
+  return [...items, "Personal email support from Lino"];
 }
 
 // Persistent "don't miss it" CTA — fixed to the bottom of the viewport and
@@ -232,7 +251,7 @@ export default function TrackerDetail() {
       </div>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "18px 24px 0" }}>
         <div className="ml-pdp">
-          <div>
+          <div style={{ minWidth: 0 }}>
             {product.gallery ? (
               <ProductGallery images={product.gallery} name={product.name} />
             ) : product.screenshot ? (
@@ -333,6 +352,16 @@ export default function TrackerDetail() {
 
             <PromoBanner as="div" style={{ margin: 0, fontSize: 15 }} />
 
+            {product.included && (
+              <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 8 }}>
+                {getChecklist(product.included).map((t) => (
+                  <li key={t} style={{ display: "flex", gap: 10, fontSize: 14.5, color: B.white }}>
+                    <span style={{ color: "#34C77B", fontWeight: 800 }} aria-hidden="true">✓</span>{t}
+                  </li>
+                ))}
+              </ul>
+            )}
+
             {/* How delivery works — answers "what happens after I pay?" right next to the button. */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 8, textAlign: "center" }}>
               {[
@@ -356,6 +385,7 @@ export default function TrackerDetail() {
 
         <div className="ml-pdp-body" style={{ marginTop: 28 }}>
           <Reveal style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(22px, 4vw, 32px)" }}>
+            <div style={{ fontSize: 12, letterSpacing: "0.12em", color: B.redLink, fontWeight: 700, marginBottom: 12 }}>ABOUT THIS TRACKER</div>
             <p style={{ color: B.white, fontSize: 16, lineHeight: 1.7, margin: "0 0 18px" }}>{product.longDescription || product.desc}</p>
             {product.overview && (
               <div style={{ marginBottom: 26 }}>
@@ -431,8 +461,8 @@ export default function TrackerDetail() {
             )}
 
             <Reveal delay={160} style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(20px, 4vw, 28px)", marginBottom: 18 }}>
-              <div style={{ fontSize: 15, fontWeight: 700, color: B.white, marginBottom: 12 }}>
-                Common questions
+              <div style={{ fontSize: 12, letterSpacing: "0.12em", color: B.redLink, fontWeight: 700, marginBottom: 14 }}>
+                COMMON QUESTIONS
               </div>
               <FaqAccordion faqs={FAQS} />
             </Reveal>
