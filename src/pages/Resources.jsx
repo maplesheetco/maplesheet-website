@@ -774,11 +774,12 @@ export default function Resources() {
     <div className="ml-fade">
       <PageHead kicker="LEARN" title={<>Resources for <RedWord>Canadian investors</RedWord></>}
         sub="Guides, video walkthroughs, and product news. Because understanding your money comes before tracking it." />
-      <div style={{ maxWidth: 780, margin: "0 auto", padding: "30px 24px 0" }}>
+      <div style={{ maxWidth: 1160, margin: "0 auto", padding: "30px 24px 0" }}>
+        <div className="ml-res-grid">
         {posts.map((r, i) => (
           <Reveal as="article" key={r.title} delay={Math.min(i * 60, 240)} style={{
             background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18,
-            padding: "clamp(22px, 4vw, 32px)", marginBottom: 18,
+            padding: "clamp(22px, 4vw, 32px)", display: "flex", flexDirection: "column",
           }}>
             <div style={{ fontSize: 12, color: B.gray, marginBottom: 8 }}>
               {r.type === "video" ? "🎬 Video" : "📝 Article"} · {r.date}
@@ -803,12 +804,14 @@ export default function Resources() {
             )}
             <p style={{ color: B.grayLight, fontSize: 14.5, lineHeight: 1.75, margin: "0 0 14px" }}>{r.summary}</p>
             {r.type === "article" && r.slug && (
-              <Link to={`/resources/${r.slug}`} style={{ color: B.red, fontWeight: 600, fontSize: 14 }}>
+              <Link to={`/resources/${r.slug}`} style={{ color: B.red, fontWeight: 600, fontSize: 14, marginTop: "auto" }}>
                 Read the full guide →
               </Link>
             )}
           </Reveal>
         ))}
+        </div>
+        <div style={{ maxWidth: 780, margin: "0 auto" }}>
         {comingSoon.length > 0 && (
           <Reveal style={{
             border: `1px dashed ${B.line}`, borderRadius: 16, padding: "20px 24px",
@@ -822,7 +825,14 @@ export default function Resources() {
         <Reveal>
           <NewsletterBox />
         </Reveal>
+        </div>
       </div>
+      <style>{`
+        .ml-res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 22px; align-items: stretch; }
+        @media (max-width: 860px) {
+          .ml-res-grid { grid-template-columns: 1fr; gap: 18px; }
+        }
+      `}</style>
     </div>
   );
 }
