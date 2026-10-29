@@ -541,6 +541,16 @@ export const PRODUCTS = [
   // The master sheet must be shared as "Anyone with the link" → Viewer, or
   // the /copy link fails for buyers.
   { name: "TFSA + RRSP Multi-Brokerage Tracker", tag: "Combo", price: 17.99, desc: "Every TFSA and RRSP you own, at up to 8 brokerages, in one sheet — both rooms counted the way CRA counts them", badge: "NEW", sku: "MS-COMBO-TFSA-RRSP-MB",
+    gallery: [
+      { src: "/screenshots/tfsa-rrsp-mb-gallery-1-main-dashboard.jpg", label: "Main Dashboard — TFSA, RRSP and combined net worth, every brokerage side by side, both rooms, income and goals" },
+      { src: "/screenshots/tfsa-rrsp-mb-gallery-2-institution-dashboard.jpg", label: "Institution Dashboard — market value, ACB, gains and contributions per brokerage, plus a chart of your investments by brokerage" },
+      { src: "/screenshots/tfsa-rrsp-mb-gallery-3-transaction-log.jpg", label: "Transaction Log — the one tab you type into: pick the brokerage and TFSA or RRSP on every row, USD converted automatically" },
+      { src: "/screenshots/tfsa-rrsp-mb-gallery-4-tfsa-portfolio.jpg", label: "TFSA Portfolio — every TFSA holding at every brokerage combined, with live prices, ACB and dividends" },
+      { src: "/screenshots/tfsa-rrsp-mb-gallery-5-rrsp-portfolio.jpg", label: "RRSP Portfolio — every RRSP holding combined, with live prices, ACB and dividends" },
+      { src: "/screenshots/tfsa-rrsp-mb-gallery-6-dividend-tracker.jpg", label: "Dividend Tracker — monthly income from both accounts vs your goal, per-ticker totals and a US withholding estimate" },
+      { src: "/screenshots/tfsa-rrsp-mb-gallery-7-cra-rules.jpg", label: "TFSA & RRSP CRA Rules — what matters when you hold both at more than one institution" },
+      { src: "/screenshots/tfsa-rrsp-mb-gallery-8-settings.jpg", label: "Settings & Goals — your brokerages, TFSA room and RRSP numbers, the only tab you edit" },
+    ],
     stripeBuyButton: {
       buyButtonId: "buy_btn_1UViwPJYx6fAMdIUEHXwpGmM",
       publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
