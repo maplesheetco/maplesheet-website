@@ -254,6 +254,11 @@ export function PromoBanner({ prefix = "", style, as: Tag = "p" }) {
       }}
     >
       🏷 {prefix}{CONFIG.promoText}
+      {CONFIG.promoEndsLabel && (
+        <span style={{ display: "block", fontSize: "max(12.5px, 0.68em)", fontWeight: 700, color: B.grayLight, marginTop: 4, letterSpacing: 0 }}>
+          ⏳ Hurry, limited-time offer. Ends {CONFIG.promoEndsLabel}.
+        </span>
+      )}
     </Tag>
   );
 }
