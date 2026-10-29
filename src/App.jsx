@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { B, PRODUCTS, RESOURCES } from "./data.js";
+import { B, PRODUCTS, RESOURCES, getBundleSavings } from "./data.js";
 import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, ProductGallery, GrowthChart, usePageMeta, LiveChatTracker, Reveal, PromoBanner } from "./ui.jsx";
 import { trackBuyClicked } from "./analytics.js";
 import Trackers from "./pages/Trackers.jsx";
@@ -310,9 +310,24 @@ function Home() {
                   fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em",
                   padding: "4px 10px", borderRadius: 999,
                 }}>{p.badge}</span>
-                <span style={{ fontSize: 17, fontWeight: 700, color: B.white, lineHeight: 1.3, paddingRight: 70 }}>{p.name}</span>
+                <span style={{ fontSize: flagship ? 21 : 17, fontWeight: 700, color: B.white, lineHeight: 1.3, paddingRight: 70 }}>{p.name}</span>
                 <span style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.55, flex: 1 }}>{p.desc}</span>
-                <span style={{ fontSize: 20, fontWeight: 800, color: B.white }}>CA${p.price.toFixed(2)}</span>
+                {flagship && p.pitch && (
+                  <span style={{ fontSize: 15, color: B.white, lineHeight: 1.6, maxWidth: 760 }}>{p.pitch}</span>
+                )}
+                {flagship && p.highlights && (
+                  <ul className="ml-flag-highlights">
+                    {p.highlights.map((h) => <li key={h}><span style={{ color: "#34C77B", fontWeight: 800 }}>✓</span> {h}</li>)}
+                  </ul>
+                )}
+                <span style={{ display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "4px 12px" }}>
+                  <span style={{ fontSize: flagship ? 24 : 20, fontWeight: 800, color: B.white }}>CA${p.price.toFixed(2)}</span>
+                  {flagship && getBundleSavings(p) && (
+                    <span style={{ fontSize: 13, fontWeight: 700, color: "#34C77B" }}>
+                      Save CA${getBundleSavings(p).amount.toFixed(2)} ({getBundleSavings(p).percent}%) vs. buying separately
+                    </span>
+                  )}
+                </span>
                 <div style={{ display: "flex", gap: 8, ...(flagship ? { maxWidth: 340 } : {}) }}>
                   {p.url && !p.stripeBuyButton && (
                     <a href={p.url} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
