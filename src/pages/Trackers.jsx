@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { B, ACCOUNT_GUIDES, RETURN_POLICY, SHIPPING_DETAILS, getBundleSavings } from "../data.js";
 import { PageHead, RedWord, usePageMeta, useJsonLd, Reveal, PromoBanner, Picture } from "../ui.jsx";
 import { CATALOG, cardImage } from "../trackerPages.js";
 import { trackBuyClicked } from "../analytics.js";
 import { STATIC_META } from "../seo.js";
+import { TrackerPicker, CompareTable } from "../TrackerTools.jsx";
 
 const SITE_URL = "https://www.maplesheet.ca";
 const FILTERS = ["All", "TFSA", "RRSP", "RESP", "FHSA", "Margin", "Combo", "Flagship"];
@@ -47,12 +48,22 @@ export default function Trackers() {
     })),
   }, "trackers-product-schema");
   const [filter, setFilter] = useState("All");
+  // Links like /trackers#picker (from the Home page) land on that section.
+  // The site's own route-change handler scrolls to the top first, so this
+  // waits a tick before scrolling down.
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (!hash) return;
+    const t = setTimeout(() => document.getElementById(hash.slice(1))?.scrollIntoView(), 60);
+    return () => clearTimeout(t);
+  }, [hash]);
   const shown = filter === "All" ? CATALOG : CATALOG.filter((p) => p.tag === filter);
   return (
     <div className="ml-fade">
       <PageHead kicker="THE LINEUP" title={<>{CATALOG.length} trackers. <RedWord>Every Canadian account.</RedWord></>}
         sub="Start with one account, or track everything at once. All prices in CAD. One-time purchase — no subscription, ever." />
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "26px 24px 0" }}>
+        <TrackerPicker />
         <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginBottom: 28 }}>
           {FILTERS.map((f) => (
             <button key={f} onClick={() => setFilter(f)} className="ml-btn" style={{
@@ -191,6 +202,7 @@ export default function Trackers() {
             );
           })}
         </div>
+        <CompareTable />
         <PromoBanner style={{ marginTop: 24 }} />
       </div>
     </div>

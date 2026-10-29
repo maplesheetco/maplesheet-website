@@ -21,7 +21,7 @@ function ProductGallery({ images, name }) {
           eager src={current.src} alt={`${name} — ${current.label}`}
           style={{
             width: "100%", borderRadius: 12, display: "block",
-            border: `1px solid ${B.line}`, aspectRatio: "2 / 1", objectFit: "contain", background: B.black3,
+            border: `1px solid ${B.line}`, aspectRatio: "4 / 3", objectFit: "contain", background: B.black3,
           }}
         />
         {images.length > 1 && (
@@ -95,7 +95,7 @@ function StickyBuyBar({ product }) {
       }}
     >
       <div style={{
-        maxWidth: 780, margin: "0 auto", padding: "10px 16px",
+        maxWidth: 1200, margin: "0 auto", padding: "10px 24px",
         display: "flex", alignItems: "center", gap: 12,
       }}>
         <button
@@ -220,190 +220,226 @@ export default function TrackerDetail() {
 
   const hasBuyPath = !!(product.stripeBuyButton || product.directUrl || product.url);
 
+  // Desktop: screenshots on the left, a buy box on the right that stays in
+  // view while scrolling, then the details below in two columns. Phones get
+  // the same pieces stacked in that order (see .ml-pdp in ui.jsx).
   return (
     <div className="ml-fade" style={{ paddingBottom: hasBuyPath ? 70 : 0 }}>
-      <div style={{ maxWidth: 780, margin: "0 auto", padding: "24px 24px 0" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "24px 24px 0" }}>
         <Link to="/trackers" style={{ color: B.gray, fontSize: 13.5, fontWeight: 600, textDecoration: "none" }}>
           ← All trackers
         </Link>
       </div>
-      <PageHead
-        kicker={product.tag.toUpperCase()}
-        title={product.name}
-        sub={product.longDescription || product.desc}
-      />
-      <div style={{ maxWidth: 780, margin: "0 auto", padding: "10px 24px 0" }}>
-        <Reveal style={{
-          background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18,
-          padding: "clamp(22px, 4vw, 32px)", marginBottom: 18,
-        }}>
-          {product.gallery ? (
-            <ProductGallery images={product.gallery} name={product.name} />
-          ) : product.screenshot ? (
-            <Picture
-              eager src={product.screenshot} alt={`${product.name} dashboard screenshot`}
-              style={{
-                width: "100%", borderRadius: 12, marginBottom: 22, display: "block",
-                border: `1px solid ${B.line}`, aspectRatio: "2 / 1", objectFit: "contain", background: B.black3,
-              }}
-            />
-          ) : product.demo ? (
-            <div style={{ maxWidth: 460, margin: "0 auto 24px" }}>
-              <DashboardMock total={product.demo.total} ytd={product.demo.ytd} accounts={product.demo.accounts} />
-            </div>
-          ) : null}
-
-          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: savings ? 8 : 18 }}>
-            <div style={{ fontSize: 30, fontWeight: 800, color: B.white }}>CA${product.price.toFixed(2)}</div>
-            <div style={{ fontSize: 13, color: B.grayLight }}>One-time purchase — no subscription, ever</div>
-          </div>
-
-          {savings && (
-            <div style={{
-              display: "inline-block", background: "rgba(52,199,123,0.12)", border: "1px solid rgba(52,199,123,0.4)",
-              color: "#34C77B", fontSize: 13, fontWeight: 700, padding: "6px 12px", borderRadius: 999, marginBottom: 18,
-            }}>
-              Save CA${savings.amount.toFixed(2)} ({savings.percent}%) vs. buying these trackers separately
-            </div>
-          )}
-
-          {product.bestFor && (
-            <div style={{ fontSize: 13.5, color: B.grayLight, marginBottom: 18, lineHeight: 1.6 }}>
-              <span style={{ color: B.white, fontWeight: 700 }}>Best for:</span> {product.bestFor}
-            </div>
-          )}
-
-          <div style={{ display: "flex", gap: 10, marginBottom: (product.overview || product.features || product.included) ? 26 : 0 }}>
-            {product.url && !product.stripeBuyButton && (
-              <a
-                href={product.url} target="_blank" rel="noreferrer" className="ml-btn"
-                onClick={() => trackBuyClicked({
-                  productName: product.name, productTag: product.tag, priceCad: product.price,
-                  checkoutDestination: "etsy", sourceSection: "tracker_detail",
-                })}
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "18px 24px 0" }}>
+        <div className="ml-pdp">
+          <div>
+            {product.gallery ? (
+              <ProductGallery images={product.gallery} name={product.name} />
+            ) : product.screenshot ? (
+              <Picture
+                eager src={product.screenshot} alt={`${product.name} dashboard screenshot`}
                 style={{
-                  flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: "#fff",
-                  background: B.red, padding: "14px 10px", borderRadius: 10, textDecoration: "none",
+                  width: "100%", borderRadius: 12, marginBottom: 22, display: "block",
+                  border: `1px solid ${B.line}`, aspectRatio: "4 / 3", objectFit: "contain", background: B.black3,
                 }}
-              >Buy on Etsy</a>
-            )}
-            {product.stripeBuyButton ? (
-              <div
-                style={{ flex: 1, display: "flex", justifyContent: "center" }}
-                onClickCapture={() => trackBuyClicked({
-                  productName: product.name, productTag: product.tag, priceCad: product.price,
-                  checkoutDestination: "stripe", sourceSection: "tracker_detail",
-                })}
-              >
-                <stripe-buy-button
-                  buy-button-id={product.stripeBuyButton.buyButtonId}
-                  publishable-key={product.stripeBuyButton.publishableKey}
-                ></stripe-buy-button>
+              />
+            ) : product.demo ? (
+              <div style={{ maxWidth: 460, margin: "0 auto 24px" }}>
+                <DashboardMock total={product.demo.total} ytd={product.demo.ytd} accounts={product.demo.accounts} />
               </div>
-            ) : product.directUrl ? (
-              <a
-                href={product.directUrl} target="_blank" rel="noreferrer" className="ml-btn"
-                onClick={() => trackBuyClicked({
-                  productName: product.name, productTag: product.tag, priceCad: product.price,
-                  checkoutDestination: "direct", sourceSection: "tracker_detail",
-                })}
-                style={product.url ? {
-                  flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: B.white,
-                  background: "transparent", border: `1.5px solid ${B.white}`,
-                  padding: "14px 10px", borderRadius: 10, textDecoration: "none",
-                } : {
-                  flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: "#fff",
-                  background: B.red, padding: "14px 10px", borderRadius: 10, textDecoration: "none",
-                }}
-              >{product.url ? "Buy Direct" : "Buy on Payhip"}</a>
-            ) : product.url ? (
-              <span title="Direct checkout coming soon" style={{
-                flex: 1, textAlign: "center", fontSize: 14, fontWeight: 600, color: B.gray,
-                border: `1.5px solid ${B.line}`, padding: "14px 10px", borderRadius: 10, cursor: "default",
-              }}>Direct — soon</span>
             ) : null}
           </div>
 
-          {product.overview && (
-            <div style={{ marginBottom: 26 }}>
-              {product.overview.map((para, i) => (
-                <p key={i} style={{
-                  color: B.grayLight, fontSize: 14.5, lineHeight: 1.75,
-                  marginTop: i === 0 ? 0 : 14, marginBottom: 0,
-                }}>{para}</p>
-              ))}
-              {product.whoFor && (
-                <p style={{ color: B.grayLight, fontSize: 14.5, lineHeight: 1.75, marginTop: 14, marginBottom: 0 }}>
-                  <span style={{ color: B.white, fontWeight: 700 }}>Who it's for: </span>{product.whoFor}
-                </p>
-              )}
-            </div>
-          )}
-
-          {product.features && (
-            <div style={{ marginBottom: product.included ? 26 : 0 }}>
-              <div style={{ fontSize: 12, letterSpacing: "0.1em", color: B.redLink, fontWeight: 700, marginBottom: 10, textTransform: "uppercase" }}>
-                What's included in the tracker
-              </div>
-              <ul style={{ margin: 0, paddingLeft: 20 }}>
-                {product.features.map((f, i) => (
-                  <li key={i} style={{ color: B.grayLight, fontSize: 14.5, lineHeight: 1.75, marginBottom: 6 }}>{f}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {product.included && (
+          <aside className="ml-pdp-buy" style={{
+            background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(22px, 3vw, 28px)",
+            display: "flex", flexDirection: "column", gap: 16,
+          }}>
             <div>
-              <div style={{ fontSize: 12, letterSpacing: "0.1em", color: B.redLink, fontWeight: 700, marginBottom: 10, textTransform: "uppercase" }}>
-                What you get after you purchase
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {product.included.map((item, i) => (
-                  <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                    <span style={{ fontSize: 17, lineHeight: 1.5 }}>{item.icon}</span>
-                    <div>
-                      <div style={{ color: B.white, fontWeight: 700, fontSize: 14 }}>{item.label}</div>
-                      <div style={{ color: B.grayLight, fontSize: 13.5, lineHeight: 1.6 }}>{item.desc}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <div style={{ fontSize: 12, letterSpacing: "0.14em", color: B.redLink, fontWeight: 700, marginBottom: 8 }}>{product.tag.toUpperCase()}</div>
+              <h1 style={{ fontSize: "clamp(26px, 3.2vw, 34px)", fontWeight: 800, margin: 0, letterSpacing: "-0.02em", color: B.white, lineHeight: 1.15 }}>{product.name}</h1>
             </div>
-          )}
-        </Reveal>
 
-        {guides.length > 0 && (
-          <Reveal delay={80} style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(20px, 4vw, 28px)", marginBottom: 18 }}>
-            <div style={{ fontSize: 15, fontWeight: 700, color: B.white, marginBottom: 12 }}>
-              Learn the rules for each account
+            <div style={{ display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "4px 12px" }}>
+              <div style={{ fontSize: 32, fontWeight: 800, color: B.white }}>CA${product.price.toFixed(2)}</div>
+              <div style={{ fontSize: 13, color: B.grayLight }}>One-time purchase — no subscription, ever</div>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {guides.map((g) => (
-                <Link key={g.slug} to={`/resources/${g.slug}`} style={{ color: B.redLink, fontWeight: 600, fontSize: 14, textDecoration: "none" }}>
-                  📖 {g.label} →
-                </Link>
-              ))}
-              <Link to="/resources/tfsa-vs-rrsp-vs-fhsa-vs-resp" style={{ color: B.redLink, fontWeight: 600, fontSize: 14, textDecoration: "none" }}>
-                📖 Which account should come first? →
-              </Link>
-              {product.extraGuide && (
-                <Link to={`/resources/${product.extraGuide.slug}`} style={{ color: B.redLink, fontWeight: 600, fontSize: 14, textDecoration: "none" }}>
-                  📖 {product.extraGuide.label} →
-                </Link>
+
+            {savings && (
+              <div style={{
+                alignSelf: "flex-start", background: "rgba(52,199,123,0.12)", border: "1px solid rgba(52,199,123,0.4)",
+                color: "#34C77B", fontSize: 13, fontWeight: 700, padding: "6px 12px", borderRadius: 999,
+              }}>
+                Save CA${savings.amount.toFixed(2)} ({savings.percent}%) vs. buying these trackers separately
+              </div>
+            )}
+
+            {product.bestFor && (
+              <div style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.6 }}>
+                <span style={{ color: B.white, fontWeight: 700 }}>Best for:</span> {product.bestFor}
+              </div>
+            )}
+
+            <div style={{ display: "flex", gap: 10 }}>
+              {product.url && !product.stripeBuyButton && (
+                <a
+                  href={product.url} target="_blank" rel="noreferrer" className="ml-btn"
+                  onClick={() => trackBuyClicked({
+                    productName: product.name, productTag: product.tag, priceCad: product.price,
+                    checkoutDestination: "etsy", sourceSection: "tracker_detail",
+                  })}
+                  style={{
+                    flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: "#fff",
+                    background: B.red, padding: "14px 10px", borderRadius: 10, textDecoration: "none",
+                  }}
+                >Buy on Etsy</a>
               )}
+              {product.stripeBuyButton ? (
+                <div
+                  style={{ flex: 1, display: "flex", justifyContent: "center" }}
+                  onClickCapture={() => trackBuyClicked({
+                    productName: product.name, productTag: product.tag, priceCad: product.price,
+                    checkoutDestination: "stripe", sourceSection: "tracker_detail",
+                  })}
+                >
+                  <stripe-buy-button
+                    buy-button-id={product.stripeBuyButton.buyButtonId}
+                    publishable-key={product.stripeBuyButton.publishableKey}
+                  ></stripe-buy-button>
+                </div>
+              ) : product.directUrl ? (
+                <a
+                  href={product.directUrl} target="_blank" rel="noreferrer" className="ml-btn"
+                  onClick={() => trackBuyClicked({
+                    productName: product.name, productTag: product.tag, priceCad: product.price,
+                    checkoutDestination: "direct", sourceSection: "tracker_detail",
+                  })}
+                  style={product.url ? {
+                    flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: B.white,
+                    background: "transparent", border: `1.5px solid ${B.white}`,
+                    padding: "14px 10px", borderRadius: 10, textDecoration: "none",
+                  } : {
+                    flex: 1, textAlign: "center", fontSize: 14, fontWeight: 700, color: "#fff",
+                    background: B.red, padding: "14px 10px", borderRadius: 10, textDecoration: "none",
+                  }}
+                >{product.url ? "Buy Direct" : "Buy on Payhip"}</a>
+              ) : product.url ? (
+                <span title="Direct checkout coming soon" style={{
+                  flex: 1, textAlign: "center", fontSize: 14, fontWeight: 600, color: B.gray,
+                  border: `1.5px solid ${B.line}`, padding: "14px 10px", borderRadius: 10, cursor: "default",
+                }}>Direct — soon</span>
+              ) : null}
             </div>
+
+
+            <PromoBanner as="div" style={{ margin: 0, fontSize: 15 }} />
+
+            {/* How delivery works — answers "what happens after I pay?" right next to the button. */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 8, textAlign: "center" }}>
+              {[
+                ["1. Buy", "Secure Stripe checkout"],
+                ["2. Get your links", "Sheet + PDFs right after payment"],
+                ["3. Make a copy", "One click in Google Sheets"],
+              ].map(([t, d]) => (
+                <div key={t} style={{ background: B.black3, borderRadius: 10, padding: "10px 6px" }}>
+                  <div style={{ color: B.white, fontWeight: 700, fontSize: 12.5 }}>{t}</div>
+                  <div style={{ color: B.grayLight, fontSize: 11.5, lineHeight: 1.45, marginTop: 2 }}>{d}</div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ fontSize: 12.5, color: B.grayLight, lineHeight: 1.6, borderTop: `1px solid ${B.line}`, paddingTop: 12 }}>
+              Personal support from Lino on every purchase. Digital downloads are final sale, but if something isn't working,{" "}
+              <Link to="/contact" style={{ color: B.redLink, fontWeight: 600 }}>contact us</Link> and we'll fix it.
+            </div>
+          </aside>
+        </div>
+
+        <div className="ml-pdp-body" style={{ marginTop: 28 }}>
+          <Reveal style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(22px, 4vw, 32px)" }}>
+            <p style={{ color: B.white, fontSize: 16, lineHeight: 1.7, margin: "0 0 18px" }}>{product.longDescription || product.desc}</p>
+            {product.overview && (
+              <div style={{ marginBottom: 26 }}>
+                {product.overview.map((para, i) => (
+                  <p key={i} style={{
+                    color: B.grayLight, fontSize: 14.5, lineHeight: 1.75,
+                    marginTop: i === 0 ? 0 : 14, marginBottom: 0,
+                  }}>{para}</p>
+                ))}
+                {product.whoFor && (
+                  <p style={{ color: B.grayLight, fontSize: 14.5, lineHeight: 1.75, marginTop: 14, marginBottom: 0 }}>
+                    <span style={{ color: B.white, fontWeight: 700 }}>Who it's for: </span>{product.whoFor}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {product.features && (
+              <div style={{ marginBottom: product.included ? 26 : 0 }}>
+                <div style={{ fontSize: 12, letterSpacing: "0.1em", color: B.redLink, fontWeight: 700, marginBottom: 10, textTransform: "uppercase" }}>
+                  What's included in the tracker
+                </div>
+                <ul style={{ margin: 0, paddingLeft: 20 }}>
+                  {product.features.map((f, i) => (
+                    <li key={i} style={{ color: B.grayLight, fontSize: 14.5, lineHeight: 1.75, marginBottom: 6 }}>{f}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {product.included && (
+              <div>
+                <div style={{ fontSize: 12, letterSpacing: "0.1em", color: B.redLink, fontWeight: 700, marginBottom: 10, textTransform: "uppercase" }}>
+                  What you get after you purchase
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  {product.included.map((item, i) => (
+                    <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                      <span style={{ fontSize: 17, lineHeight: 1.5 }}>{item.icon}</span>
+                      <div>
+                        <div style={{ color: B.white, fontWeight: 700, fontSize: 14 }}>{item.label}</div>
+                        <div style={{ color: B.grayLight, fontSize: 13.5, lineHeight: 1.6 }}>{item.desc}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </Reveal>
-        )}
 
-        <Reveal delay={160} style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(20px, 4vw, 28px)", marginBottom: 18 }}>
-          <div style={{ fontSize: 15, fontWeight: 700, color: B.white, marginBottom: 12 }}>
-            Common questions
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {guides.length > 0 && (
+              <Reveal delay={80} style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(20px, 4vw, 28px)", marginBottom: 18 }}>
+                <div style={{ fontSize: 15, fontWeight: 700, color: B.white, marginBottom: 12 }}>
+                  Learn the rules for each account
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {guides.map((g) => (
+                    <Link key={g.slug} to={`/resources/${g.slug}`} style={{ color: B.redLink, fontWeight: 600, fontSize: 14, textDecoration: "none" }}>
+                      📖 {g.label} →
+                    </Link>
+                  ))}
+                  <Link to="/resources/tfsa-vs-rrsp-vs-fhsa-vs-resp" style={{ color: B.redLink, fontWeight: 600, fontSize: 14, textDecoration: "none" }}>
+                    📖 Which account should come first? →
+                  </Link>
+                  {product.extraGuide && (
+                    <Link to={`/resources/${product.extraGuide.slug}`} style={{ color: B.redLink, fontWeight: 600, fontSize: 14, textDecoration: "none" }}>
+                      📖 {product.extraGuide.label} →
+                    </Link>
+                  )}
+                </div>
+              </Reveal>
+            )}
+
+            <Reveal delay={160} style={{ background: B.black2, border: `1px solid ${B.line}`, borderRadius: 18, padding: "clamp(20px, 4vw, 28px)", marginBottom: 18 }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: B.white, marginBottom: 12 }}>
+                Common questions
+              </div>
+              <FaqAccordion faqs={FAQS} />
+            </Reveal>
           </div>
-          <FaqAccordion faqs={FAQS} />
-        </Reveal>
+        </div>
 
-        <PromoBanner style={{ marginTop: 6, marginBottom: 30 }} />
+        <div style={{ height: 30 }} />
       </div>
 
       <StickyBuyBar product={product} />

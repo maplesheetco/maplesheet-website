@@ -316,6 +316,33 @@ export function GlobalStyles() {
         .ml-article-grid { grid-template-columns: 1fr; }
         .ml-article-sidebar { position: static; }
       }
+      /* Desktop layouts (2026-10 desktop pass). Every grid here collapses to
+         one column on phones, so mobile looks the same as before. */
+      .ml-pdp, .ml-pdp-body { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+      .ml-pdp-buy { position: sticky; top: 86px; }
+      .ml-feat-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .ml-feat-flag { grid-column: 1 / -1; }
+      .ml-why-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr)); gap: 16px; }
+      .ml-why-feature { grid-row: span 2; }
+      .ml-faq-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; align-items: start; }
+      .ml-about-hero { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+      .ml-grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+      .ml-grid-5 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+      .ml-picker { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+      .ml-mobile-only { display: none; }
+      .ml-chip-input:focus-visible + span { outline: 2px solid ${B.yellow}; outline-offset: 2px; }
+      @media (max-width: 960px) {
+        .ml-pdp, .ml-pdp-body, .ml-about-hero, .ml-picker { grid-template-columns: 1fr; }
+        .ml-pdp-buy { position: static; }
+        .ml-feat-grid, .ml-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .ml-grid-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .ml-desktop-only { display: none; }
+        .ml-mobile-only { display: block; }
+      }
+      @media (max-width: 600px) {
+        .ml-feat-grid, .ml-grid-4, .ml-faq-2 { grid-template-columns: 1fr; }
+        .ml-grid-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
       @media (prefers-reduced-motion: reduce) {
         .ml-btn, .ml-card, .ml-fade, .ml-promo { transition: none !important; animation: none !important; }
         html { scroll-behavior: auto; }
@@ -685,7 +712,22 @@ export function DashboardMock({ accounts, total, totalLabel = "Combined net wort
 // Shared accordion for a [question, answer] pair list (FAQS in data.js).
 // Used on About (general site FAQ) and TrackerDetail (same questions,
 // surfaced right where someone's actually deciding whether to buy).
-export function FaqAccordion({ faqs }) {
+// twoColumns splits the list into two side-by-side accordions on desktop
+// (one column on phones, via .ml-faq-2).
+export function FaqAccordion({ faqs, twoColumns = false }) {
+  if (twoColumns) {
+    const half = Math.ceil(faqs.length / 2);
+    return (
+      <div className="ml-faq-2">
+        <FaqAccordion faqs={faqs.slice(0, half)} />
+        <FaqAccordion faqs={faqs.slice(half)} />
+      </div>
+    );
+  }
+  return <FaqList faqs={faqs} />;
+}
+
+function FaqList({ faqs }) {
   const [open, setOpen] = useState(null);
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>

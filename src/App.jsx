@@ -176,7 +176,9 @@ function useHeroPin({ sectionRef, textRef, galleryRef }) {
 
 function Home() {
   usePageMeta(STATIC_META["/"]);
-  const featured = PRODUCTS.filter((p) => p.badge);
+  // Flagship first: it gets its own full-width row above the grid.
+  const featured = PRODUCTS.filter((p) => p.badge)
+    .sort((a, b) => (b.badge === "FLAGSHIP") - (a.badge === "FLAGSHIP"));
   const latest = RESOURCES[0];
   const [demoTab, setDemoTab] = useState(0);
   const demo = DEMO_VIEWS[demoTab];
@@ -194,8 +196,11 @@ function Home() {
       {/* Hero — pinned on desktop via useHeroPin() above; the inline
           "overflow: clip" keeps the scaled-down gallery from ever peeking
           past the hero's own edges mid-scrub. */}
-      <header ref={heroRef} style={{ maxWidth: 1100, margin: "0 auto", padding: "60px 24px 56px", textAlign: "center", overflow: "clip" }}>
-        <div ref={heroTextRef}>
+      <header ref={heroRef} style={{ padding: "60px 24px 56px", textAlign: "center", overflow: "clip" }}>
+        {/* The header itself spans the full width so the full-bleed gallery
+            below isn't clipped at the sides on wide screens; only the text
+            is held to the usual 1100px column. */}
+        <div ref={heroTextRef} style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 22,
             border: `1px solid ${B.line}`, borderRadius: 999, padding: "7px 16px",
@@ -285,13 +290,15 @@ function Home() {
           Featured <RedWord>trackers</RedWord>
         </h2>
         <p style={{ color: B.grayLight, fontSize: 14.5, textAlign: "center", margin: "0 0 26px" }}>
-          The flagship, and the newest addition. <Link to="/trackers" style={{ color: B.redLink, fontWeight: 600 }}>See all {PRODUCTS.length} →</Link>
+          The flagship, and the newest additions. <Link to="/trackers" style={{ color: B.redLink, fontWeight: 600 }}>See all {PRODUCTS.length} →</Link>
+          <br />
+          Not sure which one? <Link to="/trackers#picker" style={{ color: B.redLink, fontWeight: 600 }}>Find your tracker in 2 questions →</Link>
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))", gap: 16, maxWidth: 720, margin: "0 auto" }}>
+        <div className="ml-feat-grid">
           {featured.map((p) => {
             const flagship = p.badge === "FLAGSHIP";
             return (
-              <div key={p.name} className="ml-card" style={{
+              <div key={p.name} className={flagship ? "ml-card ml-feat-flag" : "ml-card"} style={{
                 display: "flex", flexDirection: "column", gap: 10,
                 background: flagship ? `linear-gradient(150deg, #2A0A0A, ${B.black2})` : B.black2,
                 border: `1.5px solid ${flagship ? B.red : B.line}`,
@@ -306,7 +313,7 @@ function Home() {
                 <span style={{ fontSize: 17, fontWeight: 700, color: B.white, lineHeight: 1.3, paddingRight: 70 }}>{p.name}</span>
                 <span style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.55, flex: 1 }}>{p.desc}</span>
                 <span style={{ fontSize: 20, fontWeight: 800, color: B.white }}>CA${p.price.toFixed(2)}</span>
-                <div style={{ display: "flex", gap: 8 }}>
+                <div style={{ display: "flex", gap: 8, ...(flagship ? { maxWidth: 340 } : {}) }}>
                   {p.url && !p.stripeBuyButton && (
                     <a href={p.url} target="_blank" rel="noreferrer" className="ml-btn" onClick={() => trackBuyClicked({
                       productName: p.name, productTag: p.tag, priceCad: p.price,
@@ -355,11 +362,35 @@ function Home() {
       </Reveal>
 
       {/* What you get */}
-      <Reveal as="section" style={{ maxWidth: 700, margin: "0 auto", padding: "56px 24px 8px" }}>
+      <Reveal as="section" style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px 8px" }}>
         <h2 style={{ fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 800, margin: "0 0 26px", letterSpacing: "-0.02em", color: B.white, textAlign: "center" }}>
           Why Canadian investors <RedWord>switch to MapleSheet</RedWord>
         </h2>
-        <Slideshow slides={OFFER_SLIDES} />
+        {/* Desktop: every reason at once. Phones keep the swipeable slideshow. */}
+        <div className="ml-why-grid ml-desktop-only">
+          {/* The chart slide gets the tall left-hand card; the other four
+              fill a 2 × 2 block beside it. */}
+          {OFFER_SLIDES.map((s) => (
+            <div key={s.title} className={s.graphic ? "ml-why-feature" : undefined} style={{
+              background: B.black2, border: `1px solid ${B.line}`, borderRadius: 16, padding: "24px 22px",
+              display: "flex", flexDirection: "column", gap: 12,
+            }}>
+              {s.graphic ? (
+                <div style={{ flex: 1, minHeight: 160, display: "flex", alignItems: "center" }}>{s.graphic}</div>
+              ) : (
+                <div style={{
+                  width: 48, height: 48, borderRadius: 12, background: B.black3,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>{s.icon}</div>
+              )}
+              <div style={{ fontSize: 16.5, fontWeight: 700, color: B.white, lineHeight: 1.3 }}>{s.title}</div>
+              <div style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.6 }}>{s.body}</div>
+            </div>
+          ))}
+        </div>
+        <div className="ml-mobile-only" style={{ maxWidth: 700, margin: "0 auto" }}>
+          <Slideshow slides={OFFER_SLIDES} />
+        </div>
       </Reveal>
 
       {/* See it in action */}
