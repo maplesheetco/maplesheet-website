@@ -476,6 +476,64 @@ export const PRODUCTS = [
       { icon: "📄", label: "RESP Government Rules PDF", desc: "A plain-English reference to the actual RESP rules — the $50,000 lifetime limit, CESG and catch-up room, the age 16–17 rule, the Canada Learning Bond, EAPs and what happens if your child doesn't go to school — so you're not hunting through canada.ca." },
     ],
   },
+  // The Payment Link needs metadata
+  // "sku" = "MS-MARGIN-MB" and the "After the payment" redirect to
+  // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}.
+  // The master sheet must be shared as "Anyone with the link" → Viewer, or
+  // the /copy link fails for buyers.
+  { name: "Margin & Cash Multi-Brokerage Tracker", tag: "Margin", price: 9.99, desc: "Up to 8 brokerages in one sheet — one pooled ACB per stock, your margin loan at every broker and a tax summary ready for April", badge: "NEW", sku: "MS-MARGIN-MB",
+    gallery: [
+      { src: "/screenshots/margin-mb-gallery-1-main-dashboard.jpg", label: "Main Dashboard — market value, pooled ACB, cash or margin loan, equity, income and interest for up to 8 brokerages, plus leverage & break-even yield" },
+      { src: "/screenshots/margin-mb-gallery-2-tax-snapshot-charts.jpg", label: "Tax Snapshot & Charts — this year's gains, dividends and Line 22100 at a glance, market value vs margin loan by brokerage, and interest vs income by month" },
+      { src: "/screenshots/margin-mb-gallery-3-institution-dashboard.jpg", label: "Institution Dashboard — every brokerage side by side: ACB at your pooled average cost, margin rate, interest, income, sell proceeds and realized gain" },
+      { src: "/screenshots/margin-mb-gallery-4-margin-interest.jpg", label: "Margin Interest — your loan, rate and loan-to-value at each brokerage, break-even vs income yield, and month-by-month interest vs income" },
+      { src: "/screenshots/margin-mb-gallery-5-transaction-log.jpg", label: "Transaction Log — the one tab you type into: pick the brokerage and Margin or Cash, and every sale gets its gain and a superficial loss check" },
+      { src: "/screenshots/margin-mb-gallery-6-portfolio.jpg", label: "Portfolio — every stock across all brokerages with one pooled ACB (the CRA method), live prices, gain/loss, realized G/L and income" },
+      { src: "/screenshots/margin-mb-gallery-7-dividend-tracker.jpg", label: "Dividend Tracker — monthly income vs target, every dividend by brokerage, and a per-ticker annual run-rate" },
+      { src: "/screenshots/margin-mb-gallery-8-tax-summary.jpg", label: "Tax Summary — Lines 12000, 40425, 12100, 40500, 12700 and 22100 worked out for you, plus a T5008 check for each brokerage" },
+    ],
+    screenshot: "/screenshots/margin-mb-gallery-1-main-dashboard.jpg",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1UVi2qJYx6fAMdIUICzVyuYe",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1RpKf9hveoAwjKRrP5i00mIAi3wNNvVh_oKFbht-9prw/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/margin-mb-template-link.pdf" },
+        { label: "User Guide", url: "/downloads/margin-mb-user-guide.pdf" },
+        { label: "Tax & Margin Rules", url: "/downloads/margin-mb-tax-rules.pdf" },
+      ],
+    },
+    slug: "margin-cash-multi-brokerage", accounts: ["Margin"],
+    bestFor: "Taxable Margin and Cash (non-registered) accounts spread across more than one brokerage (up to 8) — often a big-bank brokerage plus Questrade, Wealthsimple or Interactive Brokers.",
+    longDescription: "Own the same stock in a cash account at one broker and a margin account at another? The CRA doesn't care which broker holds it: your adjusted cost base is one pooled number per stock, and no brokerage can work it out for you. This tracker pulls every taxable Margin and Cash account, across up to 8 brokerages, into one Google Sheet that keeps your pooled ACB, your margin loan and your tax numbers up to date automatically.",
+    overview: [
+      "If your taxable investing is spread over more than one brokerage, every T5008 and every book value you see is only part of the picture. Buy the same ETF at two brokers and each one shows its own book value, but the CRA uses one average cost across all of them, so the gain each broker reports when you sell can simply be wrong. Add a margin loan at one or two of them and it gets harder still: how much are you borrowing in total, what is it costing you, and is your portfolio earning enough to cover it?",
+      "The Margin & Cash Multi-Brokerage Tracker pulls every taxable account you hold — Margin or Cash, across up to 8 different brokerages — into one Google Sheet built around a single Transaction Log. Log each buy, sale, dividend, deposit or interest charge once, with the brokerage and the account it belongs to, and the tracker keeps one pooled ACB per stock across every broker, works out the gain or loss on every sale, and calculates the margin loan at each brokerage from your own cash flows.",
+      "It's built around how Canadian taxable accounts actually work. ACB is pooled across every non-registered account you own, a loss is denied as a superficial loss if you buy the same stock back within 30 days, half of a capital gain is taxable, eligible dividends are grossed up by 38% before the dividend tax credit, and margin interest on money borrowed to earn income is a carrying charge on Line 22100. The Tax Summary puts it all together for Lines 12000, 12100, 12700 and 22100, with a T5008 check for each brokerage.",
+    ],
+    whoFor: "Canadian investors with taxable Margin or Cash accounts at more than one brokerage: anyone holding the same stock at two brokers, borrowing on margin at one or more of them, or tired of rebuilding their ACB from scratch every April.",
+    features: [
+      "Every taxable Margin and Cash account across up to 8 brokerages in one sheet, with an Account column so each trade counts in the right place",
+      "One pooled adjusted cost base (ACB) per stock across every brokerage, the way the CRA calculates it",
+      "Realized gain or loss on every sale, with superficial loss warnings when you buy back within 30 days",
+      "Built-in checks on every Transaction Log row: dates out of order, missing tickers and selling more shares than you own",
+      "Margin loan at each brokerage calculated from your own cash flows, with your interest rate and a loan-to-value warning",
+      "Break-even yield: what your margin holdings must earn just to pay for the borrowing, with a monthly interest vs income chart",
+      "Tax Summary for Lines 12000, 12100, 12700 and 22100, including the 38% gross-up and the federal dividend tax credit",
+      "T5008 check for each brokerage: your proceeds to compare with box 21, and every sale listed with its pooled ACB",
+      "Dividend Tracker with monthly income across all brokerages and a per-ticker summary, plus live prices via GOOGLEFINANCE and USD→CAD conversion for US-listed holdings",
+      "Built-in Tax & Margin Rules tab — plain-English cards on ACB, superficial losses, capital gains, dividends and carrying charges",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "🍁", label: "One-click MapleSheet menu", desc: "Builds, rebuilds, sorts your Transaction Log and loads sample data for you right inside the sheet — no spreadsheet experience required." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "User Guide PDF", desc: "A full tab-by-tab, column-by-column walkthrough of every part of the sheet." },
+      { icon: "📄", label: "Tax & Margin Rules PDF", desc: "A plain-English reference to the 2026 CRA rules for taxable accounts — pooled ACB, superficial losses, the 50% inclusion rate, dividend gross-up and credit, foreign withholding tax and the Line 22100 interest deduction — with worked examples." },
+    ],
+  },
   {
     name: "RESP Tracker", tag: "RESP", price: 14.99,
     url: "https://www.etsy.com/listing/4530779418", directUrl: "https://payhip.com/b/w8PXD",
