@@ -482,6 +482,17 @@ export const PRODUCTS = [
   // The master sheet must be shared as "Anyone with the link" → Viewer, or
   // the /copy link fails for buyers.
   { name: "Margin & Cash Multi-Brokerage Tracker", tag: "Margin", price: 9.99, desc: "Up to 8 brokerages in one sheet — one pooled ACB per stock, your margin loan at every broker and a tax summary ready for April", badge: "NEW", sku: "MS-MARGIN-MB",
+    gallery: [
+      { src: "/screenshots/margin-mb-gallery-1-main-dashboard.jpg", label: "Main Dashboard — market value, pooled ACB, cash or margin loan, equity, income and interest for up to 8 brokerages, plus leverage & break-even yield" },
+      { src: "/screenshots/margin-mb-gallery-2-tax-snapshot-charts.jpg", label: "Tax Snapshot & Charts — this year's gains, dividends and Line 22100 at a glance, market value vs margin loan by brokerage, and interest vs income by month" },
+      { src: "/screenshots/margin-mb-gallery-3-institution-dashboard.jpg", label: "Institution Dashboard — every brokerage side by side: ACB at your pooled average cost, margin rate, interest, income, sell proceeds and realized gain" },
+      { src: "/screenshots/margin-mb-gallery-4-margin-interest.jpg", label: "Margin Interest — your loan, rate and loan-to-value at each brokerage, break-even vs income yield, and month-by-month interest vs income" },
+      { src: "/screenshots/margin-mb-gallery-5-transaction-log.jpg", label: "Transaction Log — the one tab you type into: pick the brokerage and Margin or Cash, and every sale gets its gain and a superficial loss check" },
+      { src: "/screenshots/margin-mb-gallery-6-portfolio.jpg", label: "Portfolio — every stock across all brokerages with one pooled ACB (the CRA method), live prices, gain/loss, realized G/L and income" },
+      { src: "/screenshots/margin-mb-gallery-7-dividend-tracker.jpg", label: "Dividend Tracker — monthly income vs target, every dividend by brokerage, and a per-ticker annual run-rate" },
+      { src: "/screenshots/margin-mb-gallery-8-tax-summary.jpg", label: "Tax Summary — Lines 12000, 40425, 12100, 40500, 12700 and 22100 worked out for you, plus a T5008 check for each brokerage" },
+    ],
+    screenshot: "/screenshots/margin-mb-gallery-1-main-dashboard.jpg",
     stripeBuyButton: {
       buyButtonId: "buy_btn_1UVi2qJYx6fAMdIUICzVyuYe",
       publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
