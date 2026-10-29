@@ -534,6 +534,54 @@ export const PRODUCTS = [
       { icon: "📄", label: "Tax & Margin Rules PDF", desc: "A plain-English reference to the 2026 CRA rules for taxable accounts — pooled ACB, superficial losses, the 50% inclusion rate, dividend gross-up and credit, foreign withholding tax and the Line 22100 interest deduction — with worked examples." },
     ],
   },
+  // First combo multi-brokerage tracker: TFSA + RRSP across up to 8
+  // institutions. The Payment Link needs metadata "sku" =
+  // "MS-COMBO-TFSA-RRSP-MB" and the "After the payment" redirect to
+  // https://www.maplesheet.ca/checkout/return?session_id={CHECKOUT_SESSION_ID}.
+  // The master sheet must be shared as "Anyone with the link" → Viewer, or
+  // the /copy link fails for buyers.
+  { name: "TFSA + RRSP Multi-Brokerage Tracker", tag: "Combo", price: 17.99, desc: "Every TFSA and RRSP you own, at up to 8 brokerages, in one sheet — both rooms counted the way CRA counts them", badge: "NEW", sku: "MS-COMBO-TFSA-RRSP-MB",
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1UViwPJYx6fAMdIUEHXwpGmM",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1EmXyqjuF6TiqGtgq8v4QcIw7G5Fei42SmEmYM8k3OJg/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/tfsa-rrsp-mb-template-link.pdf" },
+        { label: "User Guide", url: "/downloads/tfsa-rrsp-mb-user-guide.pdf" },
+        { label: "TFSA & RRSP Government Rules", url: "/downloads/tfsa-rrsp-mb-government-rules.pdf" },
+      ],
+    },
+    slug: "tfsa-rrsp-multi-brokerage", accounts: ["TFSA", "RRSP"],
+    bestFor: "Canadians with a TFSA and an RRSP spread across more than one bank or brokerage (up to 8) — for example a big-bank RRSP plus a Wealthsimple or Questrade TFSA.",
+    longDescription: "Your TFSA room and your RRSP deduction limit belong to you, not to each account — and no bank or brokerage can see what you hold at the others. This tracker pulls every TFSA and every RRSP you own, across up to 8 institutions, into one Google Sheet that counts both rooms the way CRA does and shows your combined net worth at live prices.",
+    overview: [
+      "Most Canadians don't keep all their registered savings in one place. A group RRSP at work, an old RRSP at the bank, a TFSA at Wealthsimple, another at Questrade — each one only knows about itself. That's how people over-contribute: every institution says there's room, but your TFSA room and your RRSP deduction limit are one number each, shared by every account you own.",
+      "The TFSA + RRSP Multi-Brokerage Tracker puts every TFSA and RRSP you hold, at up to 8 institutions, into one Google Sheet built around a single Transaction Log. Log each contribution, buy, sale or dividend once, pick the institution and TFSA or RRSP, and the tracker builds a TFSA Portfolio and an RRSP Portfolio across all of them, compares every brokerage side by side, and shows how your money is split between them.",
+      "Each account is counted the way it really works. TFSA room is your room on January 1 minus this year's contributions, and withdrawals only come back next January. RRSP room is the deduction limit on your Notice of Assessment, measured against contributions from March 2 to March 1 — the 60-day window CRA uses — with the $2,000 lifetime buffer, and withdrawals never come back. The Dividend Tracker even estimates the US withholding you lose in your TFSA and save in your RRSP.",
+    ],
+    whoFor: "Canadians with a TFSA and an RRSP at more than one institution who want to see their combined net worth and never over-contribute because one bank didn't know about another.",
+    features: [
+      "Every TFSA and RRSP you own across up to 8 brokerages in one sheet, with an Account column so each transaction counts in the right place",
+      "Combined net worth at a glance: TFSA, RRSP and total market value, each with its gain vs cost",
+      "TFSA room the CRA way: room on January 1 minus this year's contributions, withdrawals back next January, and an over-contribution alert before CRA sends one",
+      "RRSP room the CRA way: Notice of Assessment limit, March 2 → March 1 contribution window and the $2,000 lifetime buffer",
+      "Separate TFSA and RRSP Portfolios with live prices via GOOGLEFINANCE, ACB and gain/loss, and USD→CAD conversion for US holdings",
+      "Institution Dashboard comparing every brokerage side by side, with a chart of the share of your money at each one",
+      "Dividend Tracker with monthly TFSA and RRSP income, a per-ticker summary and an annual run-rate",
+      "US withholding estimate: the 15% lost in your TFSA and saved in your RRSP under the Canada-US tax treaty",
+      "Built-in checks on every Transaction Log row, so a missing account, ticker or amount never goes unnoticed",
+      "Built-in TFSA & RRSP CRA Rules tab — plain-English cards on room, deadlines, over-contributions, transfers and which account to use first",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "🍁", label: "One-click MapleSheet menu", desc: "Builds, rebuilds and loads sample data for you right inside the sheet — no spreadsheet experience required." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "User Guide PDF", desc: "A full tab-by-tab, column-by-column walkthrough of every part of the sheet." },
+      { icon: "📄", label: "TFSA & RRSP Government Rules PDF", desc: "A plain-English reference to the 2026 TFSA and RRSP rules — room, deadlines, over-contribution tax, withdrawals, direct transfers and US dividend withholding — with worked examples." },
+    ],
+  },
   {
     name: "RESP Tracker", tag: "RESP", price: 14.99,
     url: "https://www.etsy.com/listing/4530779418", directUrl: "https://payhip.com/b/w8PXD",
