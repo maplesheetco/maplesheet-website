@@ -1268,6 +1268,17 @@ export const PRODUCTS = [
       ],
     },
     bestFor: "Anyone who'd rather track everything in one sheet instead of picking a combo — including couples using a spousal RRSP to split retirement income.",
+    // Short pitch + highlights for the wide flagship banner in Home's
+    // "Featured trackers" (App.jsx). Keep each highlight to a few words.
+    pitch: "Stop choosing between combo trackers. One Google Sheet tracks every account your household has, with one combined net worth and 15 tabs that update from a single Transaction Log.",
+    highlights: [
+      "6 accounts, one net worth total",
+      "Log once, all 15 tabs update",
+      "Spousal RRSP 3-year rule tracker",
+      "CESG grants for up to 4 kids",
+      "Tax dashboard for every province",
+      "Live prices + automatic ACB",
+    ],
     // `accounts` above stays the 5 named in the product ("All 5 Accounts")
     // since that's what drives ACCOUNT_GUIDES and the demo/bundle display —
     // Spousal RRSP is the same account *type* as RRSP, tracked as a second,
@@ -1290,7 +1301,7 @@ export const PRODUCTS = [
       "15 fully automated tabs, single data entry — log a transaction once in the Transaction Log and every tab updates automatically",
       "Attribution Tracker — the 3-year spousal RRSP rule tracked in calendar years, with a SAFE / AT RISK status and the exact date each contribution becomes safe to withdraw",
       "RESP Tracker — CESG grant tracking for up to 4 beneficiaries, with cumulative contributions, CESG received, and CESG room remaining shown per child",
-      "Tax Dashboard — Line 208, Line 20805, and Line 22100 auto-calculated from your real entries, with all 13 provinces + federal brackets for a real deduction-value estimate",
+      "Tax Dashboard — Line 20800, Line 20805, and Line 22100 auto-calculated from your real entries, with all 13 provinces + federal brackets for a real deduction-value estimate",
       "Income Splitting calculator — the actual household tax saving from a spousal RRSP strategy, shown year by year",
       "10 transaction types (Buy, Sell, Contribution, Withdrawal, Dividend, DRIP, Transfer In, Transfer Out, CESG, Margin Interest), live prices via GOOGLEFINANCE, and automatic ACB/capital gains for the Margin account",
       "Dividend Tracker across all 6 accounts, with a monthly breakdown and projected annual run-rate",

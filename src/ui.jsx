@@ -322,6 +322,8 @@ export function GlobalStyles() {
       .ml-pdp-buy { position: sticky; top: 86px; }
       .ml-feat-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
       .ml-feat-flag { grid-column: 1 / -1; }
+      .ml-flag-highlights { list-style: none; margin: 4px 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 18px; }
+      .ml-flag-highlights li { font-size: 13.5px; color: ${B.grayLight}; }
       .ml-why-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr)); gap: 16px; }
       .ml-why-feature { grid-row: span 2; }
       .ml-faq-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; align-items: start; }
@@ -336,13 +338,13 @@ export function GlobalStyles() {
       @media (max-width: 960px) {
         .ml-pdp, .ml-pdp-body, .ml-about-hero, .ml-picker, .ml-contact { grid-template-columns: 1fr; }
         .ml-pdp-buy { position: static; }
-        .ml-feat-grid, .ml-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .ml-feat-grid, .ml-grid-4, .ml-flag-highlights { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .ml-grid-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .ml-desktop-only { display: none; }
         .ml-mobile-only { display: block; }
       }
       @media (max-width: 600px) {
-        .ml-feat-grid, .ml-grid-4, .ml-faq-2, .ml-contact-pair { grid-template-columns: 1fr; }
+        .ml-feat-grid, .ml-grid-4, .ml-faq-2, .ml-contact-pair, .ml-flag-highlights { grid-template-columns: 1fr; }
         .ml-grid-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       }
       @media (prefers-reduced-motion: reduce) {
