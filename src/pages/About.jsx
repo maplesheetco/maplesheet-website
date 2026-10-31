@@ -59,7 +59,7 @@ export default function About() {
             <div style={{ fontSize: 20, fontWeight: 800, color: B.white }}>Lino</div>
             <div style={{ fontSize: 14, color: B.grayLight, marginBottom: 18 }}>Founder, MapleSheet Co.</div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center" }}>
-              {["🍁 British Columbia", `${PRODUCTS.length} trackers`, "One-time purchase", "Personal support"].map((f) => (
+              {["🍁 Made in BC, for all of Canada", `${PRODUCTS.length} trackers`, "One-time purchase", "Personal support"].map((f) => (
                 <span key={f} style={{ background: B.black3, border: `1px solid ${B.line}`, borderRadius: 999, padding: "5px 12px", fontSize: 12.5, fontWeight: 600, color: B.white }}>{f}</span>
               ))}
             </div>

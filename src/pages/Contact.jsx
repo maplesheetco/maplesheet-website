@@ -221,7 +221,7 @@ export default function Contact() {
               </div>
               <div>
                 <div style={{ color: B.white, fontWeight: 600 }}>🍁 Based in</div>
-                British Columbia, Canada
+                British Columbia, helping investors across Canada
               </div>
             </div>
           </Reveal>

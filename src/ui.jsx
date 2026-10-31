@@ -55,6 +55,19 @@ export function usePageMeta({ title, description, noindex = false }) {
     }
     canonicalLink.setAttribute("href", canonicalUrl);
 
+    // en-CA + x-default alternates (see index.html) follow the canonical.
+    for (const lang of ["en-CA", "x-default"]) {
+      let alt = document.querySelector(`link[rel="alternate"][hreflang="${lang}"]`);
+      if (!alt) {
+        alt = document.createElement("link");
+        alt.setAttribute("rel", "alternate");
+        alt.setAttribute("hreflang", lang);
+        document.head.appendChild(alt);
+      }
+      if (noindex) alt.remove();
+      else alt.setAttribute("href", canonicalUrl);
+    }
+
     setMetaTag("property", "og:url", canonicalUrl);
 
     let robots = document.querySelector('meta[name="robots"]');

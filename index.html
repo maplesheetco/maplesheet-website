@@ -4,46 +4,76 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MapleSheet Co. — Canadian TFSA, RRSP & RESP Trackers</title>
-    <meta name="description" content="Google Sheets trackers built for the Canadian system — TFSA, RRSP, RESP, FHSA & Margin. Live prices, one-time purchase, no subscription." />
+    <meta name="description" content="Google Sheets trackers for Canadian investors in every province — TFSA, RRSP, RESP, FHSA & Margin. Live prices, one-time purchase, no subscription." />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="canonical" href="https://www.maplesheet.ca/" />
+    <!-- One English site for all of Canada. These tell Google the page is
+         Canadian English (en-CA) and is also the default for everyone else.
+         Kept in step with the canonical URL by usePageMeta (ui.jsx) and
+         scripts/prerender-meta.mjs. -->
+    <link rel="alternate" hreflang="en-CA" href="https://www.maplesheet.ca/" />
+    <link rel="alternate" hreflang="x-default" href="https://www.maplesheet.ca/" />
     <meta property="og:title" content="MapleSheet Co. — Canadian TFSA, RRSP & RESP Trackers" />
-    <meta property="og:description" content="Google Sheets trackers built for the Canadian system — TFSA, RRSP, RESP, FHSA & Margin. Live prices, one-time purchase, no subscription." />
+    <meta property="og:description" content="Google Sheets trackers for Canadian investors in every province — TFSA, RRSP, RESP, FHSA & Margin. Live prices, one-time purchase, no subscription." />
     <meta property="og:image" content="https://www.maplesheet.ca/og.png" />
     <meta property="og:url" content="https://www.maplesheet.ca/" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_CA" />
+    <meta property="og:site_name" content="MapleSheet Co." />
     <meta name="twitter:card" content="summary_large_image" />
-    <!-- Organization structured data — sitewide identity, static here (not
+    <!-- Organization + WebSite structured data — sitewide identity. The
+         business serves all of Canada (areaServed), so there's deliberately
+         no street address or LocalBusiness type, which would tie it to one
+         city. Organization data is static here (not
          JS-injected) so it's visible to every crawler regardless of whether
          it executes JavaScript. Per-page schema (Product on Trackers,
          Article on guides) is injected dynamically via useJsonLd in ui.jsx. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "MapleSheet Co.",
-        "url": "https://www.maplesheet.ca",
-        "logo": "https://www.maplesheet.ca/logo.png",
-        "email": "hello@maplesheet.ca",
-        "sameAs": [
-          "https://maplesheetco.etsy.com",
-          "https://www.youtube.com/@MapleSheetCo",
-          "https://x.com/MapleSheetCo"
-        ],
-        "hasMerchantReturnPolicy": {
-          "@type": "MerchantReturnPolicy",
-          "applicableCountry": "CA",
-          "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
-        }
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://www.maplesheet.ca/#organization",
+            "name": "MapleSheet Co.",
+            "url": "https://www.maplesheet.ca",
+            "logo": "https://www.maplesheet.ca/logo.png",
+            "email": "hello@maplesheet.ca",
+            "description": "Google Sheets investment trackers for Canadian investors in every province and territory: TFSA, RRSP, RESP, FHSA and margin accounts, built around CRA rules.",
+            "address": { "@type": "PostalAddress", "addressCountry": "CA" },
+            "areaServed": { "@type": "Country", "name": "Canada", "identifier": "CA" },
+            "knowsAbout": ["TFSA", "RRSP", "Spousal RRSP", "RESP", "CESG", "FHSA", "Adjusted cost base", "Capital gains tax in Canada"],
+            "sameAs": [
+              "https://maplesheetco.etsy.com",
+              "https://www.youtube.com/@MapleSheetCo",
+              "https://x.com/MapleSheetCo"
+            ],
+            "hasMerchantReturnPolicy": {
+              "@type": "MerchantReturnPolicy",
+              "applicableCountry": "CA",
+              "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.maplesheet.ca/#website",
+            "name": "MapleSheet Co.",
+            "url": "https://www.maplesheet.ca",
+            "inLanguage": "en-CA",
+            "publisher": { "@id": "https://www.maplesheet.ca/#organization" }
+          }
+        ]
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <!-- Google Analytics (GA4) -->
-    <!-- Lino: replace G-XXXXXXXXXX below with your real Measurement ID from
-         GA4 Admin → Data Streams → Web, and keep src/data.js's
-         CONFIG.gaMeasurementId in sync with it. -->
+    <!-- Loads on every page (every page is a copy of this file). Page
+         changes inside the site are counted by GA4's "Page changes based on
+         browser history events" setting (Admin → Data streams → Web →
+         Enhanced measurement), which must stay on. Keep src/data.js's
+         CONFIG.gaMeasurementId in sync with the ID below. -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VE0JSFXE1Q"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
