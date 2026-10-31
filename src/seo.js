@@ -18,15 +18,15 @@ export const DEFAULT_OG_IMAGE = "/og.png";
 export const STATIC_META = {
   "/": {
     title: "MapleSheet Co. — Canadian TFSA, RRSP & RESP Trackers",
-    description: "Google Sheets trackers built for the Canadian system — TFSA, RRSP, RESP, FHSA & Margin. Live prices, one-time purchase, no subscription.",
+    description: "Google Sheets trackers for Canadian investors in every province — TFSA, RRSP, RESP, FHSA & Margin. Live prices, one-time purchase, no subscription.",
   },
   "/trackers": {
     title: "TFSA, RRSP, RESP, FHSA & Margin Trackers | MapleSheet Co.",
-    description: `${PRODUCTS.length} Google Sheets trackers for TFSA, RRSP, RESP, FHSA & Margin accounts. One-time purchase, live prices, no subscription.`,
+    description: `${PRODUCTS.length} Google Sheets trackers for TFSA, RRSP, RESP, FHSA & Margin accounts, for investors anywhere in Canada. One-time purchase, no subscription.`,
   },
   "/tools": {
     title: "Free Canadian Investment Calculators | MapleSheet Co.",
-    description: "Free TFSA, RRSP, RESP, ACB, and compound growth calculators, plus a free Goal Tracker spreadsheet, built for the Canadian investing system.",
+    description: "Free TFSA, RRSP, RESP, ACB, and compound growth calculators for Canadians in every province, plus a free Goal Tracker spreadsheet.",
   },
   "/resources": {
     title: "Canadian Investing Guides: TFSA, RRSP, RESP & FHSA",

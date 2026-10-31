@@ -52,8 +52,11 @@ function render(path, { title, description, image = DEFAULT_OG_IMAGE, noindex = 
   html = setAttr(html, '<meta property="og:image"', imageUrl);
   html = setAttr(html, '<meta property="og:url"', url);
   html = setAttr(html, '<link rel="canonical"', url);
+  html = setAttr(html, '<link rel="alternate" hreflang="en-CA"', url);
+  html = setAttr(html, '<link rel="alternate" hreflang="x-default"', url);
   if (noindex) {
     html = html.replace(/<link rel="canonical"[^>]*>\s*/, "")
+      .replace(/<link rel="alternate" hreflang="[^"]*"[^>]*>\s*/g, "")
       .replace("</title>", '</title>\n    <meta name="robots" content="noindex" />');
   }
   return html;

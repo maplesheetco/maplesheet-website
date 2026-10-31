@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { B, ACCOUNT_GUIDES, RETURN_POLICY, SHIPPING_DETAILS, getBundleSavings } from "../data.js";
+import { B, ACCOUNT_GUIDES, RETURN_POLICY, SHIPPING_DETAILS, ELIGIBLE_REGION, getBundleSavings } from "../data.js";
 import { PageHead, RedWord, usePageMeta, useJsonLd, Reveal, PromoBanner, Picture } from "../ui.jsx";
 import { CATALOG, cardImage } from "../trackerPages.js";
 import { trackBuyClicked } from "../analytics.js";
@@ -43,6 +43,7 @@ export default function Trackers() {
         itemCondition: "https://schema.org/NewCondition",
         hasMerchantReturnPolicy: RETURN_POLICY,
         shippingDetails: SHIPPING_DETAILS,
+        eligibleRegion: ELIGIBLE_REGION,
         ...(p.slug ? { url: `${SITE_URL}/trackers/${p.slug}` } : {}),
       },
     })),

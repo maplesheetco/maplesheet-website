@@ -58,6 +58,10 @@ export const RETURN_POLICY = {
 // Every tracker is an instant digital download, so "shipping" is free and
 // instant: $0 to Canada, 0 days handling and 0 days transit. Same reason as
 // RETURN_POLICY for living here: both Product schemas share it.
+// Every tracker is sold to buyers anywhere in Canada (all provinces and
+// territories). Shared by both Product schemas' offers.
+export const ELIGIBLE_REGION = { "@type": "Country", name: "CA" };
+
 export const SHIPPING_DETAILS = {
   "@type": "OfferShippingDetails",
   shippingRate: { "@type": "MonetaryAmount", value: "0", currency: "CAD" },
@@ -2750,6 +2754,7 @@ export const FAQS = [
   ["Is this a subscription?", "No. One-time purchase, yours forever. Free updates to the version you bought, and no recurring fees of any kind."],
   ["How do live prices work?", "Trackers use Google's built-in GOOGLEFINANCE function to pull live stock and ETF quotes automatically — CAD and USD, with automatic currency conversion."],
   ["Will it work on my phone?", "Yes — through the free Google Sheets app. The dashboards are designed on desktop but fully usable on mobile."],
+  ["Does it work in my province or territory?", "Yes. TFSA, RRSP, RESP and FHSA limits and rules are set federally by the CRA, so they're the same whether you live in Ontario, Quebec, Alberta, BC, the Maritimes or the North — every tracker works anywhere in Canada. Trackers with a Tax Dashboard (like the Ultimate Tracker and the RRSP + Spousal RRSP Tracker) include rates for all 13 provinces and territories. Quebec residents also file a provincial return with Revenu Québec, so treat any refund figure as an estimate."],
   ["Does it handle Canadian tax rules?", "That's the whole point. TFSA contribution room, RRSP deduction limits, FHSA Line 20805, CESG grant tracking, ACB and capital gains with the 50% inclusion rate — built the CRA way."],
   ["What if I need help?", "Email us. Every buyer gets personal support from Lino directly — no bots, no auto-replies."],
   ["What's your refund policy?", "Because these are instant digital downloads, all sales are final — but if something isn't working, contact us first. We fix problems."],

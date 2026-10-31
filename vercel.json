@@ -1,17 +1,49 @@
 {
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/(.*)\\.",
+      "destination": "/$1",
+      "permanent": true
+    }
+  ],
   "rewrites": [
-    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
-    { "source": "/:page(trackers|tools|resources|about|contact|disclaimer|privacy)", "destination": "/:page/index.html" },
-    { "source": "/trackers/:slug", "destination": "/trackers/:slug/index.html" },
-    { "source": "/resources/:slug", "destination": "/resources/:slug/index.html" },
-    { "source": "/checkout/:path*", "destination": "/checkout/index.html" }
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/:page(trackers|tools|resources|about|contact|disclaimer|privacy)",
+      "destination": "/:page/index.html"
+    },
+    {
+      "source": "/trackers/:slug",
+      "destination": "/trackers/:slug/index.html"
+    },
+    {
+      "source": "/resources/:slug",
+      "destination": "/resources/:slug/index.html"
+    },
+    {
+      "source": "/checkout/:path*",
+      "destination": "/checkout/index.html"
+    }
   ],
   "headers": [
     {
       "source": "/(.*)",
-      "has": [{ "type": "host", "value": "maplesheet-website.vercel.app" }],
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
+      "has": [
+        {
+          "type": "host",
+          "value": "maplesheet-website.vercel.app"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
     }
   ]
 }

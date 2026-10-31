@@ -178,6 +178,12 @@ function useHeroPin({ sectionRef, textRef, galleryRef }) {
   }, [sectionRef, textRef, galleryRef]);
 }
 
+const PROVINCES = [
+  "British Columbia", "Alberta", "Saskatchewan", "Manitoba", "Ontario", "Quebec",
+  "New Brunswick", "Nova Scotia", "Prince Edward Island", "Newfoundland and Labrador",
+  "Yukon", "Northwest Territories", "Nunavut",
+];
+
 function Home() {
   usePageMeta(STATIC_META["/"]);
   // Flagship first: it gets its own full-width row above the grid.
@@ -251,6 +257,7 @@ function Home() {
           <span>✓ Automatic ACB &amp; capital gains</span>
           <span>✓ CRA rules built in</span>
           <span>✓ CAD + USD in one sheet</span>
+          <span>✓ Works in every province &amp; territory</span>
           <span>✓ One-time purchase — yours forever</span>
         </div>
       </Reveal>
@@ -298,6 +305,27 @@ function Home() {
             fontWeight: 600, fontSize: 15, padding: "13px 25px", borderRadius: 10, border: `1.5px solid ${B.line}`,
           }}>Run your own numbers — free calculator</Link>
         </div>
+      </Reveal>
+
+      {/* Every province — the account rules are federal, so the trackers
+          work anywhere in Canada. Also tells Google (and readers searching
+          "TFSA tracker Ontario" etc.) the site serves the whole country. */}
+      <Reveal as="section" style={{ maxWidth: 1100, margin: "0 auto", padding: "8px 24px 48px", textAlign: "center" }}>
+        <h2 style={{ fontSize: "clamp(22px, 3.6vw, 30px)", fontWeight: 800, margin: "0 0 8px", letterSpacing: "-0.02em", color: B.white }}>
+          Built for investors <RedWord>across Canada</RedWord>
+        </h2>
+        <p style={{ color: B.grayLight, fontSize: 14.5, maxWidth: 640, margin: "0 auto 20px", lineHeight: 1.6 }}>
+          TFSA, RRSP, RESP and FHSA rules are set federally by the CRA, so every tracker works wherever you live.
+          Trackers with a Tax Dashboard include the rates for all 13 provinces and territories.
+        </p>
+        <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", maxWidth: 860, marginInline: "auto" }}>
+          {PROVINCES.map((name) => (
+            <li key={name} style={{
+              fontSize: 13, color: B.grayLight, background: B.black2,
+              border: `1px solid ${B.line}`, borderRadius: 999, padding: "6px 13px",
+            }}>{name}</li>
+          ))}
+        </ul>
       </Reveal>
 
       {/* Featured products */}
@@ -499,7 +527,7 @@ function Home() {
             <img src="/logo.png" alt="" width="40" height="40" style={{ width: 40, height: 40, borderRadius: 10 }} />
             <div>
               <div style={{ fontSize: 14, fontWeight: 700, color: B.white }}>Lino, Founder</div>
-              <div style={{ fontSize: 12.5, color: B.grayLight }}>🍁 British Columbia</div>
+              <div style={{ fontSize: 12.5, color: B.grayLight }}>🍁 Made in BC, for all of Canada</div>
             </div>
             <span style={{ marginLeft: "auto", fontSize: 13.5, color: B.redLink, fontWeight: 600 }}>Meet MapleSheet →</span>
           </div>
