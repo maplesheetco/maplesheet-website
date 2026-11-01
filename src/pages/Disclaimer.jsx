@@ -50,6 +50,16 @@ const SECTIONS = [
     ],
   },
   {
+    // id gives this section its own link (maplesheet.ca/disclaimer#refunds),
+    // which is the "return policy" page Google Merchant Center asks for.
+    id: "refunds",
+    h: "Delivery, refunds & returns",
+    body: [
+      "Every MapleSheet tracker is a digital product delivered instantly. When you buy on maplesheet.ca, right after checkout you get your Google Sheets template link and PDF guides on screen, and you copy the template to your own Google Drive. There's nothing shipped, so there's no shipping cost and no wait. We sell to buyers anywhere in Canada, priced in Canadian dollars.",
+      "Because a digital download can't be returned once it's been delivered, all sales are final and we don't offer refunds or returns. If something isn't working — a formula, the template link, a PDF — contact us and we'll fix it.",
+    ],
+  },
+  {
     h: "Intellectual property & license to use",
     body: [
       "When you purchase a MapleSheet tracker, you're buying a license for your own personal (or your household's) use — to copy it to your own Google Drive and track your own investments. The spreadsheet design, formulas, Apps Script code, and PDF guides remain the intellectual property of MapleSheet Co. Reselling, redistributing, or publicly sharing a MapleSheet tracker or guide, in whole or in part, isn't permitted without our written permission.",
@@ -87,13 +97,13 @@ export default function Disclaimer() {
           background: B.black2, border: `1px solid ${B.line}`, borderRadius: 14,
           padding: "18px 20px", marginBottom: 30, color: B.grayLight, fontSize: 13.5, lineHeight: 1.7,
         }}>
-          Last updated: October 2026. This disclaimer applies to maplesheet.ca and every MapleSheet Co.
+          Last updated: November 2026. This disclaimer applies to maplesheet.ca and every MapleSheet Co.
           tracker, PDF guide, and free tool, however you purchased it — directly through this site, or
           through our Etsy shop.
         </Reveal>
 
         {SECTIONS.map((s, i) => (
-          <Reveal key={s.h} delay={i * 40} style={{ marginBottom: 26 }}>
+          <Reveal key={s.h} delay={i * 40} style={{ marginBottom: 26, scrollMarginTop: 90 }} id={s.id}>
             <h2 style={{ fontSize: 18, fontWeight: 800, color: B.white, margin: "0 0 10px", letterSpacing: "-0.01em" }}>
               {s.h}
             </h2>

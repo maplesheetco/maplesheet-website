@@ -13,6 +13,10 @@
       "destination": "/api/sitemap"
     },
     {
+      "source": "/merchant-feed.xml",
+      "destination": "/api/merchant-feed"
+    },
+    {
       "source": "/:page(trackers|tools|resources|about|contact|disclaimer|privacy)",
       "destination": "/:page/index.html"
     },
