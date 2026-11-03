@@ -782,7 +782,7 @@ export const PRODUCTS = [
       { src: "/screenshots/family-mb-gallery-11-settings.jpg", label: "Settings & Goals — your brokerages, TFSA and RRSP numbers from CRA, and each child's birth year, past contributions and CESG" },
     ],
     stripeBuyButton: {
-      buyButtonId: "BUY_BUTTON_ID_PENDING",
+      buyButtonId: "buy_btn_1UXbPiJYx6fAMdIUfUXsvqwf",
       publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
     },
     delivery: {
