@@ -2806,6 +2806,10 @@ export const RESOURCES = [
 
 export const FAQS = [
   ["Do I need Excel or Google Sheets?", "Google Sheets — which is free with any Google account. No Excel needed, no software to install. You'll receive a link, click 'Make a copy', and the tracker is yours."],
+  [
+    "How much do MapleSheet trackers cost, and where do I buy them?",
+    `Single-account trackers start at CA$${Math.min(...PRODUCTS.map((p) => p.price)).toFixed(2)} and the all-in-one Ultimate Tracker is CA$${Math.max(...PRODUCTS.map((p) => p.price)).toFixed(2)}, with ${PRODUCTS.length} trackers in all. Each is a one-time purchase in Canadian dollars. Buy directly on maplesheet.ca with secure Stripe checkout and you get your Google Sheets link right away. Some trackers are also listed on our Etsy shop.`,
+  ],
   ["Is this a subscription?", "No. One-time purchase, yours forever. Free updates to the version you bought, and no recurring fees of any kind."],
   ["How do live prices work?", "Trackers use Google's built-in GOOGLEFINANCE function to pull live stock and ETF quotes automatically — CAD and USD, with automatic currency conversion."],
   ["Will it work on my phone?", "Yes — through the free Google Sheets app. The dashboards are designed on desktop but fully usable on mobile."],
