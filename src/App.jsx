@@ -186,7 +186,7 @@ const PROVINCES = [
 
 function Home() {
   usePageMeta(STATIC_META["/"]);
-  // Flagship first: it gets its own full-width row above the grid.
+  // Flagships first: each gets its own full-width row above the grid.
   const featured = PRODUCTS.filter((p) => p.badge)
     .sort((a, b) => (b.badge === "FLAGSHIP") - (a.badge === "FLAGSHIP"));
   // Newest published articles first (RESOURCES isn't stored by date).
@@ -334,7 +334,7 @@ function Home() {
           Featured <RedWord>trackers</RedWord>
         </h2>
         <p style={{ color: B.grayLight, fontSize: 14.5, textAlign: "center", margin: "0 0 26px" }}>
-          The flagship, and the newest additions. <Link to="/trackers" style={{ color: B.redLink, fontWeight: 600 }}>See all {PRODUCTS.length} →</Link>
+          The two Ultimate flagships, and the newest additions. <Link to="/trackers" style={{ color: B.redLink, fontWeight: 600 }}>See all {PRODUCTS.length} →</Link>
           <br />
           Not sure which one? <Link to="/trackers#picker" style={{ color: B.redLink, fontWeight: 600 }}>Find your tracker in 2 questions →</Link>
         </p>

@@ -238,6 +238,10 @@ export default function TrackerDetail() {
 
   const savings = getBundleSavings(product);
 
+  // A product's other version (e.g. the two Ultimate trackers: one brokerage
+  // vs up to 8), shown as a link in the buy box.
+  const sibling = product.sibling && CATALOG.find((p) => p.slug === product.sibling.slug);
+
   const hasBuyPath = !!(product.stripeBuyButton || product.directUrl || product.url);
 
   // Desktop: screenshots on the left, a buy box on the right that stays in
@@ -297,6 +301,16 @@ export default function TrackerDetail() {
               <div style={{ fontSize: 13.5, color: B.grayLight, lineHeight: 1.6 }}>
                 <span style={{ color: B.white, fontWeight: 700 }}>Best for:</span> {product.bestFor}
               </div>
+            )}
+
+            {sibling && (
+              <Link to={`/trackers/${sibling.slug}`} style={{
+                display: "block", background: B.black3, border: `1px solid ${B.line}`, borderRadius: 10,
+                padding: "10px 14px", fontSize: 13.5, color: B.grayLight, lineHeight: 1.55, textDecoration: "none",
+              }}>
+                {product.sibling.lead}{" "}
+                <span style={{ color: B.redLink, fontWeight: 700 }}>See the {sibling.name} (CA${sibling.price.toFixed(2)}) →</span>
+              </Link>
             )}
 
             <div style={{ display: "flex", gap: 10 }}>

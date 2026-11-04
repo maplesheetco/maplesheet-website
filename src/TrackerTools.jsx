@@ -15,7 +15,7 @@ const LABEL = {
 
 // Spousal RRSP isn't its own entry in `accounts` (it's part of RRSP), so the
 // two trackers that handle it are named here by SKU.
-const SPOUSAL_SKUS = ["MS-COMBO-RRSP-SPOUSAL", "MS-FLAGSHIP-ULTIMATE"];
+const SPOUSAL_SKUS = ["MS-COMBO-RRSP-SPOUSAL", "MS-COMBO-RRSP-SPOUSAL-MB", "MS-FLAGSHIP-ULTIMATE", "MS-FLAGSHIP-ULTIMATE-MB"];
 const isMultiBrokerage = (p) => /-MB$/.test(p.sku || "");
 const accountsOf = (p) => [...(p.accounts || []), ...(SPOUSAL_SKUS.includes(p.sku) ? ["Spousal"] : [])];
 const money = (v) => `CA$${v.toFixed(2)}`;

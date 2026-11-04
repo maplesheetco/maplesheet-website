@@ -1634,6 +1634,7 @@ export const PRODUCTS = [
     // (RRSP counted twice) for the "save $X vs buying separately" math.
     compareAccounts: ["TFSA", "RRSP", "RRSP", "RESP", "FHSA", "Margin"],
     extraGuide: { slug: "spousal-rrsp-income-splitting", label: "Spousal RRSP income splitting guide" },
+    sibling: { slug: "ultimate-multi-brokerage", lead: "Accounts at more than one brokerage?" },
     longDescription: "Every account MapleSheet tracks, in a single sheet: TFSA, RRSP, Spousal RRSP, RESP, FHSA, and Margin — 6 accounts, 15 automated tabs. Built for anyone who'd rather stop deciding which combo tracker fits and just track everything — contribution room, deduction limits, CESG grants, spousal attribution, and capital gains, all reconciled against each other instead of five or six separate spreadsheets.",
     overview: [
       "Running a TFSA, an RRSP, a spousal RRSP for income splitting, an RESP for the kids, an FHSA for a first home, and a Margin account for everything else — in five or six different spreadsheets, or worse, five or six different apps? Every one of them shows you its own slice. None of them shows you the whole household picture, and the accounts that actually interact with each other — your RRSP room and your spousal RRSP contributions, your FHSA and your RRSP's Home Buyers' Plan — end up tracked as if they were unrelated.",
@@ -1666,6 +1667,79 @@ export const PRODUCTS = [
       { label: "FHSA", value: "8,221", change: "+6.0%" },
       { label: "Margin", value: "2,770", change: "+22.3%" },
     ] },
+  },  { name: "Ultimate Multi-Brokerage Tracker — All 6 Accounts", tag: "Flagship", price: 49.99, desc: "TFSA + RRSP + Spousal RRSP + FHSA + RESP + Margin & Cash, at up to 8 brokerages. Everything, one sheet.", badge: "FLAGSHIP", sku: "MS-FLAGSHIP-ULTIMATE-MB",
+    gallery: [
+      { src: "/screenshots/p25-mb-gallery-1-ultimate-dashboard.jpg", label: "Ultimate Dashboard — all 6 accounts at every brokerage side by side, your total after the margin loan, 8 goals and a tax snapshot" },
+      { src: "/screenshots/p25-mb-gallery-2-home-and-children.jpg", label: "Your FHSA closing year and deduction, your tax-free down payment (FHSA + Home Buyers' Plan), and each child's $50,000 RESP limit and CESG" },
+      { src: "/screenshots/p25-mb-gallery-3-charts.jpg", label: "Charts of your money by brokerage across all 6 accounts, dividends by month, and CESG received per child" },
+      { src: "/screenshots/p25-mb-gallery-4-transaction-log.jpg", label: "Transaction Log — the one tab you type into: pick the brokerage, the account (TFSA, RRSP, Spousal RRSP, FHSA, RESP, Margin or Cash) and the child on RESP rows" },
+      { src: "/screenshots/p25-mb-gallery-5-fhsa-portfolio.jpg", label: "FHSA Portfolio — every FHSA holding at every brokerage combined, with live prices and gains" },
+      { src: "/screenshots/p25-mb-gallery-6-spousal-rrsp-portfolio.jpg", label: "Spousal RRSP Portfolio — your spouse's plan, your deduction, tracked on its own tab" },
+      { src: "/screenshots/p25-mb-gallery-7-margin-cash-portfolio.jpg", label: "Margin & Cash Portfolio — one pooled ACB per stock across every taxable account (the CRA method), with realized gains" },
+      { src: "/screenshots/p25-mb-gallery-8-institution-dashboard.jpg", label: "Institution Dashboard — value and cost of every account at every brokerage, plus the share of your money at each one" },
+      { src: "/screenshots/p25-mb-gallery-9-margin-collateral.jpg", label: "Margin & Collateral — your loan, loan-to-value and the borrowing power your TFSA adds at each brokerage, with interest vs income by month" },
+      { src: "/screenshots/p25-mb-gallery-10-dividend-tracker.jpg", label: "Dividend Tracker — income from all 6 accounts by month vs your goal, with the US withholding lost or saved in each account" },
+      { src: "/screenshots/p25-mb-gallery-11-tax-summary.jpg", label: "Tax Summary — Lines 12000, 12100, 12700, 22100, 20800, 20805, 12905 and Form T2205, ready for April" },
+      { src: "/screenshots/p25-mb-gallery-12-rules.jpg", label: "Canadian Account Rules — 86 colour-coded CRA rules for all 6 accounts, built right into the sheet" },
+      { src: "/screenshots/p25-mb-gallery-13-settings.jpg", label: "Settings & Goals — your brokerages, margin and collateral rates, and every number from CRA My Account and your NOA" },
+    ],
+    stripeBuyButton: {
+      buyButtonId: "buy_btn_1UXwMWJYx6fAMdIU0MDs968b",
+      publishableKey: "pk_live_51Tx5ONJYx6fAMdIUQvlrtlFTgn1zcOmnKQIDjYvd6bLhk6NBnCSHPrHMimw8zfwtRwb8eLdBxCLrcIgmdTLyWjvA00Gj7PW2o2",
+    },
+    delivery: {
+      sheetUrl: "https://docs.google.com/spreadsheets/d/1uqpRzwisU40WcqqSlafqrrcinTW-NOgk4cKcU6ZyZPE/copy",
+      pdfs: [
+        { label: "Template Link", url: "/downloads/p25-mb-template-link.pdf" },
+        { label: "User Guide", url: "/downloads/p25-mb-user-guide.pdf" },
+        { label: "All 6 Accounts Government Rules", url: "/downloads/p25-mb-government-rules.pdf" },
+      ],
+    },
+    slug: "ultimate-multi-brokerage", accounts: ["TFSA", "RRSP", "RESP", "FHSA", "Margin"],
+    // Same pricing logic as the single-brokerage Ultimate: Spousal RRSP is
+    // counted as a second RRSP for the "save vs buying separately" math.
+    compareAccounts: ["TFSA", "RRSP", "RRSP", "RESP", "FHSA", "Margin"],
+    extraGuide: { slug: "spousal-rrsp-income-splitting", label: "Spousal RRSP income splitting guide" },
+    // The two Ultimate trackers point at each other (see TrackerDetail.jsx).
+    sibling: { slug: "ultimate-all-5-accounts", lead: "All your accounts at one brokerage?" },
+    bestFor: "Households with accounts at more than one brokerage (up to 8) who want every TFSA, RRSP, Spousal RRSP, FHSA, RESP, Margin and Cash account in one sheet, with every room and limit counted once.",
+    pitch: "The Ultimate Tracker for households spread across brokerages. Every account you own, at up to 8 banks and brokerages, in one Google Sheet: every room counted once, the CRA way.",
+    highlights: [
+      "6 accounts at up to 8 brokerages",
+      "One TFSA, RRSP and FHSA room",
+      "Spousal RRSP 3-year rule",
+      "FHSA + HBP down payment",
+      "CESG for up to 4 children",
+      "Pooled ACB + tax summary",
+    ],
+    longDescription: "The Ultimate Tracker for households whose money is spread across brokerages. Every TFSA, RRSP, Spousal RRSP, FHSA, RESP, Margin and Cash account you hold, at up to 8 banks and brokerages, in one Google Sheet with 15 tabs: one TFSA room, one RRSP room shared with your Spousal RRSP, one FHSA room, each child's RESP limit and CESG, your margin loan and one pooled ACB for your taxable accounts.",
+    overview: [
+      "Most Canadian households don't keep everything in one place. A TFSA at Wealthsimple, an RRSP at the bank, a spousal RRSP at Questrade, an FHSA opened wherever the promotion was best, the kids' RESP at another bank and a margin account on top. Every brokerage only sees its own accounts, so none of them adds up your TFSA room, your RRSP limit (which your spousal RRSP shares), your FHSA room or each child's $50,000 RESP limit. That's how over-contributions and missed grants happen.",
+      "The Ultimate Multi-Brokerage Tracker puts every one of those accounts, at up to 8 brokerages, into one Google Sheet built around a single Transaction Log. Log each contribution, buy, sell, dividend, grant, transfer or withdrawal once, pick the brokerage and the account, and all 15 tabs update: a portfolio for each account type at live prices, an Institution Dashboard comparing every brokerage side by side, a Dividend Tracker, a Margin & Collateral tab and a Tax Summary.",
+      "Each account is counted the way the CRA counts it. One TFSA room for every TFSA. One RRSP room for your RRSP and the Spousal RRSP together, using the March 2 to March 1 window, with the 3-year attribution rule and the date each spousal contribution becomes safe. One FHSA room with carry-forward, the $40,000 lifetime limit and the year your FHSA must be closed, plus your tax-free down payment through the FHSA and the Home Buyers' Plan. Each child's CESG, up to 4 children. And one pooled ACB per stock across all your Margin and Cash accounts, with superficial loss warnings and the T1 lines for April.",
+    ],
+    whoFor: "Canadian households with accounts at more than one brokerage: couples using a spousal RRSP, first-time buyers saving in an FHSA, parents with RESPs, and investors with a margin or cash account, who want one sheet that adds it all up instead of six apps that each see their own slice.",
+    features: [
+      "All 6 account types at up to 8 brokerages in one sheet: TFSA, RRSP, Spousal RRSP, FHSA, RESP, and Margin & Cash, with one total after the margin loan",
+      "One TFSA room for all your TFSAs: this year's limit, your room on January 1 and withdrawals that come back next year",
+      "One RRSP room shared by your RRSP and the Spousal RRSP, from March 2 to March 1, with your deduction on Line 20800",
+      "Spousal RRSP 3-year attribution rule: the amount at risk, the date withdrawals are taxed to your spouse, and Form T2205",
+      "One FHSA room: $8,000 a year, up to $8,000 carried forward, the $40,000 lifetime limit, the year your FHSA must be closed and your Line 20805 deduction",
+      "Tax-free down payment: your FHSA plus what you can still take under the Home Buyers' Plan, against your goal and target year, with HBP repayments",
+      "Each child's $50,000 RESP limit and CESG for up to 4 children, with how much more to contribute for the full grant",
+      "Margin & Collateral: your loan and loan-to-value at each brokerage, the borrowing power your TFSA adds, break-even yield and interest on Line 22100",
+      "One pooled ACB per stock across every Margin and Cash account (the CRA method), capital gains and superficial loss warnings",
+      "Tax Summary for Lines 12000, 12100, 12700, 22100, 20800, 20805 and 12905, plus a check against each brokerage's T5008",
+      "Live prices via GOOGLEFINANCE, USD→CAD conversion and a Dividend Tracker by month for all 6 accounts",
+      "Built-in Canadian Account Rules tab: 86 colour-coded CRA rules covering every account",
+    ],
+    included: [
+      { icon: "📊", label: "The Google Sheets template", desc: "Yours to copy and keep forever — no subscription, no app, no login beyond your own Google account." },
+      { icon: "🍁", label: "One-click MapleSheet menu", desc: "Builds, rebuilds and loads sample data for you right inside the sheet — no spreadsheet experience required." },
+      { icon: "📄", label: "Template Link PDF", desc: "Your direct link to make your own copy, ready whenever you need it." },
+      { icon: "📄", label: "User Guide PDF", desc: "A full tab-by-tab, column-by-column walkthrough of every part of the sheet." },
+      { icon: "📄", label: "All 6 Accounts Government Rules PDF", desc: "A plain-English reference to the 2026 rules for every account — TFSA, RRSP, the Home Buyers' Plan, Spousal RRSP, FHSA, RESP and CESG, Margin & Cash, pooled ACB and superficial losses — with worked examples." },
+    ],
   },
 ];
 
@@ -1917,7 +1991,7 @@ export const RESOURCES = [
       "Once the facts are gathered, turn them into a realistic plan. You do not need a complicated forecast to get started.",
       "- Choose a monthly amount that fits your budget.\n- Decide which account aligns with your near-term and long-term goals.\n- Set a recurring calendar reminder to record contributions and review your portfolio.\n- Keep a cash buffer for unexpected expenses.\n- Revisit your plan after major life changes or when your income changes.",
       "## 8. Track Investments Across Multiple Brokerages",
-      "When investments are spread across several institutions, it can be difficult to see the complete picture from any single account dashboard. A consistent tracker can bring holdings and performance information together. MapleSheet's [TFSA Multi-Brokerage Tracker](/trackers/tfsa-multi-brokerage) and [RRSP Multi-Brokerage Tracker](/trackers/rrsp-multi-brokerage) pull up to 8 brokerages into one Google Sheet, and the [Ultimate All-5-Accounts tracker](/trackers/ultimate-all-5-accounts) covers TFSA, RRSP, RESP, FHSA and margin in one workbook. They help with portfolio visibility and investment tracking, but they do not replace official CRA contribution-room records, brokerage statements, tax slips, or professional tax advice.",
+      "When investments are spread across several institutions, it can be difficult to see the complete picture from any single account dashboard. A consistent tracker can bring holdings and performance information together. MapleSheet's [TFSA Multi-Brokerage Tracker](/trackers/tfsa-multi-brokerage) and [RRSP Multi-Brokerage Tracker](/trackers/rrsp-multi-brokerage) pull up to 8 brokerages into one Google Sheet, the [Ultimate All-5-Accounts tracker](/trackers/ultimate-all-5-accounts) covers TFSA, RRSP, RESP, FHSA and margin in one workbook, and the [Ultimate Multi-Brokerage Tracker](/trackers/ultimate-multi-brokerage) does the same for all 6 accounts at up to 8 brokerages. They help with portfolio visibility and investment tracking, but they do not replace official CRA contribution-room records, brokerage statements, tax slips, or professional tax advice.",
       "If you use a Canadian brokerage such as Wealthsimple, retain statements and transaction confirmations. As a Canadian DIY investor, I personally use [Wealthsimple](https://wealthsimple.com/invite/R7ENSA).",
       "### Referral Disclosure",
       "Some links in this article may be referral links. If you open an account through a MapleSheet referral link, MapleSheet Co. may receive a referral benefit at no additional cost to you. Any referral relationship does not change the educational purpose of this article.",
@@ -3086,11 +3160,13 @@ export const RESOURCES = [
   },
 ];
 
+const flagshipPrice = (sku) => PRODUCTS.find((p) => p.sku === sku).price.toFixed(2);
+
 export const FAQS = [
   ["Do I need Excel or Google Sheets?", "Google Sheets — which is free with any Google account. No Excel needed, no software to install. You'll receive a link, click 'Make a copy', and the tracker is yours."],
   [
     "How much do MapleSheet trackers cost, and where do I buy them?",
-    `Single-account trackers start at CA$${Math.min(...PRODUCTS.map((p) => p.price)).toFixed(2)} and the all-in-one Ultimate Tracker is CA$${Math.max(...PRODUCTS.map((p) => p.price)).toFixed(2)}, with ${PRODUCTS.length} trackers in all. Each is a one-time purchase in Canadian dollars. Buy directly on maplesheet.ca with secure Stripe checkout and you get your Google Sheets link right away. Some trackers are also listed on our Etsy shop.`,
+    `Single-account trackers start at CA$${Math.min(...PRODUCTS.map((p) => p.price)).toFixed(2)} and the all-in-one Ultimate Tracker is CA$${flagshipPrice("MS-FLAGSHIP-ULTIMATE")} (CA$${flagshipPrice("MS-FLAGSHIP-ULTIMATE-MB")} for the Multi-Brokerage version, up to 8 brokerages), with ${PRODUCTS.length} trackers in all. Each is a one-time purchase in Canadian dollars. Buy directly on maplesheet.ca with secure Stripe checkout and you get your Google Sheets link right away. Some trackers are also listed on our Etsy shop.`,
   ],
   ["Is this a subscription?", "No. One-time purchase, yours forever. Free updates to the version you bought, and no recurring fees of any kind."],
   ["How do live prices work?", "Trackers use Google's built-in GOOGLEFINANCE function to pull live stock and ETF quotes automatically — CAD and USD, with automatic currency conversion."],
