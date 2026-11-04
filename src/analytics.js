@@ -47,7 +47,7 @@ function send(eventName, params = {}) {
  * @param {"TFSA"|"RRSP"|"RESP"|"FHSA"|"Margin"|"Combo"|"Flagship"} props.productTag
  * @param {number} props.priceCad
  * @param {"etsy"|"direct"} props.checkoutDestination
- * @param {"home_featured"|"trackers_catalog"} props.sourceSection
+ * @param {"home_featured"|"trackers_catalog"|"trackers_flagships"} props.sourceSection
  */
 export function trackBuyClicked({ productName, productTag, priceCad, checkoutDestination, sourceSection }) {
   send(EVENTS.TRACKER_BUY_CLICKED, {

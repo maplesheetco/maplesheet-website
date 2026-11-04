@@ -58,13 +58,17 @@ export default function Trackers() {
     const t = setTimeout(() => document.getElementById(hash.slice(1))?.scrollIntoView(), 60);
     return () => clearTimeout(t);
   }, [hash]);
-  const shown = filter === "All" ? CATALOG : CATALOG.filter((p) => p.tag === filter);
+  // The two Ultimate trackers get their own highlighted row above the grid,
+  // so "All" leaves them out of the grid (the Flagship filter still shows them).
+  const flagships = CATALOG.filter((p) => p.badge === "FLAGSHIP").sort((a, b) => a.price - b.price);
+  const shown = filter === "All" ? CATALOG.filter((p) => p.badge !== "FLAGSHIP") : CATALOG.filter((p) => p.tag === filter);
   return (
     <div className="ml-fade">
       <PageHead kicker="THE LINEUP" title={<>{CATALOG.length} trackers. <RedWord>Every Canadian account.</RedWord></>}
         sub="Start with one account, or track everything at once. All prices in CAD. One-time purchase — no subscription, ever." />
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "26px 24px 0" }}>
         <TrackerPicker />
+        <FlagshipRow products={flagships} />
         <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginBottom: 28 }}>
           {FILTERS.map((f) => (
             <button key={f} onClick={() => setFilter(f)} className="ml-btn" style={{
@@ -207,5 +211,87 @@ export default function Trackers() {
         <PromoBanner style={{ marginTop: 24 }} />
       </div>
     </div>
+  );
+}
+
+// Full-width highlight for the two Ultimate trackers (one brokerage vs up
+// to 8), side by side on desktop and stacked on phones.
+function FlagshipRow({ products }) {
+  if (!products.length) return null;
+  return (
+    <section aria-labelledby="flagships" style={{ margin: "0 0 34px" }}>
+      <div style={{ textAlign: "center", marginBottom: 18 }}>
+        <div style={{ fontSize: 12, letterSpacing: "0.14em", color: B.redLink, fontWeight: 700, marginBottom: 6 }}>FLAGSHIP</div>
+        <h2 id="flagships" style={{ fontSize: "clamp(22px, 3.4vw, 30px)", fontWeight: 800, margin: 0, color: B.white, letterSpacing: "-0.02em" }}>
+          Every account, <RedWord>one sheet</RedWord>
+        </h2>
+        <p style={{ color: B.grayLight, fontSize: 14.5, margin: "8px auto 0", maxWidth: 620, lineHeight: 1.6 }}>
+          The two Ultimate trackers cover all 6 accounts. Pick by where your money is: one brokerage, or up to 8.
+        </p>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 340px), 1fr))", gap: 18 }}>
+        {products.map((p) => {
+          const savings = getBundleSavings(p);
+          const image = cardImage(p);
+          const multi = /-MB$/.test(p.sku || "");
+          return (
+            <Reveal key={p.slug} className="ml-card" style={{
+              display: "flex", flexDirection: "column", gap: 12,
+              background: `linear-gradient(150deg, #2A0A0A, ${B.black2})`,
+              border: `2px solid ${B.red}`, borderRadius: 18, padding: "clamp(20px, 3vw, 26px)", position: "relative",
+            }}>
+              <span style={{
+                position: "absolute", top: 16, right: 16, background: B.red, color: "#fff",
+                fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", padding: "4px 10px", borderRadius: 999,
+              }}>FLAGSHIP</span>
+              {image && (
+                <Link to={`/trackers/${p.slug}`} aria-hidden="true" tabIndex={-1}>
+                  <Picture thumb src={image} alt={`${p.name} dashboard screenshot`} style={{
+                    width: "100%", display: "block", borderRadius: 10, aspectRatio: "16 / 9",
+                    objectFit: "cover", objectPosition: "top left", background: B.black3, border: `1px solid ${B.line}`,
+                  }} />
+                </Link>
+              )}
+              <span style={{ fontSize: 11.5, letterSpacing: "0.1em", color: B.redLink, fontWeight: 700, textTransform: "uppercase" }}>
+                {multi ? "Up to 8 brokerages" : "One brokerage"}
+              </span>
+              <Link to={`/trackers/${p.slug}`} style={{ fontSize: 21, fontWeight: 800, color: B.white, lineHeight: 1.25, textDecoration: "none" }}>
+                {p.name}
+              </Link>
+              {p.pitch && <p style={{ margin: 0, fontSize: 14, color: B.grayLight, lineHeight: 1.6 }}>{p.pitch}</p>}
+              {p.highlights && (
+                <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: "6px 14px", flex: 1, alignContent: "start" }}>
+                  {p.highlights.map((h) => (
+                    <li key={h} style={{ display: "flex", gap: 8, fontSize: 13, color: B.white, lineHeight: 1.45 }}>
+                      <span style={{ color: "#34C77B", fontWeight: 800 }} aria-hidden="true">✓</span>{h}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div style={{ display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "4px 12px", marginTop: 4 }}>
+                <span style={{ fontSize: 26, fontWeight: 800, color: B.white }}>CA${p.price.toFixed(2)}</span>
+                {savings && (
+                  <span style={{ fontSize: 12, fontWeight: 700, color: "#34C77B" }}>
+                    Save CA${savings.amount.toFixed(2)} ({savings.percent}%) vs. separately
+                  </span>
+                )}
+              </div>
+              <Link
+                to={`/trackers/${p.slug}`}
+                onClick={() => trackBuyClicked({
+                  productName: p.name, productTag: p.tag, priceCad: p.price,
+                  checkoutDestination: "detail_page", sourceSection: "trackers_flagships",
+                })}
+                className="ml-btn"
+                style={{
+                  textAlign: "center", fontSize: 14, fontWeight: 700, color: "#fff",
+                  background: B.red, padding: "12px 10px", borderRadius: 10, textDecoration: "none",
+                }}
+              >View full details →</Link>
+            </Reveal>
+          );
+        })}
+      </div>
+    </section>
   );
 }
