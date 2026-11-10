@@ -1,0 +1,28 @@
+# Rebuilds the live site once a day so scheduled articles get their full page
+# (text + structured data baked into the HTML) on the day they go live, instead
+# of waiting for the next merge. See scripts/prerender-meta.mjs.
+#
+# Needs one repository secret, VERCEL_DEPLOY_HOOK: the URL of a Vercel Deploy
+# Hook for the main branch (Vercel → project → Settings → Git → Deploy Hooks).
+# Without it this job does nothing and still passes.
+name: Daily rebuild
+
+on:
+  schedule:
+    # 00:20 UTC = just after a new article's date begins (dates are UTC).
+    - cron: "20 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel production deploy
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "VERCEL_DEPLOY_HOOK secret not set; skipping."
+            exit 0
+          fi
+          curl -fsS -X POST "$HOOK"
