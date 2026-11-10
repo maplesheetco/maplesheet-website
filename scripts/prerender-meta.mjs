@@ -23,7 +23,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   SITE_URL, DEFAULT_OG_IMAGE, STATIC_META, NOT_FOUND_META,
-  trackerMeta, articleMeta, trackerPages, allArticles, liveArticles,
+  trackerMeta, articleMeta, trackerPages, allArticles, liveArticles, provincePages,
 } from "../src/seo.js";
 import { render as renderApp } from "../dist-ssr/entry-server.js";
 
@@ -88,6 +88,7 @@ const pages = [
   ...Object.entries(STATIC_META).map(([path, meta]) => [path, meta]),
   ...trackerPages().map((p) => [`/trackers/${p.slug}`, trackerMeta(p)]),
   ...allArticles().map((a) => [`/resources/${a.slug}`, articleMeta(a)]),
+  ...provincePages(),
 ];
 // Checkout pages keep the empty shell — they're per-visitor, so they're
 // marked noindex (the bare template would otherwise point Google at the

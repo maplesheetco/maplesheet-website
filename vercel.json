@@ -17,12 +17,16 @@
       "destination": "/api/merchant-feed"
     },
     {
-      "source": "/:page(trackers|tools|resources|about|contact|disclaimer|privacy)",
+      "source": "/:page(trackers|tools|resources|provinces|about|contact|disclaimer|privacy)",
       "destination": "/:page/index.html"
     },
     {
       "source": "/trackers/:slug",
       "destination": "/trackers/:slug/index.html"
+    },
+    {
+      "source": "/provinces/:slug",
+      "destination": "/provinces/:slug/index.html"
     },
     {
       "source": "/resources/:slug",

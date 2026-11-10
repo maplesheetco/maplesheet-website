@@ -525,6 +525,7 @@ export function Footer() {
           <NavLink to="/trackers" style={FOOT_LINK_STYLE}>Trackers</NavLink>
           <NavLink to="/tools" style={FOOT_LINK_STYLE}>Free Tools</NavLink>
           <NavLink to="/resources" style={FOOT_LINK_STYLE}>Resources</NavLink>
+          <NavLink to="/provinces" style={FOOT_LINK_STYLE}>Province Guides</NavLink>
         </FootCol>
 
         <FootCol heading="Company">

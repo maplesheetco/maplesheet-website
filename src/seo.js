@@ -10,6 +10,7 @@
 // Plain JS (no JSX) on purpose: Node imports this file directly.
 import { PRODUCTS, RESOURCES } from "./data.js";
 import { CATALOG, cardImage } from "./trackerPages.js";
+import { PROVINCES, provinceMeta, PROVINCES_HUB_META } from "./provinces.js";
 
 export const SITE_URL = "https://www.maplesheet.ca";
 export const DEFAULT_OG_IMAGE = "/og.png";
@@ -125,7 +126,12 @@ export function buildSitemapXml(today = new Date()) {
     priority: r.slug === "tfsa-vs-rrsp-vs-fhsa-vs-resp" ? "0.8" : "0.75",
   }));
 
-  const entries = [...staticPages, ...productPages, ...articlePages].map((p) => [
+  const provincePages = [
+    { loc: "/provinces", changefreq: "yearly", priority: "0.7" },
+    ...PROVINCES.map((p) => ({ loc: `/provinces/${p.slug}`, changefreq: "yearly", priority: "0.6" })),
+  ];
+
+  const entries = [...staticPages, ...productPages, ...articlePages, ...provincePages].map((p) => [
     "  <url>",
     `    <loc>${SITE_URL}${p.loc}</loc>`,
     ...(p.lastmod ? [`    <lastmod>${p.lastmod}</lastmod>`] : []),
@@ -136,3 +142,9 @@ export function buildSitemapXml(today = new Date()) {
 
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.join("\n")}\n</urlset>\n`;
 }
+
+// Province guides (src/provinces.js): the hub plus one page per province.
+export const provincePages = () => [
+  ["/provinces", PROVINCES_HUB_META],
+  ...PROVINCES.map((p) => [`/provinces/${p.slug}`, provinceMeta(p)]),
+];
