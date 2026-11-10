@@ -8,6 +8,8 @@ import TrackerDetail from "./pages/TrackerDetail.jsx";
 import Resources from "./pages/Resources.jsx";
 import Article from "./pages/Article.jsx";
 import About from "./pages/About.jsx";
+import { ProvincesHub, ProvincePage } from "./pages/Provinces.jsx";
+import { PROVINCES as PROVINCE_GUIDES } from "./provinces.js";
 import Contact from "./pages/Contact.jsx";
 import Disclaimer from "./pages/Disclaimer.jsx";
 import Privacy from "./pages/Privacy.jsx";
@@ -178,11 +180,6 @@ function useHeroPin({ sectionRef, textRef, galleryRef }) {
   }, [sectionRef, textRef, galleryRef]);
 }
 
-const PROVINCES = [
-  "British Columbia", "Alberta", "Saskatchewan", "Manitoba", "Ontario", "Quebec",
-  "New Brunswick", "Nova Scotia", "Prince Edward Island", "Newfoundland and Labrador",
-  "Yukon", "Northwest Territories", "Nunavut",
-];
 
 function Home() {
   usePageMeta(STATIC_META["/"]);
@@ -316,16 +313,21 @@ function Home() {
         </h2>
         <p style={{ color: B.grayLight, fontSize: 14.5, maxWidth: 640, margin: "0 auto 20px", lineHeight: 1.6 }}>
           TFSA, RRSP, RESP and FHSA rules are set federally by the CRA, so every tracker works wherever you live.
-          Trackers with a Tax Dashboard include the rates for all 13 provinces and territories.
+          Your income tax is provincial, though. Pick yours for its 2026 brackets and how to set it up in your tracker.
         </p>
         <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", maxWidth: 860, marginInline: "auto" }}>
-          {PROVINCES.map((name) => (
-            <li key={name} style={{
-              fontSize: 13, color: B.grayLight, background: B.black2,
-              border: `1px solid ${B.line}`, borderRadius: 999, padding: "6px 13px",
-            }}>{name}</li>
+          {PROVINCE_GUIDES.map((p) => (
+            <li key={p.slug}>
+              <Link to={`/provinces/${p.slug}`} style={{
+                display: "inline-block", fontSize: 13, color: B.grayLight, background: B.black2, textDecoration: "none",
+                border: `1px solid ${B.line}`, borderRadius: 999, padding: "6px 13px",
+              }}>{p.name}</Link>
+            </li>
           ))}
         </ul>
+        <p style={{ margin: "16px 0 0", fontSize: 14 }}>
+          <Link to="/provinces" style={{ color: B.redLink, fontWeight: 600 }}>Compare tax rates in every province →</Link>
+        </p>
       </Reveal>
 
       {/* Featured products */}
@@ -577,6 +579,8 @@ export function Site() {
           } />
           <Route path="/resources" element={<Resources />} />
           <Route path="/resources/:slug" element={<Article />} />
+          <Route path="/provinces" element={<ProvincesHub />} />
+          <Route path="/provinces/:slug" element={<ProvincePage />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
