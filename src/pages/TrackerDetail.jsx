@@ -64,7 +64,7 @@ function ProductGallery({ images, name }) {
                 border: `2px solid ${idx === i ? B.red : B.line}`, opacity: idx === i ? 1 : 0.75,
               }}
             >
-              <Picture thumb src={img.src} alt="" style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", objectPosition: "top", display: "block" }} />
+              <Picture thumb src={img.src} alt={`${name} — ${img.label}`} style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", objectPosition: "top", display: "block" }} />
             </button>
           ))}
         </div>

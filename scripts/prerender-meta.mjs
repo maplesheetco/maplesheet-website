@@ -39,13 +39,16 @@ const escape = (s) => String(s)
 function setAttr(html, tagPattern, value) {
   const re = new RegExp(`(${tagPattern}[^>]*?(?:content|href)=")[^"]*(")`);
   if (!re.test(html)) throw new Error(`prerender-meta: couldn't find ${tagPattern} in dist/index.html`);
-  return html.replace(re, `$1${escape(value)}$2`);
+  // A function, not a "$1…$2" string: a value with a dollar amount in it
+  // ("Even $1 over your limit…", "$2,000") would otherwise be read as a
+  // capture-group reference and garble the tag.
+  return html.replace(re, (_, before, after) => `${before}${escape(value)}${after}`);
 }
 
 function render(path, { title, description, image = DEFAULT_OG_IMAGE, noindex = false }) {
   const url = `${SITE_URL}${path}`;
   const imageUrl = image.startsWith("http") ? image : `${SITE_URL}${image}`;
-  let html = template.replace(/<title>[^<]*<\/title>/, `<title>${escape(title)}</title>`);
+  let html = template.replace(/<title>[^<]*<\/title>/, () => `<title>${escape(title)}</title>`);
   html = setAttr(html, '<meta name="description"', description);
   html = setAttr(html, '<meta property="og:title"', title);
   html = setAttr(html, '<meta property="og:description"', description);
@@ -86,11 +89,17 @@ const pages = [
   ...trackerPages().map((p) => [`/trackers/${p.slug}`, trackerMeta(p)]),
   ...allArticles().map((a) => [`/resources/${a.slug}`, articleMeta(a)]),
 ];
-// Checkout pages keep the empty shell — they're per-visitor and not indexed.
-const shell = template;
+// Checkout pages keep the empty shell — they're per-visitor, so they're
+// marked noindex (the bare template would otherwise point Google at the
+// homepage as their canonical).
+const shell = render("/checkout", { title: "Checkout | MapleSheet Co.", description: "Secure checkout, powered by Stripe.", noindex: true });
 // An article scheduled for a later date would render as "Guide not found"
 // today, and that text would stay in its file after the date arrives (until
 // the next deploy), so those get the meta tags only; browsers fill them in.
+// (Not noindexed here: a noindex in the file would outlive the date if a
+// rebuild were missed. Before its date the page adds noindex itself when it
+// runs.) The daily rebuild (.github/workflows/daily-rebuild.yml) rebuilds the
+// site each morning, so on its date the article gets its full page.
 const scheduled = new Set(allArticles().map((a) => `/resources/${a.slug}`));
 for (const a of liveArticles()) scheduled.delete(`/resources/${a.slug}`);
 for (const [path, meta] of pages) {
