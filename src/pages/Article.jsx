@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { B, RESOURCES } from "../data.js";
 import { PageHead, usePageMeta, useJsonLd, Reveal, Picture } from "../ui.jsx";
 import { articleMeta } from "../seo.js";
+import { CATALOG } from "../trackerPages.js";
 import { NewsletterBox } from "./Resources.jsx";
 
 // Lightweight inline-markdown renderer: supports **bold**, *italic*, and
@@ -152,7 +153,7 @@ export default function Article() {
     description: article.summary,
     image: article.image ? `https://www.maplesheet.ca${article.image}` : undefined,
     datePublished: article.date,
-    dateModified: article.date,
+    dateModified: article.updated || article.date,
     author: { "@type": "Organization", name: "MapleSheet Co.", url: "https://www.maplesheet.ca" },
     publisher: {
       "@type": "Organization",
@@ -172,6 +173,10 @@ export default function Article() {
       </div>
     );
   }
+
+  // Optional `tracker` field on an article names the tracker that matches
+  // its topic, shown as a call-to-action box at the end of the guide.
+  const tracker = article.tracker ? CATALOG.find((p) => p.slug === article.tracker) : null;
 
   const raw = article.body || article.summary;
   const blocks = Array.isArray(raw) ? raw : [raw];
@@ -202,7 +207,7 @@ export default function Article() {
           padding: "clamp(22px, 4vw, 32px)", marginBottom: 18,
         }}>
           <div style={{ fontSize: 12, color: B.gray, marginBottom: 8 }}>
-            📝 Article · {article.date}
+            📝 Article · {article.date}{article.updated ? ` · Updated ${article.updated}` : ""}
           </div>
           {article.image && (
             <Picture eager src={article.image} alt={article.title} style={{
@@ -211,6 +216,7 @@ export default function Article() {
             }} />
           )}
           {blocks.map((block, i) => renderBlock(block, i))}
+          {tracker && <TrackerCta product={tracker} />}
         </Reveal>
 
         <div className="ml-article-sidebar">
@@ -253,6 +259,33 @@ export default function Article() {
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+// End-of-guide box pointing readers who just learned the rule to the tracker
+// that does the bookkeeping for them.
+function TrackerCta({ product }) {
+  return (
+    <div style={{
+      marginTop: 26, padding: "20px 22px", borderRadius: 14,
+      border: `1px solid ${B.red}`, background: "rgba(204, 0, 0, 0.06)",
+    }}>
+      <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1, color: B.redLink, marginBottom: 6 }}>
+        TRACK THIS AUTOMATICALLY
+      </div>
+      <div style={{ fontSize: 17, fontWeight: 700, color: B.white, marginBottom: 6 }}>
+        {product.name} · ${product.price} one-time
+      </div>
+      <p style={{ color: B.grayLight, fontSize: 15, lineHeight: 1.6, margin: "0 0 14px" }}>
+        {product.desc}. A Google Sheets tracker built for Canadian investors: one-time purchase, no subscription.
+      </p>
+      <Link to={`/trackers/${product.slug}`} style={{
+        display: "inline-block", background: B.red, color: "#fff", fontWeight: 700,
+        fontSize: 14.5, padding: "10px 18px", borderRadius: 10, textDecoration: "none",
+      }}>
+        See the {product.name} →
+      </Link>
     </div>
   );
 }

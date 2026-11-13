@@ -121,7 +121,7 @@ export function buildSitemapXml(today = new Date()) {
   }));
   const articlePages = liveArticles(today).map((r) => ({
     loc: `/resources/${r.slug}`,
-    lastmod: r.date,
+    lastmod: r.updated || r.date,
     changefreq: "monthly",
     priority: r.slug === "tfsa-vs-rrsp-vs-fhsa-vs-resp" ? "0.8" : "0.75",
   }));
