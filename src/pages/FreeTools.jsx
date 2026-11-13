@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { PageHead, RedWord, usePageMeta, Reveal } from "../ui.jsx";
 import { B } from "../data.js";
 import WealthCalculator from "../WealthCalculator.jsx";
@@ -6,6 +6,7 @@ import { TfsaRoomCalculator, AcbCalculator } from "../FreeCalculators.jsx";
 import { NewsletterBox } from "./Resources.jsx";
 import { trackGoalTrackerRequested } from "../analytics.js";
 import { STATIC_META } from "../seo.js";
+import MailerLiteForm, { ML_FORMS } from "../MailerLiteForm.jsx";
 
 function ToolSection({ eyebrow, title, sub, children }) {
   return (
@@ -23,51 +24,10 @@ function ToolSection({ eyebrow, title, sub, children }) {
 // Unlike the calculators above, this one isn't sign-up-free — it's a
 // spreadsheet, not an interactive on-page tool, so the only way to "use" it
 // is to have your own copy. Email gets a link to a Google Sheet you make
-// your own copy of (via MailerLite's classic form-POST endpoint — same
-// mechanism NewsletterBox in Resources.jsx already uses in production,
-// just a separate form/group so these leads don't mix with newsletter
-// subscribers). Success state is optimistic: this posts into a hidden
-// iframe (see below) rather than a visible tab, so we get no readable
-// response either way — we show the confirmation the moment the browser
-// accepts the submit.
-//
-// The form targets a same-page hidden iframe instead of target="_blank".
-// Confirmed working (real subscriber + real delivery) using a visible new
-// tab first — the only thing this changes is that MailerLite's raw
-// {"success":true} response now lands in an invisible iframe instead of
-// flashing an ugly blank tab open in front of every visitor.
-const GOAL_TRACKER_IFRAME_NAME = "goal-tracker-subscribe-target";
-//
-// The "takel" fetch below matters more than it looks: MailerLite records a
-// form "view" the moment it's tracked, and appears to quietly ignore a
-// subscribe POST that has no matching view — so without this, submissions
-// looked successful on-page but never actually landed in MailerLite.
-// NewsletterBox (Resources.jsx) already does this for its own form ID; this
-// fires the same beacon for the Goal Tracker's separate form ID.
-//
-// IMPORTANT — do not flip `submitted` synchronously inside onSubmit. Doing
-// so unmounts this <form> (we conditionally render it away) in the same
-// instant the browser is trying to carry out the real submission — sending
-// the POST to its target — which can cancel that submission outright.
-// Pulling a form out of the DOM mid-submit is exactly the kind of thing
-// browsers treat as "never mind, don't send it." That's consistent with
-// everything we saw before this was fixed: the page always showed success,
-// but nothing ever reached MailerLite. Two safeguards instead: (1) defer
-// the optimistic UI swap by a tick via setTimeout so the browser's default
-// action fires first, and (2) also wire up MailerLite's own success
-// callback (window.ml_webform_success_<id>) — the actual mechanism their
-// generated embed code uses — as a second, more accurate path to the same
-// state update.
+// your own copy of. It uses its own MailerLite form/group ("Goal Tracker
+// Leads") so these leads don't mix with newsletter subscribers. See
+// MailerLiteForm.jsx for how the submission works.
 function GoalTrackerGate() {
-  const [submitted, setSubmitted] = useState(false);
-
-  useEffect(() => {
-    fetch("https://assets.mailerlite.com/jsonp/2540563/forms/197636741838931967/takel").catch(() => {});
-    window.ml_webform_success_45628178 = function () {
-      setSubmitted(true);
-    };
-  }, []);
-
   return (
     <div style={{
       background: `linear-gradient(135deg, #2A0A0A, ${B.black2})`, border: `1.5px solid ${B.red}`,
@@ -79,54 +39,13 @@ function GoalTrackerGate() {
       <p style={{ color: B.grayLight, fontSize: 14, margin: "0 auto 18px", lineHeight: 1.6, maxWidth: 460 }}>
         A two-tab Google Sheet — set a goal, log deposits, and watch a live dashboard and progress chart update on their own. Enter your email and we'll send your copy.
       </p>
-
-      {/* Hidden submit target — keeps MailerLite's raw JSON response from
-          ever flashing open in a visible tab for the visitor. */}
-      <iframe name={GOAL_TRACKER_IFRAME_NAME} title="Form submission target" aria-hidden="true" style={{ display: "none" }} />
-
-      {submitted ? (
-        <p style={{ color: B.white, fontSize: 14, fontWeight: 700, margin: 0 }}>
-          Check your inbox — your Goal Tracker link is on its way. 🍁
-        </p>
-      ) : (
-        <form
-          action="https://assets.mailerlite.com/jsonp/2540563/forms/197636741838931967/subscribe"
-          method="post"
-          target={GOAL_TRACKER_IFRAME_NAME}
-          onSubmit={() => {
-            trackGoalTrackerRequested({ sourcePage: "free_tools" });
-            // Deferred on purpose — see the comment above the component.
-            setTimeout(() => setSubmitted(true), 0);
-          }}
-          style={{ display: "flex", gap: 10, maxWidth: 420, margin: "0 auto", flexWrap: "wrap", justifyContent: "center" }}
-        >
-          <input
-            type="email"
-            name="fields[email]"
-            required
-            placeholder="you@email.com"
-            style={{
-              flex: "1 1 220px", padding: "12px 14px", borderRadius: 8, border: `1px solid ${B.line}`,
-              background: B.black, color: B.white, fontSize: 14, outline: "none",
-            }}
-          />
-          <input type="hidden" name="ml-submit" value="1" />
-          <input type="hidden" name="anticsrf" value="true" />
-          <button
-            type="submit"
-            style={{
-              background: B.red, color: B.white, border: "none", borderRadius: 8, padding: "12px 20px",
-              fontSize: 14, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap",
-            }}
-          >
-            Send Me the Tracker
-          </button>
-        </form>
-      )}
-
-      <p style={{ color: B.gray, fontSize: 11.5, margin: "14px 0 0" }}>
-        One email with your link. No spam, unsubscribe anytime.
-      </p>
+      <MailerLiteForm
+        formId={ML_FORMS.goalTracker}
+        buttonLabel="Send Me the Tracker"
+        successMessage="Check your inbox — your Goal Tracker link is on its way. 🍁"
+        consentText="We'll email you your Goal Tracker link from MapleSheet Co. Unsubscribe anytime."
+        onSubmitted={() => trackGoalTrackerRequested({ sourcePage: "free_tools" })}
+      />
     </div>
   );
 }
