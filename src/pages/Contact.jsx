@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { B, CONFIG } from "../data.js";
-import { PageHead, RedWord, usePageMeta, Reveal } from "../ui.jsx";
+import { PageHead, RedWord, usePageMeta, Reveal, useTawkReady } from "../ui.jsx";
 import { trackContactFormSubmitted } from "../analytics.js";
 import { STATIC_META } from "../seo.js";
 
@@ -21,8 +21,8 @@ const QUICK_HELP = [
   { q: "Learning the account rules?", a: <>The <Link to="/resources" style={{ color: B.redLink, fontWeight: 600 }}>Resources</Link> guides cover TFSA, RRSP, FHSA, RESP and ACB in plain English.</> },
 ];
 
-// Opens the Tawk.to chat window if the widget has loaded (it's added in
-// index.html); otherwise the button is simply not shown.
+// Opens the Tawk.to chat window. The link only shows once the widget has
+// loaded (useTawkReady), so an ad blocker just means no link, not a dead one.
 function openChat() {
   if (typeof window !== "undefined" && window.Tawk_API?.maximize) window.Tawk_API.maximize();
 }
@@ -51,8 +51,7 @@ export default function Contact() {
   usePageMeta(STATIC_META["/contact"]);
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [topic, setTopic] = useState(TOPICS[0]);
-  const [chatReady, setChatReady] = useState(false);
-  useEffect(() => { setChatReady(!!window.Tawk_API?.maximize); }, []);
+  const chatReady = useTawkReady();
   const [status, setStatus] = useState("idle");
   const [file, setFile] = useState(null);
   const [fileError, setFileError] = useState("");

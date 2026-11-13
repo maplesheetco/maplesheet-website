@@ -101,15 +101,28 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
     <!--Start of Tawk.to Script-->
+    <!-- Loaded lazily: the chat widget is a large script, so it waits until
+         the visitor first scrolls, taps, moves the mouse or types (or 4s pass),
+         instead of competing with the page itself on first load. This keeps
+         Google's page-speed scores (Core Web Vitals) healthier. Tawk_API is
+         still created right away so the React app can register callbacks. -->
     <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
     (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/6a7171f608d7a41d41578696/1jv5iaaek';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
+      var loaded=false, evts=["scroll","pointerdown","mousemove","keydown","touchstart"];
+      function load(){
+        if(loaded) return; loaded=true;
+        evts.forEach(function(e){ window.removeEventListener(e, load); });
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/6a7171f608d7a41d41578696/1jv5iaaek';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+      }
+      window.__loadTawk=load;
+      evts.forEach(function(e){ window.addEventListener(e, load, { once: true, passive: true }); });
+      window.addEventListener("load", function(){ setTimeout(load, 4000); });
     })();
     </script>
     <!--End of Tawk.to Script-->

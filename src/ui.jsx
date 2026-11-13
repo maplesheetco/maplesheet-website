@@ -91,9 +91,7 @@ export function usePageMeta({ title, description, noindex = false }) {
     // async — setAttributes silently no-ops if Tawk isn't ready yet or an
     // ad blocker stripped it, which is fine, this is a nice-to-have, never
     // something a page should depend on.
-    if (window.Tawk_API?.setAttributes) {
-      window.Tawk_API.setAttributes({ "page": title || path }, () => {});
-    }
+    setTawkPage();
   }, [title, description, noindex, location.pathname]);
 }
 
@@ -190,7 +188,45 @@ export function useLiveChatTracking() {
       trackLiveChatStarted({ pagePath: pathRef.current });
       if (typeof prev === "function") prev();
     };
+    // When the widget finishes loading: record the page the visitor is on
+    // (the first page view happens before Tawk is ready, so without this the
+    // landing page was never sent), and tell the Contact page it can show
+    // its "Open the chat window" link.
+    const prevLoad = window.Tawk_API.onLoad;
+    window.Tawk_API.onLoad = function () {
+      window.__tawkReady = true;
+      setTawkPage();
+      window.dispatchEvent(new Event("tawk:ready"));
+      if (typeof prevLoad === "function") prevLoad();
+    };
   }, []);
+}
+
+// Tell Tawk.to which page a visitor is on, so a chat doesn't come in blind
+// (FHSA tracker? stuck at checkout?). Uses the page title, falling back to
+// the path. Silently does nothing if Tawk isn't loaded yet or an ad blocker
+// removed it; onLoad above calls it again once Tawk is ready.
+function setTawkPage() {
+  if (typeof window === "undefined") return;
+  const api = window.Tawk_API;
+  if (!window.__tawkReady || !api?.setAttributes) return;
+  try {
+    api.setAttributes({ page: document.title || window.location.pathname }, () => {});
+  } catch (e) { /* never let chat break a page */ }
+}
+
+// True once the Tawk.to widget has loaded. Re-renders when it does, so a
+// "Open live chat" button can appear even if the widget loads after the
+// page (which is the normal case: it's lazy-loaded, see index.html).
+export function useTawkReady() {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    if (window.__tawkReady) { setReady(true); return; }
+    const on = () => setReady(true);
+    window.addEventListener("tawk:ready", on);
+    return () => window.removeEventListener("tawk:ready", on);
+  }, []);
+  return ready;
 }
 
 // Tiny mounting component for useLiveChatTracking(). useLiveChatTracking()
