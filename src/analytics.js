@@ -76,11 +76,11 @@ export function trackCalculatorToolUsed({ tool }) {
 }
 
 /**
- * Fired on a successful MailerLite newsletter embed submission.
+ * Fired when a visitor submits a valid email in the MailerLite newsletter box.
  *
  * @category lifecycle
  * @param {Object} props
- * @param {"resources"|"article"} props.sourcePage
+ * @param {"resources"|"article"|"free_tools"} props.sourcePage
  */
 export function trackNewsletterSubscribed({ sourcePage }) {
   send(EVENTS.NEWSLETTER_SUBSCRIBED, { source_page: sourcePage });

@@ -14,7 +14,8 @@ const SECTIONS = [
     h: "What we collect, and why",
     body: [
       "When you buy a tracker directly through maplesheet.ca, Stripe — our payment processor — collects your name, email address, and payment details to process the charge. We never see or store your full card number; Stripe handles that end entirely. What we do receive from Stripe is your email address (and name, if you gave one at checkout), which we use for exactly one purpose: automatically sending you your download links by email, as a backup to the on-screen confirmation page, in case you close the tab before it loads.",
-      "If you message us through the Contact page, our form provider (Web3Forms) collects your name, email address, your message, and an optional file attachment, and forwards it to our inbox so we can reply. If you check the newsletter box, we also keep your email address to send you future updates — you can unsubscribe at any time, and we only use it for MapleSheet-related emails, never for anything else.",
+      "If you message us through the Contact page, our form provider (FormSubmit) collects your name, email address, your message, and an optional file attachment, and forwards it to our inbox so we can reply.",
+      "If you sign up for our newsletter or request the free Goal Tracker, our email service (MailerLite) stores your email address so we can send you what you asked for. Newsletter subscribers get occasional emails about new trackers, free tools and Canadian investing guides; Goal Tracker requests get the link to your copy. Every email has an unsubscribe link, and we only use your address for MapleSheet emails, never for anything else. MailerLite may also record whether you opened or clicked an email, which helps us send fewer, more useful emails.",
       "We also use Google Analytics to understand how visitors use the site — which pages get visited, roughly how people found us, and general device/browser information. This is aggregate usage data; it isn't used to identify you personally.",
     ],
   },
@@ -33,13 +34,13 @@ const SECTIONS = [
   {
     h: "Who we share information with",
     body: [
-      "We don't sell, rent, or trade your personal information to anyone, for any reason. We share it only with the service providers that make the site and checkout work: Stripe (payment processing), Resend (the email service that sends your download links after purchase), Web3Forms (the contact form), and Google Analytics (site usage). Each of these providers has its own privacy policy governing how they handle data on our behalf.",
+      "We don't sell, rent, or trade your personal information to anyone, for any reason. We share it only with the service providers that make the site and checkout work: Stripe (payment processing), Resend (the email service that sends your download links after purchase), MailerLite (the newsletter and free Goal Tracker emails), FormSubmit (the contact form), and Google Analytics (site usage). Each of these providers has its own privacy policy governing how they handle data on our behalf.",
     ],
   },
   {
     h: "How long we keep it",
     body: [
-      "Purchase and delivery emails are kept as long as needed to support you if you ever need your download links resent, and for our own basic business recordkeeping (sales records, tax purposes). Contact form messages are kept as long as needed to resolve your inquiry. If you'd like something deleted sooner, email us and we'll take care of it — see \"Your rights\" below.",
+      "Purchase and delivery emails are kept as long as needed to support you if you ever need your download links resent, and for our own basic business recordkeeping (sales records, tax purposes). Contact form messages are kept as long as needed to resolve your inquiry. Newsletter and Goal Tracker email addresses are kept until you unsubscribe or ask us to delete them. If you'd like something deleted sooner, email us and we'll take care of it — see \"Your rights\" below.",
     ],
   },
   {
@@ -80,7 +81,7 @@ export default function Privacy() {
           background: B.black2, border: `1px solid ${B.line}`, borderRadius: 14,
           padding: "18px 20px", marginBottom: 30, color: B.grayLight, fontSize: 13.5, lineHeight: 1.7,
         }}>
-          Last updated: October 2026. This policy applies to maplesheet.ca — purchases made through our
+          Last updated: November 2026. This policy applies to maplesheet.ca — purchases made through our
           Etsy shop are covered by Etsy's own privacy policy instead. See also our{" "}
           <a href="/disclaimer" style={{ color: B.redLink, fontWeight: 600, textDecoration: "none" }}>Disclaimer</a>.
         </Reveal>
