@@ -1901,7 +1901,7 @@ export const RESOURCES = [
     type: "article",
     title: "FHSA Contribution Deadline: Why December 31 Matters",
     slug: "fhsa-contribution-deadline-december-31",
-    image: "/resources/dec142026-fhsa-contribution-deadline-december-31.png",
+    image: "/resources/dec142026-fhsa-contribution-deadline-december-31.jpg",
     date: "2026-12-14",
     summary: "The FHSA follows a calendar-year contribution period. Learn why December 31 matters, how to check your contribution room, and what to review before making a year-end contribution.",
     body: [
