@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { B, PRODUCTS, getBundleSavings } from "./data.js";
 import { GlobalStyles, Nav, Footer, RedWord, MapleLeaf, DashboardMock, Slideshow, ProductGallery, GrowthChart, usePageMeta, LiveChatTracker, Reveal, PromoBanner } from "./ui.jsx";
 import { trackBuyClicked } from "./analytics.js";
+import { startHeroBackground, HERO_BG_VARIANTS } from "./heroBackground.js";
 import Trackers from "./pages/Trackers.jsx";
 import TrackerDetail from "./pages/TrackerDetail.jsx";
 import Resources from "./pages/Resources.jsx";
@@ -181,6 +182,41 @@ function useHeroPin({ sectionRef, textRef, galleryRef }) {
 }
 
 
+// Animated background behind the hero headline (see heroBackground.js).
+// Covers the headline block only, not the product gallery under it.
+// ?herobg=chart|leaves|ticker|combo|off on the homepage URL lets us compare
+// looks on a preview link; everyone else gets the default.
+function HeroBackground({ textRef }) {
+  const canvasRef = useRef(null);
+  const [height, setHeight] = useState(0);
+  useEffect(() => {
+    const el = textRef.current;
+    if (!el) return;
+    const measure = () => setHeight(el.offsetHeight + 60 + 40);
+    measure();
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null;
+    ro?.observe(el);
+    return () => ro?.disconnect();
+  }, [textRef]);
+  useEffect(() => {
+    if (!height || !canvasRef.current) return;
+    const asked = new URLSearchParams(window.location.search).get("herobg");
+    if (asked === "off") return;
+    const variant = HERO_BG_VARIANTS.includes(asked) ? asked : "combo";
+    return startHeroBackground(canvasRef.current, variant);
+  }, [height]);
+  return (
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      style={{
+        position: "absolute", top: 0, left: 0, width: "100%", height: height || 0,
+        pointerEvents: "none", zIndex: 0, display: "block",
+      }}
+    />
+  );
+}
+
 function Home() {
   usePageMeta(STATIC_META["/"]);
   // Flagships first: each gets its own full-width row above the grid.
@@ -205,11 +241,12 @@ function Home() {
       {/* Hero — pinned on desktop via useHeroPin() above; the inline
           "overflow: clip" keeps the scaled-down gallery from ever peeking
           past the hero's own edges mid-scrub. */}
-      <header ref={heroRef} style={{ padding: "60px 24px 56px", textAlign: "center", overflow: "clip" }}>
+      <header ref={heroRef} style={{ padding: "60px 24px 56px", textAlign: "center", overflow: "clip", position: "relative" }}>
+        <HeroBackground textRef={heroTextRef} />
         {/* The header itself spans the full width so the full-bleed gallery
             below isn't clipped at the sides on wide screens; only the text
             is held to the usual 1100px column. */}
-        <div ref={heroTextRef} style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div ref={heroTextRef} style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 22,
             border: `1px solid ${B.line}`, borderRadius: 999, padding: "7px 16px",
@@ -238,7 +275,7 @@ function Home() {
           </div>
           <PromoBanner as="div" prefix="Launch offer: " style={{ marginTop: 24, marginBottom: 40 }} />
         </div>
-        <div ref={heroGalleryRef}>
+        <div ref={heroGalleryRef} style={{ position: "relative", zIndex: 1 }}>
           <ProductGallery slides={GALLERY_SLIDES} />
         </div>
       </header>
