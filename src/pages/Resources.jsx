@@ -76,7 +76,7 @@ export default function Resources() {
               <div style={{ position: "relative", paddingBottom: "56.25%", borderRadius: 12, overflow: "hidden", marginBottom: 14, border: `1px solid ${B.line}` }}>
                 <iframe src={`https://www.youtube-nocookie.com/embed/${r.youtubeId}`} title={r.title}
                   style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
-                  allow="accelerometer; encrypted-media; picture-in-picture" allowFullScreen />
+                  loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowFullScreen />
               </div>
             )}
             <p style={{ color: B.grayLight, fontSize: 14.5, lineHeight: 1.75, margin: "0 0 14px" }}>{r.summary}</p>
@@ -84,6 +84,12 @@ export default function Resources() {
               <Link to={`/resources/${r.slug}`} style={{ color: B.red, fontWeight: 600, fontSize: 14, marginTop: "auto" }}>
                 Read the full guide →
               </Link>
+            )}
+            {r.type === "video" && r.youtubeId && (
+              <a href={`https://www.youtube.com/watch?v=${r.youtubeId}`} target="_blank" rel="noreferrer"
+                style={{ color: B.red, fontWeight: 600, fontSize: 14, marginTop: "auto" }}>
+                Watch on YouTube ↗
+              </a>
             )}
           </Reveal>
         ))}
