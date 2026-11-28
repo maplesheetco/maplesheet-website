@@ -496,6 +496,32 @@ const FOOT_LINK_STYLE = {
   display: "inline-flex", alignItems: "center", gap: 5, width: "fit-content",
 };
 
+// Social icons shown in the footer on every page. Same profiles as the
+// Organization "sameAs" list in index.html, so Google can match them up.
+const SOCIALS = [
+  { label: "YouTube", href: CONFIG.youtubeUrl, path: "M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z" },
+  { label: "Facebook", href: CONFIG.facebookUrl, path: "M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12Z" },
+  { label: "Instagram", href: CONFIG.instagramUrl, path: "M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2-.1-1.3-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.2-.1 1.6-.1 4.8-.1Zm0 4.7a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2Zm0 8.4a3.3 3.3 0 1 1 0-6.6 3.3 3.3 0 0 1 0 6.6Zm5.3-9.8a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4Z" },
+  { label: "X", href: CONFIG.xUrl, path: "M18.2 2.3h3.4l-7.4 8.4 8.7 11.5h-6.8l-5.3-7-6.1 7H1.3l7.9-9L.9 2.3h7l4.8 6.4 5.5-6.4Zm-1.2 17.9h1.9L7.1 4.2H5.1l11.9 16Z" },
+];
+
+function SocialLinks() {
+  return (
+    <div style={{ marginTop: 22 }}>
+      <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.gray, marginBottom: 10 }}>FOLLOW US</div>
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+        {SOCIALS.filter((s) => s.href).map((s) => (
+          <a key={s.label} href={s.href} target="_blank" rel="noreferrer" aria-label={`MapleSheet on ${s.label}`} title={s.label}
+            className="ml-social"
+            style={{ width: 40, height: 40, borderRadius: 10, border: `1px solid ${B.line}`, display: "inline-flex", alignItems: "center", justifyContent: "center", color: B.grayLight, background: B.black2 }}>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d={s.path} /></svg>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function FootCol({ heading, children }) {
   return (
     <div>
@@ -555,6 +581,7 @@ export function Footer() {
               Contact us
             </Link>
           </div>
+          <SocialLinks />
         </div>
 
         <FootCol heading="Products">
@@ -578,8 +605,6 @@ export function Footer() {
             <a href="https://www.questrade.com" target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>Questrade ↗</a>
             <div style={{ fontSize: 11.5, color: B.gray, marginTop: 2 }}>code: 786314335499127</div>
           </div>
-          <a href={CONFIG.youtubeUrl} target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>YouTube ↗</a>
-          <a href={CONFIG.xUrl} target="_blank" rel="noreferrer" style={FOOT_LINK_STYLE}>X ↗</a>
           <p style={{ margin: "8px 0 0", fontSize: 11, color: B.gray, lineHeight: 1.5, maxWidth: 190 }}>
             Wealthsimple and Questrade are referral links/codes — MapleSheet may receive a benefit at no cost to you.
           </p>
@@ -628,6 +653,7 @@ export function Footer() {
           .ml-foot-grid { grid-template-columns: 1fr 1fr; row-gap: 36px; }
           .ml-foot-grid > div:first-child { grid-column: 1 / -1; }
         }
+        .ml-social:hover { color: ${B.white} !important; border-color: ${B.red} !important; }
         .ml-foot-credit:hover { border-color: ${B.red} !important; }
       `}</style>
     </footer>

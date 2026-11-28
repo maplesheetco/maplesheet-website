@@ -7,6 +7,8 @@ export const CONFIG = {
   email: "hello@maplesheet.ca",
   xUrl: "https://x.com/MapleSheetCo",
   youtubeUrl: "https://www.youtube.com/@MapleSheetCo",
+  instagramUrl: "https://www.instagram.com/maplesheetco/",
+  facebookUrl: "https://www.facebook.com/maplesheetcanada",
   promoCode: "MAPLE25",
   promoText: "25% off everything with code MAPLE25",
   // Promo auto-retires after this instant — the <PromoBanner> in ui.jsx
