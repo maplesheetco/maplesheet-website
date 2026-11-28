@@ -6,7 +6,7 @@ export const CONFIG = {
   calcUrl: "https://claude.ai/public/artifacts/1620ddd7-219c-4052-8557-2a8c6d63e7fb",
   email: "hello@maplesheet.ca",
   xUrl: "https://x.com/MapleSheetCo",
-  youtubeUrl: "https://www.youtube.com/@MapleSheetCo", // ← Lino: confirm handle
+  youtubeUrl: "https://www.youtube.com/@MapleSheetCo",
   promoCode: "MAPLE25",
   promoText: "25% off everything with code MAPLE25",
   // Promo auto-retires after this instant — the <PromoBanner> in ui.jsx
@@ -3258,14 +3258,13 @@ export const RESOURCES = [
       "Knowledge first. Tracking second. Better decisions every step of the way. Welcome to MapleSheet Resources.",
     ],
   },
-  // Example video post — Lino: replace youtubeId with a real video and set live: true
+  // Videos: youtubeId is the part after v= in the YouTube link.
   {
     type: "video",
-    title: "Tracker walkthrough (video coming soon)",
-    date: "2026-07-22",
-    summary: "Our first walkthrough video will appear here — how to set up your MapleSheet tracker in under 10 minutes.",
-    youtubeId: "",
-    live: false,
+    title: "Stop Guessing. Start Tracking: MapleSheet Investment Trackers for Canadians",
+    date: "2026-11-27",
+    summary: "A 3-minute tour of what MapleSheet trackers do: TFSA, RRSP, Spousal RRSP, RESP, FHSA and margin accounts in Google Sheets, with live prices, CAD and USD in one place, automatic ACB and capital gains, and CRA rules built in. One-time purchase, no subscription.",
+    youtubeId: "xp_8Lp89Fo4",
   },
 ];
 
